@@ -3,7 +3,7 @@ package civitas.celestis.util.compression;
 import jakarta.annotation.Nonnull;
 
 /**
- * An object which can be packed into an arbitrary object {@link P}.
+ * An object which can be packed into an arbitrary object {@code P}.
  * <p>
  * Unpacking the packed data is not defined in this interface, and requires
  * a custom implementation, which is usually achieved by a static method

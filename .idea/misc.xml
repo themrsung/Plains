@@ -9,7 +9,7 @@
     </option>
   </component>
   <component name="NullableNotNullManager">
-    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
+    <option name="myDefaultNullable" value="jakarta.annotation.Nullable" />
     <option name="myDefaultNotNull" value="jakarta.annotation.Nonnull" />
     <option name="myNullables">
       <value>

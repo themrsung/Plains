@@ -21,6 +21,11 @@ public final class Decimals {
     public static final BigDecimal EPSILON = new BigDecimal("0.000001");
 
     /**
+     * The square root of two.
+     */
+    public static final BigDecimal SQRT_2;
+
+    /**
      * The amount of decimal places to calculate at runtime.
      */
     public static final int RUNTIME_PRECISION = 32;
@@ -85,5 +90,13 @@ public final class Decimals {
         if (value.compareTo(min) < 0) return min;
         if (value.compareTo(max) > 0) return max;
         return value;
+    }
+
+    //
+    // Compile Time Pre-computation
+    //
+
+    static {
+        SQRT_2 = BigDecimal.TWO.sqrt(COMPILE_CONTEXT);
     }
 }

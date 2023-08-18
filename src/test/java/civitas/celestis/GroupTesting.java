@@ -12,5 +12,8 @@ public class GroupTesting {
 
         atomic.rotate(new Quaternion(232, -404, -333, 2).normalize());
         System.out.println(atomic);
+
+        Vector3[][][] array = new Vector3[1][1][1];
+
     }
 }
