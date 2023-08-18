@@ -31,7 +31,6 @@ public class AtomicVector<V extends Vector<?, V>> extends AtomicReference<V> {
      * Creates a new atomic vector. The initial value is {@code null}.
      */
     public AtomicVector() {
-        super(null);
     }
 
     //
