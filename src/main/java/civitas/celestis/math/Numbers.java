@@ -44,6 +44,21 @@ public final class Numbers {
         return value > min && value < max;
     }
 
+    /**
+     * Explicitly denotes that a field requires the range of {@code [min, max]}.
+     * @param value The value to check
+     * @param min   The minimum allowed value
+     * @param max   The maximum allowed value
+     * @return The value given as the parameter
+     * @throws IllegalArgumentException When the value is out of range
+     */
+    public static double requireRange(double value, double min, double max) throws IllegalArgumentException {
+        if (value < min || value > max) {
+            throw new IllegalArgumentException("This field requires a value of range [" + min + ", " + max + "]. The provided value was " + value + ".");
+        }
+        return value;
+    }
+
     //
     // Clamping
     //

@@ -1,6 +1,7 @@
 package civitas.celestis.util.collection;
 
 import civitas.celestis.math.Sign;
+import civitas.celestis.util.group.Group;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;
@@ -73,6 +74,15 @@ public class NumericArrayList<N extends Number> extends GroupableArrayList<N> {
      * @param c The collection of which to copy elements from
      */
     public NumericArrayList(@Nonnull Collection<? extends N> c) {
+        super(c);
+    }
+
+    /**
+     * Creates a new numeric array list.
+     *
+     * @param c The collectable object of which to copy elements from
+     */
+    public NumericArrayList(@Nonnull Collectable<? extends N> c) {
         super(c);
     }
 

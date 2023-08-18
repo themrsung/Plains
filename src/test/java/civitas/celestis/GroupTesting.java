@@ -14,6 +14,8 @@ public class GroupTesting {
         sum.add(null);
         sum.fillEmpty(Math.PI);
 
-        System.out.println(sum);
+        final List<Double> l3 = new GroupableArrayList<>(l1.group());
+
+        System.out.println(l3);
     }
 }

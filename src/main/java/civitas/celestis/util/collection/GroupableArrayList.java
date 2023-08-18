@@ -82,6 +82,15 @@ public class GroupableArrayList<E> extends ArrayList<E>
         super(c);
     }
 
+    /**
+     * Creates a new groupable array list.
+     *
+     * @param c The collectable object of which to copy elements from
+     */
+    public GroupableArrayList(@Nonnull Collectable<? extends E> c) {
+        super(c.collect());
+    }
+
     //
     // Bulk Operation
     //

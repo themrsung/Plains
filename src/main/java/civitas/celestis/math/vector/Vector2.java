@@ -113,6 +113,15 @@ public class Vector2 implements DoubleVector<Vector2> {
         this.x = v.x;
         this.y = v.y;
     }
+    /**
+     * Creates a new vector.
+     *
+     * @param v The vector of which to copy component values from
+     */
+    public Vector2(@Nonnull Float2 v) {
+        this.x = v.x;
+        this.y = v.y;
+    }
 
     //
     // Variables

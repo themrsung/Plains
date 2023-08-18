@@ -12,9 +12,14 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * A three-dimensional {@code double} vector which uses XYZ notation.
+ * A three-dimensional {@code float} vector which uses XYZ notation.
+ * <p>
+ * Note that using 32-bit single precision types may conserve memory,
+ * many of the core vector operations such as normalization still
+ * computed by active conversion to and from 64-bit {@code double}s.
+ * </p>
  */
-public class Vector3 implements DoubleVector<Vector3> {
+public class Float3 implements FloatVector<Float3> {
     //
     // Constants
     //
@@ -23,42 +28,42 @@ public class Vector3 implements DoubleVector<Vector3> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = -3381299836080703207L;
+    private static final long serialVersionUID = -2326721508603861284L;
 
     /**
      * A vector with no direction or magnitude. Represents origin.
      */
-    public static final Vector3 ZERO = new Vector3(0, 0, 0);
+    public static final Float3 ZERO = new Float3(0, 0, 0);
 
     /**
      * The positive X unit vector.
      */
-    public static final Vector3 POSITIVE_X = new Vector3(1, 0, 0);
+    public static final Float3 POSITIVE_X = new Float3(1, 0, 0);
 
     /**
      * The positive Y unit vector.
      */
-    public static final Vector3 POSITIVE_Y = new Vector3(0, 1, 0);
+    public static final Float3 POSITIVE_Y = new Float3(0, 1, 0);
 
     /**
      * Ths positive Z unit vector.
      */
-    public static final Vector3 POSITIVE_Z = new Vector3(0, 0, 1);
+    public static final Float3 POSITIVE_Z = new Float3(0, 0, 1);
 
     /**
      * The negative X unit vector.
      */
-    public static final Vector3 NEGATIVE_X = new Vector3(-1, 0, 0);
+    public static final Float3 NEGATIVE_X = new Float3(-1, 0, 0);
 
     /**
      * The negative Y unit vector.
      */
-    public static final Vector3 NEGATIVE_Y = new Vector3(0, -1, 0);
+    public static final Float3 NEGATIVE_Y = new Float3(0, -1, 0);
 
     /**
      * The negative Z unit vector.
      */
-    public static final Vector3 NEGATIVE_Z = new Vector3(0, 0, -1);
+    public static final Float3 NEGATIVE_Z = new Float3(0, 0, -1);
 
     //
     // Constructors
@@ -71,7 +76,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @param y The Y component of this vector
      * @param z The Z component of this vector
      */
-    public Vector3(double x, double y, double z) {
+    public Float3(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -82,7 +87,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @param values An array containing the values of this vector in XYZ order
      */
-    public Vector3(@Nonnull double[] values) {
+    public Float3(@Nonnull float[] values) {
         if (values.length != 3) {
             throw new IllegalArgumentException("The provided array's length is not 3.");
         }
@@ -97,8 +102,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @param v The vector of which to copy component values from
      */
-    public Vector3(@Nonnull Vector<?, ?> v) {
-        final Double[] values = v.list().stream().map(Number::doubleValue).toArray(Double[]::new);
+    public Float3(@Nonnull Vector<?, ?> v) {
+        final Float[] values = v.list().stream().map(Number::floatValue).toArray(Float[]::new);
         if (values.length != 3) {
             throw new IllegalArgumentException("The provided array's length is not 3.");
         }
@@ -113,7 +118,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @param v The vector of which to copy component values from
      */
-    public Vector3(@Nonnull DoubleVector<?> v) {
+    public Float3(@Nonnull FloatVector<?> v) {
         this(v.array());
     }
 
@@ -122,7 +127,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @param v The vector of which to copy component values from
      */
-    public Vector3(@Nonnull Vector3 v) {
+    public Float3(@Nonnull Float3 v) {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
@@ -133,10 +138,10 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @param v The vector of which to copy component values from
      */
-    public Vector3(@Nonnull Float3 v) {
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
+    public Float3(@Nonnull Vector3 v) {
+        this.x = (float) v.x;
+        this.y = (float) v.y;
+        this.z = (float) v.z;
     }
 
     //
@@ -146,17 +151,17 @@ public class Vector3 implements DoubleVector<Vector3> {
     /**
      * The X component of this vector.
      */
-    protected final double x;
+    protected final float x;
 
     /**
      * The Y component of this vector.
      */
-    protected final double y;
+    protected final float y;
 
     /**
      * The Z component of this vector.
      */
-    protected final double z;
+    protected final float z;
 
     //
     // Properties
@@ -179,7 +184,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Override
     public boolean isNaN() {
-        return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z);
+        return Float.isNaN(x) || Float.isNaN(y) || Float.isNaN(z);
     }
 
     /**
@@ -189,7 +194,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Override
     public boolean isFinite() {
-        return Double.isFinite(x) && Double.isFinite(y) && Double.isFinite(z);
+        return Float.isFinite(x) && Float.isFinite(y) && Float.isFinite(z);
     }
 
     /**
@@ -199,7 +204,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Override
     public boolean isInfinite() {
-        return Double.isInfinite(x) || Double.isInfinite(y) || Double.isInfinite(z);
+        return Float.isInfinite(x) || Float.isInfinite(y) || Float.isInfinite(z);
     }
 
     /**
@@ -208,8 +213,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double norm() {
-        return Math.sqrt(x * x + y * y + z * z);
+    public float norm() {
+        return (float) Math.sqrt(x * x + y * y + z * z);
     }
 
     /**
@@ -218,7 +223,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double norm2() {
+    public float norm2() {
         return x * x + y * y + z * z;
     }
 
@@ -228,7 +233,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double normManhattan() {
+    public float normManhattan() {
         return Math.abs(x) + Math.abs(y) + Math.abs(z);
     }
 
@@ -241,7 +246,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @return The X component of this vector
      */
-    public final double x() {
+    public final float x() {
         return x;
     }
 
@@ -250,7 +255,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @return The Y component of this vector
      */
-    public final double y() {
+    public final float y() {
         return y;
     }
 
@@ -259,7 +264,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      *
      * @return The Z component of this vector
      */
-    public final double z() {
+    public final float z() {
         return z;
     }
 
@@ -270,8 +275,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public final double[] array() {
-        return new double[]{x, y, z};
+    public final float[] array() {
+        return new float[]{x, y, z};
     }
 
     //
@@ -286,8 +291,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 add(double s) {
-        return new Vector3(x + s, y + s, z + s);
+    public Float3 add(float s) {
+        return new Float3(x + s, y + s, z + s);
     }
 
     /**
@@ -298,8 +303,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 subtract(double s) {
-        return new Vector3(x - s, y - s, z - s);
+    public Float3 subtract(float s) {
+        return new Float3(x - s, y - s, z - s);
     }
 
     /**
@@ -310,8 +315,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 multiply(double s) {
-        return new Vector3(x * s, y * s, z * s);
+    public Float3 multiply(float s) {
+        return new Float3(x * s, y * s, z * s);
     }
 
     /**
@@ -323,9 +328,9 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 divide(double s) throws ArithmeticException {
+    public Float3 divide(float s) throws ArithmeticException {
         if (s == 0) throw new ArithmeticException("Cannot divide by zero");
-        return new Vector3(x / s, y / s, z / s);
+        return new Float3(x / s, y / s, z / s);
     }
 
     /**
@@ -336,8 +341,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 divideAllowZero(double s) {
-        return new Vector3(x / s, y / s, z / s);
+    public Float3 divideAllowZero(float s) {
+        return new Float3(x / s, y / s, z / s);
     }
 
     /**
@@ -348,8 +353,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 add(@Nonnull Vector3 v) {
-        return new Vector3(x + v.x, y + v.y, z + v.z);
+    public Float3 add(@Nonnull Float3 v) {
+        return new Float3(x + v.x, y + v.y, z + v.z);
     }
 
     /**
@@ -360,8 +365,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 subtract(@Nonnull Vector3 v) {
-        return new Vector3(x - v.x, y - v.y, z - v.z);
+    public Float3 subtract(@Nonnull Float3 v) {
+        return new Float3(x - v.x, y - v.y, z - v.z);
     }
 
     /**
@@ -371,8 +376,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return The resulting vector
      */
     @Nonnull
-    public Vector3 cross(@Nonnull Vector3 v) {
-        return new Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
+    public Float3 cross(@Nonnull Float3 v) {
+        return new Float3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 
     /**
@@ -382,7 +387,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double dot(@Nonnull Vector3 v) {
+    public float dot(@Nonnull Float3 v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
@@ -397,8 +402,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 negate() {
-        return new Vector3(-x, -y, -z);
+    public Float3 negate() {
+        return new Float3(-x, -y, -z);
     }
 
     //
@@ -413,10 +418,10 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 normalize() throws ArithmeticException {
-        final double n = Math.sqrt(x * x + y * y + z * z);
+    public Float3 normalize() throws ArithmeticException {
+        final float n = (float) Math.sqrt(x * x + y * y + z * z);
         if (n == 0) throw new ArithmeticException("Cannot normalize a vector with zero magnitude.");
-        return new Vector3(x / n, y / n, z / n);
+        return new Float3(x / n, y / n, z / n);
     }
 
     /**
@@ -426,10 +431,10 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 normalizeOrZero() {
+    public Float3 normalizeOrZero() {
         if (x == 0 && y == 0 && z == 0) return this; // This is the only possible vector with zero magnitude
-        final double n = Math.sqrt(x * x + y * y + z * z);
-        return new Vector3(x / n, y / n, z / n);
+        final float n = (float) Math.sqrt(x * x + y * y + z * z);
+        return new Float3(x / n, y / n, z / n);
     }
 
     //
@@ -443,12 +448,12 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distance(@Nonnull Vector3 v) {
-        final double dx = x - v.x;
-        final double dy = y - v.y;
-        final double dz = z - v.z;
+    public float distance(@Nonnull Float3 v) {
+        final float dx = x - v.x;
+        final float dy = y - v.y;
+        final float dz = z - v.z;
 
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     /**
@@ -458,10 +463,10 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distance2(@Nonnull Vector3 v) {
-        final double dx = x - v.x;
-        final double dy = y - v.y;
-        final double dz = z - v.z;
+    public float distance2(@Nonnull Float3 v) {
+        final float dx = x - v.x;
+        final float dy = y - v.y;
+        final float dz = z - v.z;
 
         return dx * dx + dy * dy + dz * dz;
     }
@@ -473,10 +478,10 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distanceManhattan(@Nonnull Vector3 v) {
-        final double dx = x - v.x;
-        final double dy = y - v.y;
-        final double dz = z - v.z;
+    public float distanceManhattan(@Nonnull Float3 v) {
+        final float dx = x - v.x;
+        final float dy = y - v.y;
+        final float dz = z - v.z;
 
         return Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
     }
@@ -493,8 +498,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 min(@Nonnull Vector3 v) {
-        return new Vector3(Math.min(x, v.x), Math.min(y, v.y), Math.min(z, v.y));
+    public Float3 min(@Nonnull Float3 v) {
+        return new Float3(Math.min(x, v.x), Math.min(y, v.y), Math.min(z, v.y));
     }
 
     /**
@@ -505,8 +510,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 max(@Nonnull Vector3 v) {
-        return new Vector3(Math.max(x, v.x), Math.max(y, v.y), Math.max(z, v.y));
+    public Float3 max(@Nonnull Float3 v) {
+        return new Float3(Math.max(x, v.x), Math.max(y, v.y), Math.max(z, v.y));
     }
 
     /**
@@ -518,11 +523,11 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 clamp(@Nonnull Vector3 min, @Nonnull Vector3 max) {
-        return new Vector3(
-                Numbers.clamp(x, min.x, max.x),
-                Numbers.clamp(y, min.y, max.y),
-                Numbers.clamp(z, min.z, max.z)
+    public Float3 clamp(@Nonnull Float3 min, @Nonnull Float3 max) {
+        return new Float3(
+                (float) Numbers.clamp(x, min.x, max.x),
+                (float) Numbers.clamp(y, min.y, max.y),
+                (float) Numbers.clamp(z, min.z, max.z)
         );
     }
 
@@ -538,8 +543,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Vector3 transform(@Nonnull Function<? super Double, Double> f) {
-        return new Vector3(f.apply(x), f.apply(y), f.apply(z));
+    public Float3 transform(@Nonnull Function<? super Float, Float> f) {
+        return new Float3(f.apply(x), f.apply(y), f.apply(z));
     }
 
     /**
@@ -551,7 +556,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public <F> Triple<F> map(@Nonnull Function<? super Double, F> f) {
+    public <F> Triple<F> map(@Nonnull Function<? super Float, F> f) {
         return new Triple<>(f.apply(x), f.apply(y), f.apply(z));
     }
 
@@ -579,8 +584,8 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return The rotated vector
      */
     @Nonnull
-    public Vector3 rotate(@Nonnull Quaternion rq) {
-        return rq.multiply(quaternion()).multiply(rq.conjugate()).vector();
+    public Float3 rotate(@Nonnull Quaternion rq) {
+        return new Float3(rq.multiply(quaternion()).multiply(rq.conjugate()).vector());
     }
 
     //
@@ -594,7 +599,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public List<Double> list() {
+    public List<Float> list() {
         return List.of(x, y, z);
     }
 
@@ -605,7 +610,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Collection<Double> collect() {
+    public Collection<Float> collect() {
         return List.of(x, y, z);
     }
 
@@ -616,7 +621,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Nonnull
     @Override
-    public Triple<Double> group() {
+    public Triple<Float> group() {
         return new Triple<>(x, y, z);
     }
 
@@ -632,22 +637,22 @@ public class Vector3 implements DoubleVector<Vector3> {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Vector3 v) {
+        if (obj instanceof Float3 v) {
             return x == v.x && y == v.y && z == v.z;
         }
 
-        if (obj instanceof DoubleVector<?> dv) {
+        if (obj instanceof FloatVector<?> dv) {
             return Arrays.equals(array(), dv.array());
         }
 
         if (obj instanceof Vector<?, ?> v) {
-            final double[] a1 = array();
+            final float[] a1 = array();
             final Number[] a2 = v.collect().toArray(Number[]::new);
 
             if (a2.length != 3) return false;
 
             for (int i = 0; i < 3; i++) {
-                if (a1[i] != a2[i].doubleValue()) return false;
+                if (a1[i] != a2[i].floatValue()) return false;
             }
 
             return true;
@@ -663,7 +668,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable Vector3 v) {
+    public boolean equals(@Nullable Float3 v) {
         if (v == null) return false;
         return x == v.x && y == v.y && z == v.z;
     }
@@ -680,7 +685,7 @@ public class Vector3 implements DoubleVector<Vector3> {
      * @throws NumberFormatException When the format is invalid
      */
     @Nonnull
-    public static Vector3 parseVector(@Nonnull String input) throws NumberFormatException {
+    public static Float3 parseVector(@Nonnull String input) throws NumberFormatException {
         if (!input.startsWith("Vector{")) {
             throw new NumberFormatException("The provided string is not a vector.");
         }
@@ -690,7 +695,7 @@ public class Vector3 implements DoubleVector<Vector3> {
             throw new NumberFormatException("The provided string does not have three components.");
         }
 
-        final double[] values = new double[3];
+        final float[] values = new float[3];
 
         for (final String valueString : valueStrings) {
             final String[] split = valueString.split("=");
@@ -703,10 +708,10 @@ public class Vector3 implements DoubleVector<Vector3> {
                 case "y" -> 1;
                 case "z" -> 2;
                 default -> throw new NumberFormatException("The provided string has a non-XYZ component.");
-            }] = Double.parseDouble(split[1]);
+            }] = Float.parseFloat(split[1]);
         }
 
-        return new Vector3(values);
+        return new Float3(values);
     }
 
     /**
