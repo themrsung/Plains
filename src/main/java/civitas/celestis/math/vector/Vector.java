@@ -1,5 +1,6 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.math.atomic.*;
 import civitas.celestis.util.Transformable;
 import civitas.celestis.util.collection.Listable;
 import civitas.celestis.util.group.Groupable;
@@ -7,6 +8,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A mathematical vector. Vectors are a one-dimensional array of numbers.
@@ -26,6 +28,98 @@ import java.io.Serializable;
  */
 public interface Vector<N extends Number, V extends Vector<N, V>>
         extends Transformable<N>, Groupable<N>, Listable<N>, Serializable {
+    //
+    // Atomization
+    //
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static <N extends Number, V extends Vector<N, V>> AtomicReference<V> atomic(@Nullable V v) {
+        return new AtomicReference<>(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicVector2 atomic(@Nullable Vector2 v) {
+        return new AtomicVector2(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicVector3 atomic(@Nullable Vector3 v) {
+        return new AtomicVector3(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicVector4 atomic(@Nullable Vector4 v) {
+        return new AtomicVector4(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided quaternion {@code q}.
+     *
+     * @param q The vector of which to atomically reference
+     * @return The atomic reference of the provided quaternion {@code q}
+     */
+    @Nonnull
+    static AtomicQuaternion atomic(@Nullable Quaternion q) {
+        return new AtomicQuaternion(q);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicFloat2 atomic(@Nullable Float2 v) {
+        return new AtomicFloat2(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicFloat3 atomic(@Nullable Float3 v) {
+        return new AtomicFloat3(v);
+    }
+
+    /**
+     * Returns an atomic reference to the provided vector {@code v}.
+     *
+     * @param v The vector of which to atomically reference
+     * @return The atomic reference of the provided vector {@code v}
+     */
+    @Nonnull
+    static AtomicFloat4 atomic(@Nullable Float4 v) {
+        return new AtomicFloat4(v);
+    }
+
     //
     // Properties
     //
