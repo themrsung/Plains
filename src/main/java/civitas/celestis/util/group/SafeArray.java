@@ -6,10 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -254,6 +251,19 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
         }
 
         return result;
+    }
+
+    //
+    // Sorting
+    //
+
+    /**
+     * Sorts this array by the provided comparator {@code c}.
+     *
+     * @param c The comparator of which to use to sort this array
+     */
+    public void sort(@Nonnull Comparator<? super E> c) {
+        Arrays.sort(values, c);
     }
 
     //

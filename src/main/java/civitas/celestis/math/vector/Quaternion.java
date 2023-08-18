@@ -4,6 +4,7 @@ import civitas.celestis.math.Numbers;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;
+import java.util.function.Function;
 
 /**
  * A specialized four-dimensional vector which is mostly used to represent
@@ -278,6 +279,115 @@ public class Quaternion extends Vector4 {
                 y * scaleFactor,
                 z * scaleFactor
         );
+    }
+
+    //
+    // Negation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion negate() {
+        return new Quaternion(-w, -x, -y, -z);
+    }
+
+
+    //
+    // Normalization
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion normalize() throws ArithmeticException {
+        final double n = Math.sqrt(w * w + x * x + y * y + z * z);
+        if (n == 0) throw new ArithmeticException("Cannot normalize a vector with zero magnitude.");
+        return new Quaternion(w / n, x / n, y / n, z / n);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion normalizeOrZero() {
+        if (w == 0 && x == 0 && y == 0 && z == 0) return this; // This is the only possible vector with zero magnitude
+        final double n = Math.sqrt(w * w + x * x + y * y + z * z);
+        return new Quaternion(w / n, x / n, y / n, z / n);
+    }
+
+    //
+    // Clamping
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param v The boundary vector to respect
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion min(@Nonnull Vector4 v) {
+        return new Quaternion(Math.min(w, v.w), Math.min(x, v.x), Math.min(y, v.y), Math.min(z, v.y));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param v The boundary vector to respect
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion max(@Nonnull Vector4 v) {
+        return new Quaternion(Math.max(w, v.w), Math.max(x, v.x), Math.max(y, v.y), Math.max(z, v.y));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param min The minimum boundary vector
+     * @param max The maximum boundary vector
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion clamp(@Nonnull Vector4 min, @Nonnull Vector4 max) {
+        return new Quaternion(
+                Numbers.clamp(w, min.w, max.w),
+                Numbers.clamp(x, min.x, max.x),
+                Numbers.clamp(y, min.y, max.y),
+                Numbers.clamp(z, min.z, max.z)
+        );
+    }
+
+    //
+    // Transformation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function to apply to each element of this object
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion transform(@Nonnull Function<? super Double, Double> f) {
+        return new Quaternion(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 
     //
