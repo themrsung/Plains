@@ -46,11 +46,19 @@ public class ArrayVector implements DoubleVector<ArrayVector>, Iterable<Double> 
      * @param g The group of which to copy component values from
      */
     public ArrayVector(@Nonnull Group<Double> g) {
-        final Collection<Double> collection = g.collect();
-        this.values = new double[collection.size()];
+        this(g.collect());
+    }
+
+    /**
+     * Creates a new vector.
+     *
+     * @param c The collection of which to copy component values from
+     */
+    public ArrayVector(@Nonnull Collection<Double> c) {
+        this.values = new double[c.size()];
 
         int i = 0;
-        for (final double v : collection) {
+        for (final double v : c) {
             values[i++] = v;
         }
     }

@@ -6,14 +6,16 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * A type-safe group of objects.
  * <p>
  * Groups represent a structured collection of objects.
  * Groups may or may not have a consistent order, which is similar to
- * Java collections. Thus, all groups can be converted into a collection.
+ * Java {@link Collection}s. Thus, all groups can be converted into a collection.
  * </p>
  *
  * @param <E> The type of element this group holds
@@ -21,6 +23,7 @@ import java.util.List;
  * @see Groupable
  * @see Tuple
  * @see ArrayGroup
+ * @see Grid
  */
 public interface Group<E> extends Transformable<E>, Collectable<E>, Serializable {
     //
@@ -51,6 +54,43 @@ public interface Group<E> extends Transformable<E>, Collectable<E>, Serializable
     @SuppressWarnings("unchecked")
     static <E> Group<E> copyOf(@Nonnull Group<E> g) {
         return Tuple.of((E[]) List.copyOf(g.collect()).toArray());
+    }
+
+    /**
+     * Performs a deep copy of a group.
+     *
+     * @param g      The group of which to perform the deep copy on
+     * @param copier The copier function used to copy the objects
+     * @param <E>    The type of element the group is holding
+     * @return An unmodifiable deep copy of the original group {@code g}
+     */
+    @Nonnull
+    static <E> Group<E> deepCopyOf(@Nonnull Group<E> g, @Nonnull Function<? super E, E> copier) {
+        final SafeArray<E> temp = new SafeArray<>(g.size());
+
+        int i = 0;
+        for (final E e : g.collect()) {
+            temp.set(i, copier.apply(e));
+        }
+
+        return copyOf(temp);
+    }
+
+    //
+    // Migration
+    //
+
+    /**
+     * Creates a new group from a {@link Collection} of objects.
+     *
+     * @param c   The collection of which to copy values from
+     * @param <E> The type of element to hold
+     * @return The group representation of the provided collection {@code c}
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> Group<E> fromCollection(@Nonnull Collection<E> c) {
+        return SafeArray.of((E[]) c.toArray(Object[]::new));
     }
 
     //

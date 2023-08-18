@@ -1,15 +1,23 @@
 package civitas.celestis;
 
-import civitas.celestis.math.vector.ArrayVector;
-import civitas.celestis.math.vector.Vector4;
+import civitas.celestis.util.collection.GroupableArrayList;
+import civitas.celestis.util.collection.GroupableList;
 import civitas.celestis.util.group.Group;
-import civitas.celestis.util.group.Tuple;
+import civitas.celestis.util.group.SafeArray;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Group<Double> group = Tuple.of(1d, 2d, 3d, 4d);
-        final ArrayVector v = new ArrayVector(group);
+        final GroupableList<String> groupList = new GroupableArrayList<>();
 
-        System.out.println(ArrayVector.parseVector(v.toString()));
+        for (int i = 0; i < 10; i++) {
+            groupList.add("Hello world!");
+        }
+
+        final Group<String> group = Group.fromCollection(groupList);
+        System.out.println(group);
+
+        ((SafeArray<String>) group).set(0, "test");
+
+        System.out.println(groupList);
     }
 }

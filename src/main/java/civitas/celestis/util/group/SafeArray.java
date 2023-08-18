@@ -28,6 +28,24 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
     private static final long serialVersionUID = 5217862342156798234L;
 
     //
+    // Static Initializers
+    //
+
+    /**
+     * Initializes a new type-safe array from a primitive array of objects.
+     * Note that changes in the original array will be reflected to the constructed array.
+     *
+     * @param values The values the array should contain
+     * @param <E>    The type of element to hold
+     * @return The constructed type-safe array
+     */
+    @Nonnull
+    @SafeVarargs
+    public static <E> SafeArray<E> of(@Nonnull E... values) {
+        return new SafeArray<>(values);
+    }
+
+    //
     // Constructors
     //
 
@@ -39,6 +57,37 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
     @SuppressWarnings("unchecked")
     public SafeArray(int length) {
         this.values = (E[]) new Object[length];
+    }
+
+    /**
+     * Creates a new type-safe array.
+     *
+     * @param g The group of which to represent
+     */
+    @SuppressWarnings("unchecked")
+    public SafeArray(@Nonnull Group<E> g) {
+        this.values = (E[]) g.collect().toArray(Object[]::new);
+    }
+
+    /**
+     * Creates a new type-safe array.
+     *
+     * @param c The collection of which to represent
+     */
+    @SuppressWarnings("unchecked")
+    public SafeArray(@Nonnull Collection<E> c) {
+        this.values = (E[]) c.toArray(Object[]::new);
+    }
+
+    /**
+     * Private constructor to prevent confusion with other constructors.
+     * Use {@link #of(Object[])} for public access.
+     *
+     * @param values The values to contain
+     */
+    @SafeVarargs
+    private SafeArray(@Nonnull E... values) {
+        this.values = values;
     }
 
     //
