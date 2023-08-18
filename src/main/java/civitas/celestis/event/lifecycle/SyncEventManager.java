@@ -2,6 +2,7 @@ package civitas.celestis.event.lifecycle;
 
 /**
  * A queued synchronous implementation of an event manager.
+ *
  * @see EventManager
  */
 public class SyncEventManager extends EventThread {

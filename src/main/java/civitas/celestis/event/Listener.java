@@ -9,12 +9,14 @@ import java.util.List;
 
 /**
  * A marker interface which defines the contract of an event listener.
+ *
  * @see Event
  */
 public interface Listener {
     /**
      * Returns a list containing references to every valid
      * handler of this event listener object. Modify this method at your own risk.
+     *
      * @return A list of valid handler references within this object
      */
     @Nonnull

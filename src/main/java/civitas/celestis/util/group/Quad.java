@@ -1,6 +1,5 @@
 package civitas.celestis.util.group;
 
-import civitas.celestis.util.Transformable;
 import civitas.celestis.util.collection.Listable;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

@@ -5,10 +5,7 @@ import civitas.celestis.event.Listener;
 import jakarta.annotation.Nonnull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
@@ -21,6 +18,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * Creates a new event thread.
+     *
      * @param name The name of this thread
      */
     public EventThread(@Nonnull String name) {
@@ -29,8 +27,9 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * Creates a new event thread.
-     * @param name The name of this thread
-     * @param queue The queue object to use to store events
+     *
+     * @param name     The name of this thread
+     * @param queue    The queue object to use to store events
      * @param handlers The list of handlers registered to this thread
      */
     private EventThread(@Nonnull String name, @Nonnull Deque<Handleable> queue, @Nonnull List<HandlerReference> handlers) {
@@ -92,8 +91,9 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param event {@inheritDoc}
-     * @param <E> {@inheritDoc}
+     * @param <E>   {@inheritDoc}
      */
     @Override
     public <E extends Handleable> void call(@Nonnull E event) {
@@ -102,6 +102,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -112,15 +113,20 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener The event listener to register to this manager
      */
     @Override
     public void register(@Nonnull Listener listener) {
         handlers.addAll(listener.getHandlerReferences());
+
+        // Preemptive sort handlers by priority
+        handlers.sort(Comparator.comparing(HandlerReference::priority));
     }
 
     /**
      * {@inheritDoc}
+     *
      * @param listeners The iterable object of listeners to register
      */
     @Override
@@ -130,6 +136,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener The event listener to unregister from this manager
      */
     @Override
@@ -139,6 +146,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listeners The iterable object of listeners to unregister
      */
     @Override
@@ -148,6 +156,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener The listener of which to check for registration
      * @return {@inheritDoc}
      */

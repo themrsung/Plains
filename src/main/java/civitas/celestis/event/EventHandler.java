@@ -8,6 +8,7 @@ import java.lang.annotation.*;
  * A marker annotation which marks a method as an event handler method.
  * Event handler methods should only have one parameter which is assignable
  * from the type {@link Handleable}.
+ *
  * @see Event
  * @see Listener
  * @see HandlerPriority
@@ -18,6 +19,7 @@ import java.lang.annotation.*;
 public @interface EventHandler {
     /**
      * Returns the priority of this event handler. Defaults to {@link HandlerPriority#MEDIUM}.
+     *
      * @return The execution priority of this event handler
      */
     @Nonnull

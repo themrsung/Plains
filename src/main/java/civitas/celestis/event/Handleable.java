@@ -9,6 +9,7 @@ import java.util.UUID;
 /**
  * A handleable object can be thrown into an event manager to be handled.
  * This interface provides the contract for an event.
+ *
  * @see Event
  */
 public interface Handleable extends Unique<UUID> {
