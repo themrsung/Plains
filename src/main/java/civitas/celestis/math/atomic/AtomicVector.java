@@ -8,6 +8,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An atomic reference to a vector. Atomic vectors are null-safe.
+ * Any {@link NullPointerException}s will not halt the thread it is being processed in,
+ * but instead simply print the stack trace using {@link Throwable#printStackTrace()}.
  *
  * @param <V> The vector of which to reference to
  */
@@ -63,6 +65,54 @@ public class AtomicVector<V extends Vector<?, V>> extends AtomicReference<V> {
             e.printStackTrace();
         }
     }
+
+    //
+    // Negation
+    //
+
+    /**
+     * Negates this vector.
+     */
+    public void negate() {
+        try {
+            getAndUpdate(V::negate);
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //
+    // Normalization
+    //
+
+    /**
+     * Normalizes this vector to have a magnitude of {@code 1}.
+     *
+     * @throws ArithmeticException When the magnitude of this vector is zero
+     */
+    public void normalize() throws ArithmeticException {
+        try {
+            getAndUpdate(V::normalize);
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Normalizes this vector to have a magnitude of {@code 1},
+     * but will set the value to zero if the magnitude is zero.
+     */
+    public void normalizeOrZero() {
+        try {
+            getAndUpdate(V::normalizeOrZero);
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //
+    // Clamping
+    //
 
     /**
      * Sets the value of this vector to the minimum vector between the current
