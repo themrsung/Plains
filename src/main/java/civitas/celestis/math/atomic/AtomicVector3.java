@@ -37,8 +37,9 @@ public class AtomicVector3 extends AtomicDoubleVector<Vector3> {
     /**
      * Assigns the value of this vector to the cross product between
      * the current value and the provided vector.
+     *
      * @param other The vector of which to get the cross product between
-     * @see Vector3#cross(Vector3) 
+     * @see Vector3#cross(Vector3)
      */
     public void cross(@Nonnull Vector3 other) {
         try {
@@ -54,8 +55,9 @@ public class AtomicVector3 extends AtomicDoubleVector<Vector3> {
 
     /**
      * Rotates this vector by a rotation quaternion.
+     *
      * @param rq The rotation quaternion to apply to this vector
-     * @see Vector3#rotate(Quaternion) 
+     * @see Vector3#rotate(Quaternion)
      */
     public void rotate(@Nonnull Quaternion rq) {
         try {

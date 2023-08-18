@@ -35,6 +35,7 @@ public class AtomicVector2 extends AtomicDoubleVector<Vector2> {
 
     /**
      * Multiplies this vector by the provided vector.
+     *
      * @param other The vector of which to multiply this vector to
      * @see Vector2#multiply(Vector2)
      */
@@ -45,13 +46,14 @@ public class AtomicVector2 extends AtomicDoubleVector<Vector2> {
             e.printStackTrace();
         }
     }
-    
+
     //
     // Rotation
     //
 
     /**
      * Rotates this vector counter-clockwise by the provided angle.
+     *
      * @param angRads The angle of rotation to apply in radians
      * @see Vector2#rotate(double)
      */

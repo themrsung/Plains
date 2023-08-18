@@ -1,6 +1,5 @@
 package civitas.celestis.math.atomic;
 
-import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.math.vector.Vector4;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -36,6 +35,7 @@ public class AtomicVector4 extends AtomicDoubleVector<Vector4> {
 
     /**
      * Multiplies this vector by another vector.
+     *
      * @param other The vector of which to multiply this vector by
      */
     public void multiply(@Nonnull Vector4 other) {

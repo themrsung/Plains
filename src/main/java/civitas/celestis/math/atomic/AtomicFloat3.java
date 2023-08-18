@@ -37,6 +37,7 @@ public class AtomicFloat3 extends AtomicFloatVector<Float3> {
     /**
      * Assigns the value of this vector to the cross product between
      * the current value and the provided vector.
+     *
      * @param other The vector of which to get the cross product between
      */
     public void cross(@Nonnull Float3 other) {
@@ -53,6 +54,7 @@ public class AtomicFloat3 extends AtomicFloatVector<Float3> {
 
     /**
      * Rotates this vector by a rotation quaternion.
+     *
      * @param rq The rotation quaternion to apply to this vector
      */
     public void rotate(@Nonnull Quaternion rq) {

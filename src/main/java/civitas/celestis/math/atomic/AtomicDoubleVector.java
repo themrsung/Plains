@@ -1,7 +1,6 @@
 package civitas.celestis.math.atomic;
 
 import civitas.celestis.math.vector.DoubleVector;
-import civitas.celestis.math.vector.Vector;
 import jakarta.annotation.Nullable;
 
 /**
@@ -38,7 +37,7 @@ public class AtomicDoubleVector<V extends DoubleVector<V>> extends AtomicVector<
      * Adds a scalar to this vector.
      *
      * @param s The scalar to add to this vector
-     * @see V#add(double) 
+     * @see V#add(double)
      */
     public void add(double s) {
         try {
@@ -52,7 +51,7 @@ public class AtomicDoubleVector<V extends DoubleVector<V>> extends AtomicVector<
      * Subtracts a scalar from this vector.
      *
      * @param s The scalar to subtract from this vector
-     * @see V#subtract(double) 
+     * @see V#subtract(double)
      */
     public void subtract(double s) {
         try {
@@ -66,7 +65,7 @@ public class AtomicDoubleVector<V extends DoubleVector<V>> extends AtomicVector<
      * Multiplies this vector by a scalar.
      *
      * @param s The scalar to multiply this vector by
-     * @see V#multiply(double) 
+     * @see V#multiply(double)
      */
     public void multiply(double s) {
         try {
@@ -81,7 +80,7 @@ public class AtomicDoubleVector<V extends DoubleVector<V>> extends AtomicVector<
      *
      * @param s The scalar to divide this vector by
      * @throws ArithmeticException When the denominator {@code s} is zero
-     * @see V#divide(double) 
+     * @see V#divide(double)
      */
     public void divide(double s) throws ArithmeticException {
         try {
@@ -95,7 +94,7 @@ public class AtomicDoubleVector<V extends DoubleVector<V>> extends AtomicVector<
      * Divides this vector by a scalar, but allows division by zero.
      *
      * @param s The scalar to divide this vector by
-     * @see V#divideAllowZero(double) 
+     * @see V#divideAllowZero(double)
      */
     public void divideAllowZero(double s) {
         try {
