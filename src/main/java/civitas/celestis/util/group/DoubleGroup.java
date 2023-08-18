@@ -1,7 +1,6 @@
-package civitas.celestis.util.array;
+package civitas.celestis.util.group;
 
 import civitas.celestis.util.collection.Listable;
-import civitas.celestis.util.group.Group;
 import jakarta.annotation.Nonnull;
 
 import java.util.Arrays;

@@ -1,5 +1,6 @@
-package civitas.celestis.util.array;
+package civitas.celestis.util.group;
 
+import civitas.celestis.util.collection.Listable;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -12,7 +13,9 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * A type-safe array of elements.
+ * A type-safe array of elements. This class is not thread-safe.
+ * An unmodifiable copy can be obtained by {@link Group#copyOf(Group)} to ensure
+ * thread safety, and effectively finalize this array's order and composition.
  *
  * @param <E> The type of element to hold
  */
@@ -51,6 +54,19 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
     @Nonnull
     protected final E[] values;
 
+    //
+    // Properties
+    //
+
+    /**
+     * Returns the size of this array. (the number of elements this array contains)
+     *
+     * @return The number of elements this array contains
+     */
+    @Override
+    public int size() {
+        return values.length;
+    }
 
     //
     // Containment
@@ -62,6 +78,7 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
      * @param obj The object of which to check for containment
      * @return {@code true} if this array contains the provided object {@code obj}
      */
+    @Override
     public boolean contains(@Nullable Object obj) {
         for (final E value : values) {
             if (Objects.equals(value, obj)) return true;
@@ -76,6 +93,7 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
      * @param i The iterable object to check for containment
      * @return {@code true} if this array contains every element of the iterable object
      */
+    @Override
     public boolean containsAll(@Nonnull Iterable<?> i) {
         for (final Object o : i) {
             if (!contains(o)) return false;
@@ -184,13 +202,13 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
      * If the new length is greater than this array's length, the oversized part
      * will be populated with {@code null}.
      *
-     * @param newLength The new length to resize to
+     * @param newSize The new size to resize to
      * @return A resized array
      */
     @Nonnull
-    public SafeArray<E> resize(int newLength) {
-        final SafeArray<E> result = new SafeArray<>(newLength);
-        final int minLength = Math.min(values.length, newLength);
+    public SafeArray<E> resize(int newSize) {
+        final SafeArray<E> result = new SafeArray<>(newSize);
+        final int minLength = Math.min(values.length, newSize);
 
         if (minLength >= 0) System.arraycopy(values, 0, result.values, 0, minLength);
 
@@ -228,7 +246,7 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
      * @return The mapped array
      */
     @Nonnull
-    public <F extends E> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
         final SafeArray<F> result = new SafeArray<>(values.length);
 
         for (int i = 0; i < values.length; i++) {
@@ -308,12 +326,21 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
 
     /**
      * Checks for equality between this array and the provided object {@code obj}.
+     * <p>
      * This will first check if the object is an array (either type-safe or primitive),
      * then compare every element for equality with regard to their order.
+     * </p>
+     * <p>
+     * Tuples, {@link Listable} objects, and {@link List}s will be also compared for equality by
+     * extracting their components and checking for equal composition and order.
+     * </p>
+     * <p>
+     * This equality check is broader than that of which is described in
+     * {@link civitas.celestis.util.group.Group#equals(Object) Group.equals(Object)}.
+     * </p>
      *
      * @param obj The object to compare to
-     * @return {@code true} if the object is either a primitive or type-safe array,
-     * and the elements and their order are considered equal
+     * @return {@code true} if the object is considered equal to this array as described above
      */
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof SafeArray<?> a) {
@@ -322,6 +349,18 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
 
         if (obj instanceof Object[] a) {
             return Arrays.equals(values, a);
+        }
+
+        if (obj instanceof Tuple<?> t) {
+            return Arrays.equals(values, t.array());
+        }
+
+        if (obj instanceof List<?> l) {
+            return list().equals(l);
+        }
+
+        if (obj instanceof Listable<?> l) {
+            return list().equals(l.list());
         }
 
         return false;

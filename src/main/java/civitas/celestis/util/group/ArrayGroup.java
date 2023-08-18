@@ -1,7 +1,6 @@
-package civitas.celestis.util.array;
+package civitas.celestis.util.group;
 
 import civitas.celestis.util.collection.Listable;
-import civitas.celestis.util.group.Group;
 import jakarta.annotation.Nonnull;
 
 import java.util.Arrays;
@@ -16,6 +15,10 @@ import java.util.List;
  * @see Listable
  */
 public interface ArrayGroup<E> extends Group<E>, Listable<E> {
+    //
+    // Type Conversion
+    //
+
     /**
      * Converts this group into an array, then returns the converted array.
      *

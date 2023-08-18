@@ -1,26 +1,25 @@
-package civitas.celestis.util.array;
+package civitas.celestis.util.group;
 
 import civitas.celestis.util.collection.Listable;
-import civitas.celestis.util.group.Group;
 import jakarta.annotation.Nonnull;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * A group of primitive {@code long}s which can be represented in array form.
+ * A group of primitive {@code int}s which can be represented in array form.
  *
  * @see Group
  * @see Listable
  */
-public interface LongGroup extends Group<Long>, Listable<Long> {
+public interface IntGroup extends Group<Integer>, Listable<Integer> {
     /**
      * Converts this group into an array, then returns the converted array.
      *
      * @return The array representation of this group
      */
     @Nonnull
-    long[] array();
+    int[] array();
 
     /**
      * {@inheritDoc}
@@ -29,7 +28,7 @@ public interface LongGroup extends Group<Long>, Listable<Long> {
      */
     @Nonnull
     @Override
-    default List<Long> collect() {
+    default List<Integer> collect() {
         return Arrays.stream(array()).boxed().toList();
     }
 
@@ -40,7 +39,7 @@ public interface LongGroup extends Group<Long>, Listable<Long> {
      */
     @Nonnull
     @Override
-    default List<Long> list() {
+    default List<Integer> list() {
         return Arrays.stream(array()).boxed().toList();
     }
 }
