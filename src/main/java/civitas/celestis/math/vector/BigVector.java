@@ -2,11 +2,14 @@ package civitas.celestis.math.vector;
 
 import jakarta.annotation.Nonnull;
 
+import java.util.function.Function;
+
 /**
  * A mathematical vector which uses a non-primitive object based number.
  *
  * @param <N> The type of number this vector uses
  * @param <V> The vector itself (the result and parameter of various operations)
+ * @see Vector
  */
 public interface BigVector<N extends Number, V extends BigVector<N, V>> extends Vector<N, V> {
     //
@@ -136,4 +139,27 @@ public interface BigVector<N extends Number, V extends BigVector<N, V>> extends 
      */
     @Nonnull
     N distanceManhattan(@Nonnull V v);
+
+    //
+    // Numeric Conversion
+    //
+
+    /**
+     * Converts this vector into a primitive {@code double} vector by use
+     * of the method {@link Number#doubleValue()} on each component of this vector.
+     *
+     * @return The {@code double} representation of this vector
+     */
+    @Nonnull
+    DoubleVector<?> toDouble();
+
+    /**
+     * Converts this vector into a primitive {@code double} vector by use
+     * of the provided conversion function {@code f}.
+     *
+     * @param f The conversion function to apply to each component of this vector
+     * @return The {@code double} representation of this vector
+     */
+    @Nonnull
+    DoubleVector<?> toDouble(@Nonnull Function<? super N, Double> f);
 }

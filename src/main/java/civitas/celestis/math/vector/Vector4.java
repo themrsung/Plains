@@ -639,9 +639,9 @@ public class Vector4 implements DoubleVector<Vector4> {
             return Arrays.equals(array(), dv.array());
         }
 
-        if (obj instanceof BigVector<?, ?> bv) {
+        if (obj instanceof Vector<?, ?> v) {
             final double[] a1 = array();
-            final Number[] a2 = bv.array();
+            final Number[] a2 = v.collect().toArray(Number[]::new);
 
             if (a2.length != 4) return false;
 
@@ -666,6 +666,7 @@ public class Vector4 implements DoubleVector<Vector4> {
         if (v == null) return false;
         return w == v.w && x == v.x && y == v.y && z == v.z;
     }
+
     //
     // Serialization
     //

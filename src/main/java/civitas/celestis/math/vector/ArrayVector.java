@@ -413,7 +413,6 @@ public class ArrayVector implements DoubleVector<ArrayVector>, Iterable<Double> 
         return new ArrayVector(result);
     }
 
-
     //
     // Normalization
     //

@@ -8,6 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * A type-safe array of elements. This class is not thread-safe.
@@ -300,6 +301,23 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
         }
 
         return result;
+    }
+
+    //
+    // Filtration
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The filter function to apply to sub-objects of this object
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
+        return new SafeArray<>((E[]) Arrays.stream(values).filter(f).toArray());
     }
 
     //

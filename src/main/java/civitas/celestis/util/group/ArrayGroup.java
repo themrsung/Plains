@@ -1,5 +1,6 @@
 package civitas.celestis.util.group;
 
+import civitas.celestis.util.Filterable;
 import civitas.celestis.util.collection.Listable;
 import jakarta.annotation.Nonnull;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @see Group
  * @see Listable
  */
-public interface ArrayGroup<E> extends Group<E>, Listable<E> {
+public interface ArrayGroup<E> extends Group<E>, Listable<E>, Filterable<E> {
     //
     // Type Conversion
     //

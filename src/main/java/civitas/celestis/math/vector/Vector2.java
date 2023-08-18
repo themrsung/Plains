@@ -590,9 +590,9 @@ public class Vector2 implements DoubleVector<Vector2> {
             return Arrays.equals(array(), dv.array());
         }
 
-        if (obj instanceof BigVector<?, ?> bv) {
+        if (obj instanceof Vector<?, ?> v) {
             final double[] a1 = array();
-            final Number[] a2 = bv.array();
+            final Number[] a2 = v.collect().toArray(Number[]::new);
 
             if (a2.length != 2) return false;
 
@@ -617,6 +617,7 @@ public class Vector2 implements DoubleVector<Vector2> {
         if (v == null) return false;
         return x == v.x && y == v.y;
     }
+
     //
     // Serialization
     //

@@ -1,5 +1,6 @@
 package civitas.celestis.util.group;
 
+import civitas.celestis.util.Filterable;
 import civitas.celestis.util.collection.Listable;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -7,13 +8,14 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * A shallowly immutable array of objects, implemented using a primitive array.
  *
  * @param <E> The type of element to hold
  */
-public class ArrayTuple<E> implements Tuple<E> {
+public class ArrayTuple<E> implements Tuple<E>, Filterable<E> {
     //
     // Constants
     //
@@ -182,6 +184,23 @@ public class ArrayTuple<E> implements Tuple<E> {
         }
 
         return new ArrayTuple<>(mapped, true);
+    }
+
+    //
+    // Filtration
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The filter function to apply to sub-objects of this object
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public ArrayTuple<E> filter(@Nonnull Predicate<? super E> f) {
+        return new ArrayTuple<>((E[]) Arrays.stream(values).filter(f).toArray());
     }
 
     //

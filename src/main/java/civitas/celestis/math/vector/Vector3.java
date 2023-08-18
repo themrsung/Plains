@@ -629,9 +629,9 @@ public class Vector3 implements DoubleVector<Vector3> {
             return Arrays.equals(array(), dv.array());
         }
 
-        if (obj instanceof BigVector<?, ?> bv) {
+        if (obj instanceof Vector<?, ?> v) {
             final double[] a1 = array();
-            final Number[] a2 = bv.array();
+            final Number[] a2 = v.collect().toArray(Number[]::new);
 
             if (a2.length != 3) return false;
 
@@ -656,6 +656,7 @@ public class Vector3 implements DoubleVector<Vector3> {
         if (v == null) return false;
         return x == v.x && y == v.y && z == v.z;
     }
+
     //
     // Serialization
     //

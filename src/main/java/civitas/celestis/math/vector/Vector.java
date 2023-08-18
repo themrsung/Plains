@@ -18,6 +18,11 @@ import java.io.Serializable;
  *
  * @param <N> The type of number this vector is composed of
  * @param <V> The vector itself (the result and parameter of various operations)
+ * @see DoubleVector
+ * @see BigVector
+ * @see Vector2
+ * @see Vector3
+ * @see Vector4
  */
 public interface Vector<N extends Number, V extends Vector<N, V>>
         extends Transformable<N>, Groupable<N>, Listable<N>, Serializable {
