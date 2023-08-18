@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * An 8-bit RGBA color with a total of 32 significant bits.
  * <p>
- * This interface defines the contract for an 8-bit Moebius color class.
+ * This interface defines the contract for an 8-bit Plains color class.
  * The RGBA components should be returned in the format of {@code int},
  * and respect the range of {@code 0-255}.
  * </p>
