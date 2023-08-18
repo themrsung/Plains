@@ -1,14 +1,17 @@
 package civitas.celestis;
 
-import civitas.celestis.math.vector.Float3;
-import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.util.collection.NumericArrayList;
+import civitas.celestis.util.group.Grid;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Vector3 v1 = new Vector3(1, Double.NaN, 2);
-        final Vector3 v2 = new Vector3(23, 13, -20);
-        final Vector3 v3 = new Vector3(11, -999, 1000);
+        Matrix m1 = new Matrix(10, 10);
 
-        System.out.println(v1.add(v2).add(v3).requireFinite());
+        m1 = m1.transform(v -> Math.random());
+
+        final NumericArrayList<Double> list = new NumericArrayList<>(m1);
+
+        System.out.println(list);
     }
 }

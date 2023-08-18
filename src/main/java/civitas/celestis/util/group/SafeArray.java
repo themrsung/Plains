@@ -208,6 +208,21 @@ public class SafeArray<E> implements ArrayGroup<E>, Iterable<E>, Serializable {
     }
 
     /**
+     * Replaces the last instance of the old value to the new value.
+     *
+     * @param oldValue The value to replace
+     * @param newValue The value to replace to
+     */
+    public void replaceLast(E oldValue, E newValue) {
+        for (int i = values.length - 1; i >= 0; i--) {
+            if (Objects.equals(values[i], oldValue)) {
+                values[i] = newValue;
+                break;
+            }
+        }
+    }
+
+    /**
      * Replaces all instances of the old value to the new value.
      *
      * @param oldValue The value to replace

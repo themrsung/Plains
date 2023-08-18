@@ -39,7 +39,7 @@ public interface Grid<E> extends Group<E>, Mappable<Grid.Index, E>, Iterable<E> 
     //
 
     /**
-     * Returns an {@link Index} object constructed from the provided
+     * Returns an {@link Index Index} object constructed from the provided
      * row and column indices.
      *
      * @param r The index of the row to point to
@@ -49,6 +49,19 @@ public interface Grid<E> extends Group<E>, Mappable<Grid.Index, E>, Iterable<E> 
     @Nonnull
     static Index indexOf(int r, int c) {
         return new GridIndex(r, c);
+    }
+
+    /**
+     * Returns an {@link Index Index} object constructed from the provided
+     * tuple of integers. The tuple must be a tuple of size {@code 2},
+     * and the first and second component corresponding to row and column respectively.
+     *
+     * @param t The tuple of which to construct ths index object with
+     * @return The {@link Index} object representing the provided position in a grid
+     */
+    @Nonnull
+    static Index indexOf(@Nonnull Tuple<Integer> t) {
+        return new GridIndex(t);
     }
 
     //
