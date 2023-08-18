@@ -147,6 +147,19 @@ public class AtomicQuaternion extends AtomicReference<Quaternion> {
         }
     }
 
+    /**
+     * Multiplies this quaternion by a four-dimensional vector.
+     *
+     * @param other The vector of which to multiply this vector by
+     */
+    public void multiply(@Nonnull Vector4 other) {
+        try {
+            getAndUpdate(v -> v.multiply(other));
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
     //
     // Negation
     //
