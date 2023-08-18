@@ -10,6 +10,11 @@ import java.io.Serializable;
 
 /**
  * A mathematical vector. Vectors are a one-dimensional array of numbers.
+ * <p>
+ * Like {@link civitas.celestis.util.group.Tuple Tuple}s, vectors are immutable,
+ * but are different in that they can hold primitive types in their raw unboxed form.
+ * Vectors can be converted into tuples by calling {@link #group()}.
+ * </p>
  *
  * @param <N> The type of number this vector is composed of
  * @param <V> The vector itself (the result and parameter of various operations)
@@ -26,6 +31,25 @@ public interface Vector<N extends Number, V extends Vector<N, V>>
      * @return {@code true} if this vector has no magnitude
      */
     boolean isZero();
+
+    //
+    // Validation
+    //
+
+    /**
+     * Requires that this vector must be zero.
+     * If this vector is zero, this will simply return a reference to itself.
+     * If not, this will throw an {@link IllegalStateException}.
+     *
+     * @return {@code this}
+     * @throws IllegalStateException When this vector is not zero
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default V requireZero() throws IllegalStateException {
+        if (!isZero()) throw new IllegalStateException("This vector is not zero.");
+        return (V) this;
+    }
 
     //
     // Arithmetic
@@ -135,8 +159,10 @@ public interface Vector<N extends Number, V extends Vector<N, V>>
     /**
      * Checks for equality between this vector and the provided object {@code obj}.
      * This will check if the other object is also a vector, and then compare the length and components.
+     * <p>
      * If the two vectors have the same length and every component has the same numerical value,
      * this will return {@code true}.
+     * </p>
      *
      * @param obj The object to compare to
      * @return {@code true} if the other object is also a vector, and they represent the same numerical value

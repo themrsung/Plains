@@ -27,7 +27,7 @@ public interface Transformable<E> {
      * Applies the provided mapper function {@code f} to all elements of this object,
      * then returns the mapped object.
      *
-     * @param f   The function to apply to each element of this group
+     * @param f   The function to apply to each element of this object
      * @param <F> The type of which to map this object to
      * @return The mapped object
      */

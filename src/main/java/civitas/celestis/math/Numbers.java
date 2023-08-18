@@ -8,6 +8,15 @@ import static java.lang.Math.min;
  */
 public final class Numbers {
     //
+    // Constants
+    //
+
+    /**
+     * A very small constant value used in various applications.
+     */
+    public static final double EPSILON = 1e-6;
+
+    //
     // Range Validation
     //
 
@@ -19,7 +28,7 @@ public final class Numbers {
      * @param max   The maximum allowed value
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
-    public boolean isInRange(double value, double min, double max) {
+    public static boolean isInRange(double value, double min, double max) {
         return value >= min && value <= max;
     }
 
@@ -31,7 +40,7 @@ public final class Numbers {
      * @param max   The maximum allowed value
      * @return {@code true} if the value is within the range of {@code (min, max)}
      */
-    public boolean isInRangeExclusive(double value, double min, double max) {
+    public static boolean isInRangeExclusive(double value, double min, double max) {
         return value > min && value < max;
     }
 
@@ -47,7 +56,7 @@ public final class Numbers {
      * @param max   The maximum acceptable value
      * @return The clamped value
      */
-    public double clamp(double value, double min, double max) {
+    public static double clamp(double value, double min, double max) {
         return max(min(value, max), min);
     }
 }

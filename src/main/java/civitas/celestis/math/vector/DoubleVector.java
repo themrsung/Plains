@@ -75,6 +75,55 @@ public interface DoubleVector<V extends DoubleVector<V>> extends Vector<Double, 
     double normManhattan();
 
     //
+    // Validation
+    //
+
+    /**
+     * Requires that this vector is not a number.
+     * If this vector is not a number, this will simply return a reference to itself.
+     * If not, this will throw an {@link IllegalStateException}.
+     *
+     * @return {@code this}
+     * @throws IllegalStateException When this vector is not NaN (not-a-number)
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default V requireNaN() throws IllegalStateException {
+        if (!isNaN()) throw new IllegalStateException("This vector is not NaN (not-a-number).");
+        return (V) this;
+    }
+
+    /**
+     * Requires that this vector is finite.
+     * If this vector is finite, this will simply return a reference to itself.
+     * If not, this will throw an {@link IllegalStateException}.
+     *
+     * @return {@code this}
+     * @throws IllegalStateException When this vector is non-finite (NaN or infinity)
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default V requireFinite() throws IllegalStateException {
+        if (!isFinite()) throw new IllegalStateException("This vector is non-finite. (NaN or infinity)");
+        return (V) this;
+    }
+
+    /**
+     * Requires that this vector is infinite.
+     * If this vector is infinite, this will simply return a reference to itself.
+     * If not, this will throw an {@link IllegalStateException}.
+     *
+     * @return {@code this}
+     * @throws IllegalStateException When this vector is not infinite
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default V requireInfinite() throws IllegalStateException {
+        if (!isInfinite()) throw new IllegalStateException("This vector is not infinite.");
+        return (V) this;
+    }
+
+    //
     // Arithmetic
     //
 
