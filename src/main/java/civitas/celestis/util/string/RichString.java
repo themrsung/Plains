@@ -10,7 +10,8 @@ import java.io.Serial;
 import java.util.function.Function;
 
 /**
- * A rich string with a color and format.
+ * An immutable rich string with a color and format.
+ *
  * @see Text
  * @see Color8
  * @see civitas.celestis.util.string.Text.Format Format
@@ -49,6 +50,7 @@ public class RichString implements Text, Transformable<String> {
 
     /**
      * Creates a new rich string.
+     *
      * @param content The content of this string
      */
     public RichString(@Nonnull String content) {
@@ -71,15 +73,16 @@ public class RichString implements Text, Transformable<String> {
      * @param content The content of this string
      * @param format  The formatting of this string
      */
-    public RichString(@Nonnull String content,  @Nonnull Format format) {
+    public RichString(@Nonnull String content, @Nonnull Format format) {
         this(content, DEFAULT_COLOR, format);
     }
 
     /**
      * Creates a new rich string.
+     *
      * @param content The content of this string
-     * @param color The color of this string
-     * @param format The formatting of this string
+     * @param color   The color of this string
+     * @param format  The formatting of this string
      */
     public RichString(@Nonnull String content, @Nonnull Color8 color, @Nonnull Format format) {
         this.content = content;
@@ -115,6 +118,7 @@ public class RichString implements Text, Transformable<String> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -125,6 +129,7 @@ public class RichString implements Text, Transformable<String> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -135,6 +140,7 @@ public class RichString implements Text, Transformable<String> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -150,6 +156,7 @@ public class RichString implements Text, Transformable<String> {
     /**
      * Applies the provided function {@code f} to the content of this string,
      * then returns a new {@link RichString} object constructed from the resulting string.
+     *
      * @param f The function to apply to the content of this string
      * @return The resulting string
      */
@@ -157,6 +164,30 @@ public class RichString implements Text, Transformable<String> {
     @Override
     public RichString transform(@Nonnull Function<? super String, String> f) {
         return new RichString(f.apply(content), color, format);
+    }
+
+    /**
+     * Applies the provided function {@code f} to the color of this string,
+     * then returns a new {@link RichString} with the color updated to the resulting color.
+     *
+     * @param f The function to apply to the color of this string
+     * @return The resulting string
+     */
+    @Nonnull
+    public RichString transformColor(@Nonnull Function<? super Color8, Color8> f) {
+        return new RichString(content, f.apply(color), format);
+    }
+
+    /**
+     * Applies the provided function {@code f} to the format of this string,
+     * then returns a new {@link RichString} with the format updated to the resulting color.
+     *
+     * @param f The function to apply to the format of this string
+     * @return The resulting string
+     */
+    @Nonnull
+    public RichString transformFormat(@Nonnull Function<? super Format, Format> f) {
+        return new RichString(content, color, f.apply(format));
     }
 
     /**
@@ -174,6 +205,7 @@ public class RichString implements Text, Transformable<String> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override

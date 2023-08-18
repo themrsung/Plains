@@ -46,6 +46,7 @@ public final class Numbers {
 
     /**
      * Explicitly denotes that a field requires the range of {@code [min, max]}.
+     *
      * @param value The value to check
      * @param min   The minimum allowed value
      * @param max   The maximum allowed value

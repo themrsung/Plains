@@ -1,7 +1,6 @@
 package civitas.celestis.util.collection;
 
 import civitas.celestis.math.Sign;
-import civitas.celestis.util.group.Group;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;

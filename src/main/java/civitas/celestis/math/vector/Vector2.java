@@ -113,6 +113,7 @@ public class Vector2 implements DoubleVector<Vector2> {
         this.x = v.x;
         this.y = v.y;
     }
+
     /**
      * Creates a new vector.
      *

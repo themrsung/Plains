@@ -7,8 +7,9 @@ import jakarta.annotation.Nullable;
 import java.io.Serializable;
 
 /**
- * An immutable object which is not a {@link String}, but represents
+ * An object which is not a {@link String}, but represents
  * a formatted string and can be easily converted to one.
+ *
  * @see Format Format
  * @see RichString
  */
@@ -19,6 +20,7 @@ public interface Text extends Serializable {
 
     /**
      * Returns the raw content of this text as a string.
+     *
      * @return The raw content of this text
      */
     @Nonnull
@@ -30,6 +32,7 @@ public interface Text extends Serializable {
 
     /**
      * Returns the color of this text.
+     *
      * @return The color of this text
      */
     @Nonnull
@@ -41,6 +44,7 @@ public interface Text extends Serializable {
 
     /**
      * Returns the formatting of this text.
+     *
      * @return The formatting of this text
      */
     @Nonnull
@@ -52,6 +56,7 @@ public interface Text extends Serializable {
 
     /**
      * Checks for equality between this text and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the other object is a string and the contents are equal,
      * or if the other object is a {@link Text} and the
@@ -68,6 +73,7 @@ public interface Text extends Serializable {
      * Note that this is the representation of this text as a string,
      * not the actual content of this text. To get the raw content of
      * this text, use {@link #content()}.
+     *
      * @return The string <b>representation</b> of this text
      */
     @Override
@@ -105,14 +111,16 @@ public interface Text extends Serializable {
 
     /**
      * The formatting of a text object.
-     * @param bold Whether this text is bold
-     * @param italic Whether this text is italic
+     *
+     * @param bold       Whether this text is bold
+     * @param italic     Whether this text is italic
      * @param underlined Whether this text is underlined
-     * @param strike Whether this text as a strike
+     * @param strike     Whether this text as a strike
      */
     record Format(boolean bold, boolean italic, boolean underlined, boolean strike) {
         /**
          * Toggles whether this text is bold.
+         *
          * @return The toggled format
          */
         @Nonnull
@@ -122,6 +130,7 @@ public interface Text extends Serializable {
 
         /**
          * Toggles whether this text is italic.
+         *
          * @return The toggled format
          */
         @Nonnull
@@ -131,6 +140,7 @@ public interface Text extends Serializable {
 
         /**
          * Toggles whether this text is underlined.
+         *
          * @return The toggled format
          */
         @Nonnull
@@ -140,6 +150,7 @@ public interface Text extends Serializable {
 
         /**
          * Toggles whether this text is strike.
+         *
          * @return The toggled format
          */
         @Nonnull
