@@ -705,7 +705,7 @@ public class LongMatrix implements RawLongMatrix<LongMatrix> {
      */
     @Nonnull
     @Override
-    public ArrayGrid<Long> merge(
+    public LongMatrix merge(
             @Nonnull Grid<Long> g,
             @Nonnull BiFunction<? super Long, ? super Long, Long> f
     ) throws IllegalArgumentException {
@@ -713,11 +713,11 @@ public class LongMatrix implements RawLongMatrix<LongMatrix> {
             throw new IllegalArgumentException("Grid dimensions must match for this operation.");
         }
 
-        final ArrayGrid<Long> result = new ArrayGrid<>(rows, columns);
+        final LongMatrix result = new LongMatrix(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.set(r, c, f.apply(values[r][c], g.get(r, c)));
+                result.values[r][c] = f.apply(values[r][c], g.get(r, c));
             }
         }
 

@@ -1,6 +1,5 @@
 package civitas.celestis.util.group;
 
-import civitas.celestis.math.matrix.BigMatrix;
 import civitas.celestis.util.Transformable;
 import civitas.celestis.util.map.Mappable;
 import jakarta.annotation.Nonnull;
@@ -28,7 +27,9 @@ import java.util.function.Predicate;
  * @param <E> The type of element this grid should hold
  * @see Index Index
  * @see ArrayGrid
- * @see BigMatrix Matrix
+ * @see civitas.celestis.math.matrix.Matrix Matrix
+ * @see civitas.celestis.math.matrix.LongMatrix LongMatrix
+ * @see civitas.celestis.math.matrix.BigMatrix BigMatrix
  * @see Group
  * @see Mappable
  */

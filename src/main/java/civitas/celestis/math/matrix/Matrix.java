@@ -719,7 +719,7 @@ public class Matrix implements RawDoubleMatrix<Matrix> {
      */
     @Nonnull
     @Override
-    public ArrayGrid<Double> merge(
+    public Matrix merge(
             @Nonnull Grid<Double> g,
             @Nonnull BiFunction<? super Double, ? super Double, Double> f
     ) throws IllegalArgumentException {
@@ -727,11 +727,11 @@ public class Matrix implements RawDoubleMatrix<Matrix> {
             throw new IllegalArgumentException("Grid dimensions must match for this operation.");
         }
 
-        final ArrayGrid<Double> result = new ArrayGrid<>(rows, columns);
+        final Matrix result = new Matrix(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.set(r, c, f.apply(values[r][c], g.get(r, c)));
+                result.values[r][c] = f.apply(values[r][c], g.get(r, c));
             }
         }
 
