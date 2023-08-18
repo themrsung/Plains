@@ -9,11 +9,11 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * A shallowly immutable pair of objects.
+ * A tuple containing one object. This acts as a shallowly immutable reference.
  *
- * @param <E> The element this pair should hold
+ * @param <E> The type of object to reference
  */
-public class Pair<E> implements Tuple<E> {
+public class Single<E> implements Tuple<E> {
     //
     // Constants
     //
@@ -22,58 +22,35 @@ public class Pair<E> implements Tuple<E> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = 2650886773430723103L;
+    private static final long serialVersionUID = -6335339774365194140L;
 
     //
     // Constructors
     //
 
     /**
-     * Creates a new pair.
+     * Creates a new single.
      *
-     * @param a The first element of this pair
-     * @param b The second element of this pair
+     * @param object The object this single should contain
      */
-    public Pair(@Nonnull E a, @Nonnull E b) {
-        this.a = a;
-        this.b = b;
+    public Single(@Nonnull E object) {
+        this.object = object;
     }
 
-    /**
-     * Creates a new pair.
-     *
-     * @param t The tuple of which to copy values from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 2},
-     *                                  or an unknown error occurs during variable assignment
+    /*
+     * No Tuple copy constructor to prevent constructor ambiguity.
+     * Use the factory methods in Tuple and Group instead.
      */
-    public Pair(@Nonnull Tuple<E> t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The size of the provided tuple is not 2.");
-        }
-
-        try {
-            this.a = t.get(0);
-            this.b = t.get(1);
-        } catch (final Throwable e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
 
     //
     // Variables
     //
 
     /**
-     * The first element of this tuple.
+     * The object this reference is pointing to.
      */
     @Nonnull
-    protected final E a;
-
-    /**
-     * The second element of this tuple.
-     */
-    @Nonnull
-    protected final E b;
+    protected final E object;
 
     //
     // Properties
@@ -82,11 +59,11 @@ public class Pair<E> implements Tuple<E> {
     /**
      * {@inheritDoc}
      *
-     * @return {@code 2}
+     * @return {@code 1}
      */
     @Override
     public int size() {
-        return 2;
+        return 1;
     }
 
     //
@@ -101,7 +78,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) || Objects.equals(b, obj);
+        return Objects.equals(object, obj);
     }
 
     /**
@@ -113,8 +90,9 @@ public class Pair<E> implements Tuple<E> {
     @Override
     public boolean containsAll(@Nonnull Iterable<?> i) {
         for (final Object o : i) {
-            if (!contains(o)) return false;
+            if (!Objects.equals(object, o)) return false;
         }
+
         return true;
     }
 
@@ -132,31 +110,18 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public E get(int i) throws IndexOutOfBoundsException {
-        return switch (i) {
-            case 0 -> a;
-            case 1 -> b;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
-        };
+        if (i != 0) throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 1.");
+        return object;
     }
 
     /**
-     * Returns the first element of this tuple.
+     * Returns the object contained in this single.
      *
-     * @return The first element of this tuple
+     * @return The object contained in this single
      */
     @Nonnull
-    public E getA() {
-        return a;
-    }
-
-    /**
-     * Returns the second element of this tuple.
-     *
-     * @return The second element of this tuple
-     */
-    @Nonnull
-    public E getB() {
-        return b;
+    public E get() {
+        return object;
     }
 
     /**
@@ -168,7 +133,7 @@ public class Pair<E> implements Tuple<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) new Object[]{a, b};
+        return (E[]) new Object[]{object};
     }
 
     //
@@ -183,21 +148,21 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public Pair<E> transform(@Nonnull Function<? super E, E> f) {
-        return new Pair<>(f.apply(a), f.apply(b));
+    public Single<E> transform(@Nonnull Function<? super E, E> f) {
+        return new Single<>(f.apply(object));
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param f   The function to apply to each element of this group
+     * @param f   The function to apply to each element of this object
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Pair<F> map(@Nonnull Function<? super E, F> f) {
-        return new Pair<>(f.apply(a), f.apply(b));
+    public <F> Single<F> map(@Nonnull Function<? super E, F> f) {
+        return new Single<>(f.apply(object));
     }
 
     //
@@ -211,7 +176,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return List.of(a, b).iterator();
+        return List.of(object).iterator();
     }
 
     //
@@ -226,7 +191,7 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return List.of(a, b);
+        return List.of(object);
     }
 
     /**
@@ -237,7 +202,7 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public Collection<E> collect() {
-        return List.of(a, b);
+        return List.of(object);
     }
 
     //
@@ -251,18 +216,16 @@ public class Pair<E> implements Tuple<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof Group<?>)) return false;
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Group<?> g)) return false;
 
-        if (obj instanceof Pair<?> p) {
-            return Objects.equals(a, p.a) &&
-                    Objects.equals(b, p.b);
+        if (obj instanceof Single<?> s) {
+            return Objects.equals(object, s.object);
         }
 
         if (obj instanceof Tuple<?> t) {
-            if (t.size() != 2) return false;
-            return Objects.equals(a, t.get(0)) &&
-                    Objects.equals(b, t.get(1));
+            if (t.size() != 1) return false;
+            return Objects.equals(object, t.get(0));
         }
 
         if (obj instanceof ArrayGroup<?> ag) {
@@ -270,7 +233,7 @@ public class Pair<E> implements Tuple<E> {
         }
 
         if (obj instanceof Listable<?> l) {
-            return list().equals(l.list());
+            return list().equals(l);
         }
 
         return false;
@@ -288,6 +251,6 @@ public class Pair<E> implements Tuple<E> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + "]";
+        return "[" + object + "]";
     }
 }

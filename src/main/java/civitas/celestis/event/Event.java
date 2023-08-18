@@ -9,28 +9,13 @@ import java.util.UUID;
  * This class defines the contract for an event.
  *
  * @see Handleable
+ * @see EventHandler
  * @see Listener
  */
 public class Event implements Handleable {
     //
     // Constructors
     //
-
-    /**
-     * Creates a new event with a random unique identifier and no specified cause.
-     */
-    public Event() {
-        this(UUID.randomUUID(), null);
-    }
-
-    /**
-     * Creates a new event with a specific unique identifier and no cause.
-     *
-     * @param uniqueId The unique identifier of this event
-     */
-    public Event(@Nonnull UUID uniqueId) {
-        this(uniqueId, null);
-    }
 
     /**
      * Creates a new event with a random unique identifier.
@@ -42,16 +27,31 @@ public class Event implements Handleable {
     }
 
     /**
+     * Creates a new event with a random unique identifier and no specified cause.
+     */
+    protected Event() {
+        this(UUID.randomUUID(), null);
+    }
+
+    /**
+     * Creates a new event with a specific unique identifier and no cause.
+     *
+     * @param uniqueId The unique identifier of this event
+     */
+    protected Event(@Nonnull UUID uniqueId) {
+        this(uniqueId, null);
+    }
+
+    /**
      * Creates a new event.
      *
      * @param uniqueId The unique identifier of this event
      * @param cause    The cause of this event
      */
-    public Event(@Nonnull UUID uniqueId, @Nullable Handleable cause) {
+    protected Event(@Nonnull UUID uniqueId, @Nullable Handleable cause) {
         this.uniqueId = uniqueId;
         this.cause = cause;
     }
-
 
     //
     // Variables
@@ -107,7 +107,7 @@ public class Event implements Handleable {
     @Override
     @Nonnull
     public String toString() {
-        return "Event{" +
+        return getClass().getSimpleName() + "{" +
                 "uniqueId=" + uniqueId +
                 ", cause=" + cause +
                 '}';

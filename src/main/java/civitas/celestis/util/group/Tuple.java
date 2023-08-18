@@ -27,6 +27,8 @@ public interface Tuple<E> extends Group<E>, Listable<E>, Iterable<E> {
     @SafeVarargs
     static <E> Tuple<E> of(@Nonnull E... values) {
         return switch (values.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(values[0]);
             case 2 -> new Pair<>(values[0], values[1]);
             case 3 -> new Triple<>(values[0], values[1], values[2]);
             case 4 -> new Quad<>(values[0], values[1], values[2], values[3]);
@@ -55,4 +57,33 @@ public interface Tuple<E> extends Group<E>, Listable<E>, Iterable<E> {
      */
     @Nonnull
     E[] array();
+
+    //
+    // Sub-operation
+    //
+
+    /**
+     * Returns a sub-tuple of this tuple between the range of {@code i1-i2}.
+     *
+     * @param i1 The starting index of the sub-tuple
+     * @param i2 The ending index of the sub-tuple
+     * @return The sub-tuple of this tuple
+     * @throws IndexOutOfBoundsException When the range is out of bounds
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default Tuple<E> subTuple(int i1, int i2) throws IndexOutOfBoundsException {
+        final E[] original = array();
+        final E[] result;
+
+        try {
+            result = (E[]) new Object[i2 - i1];
+        } catch (final Throwable ignored) {
+            return new Empty<>(); // Fallback to empty tuple
+        }
+
+        System.arraycopy(original, i1, result, 0, i2 - i1);
+
+        return of(result);
+    }
 }

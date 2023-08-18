@@ -252,6 +252,7 @@ public class Quad<E> implements Tuple<E> {
     public Iterator<E> iterator() {
         return List.of(a, b, c).iterator();
     }
+
     //
     // Type Conversion
     //

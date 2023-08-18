@@ -233,6 +233,7 @@ public class Triple<E> implements Tuple<E> {
     public Iterator<E> iterator() {
         return List.of(a, b, c).iterator();
     }
+
     //
     // Type Conversion
     //
