@@ -33,6 +33,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param values The component values of this vector
      */
     public DecimalArrayVector(@Nonnull BigDecimal... values) {
@@ -41,6 +42,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param g The group of which to copy component values from
      */
     public DecimalArrayVector(@Nonnull Group<BigDecimal> g) {
@@ -49,6 +51,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param t The tuple of which to copy component values from
      */
     public DecimalArrayVector(@Nonnull Tuple<BigDecimal> t) {
@@ -57,6 +60,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param c The collection of which to copy component values from
      */
     public DecimalArrayVector(@Nonnull Collection<BigDecimal> c) {
@@ -65,6 +69,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public DecimalArrayVector(@Nonnull Vector<?, ?> v) {
@@ -73,6 +78,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public DecimalArrayVector(@Nonnull DecimalVector<?> v) {
@@ -85,6 +91,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -97,6 +104,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -107,6 +115,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -123,6 +132,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -152,6 +162,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar to add to this vector
      * @return {@inheritDoc}
      */
@@ -169,6 +180,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar to subtract from this vector
      * @return {@inheritDoc}
      */
@@ -186,6 +198,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar to multiply this vector by
      * @return {@inheritDoc}
      */
@@ -203,6 +216,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar to divide this vector by
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
@@ -221,6 +235,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector to add to this vector
      * @return {@inheritDoc}
      * @throws ArithmeticException When the vectors' dimensions are different
@@ -241,6 +256,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector to subtract from this vector
      * @return {@inheritDoc}
      * @throws ArithmeticException When the vectors' dimensions are different
@@ -261,6 +277,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the dot product between
      * @return {@inheritDoc}
      */
@@ -284,6 +301,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -304,6 +322,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
      */
@@ -315,6 +334,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -335,6 +355,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the Euclidean distance to
      * @return {@inheritDoc}
      */
@@ -346,6 +367,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the squared Euclidean distance to
      * @return {@inheritDoc}
      */
@@ -357,6 +379,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the Manhattan distance to
      * @return {@inheritDoc}
      */
@@ -372,6 +395,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector to respect
      * @return {@inheritDoc}
      * @throws ArithmeticException When the vectors' dimensions are different
@@ -392,6 +416,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector to respect
      * @return {@inheritDoc}
      * @throws ArithmeticException When the vectors' dimensions are different
@@ -412,6 +437,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param min The minimum boundary vector
      * @param max The maximum boundary vector
      * @return {@inheritDoc}
@@ -455,6 +481,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -471,6 +498,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param f The conversion function to apply to each component of this vector
      * @return {@inheritDoc}
      */
@@ -492,6 +520,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to compare to
      * @return {@inheritDoc}
      */
@@ -501,7 +530,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
             return super.equals(v);
         }
 
-        if (obj instanceof Vector<?,?> v) {
+        if (obj instanceof Vector<?, ?> v) {
             return toDouble().equals(v);
         }
 
@@ -510,6 +539,7 @@ public class DecimalArrayVector extends ArrayTuple<BigDecimal> implements Decima
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector to compare to
      * @return {@inheritDoc}
      */

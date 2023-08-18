@@ -77,6 +77,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param a The A component of this vector
      * @param b The B component of this vector
      * @param c The C component of this vector
@@ -88,6 +89,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param values An array containing the components of this vector in ABCD order.
      */
     public Decimal4(@Nonnull BigDecimal[] values) {
@@ -96,6 +98,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param t The tuple of which to copy component values from
      */
     public Decimal4(@Nonnull Tuple<BigDecimal> t) {
@@ -104,6 +107,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public Decimal4(@Nonnull Vector<?, ?> v) {
@@ -112,6 +116,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public Decimal4(@Nonnull DecimalVector<?> v) {
@@ -120,6 +125,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public Decimal4(@Nonnull Vector4 v) {
@@ -128,6 +134,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      */
     public Decimal4(@Nonnull Decimal4 v) {
@@ -335,6 +342,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -493,6 +501,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -503,6 +512,7 @@ public class Decimal4 extends Quad<BigDecimal> implements DecimalVector<Decimal4
 
     /**
      * {@inheritDoc}
+     *
      * @param f The conversion function to apply to each component of this vector
      * @return {@inheritDoc}
      */

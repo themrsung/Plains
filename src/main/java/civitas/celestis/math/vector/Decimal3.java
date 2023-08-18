@@ -455,6 +455,34 @@ public class Decimal3 extends Triple<BigDecimal> implements DecimalVector<Decima
     }
 
     //
+    // Rotation
+    //
+
+    /**
+     * Converts this vector into a pure quaternion.
+     * A pure quaternion is a quaternion where the scalar part (the W component)
+     * is zero, and the imaginary part (the BCD components)
+     * is populated by tangible values.
+     *
+     * @return The pure quaternion of this vector
+     */
+    @Nonnull
+    public DecimalQuaternion quaternion() {
+        return new DecimalQuaternion(BigDecimal.ZERO, a, b, c);
+    }
+
+    /**
+     * Rotates this vector by a rotation quaternion.
+     *
+     * @param rq The rotation to apply to this vector in the form of a quaternion
+     * @return The rotated vector
+     */
+    @Nonnull
+    public Decimal3 rotate(@Nonnull DecimalQuaternion rq) {
+        return rq.multiply(quaternion()).multiply(rq.conjugate()).vector();
+    }
+
+    //
     // Type Conversion
     //
 
