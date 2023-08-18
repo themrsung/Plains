@@ -87,6 +87,20 @@ public class ArrayVector implements DoubleVector<ArrayVector>, Iterable<Double> 
         this.values = Arrays.stream(v.array()).toArray();
     }
 
+    /**
+     * Creates a new vector.
+     *
+     * @param v The vector of which to copy component values from
+     */
+    public ArrayVector(@Nonnull FloatVector<?> v) {
+        final float[] array = v.array();
+        this.values = new double[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            values[i] = array[i];
+        }
+    }
+
     //
     // Variables
     //

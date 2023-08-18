@@ -14,8 +14,8 @@ import java.util.function.Function;
 /**
  * A four-dimensional {@code float} vector which uses WXYZ notation.
  * <p>
- * Note that using 32-bit single precision types may conserve memory,
- * many of the core vector operations such as normalization still
+ * Note that while using 32-bit single precision types may conserve memory,
+ * many of the core vector operations such as normalization are still
  * computed by active conversion to and from 64-bit {@code float}s.
  * </p>
  */
