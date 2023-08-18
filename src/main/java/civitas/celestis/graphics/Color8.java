@@ -368,7 +368,7 @@ public interface Color8 extends Packable32, Packable64, Serializable {
      * Half of the precision is lost.
      *
      * @param rgba64 The 64-bit RGBA representation
-     * @return The 32-bit RGB representation
+     * @return The 32-bit RGBA representation
      */
     static int convert64to32(long rgba64) {
         final float[] unpacked = unpack64(rgba64);
