@@ -457,6 +457,7 @@ public interface Color8 extends Packable32, Packable64, Serializable {
      *
      * @return The string representation of this color
      */
+    @Override
     @Nonnull
     String toString();
 }

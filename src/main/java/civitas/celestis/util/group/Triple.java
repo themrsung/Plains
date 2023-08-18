@@ -217,7 +217,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Transformable<F> map(@Nonnull Function<? super E, F> f) {
+    public <F> Triple<F> map(@Nonnull Function<? super E, F> f) {
         return new Triple<>(f.apply(a), f.apply(b), f.apply(c));
     }
 

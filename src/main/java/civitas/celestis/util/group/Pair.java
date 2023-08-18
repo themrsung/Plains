@@ -197,7 +197,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Transformable<F> map(@Nonnull Function<? super E, F> f) {
+    public <F> Pair<F> map(@Nonnull Function<? super E, F> f) {
         return new Pair<>(f.apply(a), f.apply(b));
     }
 

@@ -236,7 +236,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Transformable<F> map(@Nonnull Function<? super E, F> f) {
+    public <F> Quad<F> map(@Nonnull Function<? super E, F> f) {
         return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
 
