@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * </p>
  * <p>
  * Grids can also be converted to a {@link java.util.Map Map}
- * of {@link Index Index} and {@link E} by calling {@link #map()}.
+ * of {@link Index Index} and {@code E} by calling {@link #map()}.
  * </p>
  *
  * @param <E> The type of element this grid should hold
@@ -313,7 +313,7 @@ public interface Grid<E> extends Group<E>, Mappable<Grid.Index, E>, Iterable<E> 
      * @see #indexOf(int, int)
      * @see GridIndex
      */
-    interface Index extends Transformable<Integer> {
+    interface Index {
         /**
          * Returns the row this index is pointing to.
          *

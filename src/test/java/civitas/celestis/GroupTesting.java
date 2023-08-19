@@ -1,11 +1,13 @@
 package civitas.celestis;
 
-import civitas.celestis.util.group.Quad;
+import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.util.collection.GroupableArrayList;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Quad<String> quad = new Quad<>("Hello", "world", "Foo", "bar");
+        Matrix m = new Matrix(5, 5);
+        m = m.transform(o -> Math.random());
 
-        System.out.println(quad);
+        System.out.println(new GroupableArrayList<>(m));
     }
 }
