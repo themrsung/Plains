@@ -10,6 +10,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 /**
  * A lightweight type-safe array of elements. This class is not thread-safe.
@@ -66,6 +67,24 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     @SuppressWarnings("unchecked")
     public FastArray(@Nonnull FastArray<? extends E> a) {
         this.elements = (E[]) Arrays.stream(a.elements).toArray();
+    }
+
+    /**
+     * Creates a new array.
+     *
+     * @param t The tuple of which to copy elements from
+     */
+    public FastArray(@Nonnull Tuple<? extends E> t) {
+        this.elements = t.array();
+    }
+
+    /**
+     * Creates a new array.
+     *
+     * @param g The grid of which to copy elements from
+     */
+    public FastArray(@Nonnull Grid<? extends E> g) {
+        this.elements = g.array();
     }
 
     /**
@@ -361,6 +380,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
      * Converts this array into a tuple.
      *
      * @return The tuple representation of this array
+     * @see Tuple
      */
     @Nonnull
     public Tuple<E> tuple() {
@@ -372,10 +392,22 @@ public class FastArray<E> implements Iterable<E>, Serializable {
      * in the same order as this array is currently sorted in.
      *
      * @return An unmodifiable list containing the elements of this array in the proper order
+     * @see List
      */
     @Nonnull
     public List<E> list() {
         return List.copyOf(Arrays.asList(elements));
+    }
+
+    /**
+     * Returns a stream with this array being the source.
+     *
+     * @return A stream whose source is this array instance
+     * @see Stream
+     */
+    @Nonnull
+    public Stream<E> stream() {
+        return Arrays.stream(elements);
     }
 
     //
