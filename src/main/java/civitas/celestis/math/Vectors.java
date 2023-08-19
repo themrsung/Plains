@@ -13,6 +13,7 @@ public final class Vectors {
 
     /**
      * Deserializes a string into a two-dimensional vector.
+     *
      * @param input The input string to parse
      * @return The parsed vector
      * @throws NumberFormatException When the format is invalid
@@ -25,6 +26,7 @@ public final class Vectors {
 
     /**
      * Deserializes a string into a three-dimensional vector.
+     *
      * @param input The input string to parse
      * @return The parsed vector
      * @throws NumberFormatException When the format is invalid
@@ -37,6 +39,7 @@ public final class Vectors {
 
     /**
      * Deserializes a string into a four-dimensional vector.
+     *
      * @param input The input string to parse
      * @return The parsed vector
      * @throws NumberFormatException When the format is invalid
@@ -49,6 +52,7 @@ public final class Vectors {
 
     /**
      * Deserializes a string into a quaternion.
+     *
      * @param input The input string to parse
      * @return The parsed vector
      * @throws NumberFormatException When the format is invalid

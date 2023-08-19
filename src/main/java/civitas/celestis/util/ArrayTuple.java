@@ -166,19 +166,20 @@ public class ArrayTuple<E> implements Tuple<E> {
      * @param t   The tuple of which to merge this tuple with
      * @param f   The merger function to handle the merging of the two tuples
      * @param <F> {@inheritDoc}
+     * @param <G> {@inheritDoc}
      * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
         if (elements.length != t.size()) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        final F[] result = (F[]) new Object[elements.length];
+        final G[] result = (G[]) new Object[elements.length];
 
         for (int i = 0; i < elements.length; i++) {
             result[i] = f.apply(elements[i], t.get(i));

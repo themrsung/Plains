@@ -150,14 +150,15 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      *
      * @param t   The tuple of which to merge this tuple with
      * @param f   The merger function to handle the merging of the two tuples
-     * @param <F> The type of element to merge the two tuples to (does not require that
+     * @param <F> The type of element to merge this tuple with
+     * @param <G> The type of element to merge the two tuples to (does not require that
      *            it is a subtype of {@code E} or the other tuple's generic component type)
      * @return The resulting tuple
      * @throws IllegalArgumentException When the provided tuple's length is
      *                                  not equal to this tuple's length
      */
     @Nonnull
-    <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+    <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException;
 
     //
@@ -324,7 +325,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          */
         @Nonnull
         @Override
-        public <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+        public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
                 throws IllegalArgumentException {
             if (t.size() != 0) throw new IllegalArgumentException("Tuple sizes must match for this operation.");
             return new Empty<>();
@@ -485,7 +486,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          */
         @Nonnull
         @Override
-        public <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+        public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
                 throws IllegalArgumentException {
             if (t.size() != 1) throw new IllegalArgumentException("Tuple sizes must match for this operation.");
             return new Single<>(f.apply(element, t.get(0)));
