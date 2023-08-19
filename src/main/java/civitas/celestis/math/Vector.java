@@ -15,6 +15,7 @@ import java.util.function.UnaryOperator;
  *
  * @param <V> The vector itself (used as the parameter and result of various operations)
  * @see Vector3
+ * @see Vector4
  */
 public interface Vector<V extends Vector<V>> extends Serializable {
     //
@@ -390,7 +391,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * @return {@code true} if the provided vector {@code v} is not {@code null},
      * and the components are equal that of this vector's components
      */
-    boolean equals(@Nullable Vector3 v);
+    boolean equals(@Nullable V v);
 
     //
     // Serialization
