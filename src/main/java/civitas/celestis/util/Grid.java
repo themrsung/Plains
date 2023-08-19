@@ -18,6 +18,7 @@ import java.util.function.UnaryOperator;
  * for the row and column, or by providing am {@link Index Index} object.
  *
  * @param <E> The type of element this grid should hold
+ * @see ArrayGrid
  */
 public interface Grid<E> extends Iterable<E>, Serializable {
     //
@@ -32,8 +33,24 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * @return The index object corresponding to the specified position
      */
     @Nonnull
-    static Index index(int row, int column) {
+    static Index newIndex(int row, int column) {
         return new SimpleIndex(row, column);
+    }
+
+    //
+    // Factory
+    //
+
+    /**
+     * Given a two-dimensional primitive array of elements, this returns a grid
+     * constructed from those elements.
+     * @param elements The 2D array of elements to construct the grid from
+     * @return The constructed grid
+     * @param <E> The type of element to contain
+     */
+    @Nonnull
+    static <E> Grid<E> of(@Nonnull E[][] elements) {
+        return ArrayGrid.of(elements);
     }
 
     //
@@ -292,6 +309,31 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     Grid<E> transpose();
+
+    //
+    // Resizing
+    //
+
+    /**
+     * Returns a resized grid of {@code r} rows and {@code c} columns, where the values of
+     * this grid are mapped to. If the requested size is larger than this grid, the oversized
+     * slots will not be populated with values, thus leaving them to be {@code null}.
+     * @param r The number of rows the resized grid should have
+     * @param c The number of columns the resized grid should have
+     * @return The resized grid
+     */
+    @Nonnull
+    Grid<E> resize(int r, int c);
+
+    /**
+     * Returns a resized grid of the provided size, where the values of this grid are mapped to.
+     * If the requested size is larger than this grid, the oversized slots will not be populated with
+     * values, thus leaving them to be {@code null}.
+     * @param size The size the resized grid should have
+     * @return The resized grid
+     */
+    @Nonnull
+    Grid<E> resize(@Nonnull Index size);
 
     //
     // Iteration
