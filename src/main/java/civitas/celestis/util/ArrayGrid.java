@@ -11,6 +11,7 @@ import java.util.function.UnaryOperator;
 
 /**
  * A two-dimensional grid implemented using a 2D array.
+ *
  * @param <E> The type of element this grid should hold
  * @see Grid
  */
@@ -21,17 +22,23 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * Creates a new grid from a two-dimensional primitive array.
+     *
      * @param elements The 2D array of elements to map into a grid
+     * @param <E>      THe type of element to contain
      * @return An {@link ArrayGrid} constructed from the provided elements
-     * @param <E> THe type of element to contain
      */
     @Nonnull
-    @SuppressWarnings("unchecked")
     public static <E> ArrayGrid<E> of(@Nonnull E[][] elements) {
-        return new ArrayGrid<>((E[][]) Arrays
-                .stream(elements)
-                .map(row -> (E[]) Arrays.stream(row).toArray())
-                .toArray());
+        final int rows = elements.length;
+        final int columns = rows > 0 ? elements[0].length : 0;
+
+        final ArrayGrid<E> grid = new ArrayGrid<>(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            System.arraycopy(elements[r], 0, grid.values[r], 0, columns);
+        }
+
+        return grid;
     }
 
     //
@@ -40,7 +47,8 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * Creates a new array grid.
-     * @param rows The number of rows to initialize
+     *
+     * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
      */
     @SuppressWarnings("unchecked")
@@ -52,6 +60,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * Creates a new array grid.
+     *
      * @param size The size to initialize this grid to
      */
     @SuppressWarnings("unchecked")
@@ -63,6 +72,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * Creates a new grid.
+     *
      * @param g The grid of which to copy values from
      */
     @SuppressWarnings("unchecked")
@@ -71,16 +81,6 @@ public class ArrayGrid<E> implements Grid<E> {
         this.columns = g.columns();
         this.values = (E[][]) new Object[rows][columns];
         setAll(0, 0, rows, columns, g);
-    }
-
-    /**
-     * Direct assignment constructor. Use with caution.
-     * @param values The array to directly assign
-     */
-    private ArrayGrid(@Nonnull E[][] values) {
-        this.rows = values.length;
-        this.columns = rows > 0 ? values[0].length : 0;
-        this.values = values;
     }
 
     //
@@ -109,6 +109,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -118,6 +119,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -127,6 +129,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -136,6 +139,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -150,6 +154,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to check for containment
      * @return {@inheritDoc}
      */
@@ -166,6 +171,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param t The tuple of which to check for containment
      * @return {@inheritDoc}
      */
@@ -180,6 +186,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param c The collection of which to check for containment
      * @return {@inheritDoc}
      */
@@ -198,6 +205,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param r The index of the row to get
      * @param c The index of the column to get
      * @return {@inheritDoc}
@@ -210,6 +218,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the slot to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -221,6 +230,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param r The index of the row to set
      * @param c The index of the column to set
      * @param v The value to assign to the specified slot
@@ -233,6 +243,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the slot to set
      * @param v The value to assign to the specified slot
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -248,6 +259,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
@@ -261,6 +273,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param e The element to fill this grid with
      */
     @Override
@@ -272,6 +285,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param e The element to fill empty slots of this grid with
      */
     @Override
@@ -281,6 +295,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param e The element to fill this grid selectively with
      * @param f The filter function of which to test each original element with
      */
@@ -291,6 +306,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
@@ -311,6 +327,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param r1 The starting point's row index
      * @param c1 The starting point's column index
      * @param r2 The ending point's row index
@@ -330,6 +347,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i1 The starting index of the sub-grid
      * @param i2 The ending index of the sub-grid
      * @return {@inheritDoc}
@@ -343,6 +361,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param r1 The starting point's row index
      * @param c1 The starting point's column index
      * @param r2 The ending point's row index
@@ -370,6 +389,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function to apply to each element of this grid
      * @return {@inheritDoc}
      */
@@ -389,9 +409,10 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this grid
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Nonnull
     @Override
@@ -409,11 +430,12 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param g   The grid of which to merge this grid with
      * @param f   The merger function to handle the merging of the two grids
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
      * @param <G> {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
@@ -440,6 +462,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -462,6 +485,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param r The number of rows the resized grid should have
      * @param c The number of columns the resized grid should have
      * @return {@inheritDoc}
@@ -483,6 +507,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param size The size the resized grid should have
      * @return {@inheritDoc}
      */
@@ -498,6 +523,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -512,6 +538,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -529,6 +556,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -539,6 +567,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -549,6 +578,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -571,6 +601,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to compare to
      * @return {@inheritDoc}
      */
@@ -594,6 +625,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -602,8 +634,10 @@ public class ArrayGrid<E> implements Grid<E> {
         final StringBuilder out = new StringBuilder("{\n");
 
         for (int r = 0; r < rows; r++) {
-            out.append("  ").append(Arrays.toString(values[r])).append("\n");
+            out.append("  ").append(Arrays.toString(values[r])).append(",\n");
         }
+
+        out.replace(out.length() - 2, out.length() - 1, "");
 
         return out.append("}").toString();
     }
