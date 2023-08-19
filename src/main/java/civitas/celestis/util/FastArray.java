@@ -236,6 +236,25 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     }
 
     //
+    // Resizing
+    //
+
+    /**
+     * Returns a resized array whose elements are mapped from that of this array's elements.
+     * If the new array is larger, the oversized part will not be populated, leaving it
+     * uninitialized as {@code null}.
+     *
+     * @param size The size to resize this array to
+     * @return The resized array
+     */
+    @Nonnull
+    public FastArray<E> resize(int size) {
+        final FastArray<E> result = new FastArray<>(size);
+        System.arraycopy(elements, 0, result.elements, 0, Math.min(elements.length, size));
+        return result;
+    }
+
+    //
     // Conversion
     //
 
