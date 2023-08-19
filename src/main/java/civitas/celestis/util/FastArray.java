@@ -6,36 +6,31 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * A thread-safe array of elements. This array also provides type-safety via generics.
- * For-each iteration is not supported by design. Copy the array into a {@link Tuple} or
- * a {@link List} in order to use for-each iteration. ({@link #tuple()}, {@link #list()})
- *
+ * A lightweight type-safe array of elements. This class is not thread-safe.
  * @param <E> The type of element to contain
  */
-public class SafeArray<E> implements Serializable {
+public class FastArray<E> implements Iterable<E>, Serializable {
     //
     // Factory
     //
 
     /**
-     * Creates a new thread-safe array from the provided primitive array of elements.
-     *
-     * @param elements The elements to contain in the thread-safe array
-     * @param <E>      The type of element to contain
-     * @return A new thread-safe array constructed from the provided elements
+     * Creates a new type-safe array from the provided primitive array of elements.
+     * @param elements The elements to contain in the type-safe array
+     * @return A new type-safe array constructed from the provided elements
+     * @param <E> The type of element to contain
      */
     @Nonnull
     @SafeVarargs
-    public static <E> SafeArray<E> of(@Nonnull E... elements) {
-        final SafeArray<E> instance = new SafeArray<>(elements.length);
-        System.arraycopy(elements, 0, instance.elements, 0, elements.length);
-        return instance;
+    static <E> FastArray<E> of(@Nonnull E... elements) {
+        return new FastArray<>(elements);
     }
 
     //
@@ -46,20 +41,39 @@ public class SafeArray<E> implements Serializable {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = -5044005583745564621L;
+    private static final long serialVersionUID = 436854502580923552L;
 
     //
     // Constructors
     //
 
     /**
-     * Creates a new thread-safe array.
-     *
+     * Creates a new array.
      * @param length The length of this array
      */
     @SuppressWarnings("unchecked")
-    public SafeArray(int length) {
+    public FastArray(int length) {
         this.elements = (E[]) new Object[length];
+    }
+
+    /**
+     * Creates a new array.
+     * @param a The type-safe array of which to copy elements from
+     */
+    @SuppressWarnings("unchecked")
+    public FastArray(@Nonnull FastArray<? extends E> a) {
+        this.elements = (E[]) Arrays.stream(a.elements).toArray();
+    }
+
+    /**
+     * Creates a new array. This constructor is private to prevent
+     * ambiguity with other constructors. Use {@link #of(E...)} for public access.
+     * @param elements The values to contain in this array
+     */
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    private FastArray(@Nonnull E... elements) {
+        this.elements = (E[]) Arrays.stream(elements).toArray();
     }
 
     //
@@ -67,11 +81,10 @@ public class SafeArray<E> implements Serializable {
     //
 
     /**
-     * The array of elements this container class is holding.
-     * It is important that this stays private in order to ensure thread safety.
+     * The array of elements.
      */
     @Nonnull
-    private final E[] elements;
+    protected final E[] elements;
 
     //
     // Properties
@@ -79,42 +92,10 @@ public class SafeArray<E> implements Serializable {
 
     /**
      * Returns the length of this array.
-     *
      * @return The number of elements this array contains
      */
     public final int length() {
-        /*
-         * There is no need for synchronization here.
-         */
         return elements.length;
-    }
-
-    //
-    // Copy
-    //
-
-    /**
-     * Performs a shallow copy of this array, then returns the new array instance.
-     *
-     * @return A shallow copy of this array instance
-     */
-    @Nonnull
-    public final synchronized SafeArray<E> copy() {
-        final SafeArray<E> copied = new SafeArray<>(elements.length);
-        System.arraycopy(elements, 0, copied.elements, 0, elements.length);
-        return copied;
-    }
-
-    /**
-     * Performs a shallow copy of this array, then returns the raw primitive array.
-     * The return value will not be thread-safe.
-     *
-     * @return A shallow copy of this array's contents
-     */
-    @Nonnull
-    @SuppressWarnings("unchecked")
-    public final synchronized E[] extract() {
-        return (E[]) Arrays.stream(elements).toArray();
     }
 
     //
@@ -128,7 +109,7 @@ public class SafeArray<E> implements Serializable {
      * @return {@code true} if at least one of this tuple's elements are equal
      * to the provided object {@code obj}
      */
-    public final synchronized boolean contains(@Nullable Object obj) {
+    public boolean contains(@Nullable Object obj) {
         for (final E element : elements) {
             if (Objects.equals(element, obj)) return true;
         }
@@ -147,7 +128,7 @@ public class SafeArray<E> implements Serializable {
      * @return The {@code i}th element of this array
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    public final synchronized E get(int i) throws IndexOutOfBoundsException {
+    public E get(int i) throws IndexOutOfBoundsException {
         return elements[i];
     }
 
@@ -158,7 +139,7 @@ public class SafeArray<E> implements Serializable {
      * @param v The value of which to assign as the {@code i}th element of this array
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    public final synchronized void set(int i, E v) throws IndexOutOfBoundsException {
+    public void set(int i, E v) throws IndexOutOfBoundsException {
         elements[i] = v;
     }
 
@@ -172,8 +153,8 @@ public class SafeArray<E> implements Serializable {
      *
      * @param v The value to fill this array with
      */
-    public final synchronized void fill(E v) {
-        update(old -> v);
+    public void fill(E v) {
+        apply(old -> v);
     }
 
     /**
@@ -181,7 +162,7 @@ public class SafeArray<E> implements Serializable {
      *
      * @param v The value to fill empty slots of this array with
      */
-    public final synchronized void fillEmpty(E v) {
+    public void fillEmpty(E v) {
         replaceAll(null, v);
     }
 
@@ -192,8 +173,8 @@ public class SafeArray<E> implements Serializable {
      * @param v The value to selectively fill this array with
      * @param f The filter of which to test existing values with
      */
-    public final synchronized void fillIf(E v, @Nonnull Predicate<? super E> f) {
-        update(old -> f.test(old) ? v : old);
+    public void fillIf(E v, @Nonnull Predicate<? super E> f) {
+        apply(old -> f.test(old) ? v : old);
     }
 
     /**
@@ -202,7 +183,7 @@ public class SafeArray<E> implements Serializable {
      *
      * @param f The function to apply to each element of this array
      */
-    public final synchronized void update(@Nonnull UnaryOperator<E> f) {
+    public void apply(@Nonnull UnaryOperator<E> f) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] = f.apply(elements[i]);
         }
@@ -214,7 +195,7 @@ public class SafeArray<E> implements Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    public final synchronized void replaceFirst(E oldValue, E newValue) {
+    public void replaceFirst(E oldValue, E newValue) {
         for (int i = 0; i < elements.length; i++) {
             if (Objects.equals(elements[i], oldValue)) {
                 elements[i] = newValue;
@@ -229,7 +210,7 @@ public class SafeArray<E> implements Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    public final synchronized void replaceLast(E oldValue, E newValue) {
+    public void replaceLast(E oldValue, E newValue) {
         for (int i = (elements.length - 1); i >= 0; i--) {
             if (Objects.equals(elements[i], oldValue)) {
                 elements[i] = newValue;
@@ -244,35 +225,8 @@ public class SafeArray<E> implements Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    public final synchronized void replaceAll(E oldValue, E newValue) {
-        update(v -> Objects.equals(v, oldValue) ? newValue : oldValue);
-    }
-
-    //
-    // Sub-operation
-    //
-
-    /**
-     * Given two indices {@code i1} and {@code i2}, this returns a sub-array of
-     * this array from the first index to the second index. The resulting array will have
-     * a size of {@code i2 - i1}.
-     *
-     * @param i1 The starting index of the sub-array to get
-     * @param i2 The ending index of the sub-array to get
-     * @return The sub-array of the specified range
-     * @throws IndexOutOfBoundsException When the range is out of bounds
-     */
-    @Nonnull
-    public final synchronized SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
-        final SafeArray<E> subArray = new SafeArray<>(i2 - i1);
-
-        /*
-         * Direct array manipulation here is fine.
-         * No other class will have access to this sub-array yet.
-         */
-
-        System.arraycopy(elements, i1, subArray.elements, 0, i2 - i1);
-        return subArray;
+    public void replaceAll(E oldValue, E newValue) {
+        apply(v -> Objects.equals(v, oldValue) ? newValue : oldValue);
     }
 
     //
@@ -285,11 +239,7 @@ public class SafeArray<E> implements Serializable {
      * @return The tuple representation of this array
      */
     @Nonnull
-    public final synchronized Tuple<E> tuple() {
-        /*
-         * While tuples are immutable, streams are still used in the process of creating them.
-         * Thus, synchronization is still required.
-         */
+    public Tuple<E> tuple() {
         return Tuple.of(elements);
     }
 
@@ -300,8 +250,22 @@ public class SafeArray<E> implements Serializable {
      * @return An unmodifiable list containing the elements of this array in the proper order
      */
     @Nonnull
-    public final synchronized List<E> list() {
+    public List<E> list() {
         return List.copyOf(Arrays.asList(elements));
+    }
+
+    //
+    // Iteration
+    //
+
+    /**
+     * Returns an iterator of every element of this array.
+     * @return An iterator of every element of this array
+     */
+    @Override
+    @Nonnull
+    public Iterator<E> iterator() {
+        return Arrays.stream(elements).iterator();
     }
 
     //
@@ -312,12 +276,12 @@ public class SafeArray<E> implements Serializable {
      * Checks for equality between this array and the provided object {@code obj}.
      *
      * @param obj The object to compare to
-     * @return {@code true} if the other object is also a thread-safe array,
+     * @return {@code true} if the other object is also a type-safe array,
      * and the size, order, and composition of elements are all equal
      */
     @Override
-    public synchronized boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof SafeArray<?> a)) return false;
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof FastArray<?> a)) return false;
         if (elements.length != a.elements.length) return false;
 
         for (int i = 0; i < elements.length; i++) {
@@ -337,7 +301,7 @@ public class SafeArray<E> implements Serializable {
      * @return The string representation of this array
      */
     @Nonnull
-    public synchronized String toString() {
+    public String toString() {
         return Arrays.toString(elements);
     }
 }

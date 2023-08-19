@@ -5,24 +5,16 @@ import civitas.celestis.util.Grid;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Double[][] array = new Double[3][3];
+        final Grid<Double> g1 = new ArrayGrid<>(5, 5);
+        final Grid<Double> g2 = new ArrayGrid<>(5, 5);
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                array[i][j] = 3d;
-            }
-        }
+        g1.apply(x -> Math.random());
+        g2.fill(10d);
 
-        final Grid<Double> test = Grid.of(array);
+        final Grid<Double> g3 = g1.merge(g2, (x, y) -> (double) x * y);
 
-        test.apply(c -> Math.random());
-        System.out.println(test);
-
-        final Grid<Double> test2 = new ArrayGrid<>(test);
-
-        System.out.println(test2);
-
-        final Grid<String> test3 = test2.map(x -> " " + x);
-        System.out.println(test3);
+        System.out.println(g1);
+        System.out.println(g2);
+        System.out.println(g3);
     }
 }
