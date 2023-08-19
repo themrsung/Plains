@@ -83,7 +83,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     /**
      * Direct assignment constructor. Use at your own risk.
      *
-     * @param elements The 2D array of elements
+     * @param elements The primitive array of elements
      * @param ignored  Ignored
      */
     private FastArray(@Nonnull E[] elements, boolean ignored) {

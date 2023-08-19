@@ -1,6 +1,7 @@
 package civitas.celestis;
 
 import civitas.celestis.util.ArrayGrid;
+import civitas.celestis.util.FastArray;
 import civitas.celestis.util.Grid;
 
 public class GroupTesting {
@@ -13,8 +14,7 @@ public class GroupTesting {
 
         final Grid<Double> g3 = g1.merge(g2, (x, y) -> (double) x * y);
 
-        System.out.println(g1);
-        System.out.println(g2);
         System.out.println(g3);
+        System.out.println(g3.transpose());
     }
 }
