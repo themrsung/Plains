@@ -14,6 +14,7 @@ import java.util.function.UnaryOperator;
 
 /**
  * A lightweight type-safe array of elements. This class is not thread-safe.
+ *
  * @param <E> The type of element to contain
  */
 public class FastArray<E> implements Iterable<E>, Serializable {
@@ -23,9 +24,10 @@ public class FastArray<E> implements Iterable<E>, Serializable {
 
     /**
      * Creates a new type-safe array from the provided primitive array of elements.
+     *
      * @param elements The elements to contain in the type-safe array
+     * @param <E>      The type of element to contain
      * @return A new type-safe array constructed from the provided elements
-     * @param <E> The type of element to contain
      */
     @Nonnull
     @SafeVarargs
@@ -41,7 +43,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = 436854502580923552L;
+    private static final long serialVersionUID = -2341017871277114974L;
 
     //
     // Constructors
@@ -49,6 +51,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
 
     /**
      * Creates a new array.
+     *
      * @param length The length of this array
      */
     @SuppressWarnings("unchecked")
@@ -58,6 +61,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
 
     /**
      * Creates a new array.
+     *
      * @param a The type-safe array of which to copy elements from
      */
     @SuppressWarnings("unchecked")
@@ -68,6 +72,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     /**
      * Creates a new array. This constructor is private to prevent
      * ambiguity with other constructors. Use {@link #of(E...)} for public access.
+     *
      * @param elements The values to contain in this array
      */
     @SafeVarargs
@@ -92,6 +97,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
 
     /**
      * Returns the length of this array.
+     *
      * @return The number of elements this array contains
      */
     public final int length() {
@@ -272,6 +278,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
 
     /**
      * Returns an iterator of every element of this array.
+     *
      * @return An iterator of every element of this array
      */
     @Override
