@@ -5,6 +5,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
