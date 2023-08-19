@@ -5,10 +5,9 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -79,6 +78,16 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     @SuppressWarnings("unchecked")
     private FastArray(@Nonnull E... elements) {
         this.elements = (E[]) Arrays.stream(elements).toArray();
+    }
+
+    /**
+     * Direct assignment constructor. Use at your own risk.
+     *
+     * @param elements The 2D array of elements
+     * @param ignored  Ignored
+     */
+    private FastArray(@Nonnull E[] elements, boolean ignored) {
+        this.elements = elements;
     }
 
     //
@@ -252,6 +261,84 @@ public class FastArray<E> implements Iterable<E>, Serializable {
         final FastArray<E> result = new FastArray<>(size);
         System.arraycopy(elements, 0, result.elements, 0, Math.min(elements.length, size));
         return result;
+    }
+
+    //
+    // Sorting
+    //
+
+    /**
+     * Sorts this array by the provided comparator function {@code c}.
+     *
+     * @param c The comparator function to sort this array with
+     */
+    public void sort(@Nonnull Comparator<? super E> c) {
+        Arrays.sort(elements, c);
+    }
+
+    //
+    // Transformation
+    //
+
+    /**
+     * Applies the provided transformation function {@code f} to each element of this
+     * array, then returns a new array containing the resulting elements.
+     * This operation preserves the type bounds of this array.
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public FastArray<E> transform(@Nonnull UnaryOperator<E> f) {
+        return new FastArray<>((E[]) Arrays.stream(elements).map(f).toArray(), true);
+    }
+
+    /**
+     * Applies the provided mapper function {@code f} to each element of this array,
+     * then returns a new array containing the resulting elements. This operation
+     * does not preserve the type bounds of this array.
+     *
+     * @param f   The function of which to apply to each element of this array
+     * @param <F> The type of element to map this array to (does not require to be
+     *            a subtype of {@code E})
+     * @return The resulting array
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public <F> FastArray<F> map(@Nonnull Function<? super E, F> f) {
+        return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray());
+    }
+
+    /**
+     * Between this array and the provided array {@code a}, this applies the merger function {@code f}
+     * to each corresponding pair of elements, then returns a new array containing the resulting
+     * elements. This operation does not preserve the type bounds of this array.
+     *
+     * @param a   The array of which to merge this array with
+     * @param f   The merger function to handle the merging of the two arrays
+     * @param <F> The type of element to merge this array with
+     * @param <G> The type of element to merge the two arrays to (does not require that it
+     *            is a subtype of {@code E} or the other array's generic component type)
+     * @return The resulting array
+     * @throws IllegalArgumentException When the provided array's length is not equal to
+     *                                  this array's length
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public <F, G> FastArray<G> merge(@Nonnull FastArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
+            throws IllegalArgumentException {
+        if (elements.length != a.elements.length) {
+            throw new IllegalArgumentException("Array lengths must match for this operation.");
+        }
+
+        final G[] result = (G[]) new Object[elements.length];
+
+        for (int i = 0; i < elements.length; i++) {
+            result[i] = f.apply(elements[i], a.elements[i]);
+        }
+
+        return new FastArray<>(result, true);
     }
 
     //

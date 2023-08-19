@@ -154,8 +154,8 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @param <G> The type of element to merge the two tuples to (does not require that
      *            it is a subtype of {@code E} or the other tuple's generic component type)
      * @return The resulting tuple
-     * @throws IllegalArgumentException When the provided tuple's length is
-     *                                  not equal to this tuple's length
+     * @throws IllegalArgumentException When the provided tuple's size is
+     *                                  not equal to this tuple's size
      */
     @Nonnull
     <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
