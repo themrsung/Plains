@@ -133,7 +133,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     public Vector4(@Nonnull Tuple<Double> t) {
         if (t.size() != 4) {
-            throw new IllegalArgumentException("The provided tuple's size is not four.");
+            throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
         this.w = t.get(0);

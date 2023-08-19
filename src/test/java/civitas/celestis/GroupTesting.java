@@ -1,10 +1,12 @@
 package civitas.celestis;
 
-import civitas.celestis.util.Tuple;
+import civitas.celestis.util.SafeArray;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Tuple<String> test = Tuple.of("Hello", "world", "foo", "bar", "yes", "no");
-        System.out.println(test.subTuple(2, 4));
+        final SafeArray<String> array = new SafeArray<>(10);
+        array.fill("Hello");
+
+        System.out.println(array);
     }
 }

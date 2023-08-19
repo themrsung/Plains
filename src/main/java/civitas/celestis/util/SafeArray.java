@@ -3,6 +3,8 @@ package civitas.celestis.util;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +18,7 @@ import java.util.function.UnaryOperator;
  *
  * @param <E> The type of element to contain
  */
-public class SafeArray<E> {
+public class SafeArray<E> implements Serializable {
     //
     // Factory
     //
@@ -35,6 +37,16 @@ public class SafeArray<E> {
         System.arraycopy(elements, 0, instance.elements, 0, elements.length);
         return instance;
     }
+
+    //
+    // Constants
+    //
+
+    /**
+     * The serial version UID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = -5044005583745564621L;
 
     //
     // Constructors
@@ -91,6 +103,18 @@ public class SafeArray<E> {
         final SafeArray<E> copied = new SafeArray<>(elements.length);
         System.arraycopy(elements, 0, copied.elements, 0, elements.length);
         return copied;
+    }
+
+    /**
+     * Performs a shallow copy of this array, then returns the raw primitive array.
+     * The return value will not be thread-safe.
+     *
+     * @return A shallow copy of this array's contents
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public final synchronized E[] extract() {
+        return (E[]) Arrays.stream(elements).toArray();
     }
 
     //
@@ -301,5 +325,19 @@ public class SafeArray<E> {
         }
 
         return true;
+    }
+
+    //
+    // Serialization
+    //
+
+    /**
+     * Serializes this array into a string.
+     *
+     * @return The string representation of this array
+     */
+    @Nonnull
+    public synchronized String toString() {
+        return Arrays.toString(elements);
     }
 }
