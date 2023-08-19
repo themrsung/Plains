@@ -101,7 +101,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @param i1 The starting index of the sub-tuple to get
      * @param i2 The ending index of the sub-tuple to get
      * @return The sub-tuple of the specified range
-     * @throws IndexOutOfBoundsException When the range is invalid
+     * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     @Nonnull
     @SuppressWarnings("unchecked")
