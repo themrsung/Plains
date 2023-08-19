@@ -234,6 +234,18 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     //
 
     /**
+     * Returns a primitive array with the same composition and order.
+     * This is a shallow copy, and thus changes are not reflected to this array instance.
+     *
+     * @return The primitive array representation of this array
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public E[] array() {
+        return (E[]) Arrays.stream(elements).toArray();
+    }
+
+    /**
      * Converts this array into a tuple.
      *
      * @return The tuple representation of this array
