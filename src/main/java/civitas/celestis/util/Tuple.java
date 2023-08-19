@@ -6,6 +6,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -13,8 +14,27 @@ import java.util.function.UnaryOperator;
  * An ordered shallowly immutable set of objects.
  *
  * @param <E> The type of element this tuple should hold
+ * @see ArrayTuple
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
+    //
+    // Factory
+    //
+
+    /**
+     * Given an array of elements, this creates a new tuple instance containing
+     * the provided array of elements.
+     *
+     * @param elements The array of elements to contain in the tuple
+     * @param <E>      The type of element to contain in the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> Tuple<E> of(@Nonnull E... elements) {
+        return new ArrayTuple<>(elements);
+    }
+
     //
     // Properties
     //
@@ -90,6 +110,23 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f);
+
+    /**
+     * Between this tuple and the provided tuple {@code t}, this applies the merger function
+     * {@code f} to each corresponding pair of elements, then returns a new tuple containing the
+     * resulting elements. This operation does not preserve the type bounds of this tuple.
+     *
+     * @param t   The tuple of which to merge this tuple with
+     * @param f   The merger function to handle the merging of the two tuples
+     * @param <F> The type of element to merge the two tuples to (does not require that
+     *            it is a subtype of {@code E} or the other tuple's generic component type)
+     * @return The resulting tuple
+     * @throws IllegalArgumentException When the provided tuple's length is
+     *                                  not equal to this tuple's length
+     */
+    @Nonnull
+    <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+            throws IllegalArgumentException;
 
     //
     // Iteration

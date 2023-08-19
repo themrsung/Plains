@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -15,6 +16,7 @@ import java.util.function.UnaryOperator;
  * An array-based implementation of a tuple.
  *
  * @param <E> The type of element this tuple should hold
+ * @see Tuple
  */
 public class ArrayTuple<E> implements Tuple<E> {
     //
@@ -156,6 +158,33 @@ public class ArrayTuple<E> implements Tuple<E> {
     @SuppressWarnings("unchecked")
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
         return new ArrayTuple<>((F[]) Arrays.stream(elements).map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t   The tuple of which to merge this tuple with
+     * @param f   The merger function to handle the merging of the two tuples
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public <F> Tuple<F> merge(@Nonnull Tuple<? extends E> t, @Nonnull BiFunction<? super E, ? super E, F> f)
+            throws IllegalArgumentException {
+        if (elements.length != t.size()) {
+            throw new IllegalArgumentException("Tuple sizes must match for this operation.");
+        }
+
+        final F[] result = (F[]) new Object[elements.length];
+
+        for (int i = 0; i < elements.length; i++) {
+            result[i] = f.apply(elements[i], t.get(i));
+        }
+
+        return new ArrayTuple<>(result);
     }
 
     //
