@@ -415,7 +415,7 @@ public class Vector3 implements Vector<Vector3> {
         final double dy = y - v.y;
         final double dz = z - v.z;
 
-        return x * dx + dy * dy + dz * dz;
+        return dx * dx + dy * dy + dz * dz;
     }
 
     /**
