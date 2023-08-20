@@ -17,6 +17,7 @@ import java.util.function.UnaryOperator;
  * Pairs use AB notation to identify their elements.
  *
  * @param <E> The type of element this tuple should hold
+ * @see BiPair
  */
 public class Pair<E> implements Tuple<E> {
     //

@@ -17,6 +17,7 @@ import java.util.function.UnaryOperator;
  * Quads use ABCD notation to identity their elements.
  *
  * @param <E> The type of element this tuple should hold
+ * @see QuatQuad
  */
 public class Quad<E> implements Tuple<E> {
     //

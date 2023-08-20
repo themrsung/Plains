@@ -17,6 +17,7 @@ import java.util.function.UnaryOperator;
  * Triples use ABC notation to identity their elements.
  *
  * @param <E> The type of element this tuple should hold
+ * @see TriTriple
  */
 public class Triple<E> implements Tuple<E> {
     //

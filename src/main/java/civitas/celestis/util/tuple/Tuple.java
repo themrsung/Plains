@@ -16,6 +16,8 @@ import java.util.function.UnaryOperator;
  *
  * @param <E> The type of element this tuple should hold
  * @see Pair
+ * @see Triple
+ * @see Quad
  * @see ArrayTuple
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
