@@ -1,8 +1,9 @@
-package civitas.celestis.math;
+package civitas.celestis.math.matrix;
 
-import civitas.celestis.util.ArrayGrid;
-import civitas.celestis.util.Grid;
-import civitas.celestis.util.VectorGrid;
+import civitas.celestis.math.vector.Vector;
+import civitas.celestis.util.grid.ArrayGrid;
+import civitas.celestis.util.grid.Grid;
+import civitas.celestis.util.grid.VectorGrid;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;

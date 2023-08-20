@@ -1,4 +1,4 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -13,12 +13,12 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
- * A fixed-size tuple which can only hold four elements.
- * Quads use ABCD notation to identity their elements.
+ * A fixed-size tuple which can only hold two elements.
+ * Pairs use AB notation to identify their elements.
  *
  * @param <E> The type of element this tuple should hold
  */
-public class Quad<E> implements Tuple<E> {
+public class Pair<E> implements Tuple<E> {
     //
     // Constants
     //
@@ -27,51 +27,45 @@ public class Quad<E> implements Tuple<E> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = -8936736196164654937L;
+    private static final long serialVersionUID = 5029177793205472244L;
 
     //
     // Constructors
     //
 
     /**
-     * Creates a new quad.
+     * Creates a new pair.
      *
-     * @param a The first element of this quad
-     * @param b The second element of this quad
-     * @param c The third element of this quad
-     * @param d The fourth element of this quad
+     * @param a The first element of this pair
+     * @param b The second element of this pair
      */
-    public Quad(E a, E b, E c, E d) {
+    public Pair(E a, E b) {
         this.a = a;
         this.b = b;
-        this.c = c;
-        this.d = d;
     }
 
     /**
-     * Creates a new quad.
+     * Creates a new pair.
      *
-     * @param elements An array containing the elements of this quad in ABCD order
-     * @throws IllegalArgumentException When the array's length is not {@code 4}
+     * @param elements An array containing the elements of this pair in AB order
+     * @throws IllegalArgumentException When the array's length is not {@code 2}
      */
-    public Quad(@Nonnull E[] elements) {
-        if (elements.length != 4) {
-            throw new IllegalArgumentException("The provided array's length is not 4.");
+    public Pair(@Nonnull E[] elements) {
+        if (elements.length != 2) {
+            throw new IllegalArgumentException("The provided array's length is not 2.");
         }
 
         this.a = elements[0];
         this.b = elements[1];
-        this.c = elements[2];
-        this.d = elements[3];
     }
 
     /**
-     * Creates a new quad.
+     * Creates a new pair.
      *
      * @param t The tuple of which to copy elements from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 4}
+     * @throws IllegalArgumentException WHen the tuple's size is not {@code 2}
      */
-    public Quad(@Nonnull Tuple<? extends E> t) {
+    public Pair(@Nonnull Tuple<? extends E> t) {
         this(t.array());
     }
 
@@ -89,16 +83,6 @@ public class Quad<E> implements Tuple<E> {
      */
     protected final E b;
 
-    /**
-     * The third element of this tuple.
-     */
-    protected final E c;
-
-    /**
-     * The fourth element of this tuple.
-     */
-    protected final E d;
-
     //
     // Properties
     //
@@ -110,7 +94,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Override
     public int size() {
-        return 4;
+        return 2;
     }
 
     //
@@ -129,46 +113,26 @@ public class Quad<E> implements Tuple<E> {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
-            case 2 -> c;
-            case 3 -> d;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this quad.
+     * Returns the A component (the first component) of this pair.
      *
-     * @return The A component of this quad
+     * @return The A component of this pair
      */
     public E a() {
         return a;
     }
 
     /**
-     * Returns the B component (the second component) of this quad.
+     * Returns the B component (the second component) of this pair.
      *
-     * @return The B component of this quad
+     * @return The B component of this pair
      */
     public E b() {
         return b;
-    }
-
-    /**
-     * Returns the C component (the third component) of this quad.
-     *
-     * @return The C component of this quad
-     */
-    public E c() {
-        return c;
-    }
-
-    /**
-     * Returns the D component (the fourth component) of this quad.
-     *
-     * @return The D component of this quad
-     */
-    public E d() {
-        return d;
     }
 
     //
@@ -183,10 +147,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) ||
-                Objects.equals(b, obj) ||
-                Objects.equals(c, obj) ||
-                Objects.equals(d, obj);
+        return Objects.equals(a, obj) || Objects.equals(b, obj);
     }
 
     /**
@@ -217,7 +178,7 @@ public class Quad<E> implements Tuple<E> {
     @Nonnull
     @Override
     public Tuple<E> transform(@Nonnull UnaryOperator<E> f) {
-        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
+        return new Pair<>(f.apply(a), f.apply(b));
     }
 
     /**
@@ -230,9 +191,8 @@ public class Quad<E> implements Tuple<E> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
+        return new Pair<>(f.apply(a), f.apply(b));
     }
-
 
     /**
      * {@inheritDoc}
@@ -248,11 +208,11 @@ public class Quad<E> implements Tuple<E> {
     @Override
     public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        if (t.size() != 4) {
+        if (t.size() != 2) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Quad<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
+        return new Pair<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)));
     }
 
     //
@@ -266,7 +226,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return List.of(a, b, c, d).iterator();
+        return List.of(a, b).iterator();
     }
 
     //
@@ -282,7 +242,7 @@ public class Quad<E> implements Tuple<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) new Object[]{a, b, c, d};
+        return (E[]) new Object[]{a, b};
     }
 
     /**
@@ -293,7 +253,7 @@ public class Quad<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return List.of(a, b, c, d);
+        return List.of(a, b);
     }
 
     //
@@ -312,6 +272,7 @@ public class Quad<E> implements Tuple<E> {
         return Arrays.equals(array(), t.array());
     }
 
+
     //
     // Serialization
     //
@@ -324,6 +285,6 @@ public class Quad<E> implements Tuple<E> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
+        return "[" + a + ", " + b + "]";
     }
 }

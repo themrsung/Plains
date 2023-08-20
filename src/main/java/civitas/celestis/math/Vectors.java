@@ -1,5 +1,9 @@
 package civitas.celestis.math;
 
+import civitas.celestis.math.vector.Quaternion;
+import civitas.celestis.math.vector.Vector2;
+import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.math.vector.Vector4;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 

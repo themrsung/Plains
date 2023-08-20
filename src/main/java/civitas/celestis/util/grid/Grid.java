@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.grid;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -19,7 +20,6 @@ import java.util.function.UnaryOperator;
  *
  * @param <E> The type of element this grid should hold
  * @see ArrayGrid
- * @see NumericGrid
  * @see VectorGrid
  */
 public interface Grid<E> extends Iterable<E>, Serializable {

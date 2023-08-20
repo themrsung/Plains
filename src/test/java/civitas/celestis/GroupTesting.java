@@ -1,24 +1,19 @@
 package civitas.celestis;
 
-import civitas.celestis.math.Quaternion;
-import civitas.celestis.math.Vector3;
-import civitas.celestis.math.VectorMatrix;
-import civitas.celestis.util.Pair;
-import civitas.celestis.util.Tuple;
-import civitas.celestis.util.VectorGrid;
+import civitas.celestis.util.array.FastArray;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final VectorGrid<Vector3> grid = new VectorMatrix<>(10, 10);
+        final FastArray<String> array = new FastArray<>(10);
+        array.fill("Hello World");
 
-        grid.fill(Vector3.ZERO);
-        grid.apply(v -> v.add(new Vector3(Math.random(), Math.random(), Math.random())).normalize());
-        grid.apply(v -> v.rotate(
-                new Quaternion(
-                    new Quaternion(Math.random(), Math.random(), Math.random(), Math.random()).normalize()
-                )
-        ));
+        for (int i = 0; i < 10; i++) {
+            if (i % 3 != 0) continue;
+            array.set(i, "Foo Bar");
+        }
 
-        System.out.println(grid);
+        array.apply(s -> s.replaceAll("World", "World!"));
+
+        System.out.println(array);
     }
 }
