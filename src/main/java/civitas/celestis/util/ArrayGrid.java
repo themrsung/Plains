@@ -3,6 +3,7 @@ package civitas.celestis.util;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -40,6 +41,16 @@ public class ArrayGrid<E> implements Grid<E> {
 
         return grid;
     }
+
+    //
+    // Constants
+    //
+
+    /**
+     * The serial version UID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 8555808674012615154L;
 
     //
     // Constructors
