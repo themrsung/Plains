@@ -29,6 +29,28 @@ public class Quad<E> implements Tuple<E> {
     private static final long serialVersionUID = 0L;
 
     //
+    // Static Initializers
+    //
+
+    /**
+     * Creates a new {@link QuatQuad quaternary quad} with four elements of different types.
+     *
+     * @param a   The first element of the quad
+     * @param b   The second element of the quad
+     * @param c   The third element of the quad
+     * @param d   The fourth element of the quad
+     * @param <A> The type of the first element
+     * @param <B> The type of the second element
+     * @param <C> The type of the third element
+     * @param <D> The type of the fourth element
+     * @return The quaternary quad constructed from the provided elements
+     */
+    @Nonnull
+    public static <A, B, C, D> QuatQuad<A, B, C, D> of(A a, B b, C c, D d) {
+        return new QuatQuad<>(a, b, c, d);
+    }
+
+    //
     // Constructors
     //
 
@@ -314,5 +336,103 @@ public class Quad<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + ", " + c + ", " + d + "]";
+    }
+
+    //
+    // Quaternary Quad
+    //
+
+    /**
+     * A specialized quad used to hold four elements of different types.
+     *
+     * @param <A> The first element's type
+     * @param <B> The second element's type
+     * @param <C> The third element's type
+     * @param <D> The fourth element's type
+     * @see Quad
+     */
+    public static class QuatQuad<A, B, C, D> extends Quad<Object> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Creates a new quaternary quad.
+         *
+         * @param a The first element of this quad
+         * @param b The second element of this quad
+         * @param c The third element of this quad
+         * @param d The fourth element of this quad
+         */
+        protected QuatQuad(A a, B b, C c, D d) {
+            super(a, b, c, d);
+        }
+
+        /**
+         * Creates a new quad.
+         *
+         * @param q The quad of which to copy elements from
+         */
+        protected QuatQuad(@Nonnull QuatQuad<A, B, C, D> q) {
+            super(q);
+        }
+
+        //
+        // Getters
+        //
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public A a() {
+            return (A) super.a();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public B b() {
+            return (B) super.b();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public C c() {
+            return (C) super.c();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public D d() {
+            return (D) super.c();
+        }
     }
 }

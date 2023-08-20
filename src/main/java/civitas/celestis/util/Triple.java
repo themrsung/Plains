@@ -29,6 +29,26 @@ public class Triple<E> implements Tuple<E> {
     private static final long serialVersionUID = 0L;
 
     //
+    // Static Initializers
+    //
+
+    /**
+     * Creates a new {@link TriTriple ternary triple} with three elements of different types.
+     *
+     * @param a   The first element of the triple
+     * @param b   The second element of the triple
+     * @param c   The third element of the triple
+     * @param <A> The type of the first element
+     * @param <B> The type of the second element
+     * @param <C> The type of the third element
+     * @return The ternary triple constructed from the provided elements
+     */
+    @Nonnull
+    public static <A, B, C> TriTriple<A, B, C> of(A a, B b, C c) {
+        return new TriTriple<>(a, b, c);
+    }
+
+    //
     // Constructors
     //
 
@@ -291,5 +311,90 @@ public class Triple<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + ", " + c + "]";
+    }
+
+    //
+    // Ternary Triple
+    //
+
+    /**
+     * A specialized triple used to hold three elements of different types.
+     *
+     * @param <A> The first element's type
+     * @param <B> The second element's type
+     * @param <C> The third element's type
+     * @see Triple
+     */
+    public static class TriTriple<A, B, C> extends Triple<Object> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Creates a new ternary triple.
+         *
+         * @param a The first element of this triple
+         * @param b The second element of this triple
+         * @param c The third element of this triple
+         */
+        protected TriTriple(A a, B b, C c) {
+            super(a, b, c);
+        }
+
+        /**
+         * Creates a new ternary triple.
+         *
+         * @param t The triple of which to copy elements from
+         */
+        protected TriTriple(@Nonnull TriTriple<A, B, C> t) {
+            super(t);
+        }
+
+        //
+        // Getters
+        //
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public A a() {
+            return (A) super.a();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public B b() {
+            return (B) super.b();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public C c() {
+            return (C) super.c();
+        }
     }
 }

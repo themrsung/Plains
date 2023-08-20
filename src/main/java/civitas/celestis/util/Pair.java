@@ -29,6 +29,24 @@ public class Pair<E> implements Tuple<E> {
     private static final long serialVersionUID = 0L;
 
     //
+    // Static Initializers
+    //
+
+    /**
+     * Creates a new {@link BiPair binary pair} with two elements of different types.
+     *
+     * @param a   The first element of the pair
+     * @param b   The second element of the pair
+     * @param <A> The type of the first element
+     * @param <B> The type of the second element
+     * @return The binary pair constructed from the provided elements
+     */
+    @Nonnull
+    public static <A, B> BiPair<A, B> of(A a, B b) {
+        return new BiPair<>(a, b);
+    }
+
+    //
     // Constructors
     //
 
@@ -273,5 +291,77 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + "]";
+    }
+
+    //
+    // Binary Pair
+    //
+
+    /**
+     * A specialized pair used to hold two elements of different types.
+     *
+     * @param <A> The first element's type
+     * @param <B> The second element's type
+     * @see Pair
+     */
+    public static class BiPair<A, B> extends Pair<Object> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Creates a new binary pair.
+         *
+         * @param a The first element of this pair
+         * @param b The second element of this pair
+         */
+        protected BiPair(A a, B b) {
+            super(a, b);
+        }
+
+        /**
+         * Creates a new pair.
+         *
+         * @param p The pair of which to copy elements from
+         */
+        protected BiPair(@Nonnull BiPair<A, B> p) {
+            super(p);
+        }
+
+        //
+        // Getters
+        //
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public A a() {
+            return (A) super.a();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public B b() {
+            return (B) super.b();
+        }
     }
 }
