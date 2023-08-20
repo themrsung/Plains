@@ -8,9 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * An array-based implementation of a tuple.
@@ -130,6 +128,24 @@ public class ArrayTuple<E> implements Tuple<E> {
     }
 
     //
+    // Filtration
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The filter function to handle the filtration of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public Tuple<E> filter(@Nonnull Predicate<? super E> f) {
+        return new ArrayTuple<>((E[]) Arrays.stream(elements).filter(f).toArray());
+    }
+
+
+    //
     // Transformation
     //
 
@@ -200,6 +216,18 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     public Iterator<E> iterator() {
         return Arrays.stream(elements).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param a The action to perform for each element of this tuple
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Integer, ? super E> a) {
+        for (int i = 0; i < elements.length; i++) {
+            a.accept(i, elements[i]);
+        }
     }
 
     //

@@ -8,10 +8,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -33,8 +30,54 @@ public class FastArray<E> implements Iterable<E>, Serializable {
      */
     @Nonnull
     @SafeVarargs
-    static <E> FastArray<E> of(@Nonnull E... elements) {
+    public static <E> FastArray<E> of(@Nonnull E... elements) {
         return new FastArray<>(elements);
+    }
+
+    /**
+     * Creates a new type-safe array from the provided primitive array of {@code double}s.
+     *
+     * @param values The values to contain in the type-safe array
+     * @return A new {@link Double}-typed array constructed from the provided values
+     */
+    @Nonnull
+    public static FastArray<Double> of(@Nonnull double... values) {
+        return new FastArray<>(Arrays.stream(values).boxed().toArray(Double[]::new));
+    }
+
+    /**
+     * Creates a new type-safe array from the provided primitive array of {@code float}s.
+     *
+     * @param values The values to contain in the type-safe array
+     * @return A new {@link Float}-typed array constructed from the provided values
+     */
+    @Nonnull
+    public static FastArray<Float> of(@Nonnull float[] values) {
+        final Float[] boxed = new Float[values.length];
+        for (int i = 0; i < values.length; i++) boxed[i] = values[i];
+        return new FastArray<>(boxed);
+    }
+
+    /**
+     * Creates a new type-safe array from the provided primitive array of {@code long}s.
+     *
+     * @param values The values to contain in the type-safe array
+     * @return A new {@link Long}-typed array constructed from the provided values
+     */
+    @Nonnull
+    public static FastArray<Long> of(@Nonnull long[] values) {
+        return new FastArray<>(Arrays.stream(values).boxed().toArray(Long[]::new));
+    }
+
+    /**
+     * Creates a new type-safe array from the provided primitive array of {@code int}s.
+     *
+     * @param values The values to contain in the type-safe array
+     * @return A new {@link Integer}-typed array constructed from the provided values
+     */
+    @Nonnull
+    public static FastArray<Integer> of(@Nonnull int[] values) {
+        return new FastArray<>(Arrays.stream(values).boxed().toArray(Integer[]::new));
     }
 
     //
@@ -308,6 +351,25 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     }
 
     //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this array with the provided filter function {@code f},
+     * collects every element which the filter function returns {@code true} to, then
+     * returns a new array containing only the filtered elements of this array.
+     *
+     * @param f The filter function to handle the filtration of this array
+     * @return The filtered array
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    public FastArray<E> filter(@Nonnull Predicate<? super E> f) {
+        return new FastArray<>((E[]) Arrays.stream(elements).filter(f).toArray(), true);
+    }
+
+
+    //
     // Transformation
     //
 
@@ -338,7 +400,7 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     @Nonnull
     @SuppressWarnings("unchecked")
     public <F> FastArray<F> map(@Nonnull Function<? super E, F> f) {
-        return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray());
+        return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray(), true);
     }
 
     /**
@@ -435,6 +497,33 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     @Nonnull
     public Iterator<E> iterator() {
         return Arrays.stream(elements).iterator();
+    }
+
+    /**
+     * Performs the provided action {@code a} for each element of this array.
+     * The index of the element is provided as the first parameter, and the element itself
+     * is provided as the second parameter to the provided action {@code a}.
+     *
+     * @param a The action to perform for each element of this array
+     */
+    public void forEach(@Nonnull BiConsumer<Integer, ? super E> a) {
+        for (int i = 0; i < elements.length; i++) {
+            a.accept(i, elements[i]);
+        }
+    }
+
+    //
+    // Copying
+    //
+
+    /**
+     * Performs a shallow copy of this array, then returns the copied array.
+     *
+     * @return A shallow copy of this array
+     */
+    @Nonnull
+    public FastArray<E> copy() {
+        return new FastArray<>(elements);
     }
 
     //

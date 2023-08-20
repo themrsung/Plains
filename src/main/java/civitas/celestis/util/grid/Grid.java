@@ -8,10 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A two-dimensional structure of objects.
@@ -352,6 +349,16 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     @Override
     @Nonnull
     Iterator<E> iterator();
+
+    /**
+     * Performs the provided action {@code a} for each element of this grid.
+     * The index of the element is provided as the first parameter in the form of a
+     * {@link Index} object, and the element itself it provided as ths second parameter
+     * to the provided action {@code a}.
+     *
+     * @param a The action to perform for each element of this grid
+     */
+    void forEach(@Nonnull BiConsumer<Index, ? super E> a);
 
     //
     // Conversion

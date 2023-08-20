@@ -8,10 +8,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A two-dimensional grid of {@code double}s.
@@ -741,6 +738,20 @@ public class Matrix implements Grid<Double> {
     @Override
     public Iterator<Double> iterator() {
         return Arrays.stream(array()).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param a The action to perform for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Index, ? super Double> a) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                a.accept(Grid.newIndex(r, c), values[r][c]);
+            }
+        }
     }
 
     //

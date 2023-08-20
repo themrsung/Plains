@@ -7,9 +7,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * An ordered shallowly immutable set of objects.
@@ -160,6 +158,24 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     }
 
     //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this tuple with the provided filter function {@code f},
+     * collects each element which the filter function has returned {@code true} to,
+     * then returns a new tuple containing only the filtered elements of this tuple.
+     *
+     * @param f The filter function to handle the filtration of this tuple
+     * @return The resulting tuple
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default Tuple<E> filter(@Nonnull Predicate<? super E> f) {
+        return of((E[]) Arrays.stream(array()).filter(f).toArray());
+    }
+
+    //
     // Transformation
     //
 
@@ -216,6 +232,18 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Override
     Iterator<E> iterator();
+
+    /**
+     * Performs the provided action {@code a} for each element of this tuple.
+     * The index of the element is provided as the first parameter, and the element itself
+     * is provided as the second parameter to the provided action {@code a}.
+     *
+     * @param a The action to perform for each element of this tuple
+     */
+    default void forEach(@Nonnull BiConsumer<Integer, ? super E> a) {
+        int i = 0;
+        for (final E e : this) a.accept(i++, e);
+    }
 
     //
     // Conversion
