@@ -420,6 +420,30 @@ public class Matrix implements NumericGrid<Double, Matrix> {
         return result;
     }
 
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public Vector<?> multiply(@Nonnull Vector<?> v) throws ArithmeticException {
+        if (columns != v.dimensions()) {
+            throw new ArithmeticException("Vector's dimensions must match the column count of the matrix for multiplication.");
+        }
+
+        final double[] result = new double[rows];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result[r] += values[r][c] * v.get(c);
+            }
+        }
+
+        return Vector.of(result);
+    }
+
     //
     // Negation
     //

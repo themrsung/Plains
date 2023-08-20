@@ -280,4 +280,77 @@ public class Quaternion extends Vector4 {
     public Quaternion negate() {
         return new Quaternion(-w, -x, -y, -z);
     }
+
+    //
+    // Normalization
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion normalize() throws ArithmeticException {
+        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+        if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
+        return new Quaternion(w / s, x / s, y / s, z / s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion normalizeOrZero() {
+        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+        if (s == 0) return this;
+        return new Quaternion(w / s, x / s, y / s, z / s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param v The fallback value to default to when normalization is impossible
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion normalizeOrDefault(@Nonnull Vector4 v) {
+        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+        if (s == 0) return new Quaternion(v);
+        return new Quaternion(w / s, x / s, y / s, z / s);
+    }
+
+    //
+    // Rotation Matrix
+    //
+
+    /**
+     * Returns a matrix whose values represent the rotation matrix of this quaternion.
+     *
+     * @return The rotation matrix notation of this quaternion
+     */
+    @Nonnull
+    public Matrix matrix() {
+        final double[][] values = new double[3][3];
+
+        values[0][0] = 1 - 2 * y * y - 2 * z * z;
+        values[0][1] = 2 * x * y - 2 * w * z;
+        values[0][2] = 2 * x * z + 2 * w * y;
+
+        values[1][0] = 2 * x * y + 2 * w * z;
+        values[1][1] = 1 - 2 * x * x - 2 * z * z;
+        values[1][2] = 2 * y * z - 2 * w * x;
+
+        values[2][0] = 2 * x * z - 2 * w * y;
+        values[2][1] = 2 * y * z + 2 * w * x;
+        values[2][2] = 1 - 2 * x * x - 2 * y * y;
+
+        return Matrix.of(values);
+    }
 }

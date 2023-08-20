@@ -7,7 +7,7 @@ import jakarta.annotation.Nonnull;
  * A numerical grid of numbers.
  *
  * @param <N> The type of number this matrix contains
- * @param <M> The matrix itself (used as the parameter and return type of various operations)
+ * @param <M> The grid itself (used as the parameter and return type of various operations)
  * @see Grid
  * @see Matrix
  * @see LongGrid
