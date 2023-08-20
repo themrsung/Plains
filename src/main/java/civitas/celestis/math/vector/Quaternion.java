@@ -221,4 +221,19 @@ public class Quaternion extends Vector4 {
                 w * v.z + x * v.y - y * v.x + z * v.w
         );
     }
+
+    //
+    // Negation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Quaternion negate() {
+        return new Quaternion(-w, -x, -y, -z);
+    }
 }

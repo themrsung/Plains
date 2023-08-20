@@ -1,5 +1,8 @@
 package civitas.celestis.math;
 
+import civitas.celestis.graphics.Color8;
+import civitas.celestis.graphics.LinearColor;
+import civitas.celestis.math.vector.Quaternion;
 import civitas.celestis.math.vector.Vector2;
 import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.math.vector.Vector4;
@@ -342,6 +345,193 @@ public final class Numbers {
     @Nonnull
     public static Vector4 avg(@Nonnull Vector4... values) {
         return sum(values).divide(values.length);
+    }
+
+    //
+    //
+    //
+    // Linear Interpolation (LERP)
+    //
+    //
+    //
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    public static double lerp(double s, double e, double t) {
+        return s + (e - s) * t;
+    }
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Vector2 lerp(@Nonnull Vector2 s, @Nonnull Vector2 e, double t) {
+        final double s1 = s.x();
+        final double e1 = e.x();
+        final double s2 = s.y();
+        final double e2 = e.y();
+
+        return new Vector2(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t
+        );
+    }
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Vector3 lerp(@Nonnull Vector3 s, @Nonnull Vector3 e, double t) {
+        final double s1 = s.x();
+        final double e1 = e.x();
+        final double s2 = s.y();
+        final double e2 = e.y();
+        final double s3 = s.z();
+        final double e3 = e.z();
+
+        return new Vector3(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t,
+                s3 + (e3 - s3) * t
+        );
+    }
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Vector4 lerp(@Nonnull Vector4 s, @Nonnull Vector4 e, double t) {
+        final double s1 = s.w();
+        final double e1 = e.w();
+        final double s2 = s.x();
+        final double e2 = e.x();
+        final double s3 = s.y();
+        final double e3 = e.y();
+        final double s4 = s.z();
+        final double e4 = e.z();
+
+        return new Vector4(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t,
+                s3 + (e3 - s3) * t,
+                s4 + (e4 - s4) * t
+        );
+    }
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Quaternion lerp(@Nonnull Quaternion s, @Nonnull Quaternion e, double t) {
+        final double s1 = s.w();
+        final double e1 = e.w();
+        final double s2 = s.x();
+        final double e2 = e.x();
+        final double s3 = s.y();
+        final double e3 = e.y();
+        final double s4 = s.z();
+        final double e4 = e.z();
+
+        return new Quaternion(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t,
+                s3 + (e3 - s3) * t,
+                s4 + (e4 - s4) * t
+        );
+    }
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Color8 lerp(@Nonnull Color8 s, @Nonnull Color8 e, float t) {
+        final float s1 = s.red();
+        final float e1 = e.red();
+        final float s2 = s.green();
+        final float e2 = e.green();
+        final float s3 = s.blue();
+        final float e3 = e.blue();
+        final float s4 = s.alpha();
+        final float e4 = e.alpha();
+
+        return new LinearColor(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t,
+                s3 + (e3 - s3) * t,
+                s4 + (e4 - s4) * t
+        );
+    }
+
+    //
+    // Spherical Linear Interpolation (SLERP)
+    //
+
+    /**
+     * Performs spherical linear interpolation (SLERP) between two quaternions.
+     * This assumes that the input quaternions are already normalized.
+     *
+     * @param start The starting quaternion
+     * @param end   The end quaternion
+     * @param t     The interpolation parameter {@code t} ({@code 0-1})
+     * @return The interpolated quaternion
+     */
+    @Nonnull
+    public static Quaternion slerp(@Nonnull Quaternion start, @Nonnull Quaternion end, double t) {
+        // Get the dot product of the two quaternions
+        double dot = start.dot(end);
+
+        // Determine direction and adjust end quaternion if required
+        if (dot < 0) {
+            end = end.negate();
+            dot = -dot;
+        }
+
+        if (1 - dot < Numbers.EPSILON) {
+            // Quaternions are very close, use linear interpolation
+            return lerp(start, end, t);
+        }
+
+        // Calculate the angle between the quaternions
+        final double theta0 = Math.acos(dot);
+        final double theta1 = theta0 * t;
+
+        // Calculate the interpolation coefficients
+        final double s0 = Math.sin((1 - t) * theta0) / Math.sin(theta0);
+        final double s1 = Math.sin(theta1) / Math.sin(theta0);
+
+        // Perform spherical linear interpolation
+        return start.multiply(s0).add(end.multiply(s1));
     }
 
     //
