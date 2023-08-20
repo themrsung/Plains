@@ -71,6 +71,14 @@ public interface RichCollection<E> extends Collection<E> {
     FastArray<E> array();
 
     /**
+     * Returns an array whose elements are populated by the elements of this collection.
+     *
+     * @return The array representation of this collection
+     */
+    @Override
+    E[] toArray();
+
+    /**
      * Converts this collection into a tuple, then returns the converted tuple.
      *
      * @return The tuple representation of this collection

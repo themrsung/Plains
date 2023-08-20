@@ -293,6 +293,7 @@ public class LinearColor implements Color8 {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

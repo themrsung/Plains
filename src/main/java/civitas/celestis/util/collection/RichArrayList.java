@@ -163,9 +163,19 @@ public class RichArrayList<E> extends ArrayList<E> implements RichList<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public synchronized FastArray<E> array() {
-        return FastArray.of((E[]) toArray());
+        return FastArray.of(toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public E[] toArray() {
+        return (E[]) super.toArray();
     }
 
     /**
@@ -175,8 +185,7 @@ public class RichArrayList<E> extends ArrayList<E> implements RichList<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public synchronized Tuple<E> tuple() {
-        return Tuple.of((E[]) toArray());
+        return Tuple.of(toArray());
     }
 }

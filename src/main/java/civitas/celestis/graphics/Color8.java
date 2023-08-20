@@ -435,6 +435,7 @@ public interface Color8 extends Packable32, Packable64, Serializable {
     /**
      * Inverts the RGB components of this color ({@code f(x) -> 255 - x}),
      * then returns the inverted color.
+     *
      * @return The RGB inverse of this color
      */
     @Nonnull

@@ -291,6 +291,7 @@ public class SimpleColor implements Color8 {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

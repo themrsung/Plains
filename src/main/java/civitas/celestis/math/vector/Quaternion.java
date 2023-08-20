@@ -14,6 +14,7 @@ import java.io.Serial;
  * quaternions have unique properties and operations that make them especially suitable
  * for representing rotations and orientations in three-dimensional space.
  * </p>
+ *
  * @see Vector4
  */
 public class Quaternion extends Vector4 {

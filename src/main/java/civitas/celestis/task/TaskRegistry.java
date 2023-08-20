@@ -3,7 +3,7 @@ package civitas.celestis.task;
 import jakarta.annotation.Nonnull;
 
 /**
- * A registry of a task. Holds contextual date required to process tasks,
+ * A registry of a task. Holds contextual data required to process tasks,
  * as well as a reference to the task itself.
  *
  * @see Task
