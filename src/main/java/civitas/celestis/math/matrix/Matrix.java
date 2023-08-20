@@ -1,5 +1,7 @@
 package civitas.celestis.math.matrix;
 
+import civitas.celestis.math.vector.*;
+import civitas.celestis.math.vector.Vector;
 import civitas.celestis.util.grid.ArrayGrid;
 import civitas.celestis.util.grid.Grid;
 import civitas.celestis.util.tuple.Tuple;
@@ -27,6 +29,25 @@ public class Matrix implements Grid<Double> {
     //
     // Static Initializers
     //
+
+    /**
+     * Creates a new matrix whose components are copied from the provided 2D array of values.
+     * @param values The values to create the matrix from
+     * @return A matrix with the provided values
+     */
+    @Nonnull
+    public static Matrix of(@Nonnull double[][] values) {
+        final int rows = values.length;
+        final int columns = rows > 0 ? values[0].length : 0;
+
+        final Matrix matrix = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            System.arraycopy(values[r], 0, matrix.values[r], 0, columns);
+        }
+
+        return matrix;
+    }
 
     /**
      * Creates a new {@code n}-dimensional identity matrix, then returns the newly created matrix.
@@ -600,6 +621,29 @@ public class Matrix implements Grid<Double> {
         }
 
         return result;
+    }
+
+    /**
+     * Multiplies this matrix by a vector, and returns the resulting vector.
+     * @param v The vector of which to multiply this matrix by
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are not compatible with this matrix
+     */
+    @Nonnull
+    public Vector<?> multiply(@Nonnull Vector<?> v) throws ArithmeticException {
+        if (columns != v.dimensions()) {
+            throw new ArithmeticException("Matrix dimensions are not compatible with the provided vector.");
+        }
+
+        final double[] array = new double[v.dimensions()];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                array[r] += v.get(c) * values[r][c];
+            }
+        }
+
+        return Vector.of(array);
     }
 
     //

@@ -1,10 +1,21 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.math.Numbers;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;
 
+/**
+ * A complex number with three imaginary parts. Quaternions are often used to represent
+ * the rotation of three-dimensional vectors without suffering from gimbal lock.
+ * <p>
+ * While arithmetic operations share some similarities with those of four-dimensional vectors,
+ * quaternions have unique properties and operations that make them especially suitable
+ * for representing rotations and orientations in three-dimensional space.
+ * </p>
+ * @see Vector4
+ */
 public class Quaternion extends Vector4 {
     //
     // Constants
@@ -99,7 +110,9 @@ public class Quaternion extends Vector4 {
      */
     @Nonnull
     public Quaternion inverse() throws ArithmeticException {
-        return conjugate().divide(w * w + x * x + y * y + z * z);
+        final double n2 = norm2();
+        if (n2 == 0) throw new ArithmeticException("Cannot divide by zero.");
+        return new Quaternion(w / n2, -x / n2, -y / n2, -z / n2);
     }
 
     //
@@ -129,13 +142,11 @@ public class Quaternion extends Vector4 {
     // Arithmetic
     //
 
-    // TODO: 2023-08-19 Re-write the comments here to suit quaternions.
-
     /**
-     * {@inheritDoc}
+     * Adds a scalar to this quaternion.
      *
-     * @param s The scalar to add to this vector
-     * @return {@inheritDoc}
+     * @param s The scalar to add to this quaternion
+     * @return The resulting quaternion
      */
     @Nonnull
     @Override
@@ -144,10 +155,10 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Subtracts this quaternion by a scalar.
      *
-     * @param s The scalar to subtract this vector by
-     * @return {@inheritDoc}
+     * @param s The scalar to subtract this quaternion by
+     * @return The resulting quaternion
      */
     @Nonnull
     @Override
@@ -156,10 +167,13 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Multiplies this quaternion by a scalar. This is not appropriate to use as a substitute for
+     * {@link #scale(double)}, as it changes the magnitude of this quaternion, no longer making it
+     * a rotation quaternion. (a quaternion with a Euclidean norm of {@code 1})
      *
-     * @param s The scalar to multiply this vector by
-     * @return {@inheritDoc}
+     * @param s The scalar to multiply this quaternion by
+     * @return The resulting quaternion
+     * @see #scale(double)
      */
     @Nonnull
     @Override
@@ -168,10 +182,40 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Scales the rotation of this quaternion.
+     * This will only work properly if this quaternion is a rotation quaternion.
+     * (a quaternion with a Euclidean norm of {@code 1})
      *
-     * @param s The scalar to divide this vector by
-     * @return {@inheritDoc}
+     * @param s The scale factor to apply to the rotation
+     * @return The scaled quaternion
+     */
+    @Nonnull
+    public Quaternion scale(double s) {
+        if (Math.abs(w() - 1) < Numbers.EPSILON) {
+            return IDENTITY;
+        }
+
+        final double halfAngle = Math.acos(w());
+        final double newHalfAngle = halfAngle * s;
+
+        final double sinHalfAngle = Math.sin(halfAngle);
+        final double sinNewHalfAngle = Math.sin(newHalfAngle);
+
+        final double scaleFactor = sinNewHalfAngle / sinHalfAngle;
+
+        return new Quaternion(
+                Math.cos(newHalfAngle),
+                x * scaleFactor,
+                y * scaleFactor,
+                z * scaleFactor
+        );
+    }
+
+    /**
+     * Divides this quaternion by a scalar.
+     *
+     * @param s The scalar to divide this quaternion by
+     * @return The resulting quaternion
      * @throws ArithmeticException {@inheritDoc}
      */
     @Nonnull
@@ -182,10 +226,10 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a vector to this quaternion. The vector is treated as if it were a quaternion.
      *
-     * @param v The vector of which to add to this vector
-     * @return {@inheritDoc}
+     * @param v The vector of which to add to this quaternion
+     * @return The resulting quaternion
      */
     @Nonnull
     @Override
@@ -194,10 +238,10 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Subtracts this quaternion by a vector. The vector is treated as if it were a quaternion.
      *
-     * @param v The vector of which to subtract from this vector
-     * @return {@inheritDoc}
+     * @param v The vector of which to subtract from this quaternion
+     * @return The resulting quaternion
      */
     @Nonnull
     @Override
@@ -206,10 +250,10 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Multiplies this quaternion by another vector. Quaternion multiplication is used.
      *
-     * @param v The vector of which to multiply this vector by
-     * @return {@inheritDoc}
+     * @param v The vector of which to multiply this quaternion by
+     * @return The quaternion left-product between this quaternion and the provided vector {@code v}
      */
     @Nonnull
     @Override
@@ -227,9 +271,9 @@ public class Quaternion extends Vector4 {
     //
 
     /**
-     * {@inheritDoc}
+     * Negates this quaternion, then returns the negated quaternion.
      *
-     * @return {@inheritDoc}
+     * @return The negation of this quaternion
      */
     @Nonnull
     @Override
