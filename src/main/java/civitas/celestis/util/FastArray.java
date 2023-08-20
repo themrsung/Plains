@@ -88,6 +88,16 @@ public class FastArray<E> implements Iterable<E>, Serializable {
     }
 
     /**
+     * Creates a new array.
+     *
+     * @param c The collection of which to copy elements from
+     */
+    @SuppressWarnings("unchecked")
+    public FastArray(@Nonnull Collection<? extends E> c) {
+        this.elements = (E[]) List.copyOf(c).toArray();
+    }
+
+    /**
      * Creates a new array. This constructor is private to prevent
      * ambiguity with other constructors. Use {@link #of(E...)} for public access.
      *
