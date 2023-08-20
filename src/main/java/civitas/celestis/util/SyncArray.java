@@ -15,6 +15,7 @@ import java.util.stream.Stream;
  * A synchronized thread-safe and type-safe array suitable for multithreaded applications.
  *
  * @param <E> The type of element this array should hold
+ * @see SafeArray
  * @see FastArray
  */
 public class SyncArray<E> extends FastArray<E> {
@@ -295,6 +296,14 @@ public class SyncArray<E> extends FastArray<E> {
     @Override
     public synchronized void sort(@Nonnull Comparator<? super E> f) {
         super.sort(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void shuffle() {
+        super.shuffle();
     }
 
     //

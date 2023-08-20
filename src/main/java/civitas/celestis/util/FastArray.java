@@ -18,6 +18,7 @@ import java.util.stream.Stream;
  * Thread safety is not guaranteed by this implementation.
  *
  * @param <E> The type of element this array should hold
+ * @see SafeArray
  * @see SyncArray
  */
 public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
@@ -361,6 +362,25 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Override
     public void sort(@Nonnull Comparator<? super E> f) {
         Arrays.sort(elements, f);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void shuffle() {
+        final int n = elements.length;
+        final Random random = new Random();
+
+        for (int i = n - 1; i > 0; i--) {
+            final int j = random.nextInt(i + 1);
+
+            // Swap elements at i and j
+            final E temp = elements[i];
+
+            elements[i] = elements[j];
+            elements[j] = temp;
+        }
     }
 
     //

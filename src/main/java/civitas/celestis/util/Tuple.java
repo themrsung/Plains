@@ -3,9 +3,12 @@ package civitas.celestis.util;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -32,7 +35,27 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Nonnull
     @SafeVarargs
     static <E> Tuple<E> of(@Nonnull E... elements) {
-        return new ArrayTuple<>(elements);
+        return switch (elements.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(elements[0]);
+            case 2 -> new Pair<>(elements);
+            case 3 -> new Triple<>(elements);
+            case 4 -> new Quad<>(elements);
+            default -> new ArrayTuple<>(elements);
+        };
+    }
+
+    /**
+     * Creates a new tuple from a collection of elements.
+     *
+     * @param c   The collection of which to copy elements from
+     * @param <E> The type of element to copy
+     * @return The constructed tuple
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> Tuple<E> copyOf(@Nonnull Collection<E> c) {
+        return of((E[]) c.toArray());
     }
 
     //
@@ -217,4 +240,281 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Override
     @Nonnull
     String toString();
+
+    //
+    // Specialized Tuples
+    //
+
+    /**
+     * An empty tuple. This is only used as a placeholder instead of {@code null} values.
+     *
+     * @param <E> The type of element to (not) hold
+     */
+    final class Empty<E> implements Tuple<E> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Private constructor to prevent the external usage of this class.
+         */
+        private Empty() {
+        }
+
+        //
+        // Serialization
+        //
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @Nonnull
+        public String toString() {
+            return "[]";
+        }
+
+        //
+        // Methods
+        //
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public E get(int i) throws IndexOutOfBoundsException {
+            throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 0.");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(@Nullable Object obj) {
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsAll(@Nonnull Tuple<?> t) {
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
+            return new Empty<>();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+                throws IllegalArgumentException {
+            if (t.size() != 0) throw new IllegalArgumentException("Tuple sizes must match for this operation.");
+            return new Empty<>();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Iterator<E> iterator() {
+            return new Iterator<>() {
+                @Override
+                public boolean hasNext() {return false;}
+
+                @Override
+                public E next() {return null;}
+            };
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public SafeArray<E> array() {
+            return SafeArray.of(); // An empty array
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public List<E> list() {
+            return List.of(); // An empty list
+        }
+    }
+
+    /**
+     * A tuple with a size of {@code 1}.
+     *
+     * @param <E> The type of element to contain
+     */
+    final class Single<E> implements Tuple<E> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Creates a new single.
+         *
+         * @param element The element to contain
+         */
+        private Single(E element) {
+            this.element = element;
+        }
+
+        //
+        // Variables
+        //
+
+        /**
+         * The only element of this tuple.
+         */
+        private final E element;
+
+        //
+        // Getters
+        //
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public E get(int i) throws IndexOutOfBoundsException {
+            if (i != 0) throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 1.");
+            return element;
+        }
+
+        //
+        // Serialization
+        //
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public String toString() {
+            return "[" + element + "]";
+        }
+
+        //
+        // Methods
+        //
+
+        /**
+         * @return {@code 1}
+         */
+        @Override
+        public int size() {
+            return 1;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(@Nullable Object obj) {
+            return Objects.equals(element, obj);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsAll(@Nonnull Tuple<?> t) {
+            for (final Object o : t) {
+                if (!Objects.equals(element, o)) return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
+            return new Single<>(f.apply(element));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+                throws IllegalArgumentException {
+            if (t.size() != 1) throw new IllegalArgumentException("Tuple sizes must match for this operation.");
+            return new Single<>(f.apply(element, t.get(0)));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Iterator<E> iterator() {
+            return List.of(element).iterator();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public SafeArray<E> array() {
+            return SafeArray.of(element);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public List<E> list() {
+            return List.of(element);
+        }
+    }
 }

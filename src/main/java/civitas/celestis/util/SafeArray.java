@@ -84,7 +84,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @return A new type-safe array containing the elements of the provided array {@code a}
      */
     @Nonnull
-    static <E> SafeArray<E> copyOf(@Nonnull SyncArray<E> a) {
+    static <E> SafeArray<E> copyOf(@Nonnull SafeArray<E> a) {
         return new FastArray<>(a);
     }
 
@@ -304,6 +304,11 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @param f The comparator function to sort this array with
      */
     void sort(@Nonnull Comparator<? super E> f);
+
+    /**
+     * Randomizes this array's order, rearranging the elements in a randomized manner.
+     */
+    void shuffle();
 
     //
     // Filtration
