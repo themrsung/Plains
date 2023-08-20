@@ -117,14 +117,14 @@ public class Vector3 implements Vector<Vector3> {
      * @param t The tuple of which to copy component values from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 3}
      */
-    public Vector3(@Nonnull Tuple<Double> t) {
+    public Vector3(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 3) {
             throw new IllegalArgumentException("The provided tuple's size is not 3.");
         }
 
-        this.x = t.get(0);
-        this.y = t.get(1);
-        this.z = t.get(2);
+        this.x = t.get(0).doubleValue();
+        this.y = t.get(1).doubleValue();
+        this.z = t.get(2).doubleValue();
     }
 
     //

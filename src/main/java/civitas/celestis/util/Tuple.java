@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,24 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
             case 0 -> new Empty<>();
             case 1 -> new Single<>(elements[0]);
             default -> new ArrayTuple<>(elements);
+        };
+    }
+
+    /**
+     * Given an existing collection of elements, this creates a new tuple instance
+     * containing the provided collection's elements.
+     *
+     * @param c   The collection of which to copy elements from
+     * @param <E> The typ eof element to contain in the tuple
+     * @return A new tuple instance composed of the collection's contents
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> Tuple<E> copyOf(@Nonnull Collection<E> c) {
+        return switch (c.size()) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>((E) c.toArray()[0]);
+            default -> new ArrayTuple<>((E[]) c.toArray());
         };
     }
 

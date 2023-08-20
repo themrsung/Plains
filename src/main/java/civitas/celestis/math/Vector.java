@@ -5,6 +5,8 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -14,10 +16,61 @@ import java.util.function.UnaryOperator;
  * An immutable and primitive mathematical vector.
  *
  * @param <V> The vector itself (used as the parameter and result of various operations)
+ * @see Vector2
  * @see Vector3
  * @see Vector4
  */
 public interface Vector<V extends Vector<V>> extends Serializable {
+    //
+    // Factory
+    //
+
+    /**
+     * Given an array of components in sequential order, this returns a new vector
+     * instance created from the provided array of components.
+     *
+     * @param components The array containing the components in sequential order
+     * @return A new vector instance created from the provided array of components
+     */
+    @Nonnull
+    static Vector<?> of(@Nonnull double... components) {
+        return switch (components.length) {
+            case 2 -> new Vector2(components);
+            case 3 -> new Vector3(components);
+            case 4 -> new Vector4(components);
+            default -> new ArrayVector(components);
+        };
+    }
+
+    /**
+     * Creates a new vector by copying the component values from a numeric tuple.
+     *
+     * @param t The tuple of which to copy component values from
+     * @return A new vector instance created from the provided tuple's numeric values
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull Tuple<? extends Number> t) {
+        return switch (t.size()) {
+            case 2 -> new Vector2(t);
+            case 3 -> new Vector3(t);
+            case 4 -> new Vector4(t);
+            default -> new ArrayVector(t);
+        };
+    }
+
+    /**
+     * Creates a new vector by copying the component values from a numeric collection.
+     *
+     * @param c The collection of which to copy component values from
+     * @return A new vector instance created from the provided collection's numeric values
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull Collection<? extends Number> c) {
+        return of(Arrays.stream(c.toArray(Number[]::new))
+                .mapToDouble(Number::doubleValue)
+                .toArray());
+    }
+
     //
     // Properties
     //

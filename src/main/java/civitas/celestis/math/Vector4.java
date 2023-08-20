@@ -131,15 +131,15 @@ public class Vector4 implements Vector<Vector4> {
      * @param t The tuple of which to copy component values from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 4}
      */
-    public Vector4(@Nonnull Tuple<Double> t) {
+    public Vector4(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 4) {
             throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
-        this.w = t.get(0);
-        this.x = t.get(1);
-        this.y = t.get(2);
-        this.z = t.get(3);
+        this.w = t.get(0).doubleValue();
+        this.x = t.get(1).doubleValue();
+        this.y = t.get(2).doubleValue();
+        this.z = t.get(3).doubleValue();
     }
 
     //
