@@ -1,14 +1,12 @@
 package civitas.celestis.util;
 
+import civitas.celestis.math.Vector;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -17,6 +15,7 @@ import java.util.function.UnaryOperator;
  * An ordered shallowly immutable set of objects.
  *
  * @param <E> The type of element this tuple should hold
+ * @see Pair
  * @see ArrayTuple
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
@@ -38,6 +37,9 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         return switch (elements.length) {
             case 0 -> new Empty<>();
             case 1 -> new Single<>(elements[0]);
+            case 2 -> new Pair<>(elements);
+            case 3 -> new Triple<>(elements);
+            case 4 -> new Quad<>(elements);
             default -> new ArrayTuple<>(elements);
         };
     }
@@ -47,7 +49,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * containing the provided collection's elements.
      *
      * @param c   The collection of which to copy elements from
-     * @param <E> The typ eof element to contain in the tuple
+     * @param <E> The type of element to contain in the tuple
      * @return A new tuple instance composed of the collection's contents
      */
     @Nonnull
@@ -56,7 +58,28 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         return switch (c.size()) {
             case 0 -> new Empty<>();
             case 1 -> new Single<>((E) c.toArray()[0]);
+            case 2 -> new Pair<>((E[]) c.toArray());
+            case 3 -> new Triple<>((E[]) c.toArray());
+            case 4 -> new Quad<>((E[]) c.toArray());
             default -> new ArrayTuple<>((E[]) c.toArray());
+        };
+    }
+
+    /**
+     * Given a mathematical vector, this creates a new tuple instance containing the
+     * provided vector's component values.
+     *
+     * @param v The vector of which to copy elements from
+     * @return A new tuple instance composed of the vector's components
+     */
+    @Nonnull
+    static Tuple<Double> copyOf(@Nonnull Vector<?> v) {
+        return switch (v.dimensions()) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(v.get(0));
+            default -> new ArrayTuple<>(Arrays.stream(v.array())
+                    .boxed()
+                    .toArray(Double[]::new));
         };
     }
 

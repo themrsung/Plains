@@ -13,12 +13,12 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
- * An array-based implementation of a tuple.
+ * A fixed-size tuple which can only hold four elements.
+ * Quads use ABCD notation to identity their elements.
  *
  * @param <E> The type of element this tuple should hold
- * @see Tuple
  */
-public class ArrayTuple<E> implements Tuple<E> {
+public class Quad<E> implements Tuple<E> {
     //
     // Constants
     //
@@ -27,31 +27,52 @@ public class ArrayTuple<E> implements Tuple<E> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = -4229086947852799043L;
+    private static final long serialVersionUID = -8936736196164654937L;
 
     //
     // Constructors
     //
 
     /**
-     * Creates a new array tuple.
+     * Creates a new quad.
      *
-     * @param elements The elements this tuple should hold
+     * @param a The first element of this quad
+     * @param b The second element of this quad
+     * @param c The third element of this quad
+     * @param d The fourth element of this quad
      */
-    @SafeVarargs
-    @SuppressWarnings("unchecked")
-    public ArrayTuple(@Nonnull E... elements) {
-        this.elements = (E[]) Arrays.stream(elements).toArray();
+    public Quad(E a, E b, E c, E d) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
     }
 
     /**
-     * Creates a new array tuple.
+     * Creates a new quad.
+     *
+     * @param elements An array containing the elements of this quad in ABCD order
+     * @throws IllegalArgumentException When the array's length is not {@code 4}
+     */
+    public Quad(@Nonnull E[] elements) {
+        if (elements.length != 4) {
+            throw new IllegalArgumentException("The provided array's length is not 4.");
+        }
+
+        this.a = elements[0];
+        this.b = elements[1];
+        this.c = elements[2];
+        this.d = elements[3];
+    }
+
+    /**
+     * Creates a new quad.
      *
      * @param t The tuple of which to copy elements from
+     * @throws IllegalArgumentException When the tuple's size is not {@code 4}
      */
-    @SuppressWarnings("unchecked")
-    protected ArrayTuple(@Nonnull Tuple<? extends E> t) {
-        this.elements = (E[]) Arrays.stream(t.array()).toArray();
+    public Quad(@Nonnull Tuple<? extends E> t) {
+        this(t.array());
     }
 
     //
@@ -59,11 +80,24 @@ public class ArrayTuple<E> implements Tuple<E> {
     //
 
     /**
-     * The array of elements this tuple is holding.
-     * It is important that this array stays private in order to ensure that
-     * this class is immutable.
+     * The first element of this tuple.
      */
-    private final E[] elements;
+    protected final E a;
+
+    /**
+     * The second element of this tuple.
+     */
+    protected final E b;
+
+    /**
+     * The third element of this tuple.
+     */
+    protected final E c;
+
+    /**
+     * The fourth element of this tuple.
+     */
+    protected final E d;
 
     //
     // Properties
@@ -76,7 +110,7 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Override
     public int size() {
-        return elements.length;
+        return 4;
     }
 
     //
@@ -92,7 +126,49 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Override
     public E get(int i) throws IndexOutOfBoundsException {
-        return elements[i];
+        return switch (i) {
+            case 0 -> a;
+            case 1 -> b;
+            case 2 -> c;
+            case 3 -> d;
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
+        };
+    }
+
+    /**
+     * Returns the A component (the first component) of this quad.
+     *
+     * @return The A component of this quad
+     */
+    public E a() {
+        return a;
+    }
+
+    /**
+     * Returns the B component (the second component) of this quad.
+     *
+     * @return The B component of this quad
+     */
+    public E b() {
+        return b;
+    }
+
+    /**
+     * Returns the C component (the third component) of this quad.
+     *
+     * @return The C component of this quad
+     */
+    public E c() {
+        return c;
+    }
+
+    /**
+     * Returns the D component (the fourth component) of this quad.
+     *
+     * @return The D component of this quad
+     */
+    public E d() {
+        return d;
     }
 
     //
@@ -107,11 +183,10 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        for (final E element : elements) {
-            if (Objects.equals(element, obj)) return true;
-        }
-
-        return false;
+        return Objects.equals(a, obj) ||
+                Objects.equals(b, obj) ||
+                Objects.equals(c, obj) ||
+                Objects.equals(d, obj);
     }
 
     /**
@@ -141,9 +216,8 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public Tuple<E> transform(@Nonnull UnaryOperator<E> f) {
-        return new ArrayTuple<>((E[]) Arrays.stream(elements).map(f).toArray());
+        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
 
     /**
@@ -155,10 +229,10 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new ArrayTuple<>((F[]) Arrays.stream(elements).map(f).toArray());
+        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
+
 
     /**
      * {@inheritDoc}
@@ -172,20 +246,13 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        if (elements.length != t.size()) {
+        if (t.size() != 4) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        final G[] result = (G[]) new Object[elements.length];
-
-        for (int i = 0; i < elements.length; i++) {
-            result[i] = f.apply(elements[i], t.get(i));
-        }
-
-        return new ArrayTuple<>(result);
+        return new Quad<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
     }
 
     //
@@ -199,7 +266,7 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return Arrays.stream(elements).iterator();
+        return List.of(a, b, c, d).iterator();
     }
 
     //
@@ -215,7 +282,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) Arrays.stream(elements).toArray();
+        return (E[]) new Object[]{a, b, c, d};
     }
 
     /**
@@ -226,7 +293,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return Arrays.asList(elements);
+        return List.of(a, b, c, d);
     }
 
     //
@@ -242,13 +309,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof Tuple<?> t)) return false;
-        if (elements.length != t.size()) return false;
-
-        for (int i = 0; i < elements.length; i++) {
-            if (!Objects.equals(elements[i], t.get(i))) return false;
-        }
-
-        return true;
+        return Arrays.equals(array(), t.array());
     }
 
     //
@@ -263,6 +324,6 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     @Nonnull
     public String toString() {
-        return Arrays.toString(elements);
+        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
     }
 }
