@@ -27,7 +27,7 @@ public class Vector4 implements Vector<Vector4> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = 3097186937898263138L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * A vector of no direction of magnitude. Represents origin.

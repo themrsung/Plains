@@ -538,6 +538,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

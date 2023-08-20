@@ -458,6 +458,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

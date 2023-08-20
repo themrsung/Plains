@@ -25,7 +25,7 @@ public class Quaternion extends Vector4 {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = 1016371168055826681L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * The identity quaternion. This will produce no rotation.

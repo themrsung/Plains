@@ -122,7 +122,10 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    Tuple<E> filter(@Nonnull Predicate<? super E> f);
+    @SuppressWarnings("unchecked")
+    default Tuple<E> filter(@Nonnull Predicate<? super E> f) {
+        return of((E[]) array().stream().filter(f).toArray());
+    }
 
     //
     // Transformation

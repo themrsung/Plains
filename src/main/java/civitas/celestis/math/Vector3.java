@@ -26,7 +26,7 @@ public class Vector3 implements Vector<Vector3> {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = -2781260903474247112L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * A vector of no direction or magnitude. Represents origin.

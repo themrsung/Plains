@@ -25,6 +25,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     /**
      * Returns the number of components this vector has. In other words,
      * this returns the number {@code n} for an {@code n}-dimensional vector.
+     *
      * @return The number of scalar components this vector has
      */
     int dimensions();
