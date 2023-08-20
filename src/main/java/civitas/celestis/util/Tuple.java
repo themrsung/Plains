@@ -77,7 +77,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         return switch (v.dimensions()) {
             case 0 -> new Empty<>();
             case 1 -> new Single<>(v.get(0));
-            default -> new ArrayTuple<>(Arrays.stream(v.array())
+            default -> of(Arrays.stream(v.array())
                     .boxed()
                     .toArray(Double[]::new));
         };
