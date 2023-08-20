@@ -536,6 +536,16 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
         return new ArrayList<>(Arrays.asList(elements));
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<E> tuple() {
+        return Tuple.of(elements);
+    }
+
     //
     // Iteration
     //

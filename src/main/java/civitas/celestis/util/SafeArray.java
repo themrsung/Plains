@@ -455,6 +455,16 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @Nonnull
     ArrayList<E> arrayList();
 
+    /**
+     * Returns a tuple whose elements are populated with that of this array's elements, having the same
+     * composition and order as this array. Since tuples are immutable by definition, this effectively
+     * finalizes the current composition and order of this array into an immutable dataset.
+     *
+     * @return The tuple representation of this array
+     */
+    @Nonnull
+    Tuple<E> tuple();
+
     //
     // Iteration
     //

@@ -456,6 +456,16 @@ public class SyncArray<E> extends FastArray<E> {
         return super.arrayList();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized Tuple<E> tuple() {
+        return super.tuple();
+    }
+
     //
     // Iteration
     //
