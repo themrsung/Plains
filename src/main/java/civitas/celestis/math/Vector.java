@@ -5,7 +5,9 @@ import civitas.celestis.util.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -16,8 +18,75 @@ import java.util.function.UnaryOperator;
  * {@code double} components. This interface defines the contract of a vector.
  *
  * @param <V> The vector itself (used as the parameter and return type of various operations)
+ * @see Vector1
+ * @see Vector2
+ * @see Vector3
+ * @see Vector4
+ * @see ArrayVector
  */
 public interface Vector<V extends Vector<V>> extends Serializable {
+    //
+    // Factory
+    //
+
+    /**
+     * Creates a new vector from the provided array of components.
+     *
+     * @param components The components of the vector in sequential order
+     * @return A new vector instance created from the array of components
+     */
+    @Nonnull
+    static Vector<?> of(@Nonnull double... components) {
+        return switch (components.length) {
+            case 0 -> Vector0.ZERO;
+            case 1 -> new Vector1(components[0]);
+            case 2 -> new Vector2(components);
+            case 3 -> new Vector3(components);
+            case 4 -> new Vector4(components);
+            default -> new ArrayVector(components);
+        };
+    }
+
+    /**
+     * Creates a new vector from the provided tuple of numbers.
+     *
+     * @param t The tuple of which to copy component values from
+     * @return A new vector instance created from the components of the tuple
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull Tuple<? extends Number> t) {
+        return switch (t.size()) {
+            case 0 -> Vector0.ZERO;
+            case 1 -> new Vector1(t);
+            case 2 -> new Vector2(t);
+            case 3 -> new Vector3(t);
+            case 4 -> new Vector4(t);
+            default -> new ArrayVector(t);
+        };
+    }
+
+    /**
+     * Creates a new vector from the provided array of numbers.
+     *
+     * @param a The array of which to copy component values from
+     * @return A new vector instance created from the components of the array
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull SafeArray<? extends Number> a) {
+        return of(a.stream().mapToDouble(Number::doubleValue).toArray());
+    }
+
+    /**
+     * Creates a new vector from the provided collection of numbers.
+     *
+     * @param c The collection of which to copy component values from
+     * @return A new vector instance created from the components of the collection
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull Collection<? extends Number> c) {
+        return of(c.stream().mapToDouble(Number::doubleValue).toArray());
+    }
+
     //
     // Properties
     //
@@ -405,4 +474,345 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     @Override
     @Nonnull
     String toString();
+
+    //
+    // Specialized Vectors
+    //
+
+    /**
+     * A zero-dimensional vector. The non-existent component value is presumed to be zero,
+     * and arithmetic logic is implemented accordingly.
+     */
+    final class Vector0 implements Vector<Vector0> {
+        //
+        // Constants
+        //
+
+        /**
+         * The serial version UID of this class.
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
+
+        /**
+         * The only instance of {@link Vector0} in existence.
+         */
+        private static final Vector0 ZERO = new Vector0();
+
+        //
+        // Constructors
+        //
+
+        /**
+         * Private constructor to prevent external instantiation.
+         */
+        private Vector0() {
+        }
+
+        //
+        // Methods
+        //
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int dimensions() {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isZero() {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isNaN() {
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isFinite() {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isInfinite() {
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double norm() {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double norm2() {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double normManhattan() {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double get(int i) throws IndexOutOfBoundsException {
+            throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 0.");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 add(double s) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 subtract(double s) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 multiply(double s) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 divide(double s) throws ArithmeticException {
+            if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 add(@Nonnull Vector0 v) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 subtract(@Nonnull Vector0 v) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double dot(@Nonnull Vector0 vector0) {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double distance(@Nonnull Vector0 v) {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double distance2(@Nonnull Vector0 v) {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public double distanceManhattan(@Nonnull Vector0 v) {
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 min(@Nonnull Vector0 v) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 max(@Nonnull Vector0 v) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 clamp(@Nonnull Vector0 min, @Nonnull Vector0 max) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 negate() {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 normalize() throws ArithmeticException {
+            throw new ArithmeticException("Cannot divide by zero.");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 normalizeOrZero() {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 normalizeOrDefault(@Nonnull Vector0 v) {
+            return v;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 transform(@Nonnull UnaryOperator<Double> f) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <T> Tuple<T> map(@Nonnull Function<Double, T> f) {
+            return Tuple.of();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Vector0 merge(@Nonnull Vector0 v, @Nonnull BinaryOperator<Double> f) {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public SafeArray<Double> array() {
+            return SafeArray.of();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Tuple<Double> tuple() {
+            return Tuple.of();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public List<Double> list() {
+            return List.of();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(@Nullable Vector0 v) {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (!(obj instanceof Vector<?> v)) return false;
+            return v.dimensions() == 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @Nonnull
+        public String toString() {
+            return "[]";
+        }
+    }
 }
