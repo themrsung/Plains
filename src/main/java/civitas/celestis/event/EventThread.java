@@ -43,6 +43,7 @@ public class EventThread extends Thread implements EventManager {
             @Nonnull List<HandlerReference> handlers
     ) {
         super(() -> {
+
             //
             // START OF EVENT THREAD
             //
@@ -76,6 +77,7 @@ public class EventThread extends Thread implements EventManager {
             //
             // END OF EVENT THREAD
             //
+
         }, name);
 
         // Assign variables

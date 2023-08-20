@@ -25,6 +25,31 @@ public class Matrix implements Grid<Double> {
     private static final long serialVersionUID = -3908175401554769093L;
 
     //
+    // Static Initializers
+    //
+
+    /**
+     * Creates a new {@code n}-dimensional identity matrix, then returns the newly created matrix.
+     *
+     * @param n The number of dimensions to initialize the identity matrix to
+     * @return The n-dimensional identity matrix
+     */
+    @Nonnull
+    public static Matrix getIdentity(int n) {
+        final Matrix identity = new Matrix(n, n);
+        identity.fill(0d);
+
+        for (int c = 0; c < n; c++) {
+            for (int r = 0; r < n; r++) {
+                if (c != r) continue;
+                identity.values[r][c] = 1;
+            }
+        }
+
+        return identity;
+    }
+
+    //
     // Constructors
     //
 
