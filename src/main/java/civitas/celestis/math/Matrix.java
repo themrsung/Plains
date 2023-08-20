@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.math;
 
+import civitas.celestis.util.*;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -11,12 +12,11 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * A two-dimensional grid implemented using a 2D array.
+ * A two-dimensional grid of {@code double}s.
  *
- * @param <E> The type of element this grid should hold
- * @see Grid
+ * @see NumericGrid
  */
-public class ArrayGrid<E> implements Grid<E> {
+public class Matrix implements NumericGrid<Double, Matrix> {
     //
     // Constants
     //
@@ -32,24 +32,23 @@ public class ArrayGrid<E> implements Grid<E> {
     //
 
     /**
-     * Creates a new grid from a two-dimensional primitive array.
+     * Creates a new matrix from a two-dimensional primitive {@code double} array.
      *
-     * @param elements The 2D array of elements to map into a grid
-     * @param <E>      The type of element to contain
-     * @return An {@link ArrayGrid} constructed from the provided elements
+     * @param components The 2D array of {@code double}s to map into a matrix
+     * @return A {@link Matrix} constructed from the provided components
      */
     @Nonnull
-    public static <E> ArrayGrid<E> of(@Nonnull E[][] elements) {
-        final int rows = elements.length;
-        final int columns = rows > 0 ? elements[0].length : 0;
+    public static Matrix of(@Nonnull double[][] components) {
+        final int rows = components.length;
+        final int columns = rows > 0 ? components[0].length : 0;
 
-        final ArrayGrid<E> grid = new ArrayGrid<>(rows, columns);
+        final Matrix matrix = new Matrix(rows, columns);
 
         for (int r = 0; r < rows; r++) {
-            System.arraycopy(elements[r], 0, grid.values[r], 0, columns);
+            System.arraycopy(components[r], 0, matrix.values[r], 0, columns);
         }
 
-        return grid;
+        return matrix;
     }
 
     //
@@ -57,41 +56,43 @@ public class ArrayGrid<E> implements Grid<E> {
     //
 
     /**
-     * Creates a new array grid.
+     * Creates a new matrix.
      *
      * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
      */
-    @SuppressWarnings("unchecked")
-    public ArrayGrid(int rows, int columns) {
+    public Matrix(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.values = (E[][]) new Object[rows][columns];
+        this.values = new double[rows][columns];
     }
 
     /**
-     * Creates a new array grid.
+     * Creates a new matrix.
      *
-     * @param size The size to initialize this grid to
+     * @param size An {@link Index Index} object representing the size of this matrix
      */
-    @SuppressWarnings("unchecked")
-    public ArrayGrid(@Nonnull Index size) {
+    public Matrix(@Nonnull Index size) {
         this.rows = size.row();
         this.columns = size.column();
-        this.values = (E[][]) new Object[rows][columns];
+        this.values = new double[rows][columns];
     }
 
     /**
-     * Creates a new array grid.
+     * Creates a new matrix.
      *
-     * @param g The grid of which to copy values from
+     * @param g The grid of which to copy component values from
      */
-    @SuppressWarnings("unchecked")
-    public ArrayGrid(@Nonnull Grid<? extends E> g) {
+    public Matrix(@Nonnull Grid<? extends Number> g) {
         this.rows = g.rows();
         this.columns = g.columns();
-        this.values = (E[][]) new Object[rows][columns];
-        setRange(0, 0, rows, columns, g);
+        this.values = new double[rows][columns];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = g.get(r, c).doubleValue();
+            }
+        }
     }
 
     //
@@ -99,10 +100,10 @@ public class ArrayGrid<E> implements Grid<E> {
     //
 
     /**
-     * The internal array of elements.
+     * The 2D array of values.
      */
     @Nonnull
-    protected final E[][] values;
+    protected final double[][] values;
 
     /**
      * The number of rows.
@@ -113,6 +114,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * The number of columns.
      */
     protected final int columns;
+
 
     //
     // Properties
@@ -158,6 +160,7 @@ public class ArrayGrid<E> implements Grid<E> {
     public Index dimensions() {
         return Grid.newIndex(rows, columns);
     }
+
 
     //
     // Containment
@@ -208,7 +211,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int r, int c) throws IndexOutOfBoundsException {
+    public Double get(int r, int c) throws IndexOutOfBoundsException {
         return values[r][c];
     }
 
@@ -220,7 +223,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(@Nonnull Index i) throws IndexOutOfBoundsException {
+    public Double get(@Nonnull Index i) throws IndexOutOfBoundsException {
         return values[i.row()][i.column()];
     }
 
@@ -233,7 +236,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int r, int c, E v) throws IndexOutOfBoundsException {
+    public void set(int r, int c, Double v) throws IndexOutOfBoundsException {
         values[r][c] = v;
     }
 
@@ -245,9 +248,201 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(@Nonnull Index i, E v) throws IndexOutOfBoundsException {
+    public void set(@Nonnull Index i, Double v) throws IndexOutOfBoundsException {
         values[i.row()][i.column()] = v;
     }
+
+    //
+    // Arithmetic
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to add to this matrix
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix add(@Nonnull Double s) {
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] + s;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to subtract from this matrix
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix subtract(@Nonnull Double s) {
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] - s;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to multiply this matrix by
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix multiply(@Nonnull Double s) {
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] * s;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to divide this matrix by
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix divide(@Nonnull Double s) throws ArithmeticException {
+        if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
+
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] / s;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param m The matrix to add to this matrix
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix add(@Nonnull Matrix m) throws ArithmeticException {
+        if (rows != m.rows || columns != m.columns) {
+            throw new ArithmeticException("Matrix dimensions must match for this operation.");
+        }
+
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] + m.values[r][c];
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param m The matrix to subtract from this matrix
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix subtract(@Nonnull Matrix m) throws ArithmeticException {
+        if (rows != m.rows || columns != m.columns) {
+            throw new ArithmeticException("Matrix dimensions must match for this operation.");
+        }
+
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = values[r][c] - m.values[r][c];
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param m The matrix to multiply this matrix by
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix multiply(@Nonnull Matrix m) throws ArithmeticException {
+        if (columns != m.rows) {
+            throw new ArithmeticException("Matrix dimensions are incompatible for multiplication.");
+        }
+
+        final Matrix result = new Matrix(rows, m.columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < m.columns; c++) {
+                double sum = 0;
+
+                for (int k = 0; k < columns; k++) {
+                    sum += values[r][k] * m.values[k][c];
+                }
+
+                result.values[r][c] = sum;
+            }
+        }
+
+        return result;
+    }
+
+    //
+    // Negation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Matrix negate() {
+        final Matrix result = new Matrix(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = -values[r][c];
+            }
+        }
+
+        return result;
+    }
+
 
     //
     // Bulk Operation
@@ -259,7 +454,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<E> f) {
+    public void apply(@Nonnull UnaryOperator<Double> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);
@@ -273,7 +468,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param e The element to fill this grid with
      */
     @Override
-    public void fill(E e) {
+    public void fill(Double e) {
         for (int r = 0; r < rows; r++) {
             Arrays.fill(values[r], e);
         }
@@ -285,7 +480,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param e The element to fill empty slots of this grid with
      */
     @Override
-    public void fillEmpty(E e) {
+    public void fillEmpty(Double e) {
         replaceAll(null, e);
     }
 
@@ -296,7 +491,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The filter function of which to test each original element with
      */
     @Override
-    public void fillIf(E e, @Nonnull Predicate<? super E> f) {
+    public void fillIf(Double e, @Nonnull Predicate<? super Double> f) {
         apply(old -> f.test(old) ? e : old);
     }
 
@@ -307,7 +502,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
+    public void replaceAll(Double oldValue, Double newValue) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 if (!Objects.equals(values[r][c], oldValue)) continue;
@@ -333,8 +528,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
-        final ArrayGrid<E> result = new ArrayGrid<>(r2 - r1, c2 - c1);
+    public Matrix subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
+        final Matrix result = new Matrix(r2 - r1, c2 - c1);
         for (int r = r1; r < r2; r++) {
             System.arraycopy(values[r], c1, result.values[r - r1], 0, c2 - c1);
         }
@@ -351,7 +546,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> subGrid(@Nonnull Index i1, @Nonnull Index i2) throws IndexOutOfBoundsException {
+    public Matrix subGrid(@Nonnull Index i1, @Nonnull Index i2) throws IndexOutOfBoundsException {
         return subGrid(i1.row(), i1.column(), i2.row(), i2.column());
     }
 
@@ -366,7 +561,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException {
+    public void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends Double> g) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
                 values[r][c] = g.get(r - r1, c - c1);
@@ -383,7 +578,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(@Nonnull Index i1, @Nonnull Index i2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException {
+    public void setRange(@Nonnull Index i1, @Nonnull Index i2, @Nonnull Grid<? extends Double> g) throws IndexOutOfBoundsException {
         setRange(i1.row(), i1.column(), i2.row(), i2.column(), g);
     }
 
@@ -400,12 +595,12 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Grid<F> map(@Nonnull Function<? super Double, ? extends F> f) {
         final ArrayGrid<F> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.apply(values[r][c]);
+                result.set(r, c, f.apply(values[r][c]));
             }
         }
 
@@ -424,7 +619,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f) throws IllegalArgumentException {
+    public <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super Double, ? super F, G> f) throws IllegalArgumentException {
         if (!dimensions().equals(g.dimensions())) {
             throw new IllegalArgumentException("Grid dimensions must match for this operation.");
         }
@@ -433,7 +628,7 @@ public class ArrayGrid<E> implements Grid<E> {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.apply(values[r][c], g.get(r, c));
+                result.set(r, c, f.apply(values[r][c], g.get(r, c)));
             }
         }
 
@@ -451,8 +646,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> transpose() {
-        final ArrayGrid<E> result = new ArrayGrid<>(columns, rows);
+    public Matrix transpose() {
+        final Matrix result = new Matrix(columns, rows);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
@@ -476,8 +671,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> resize(int r, int c) {
-        final ArrayGrid<E> result = new ArrayGrid<>(r, c);
+    public Matrix resize(int r, int c) {
+        final Matrix result = new Matrix(r, c);
 
         final int minRows = Math.min(rows, r);
         final int minCols = Math.min(columns, c);
@@ -497,7 +692,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> resize(@Nonnull Index size) {
+    public Matrix resize(@Nonnull Index size) {
         return resize(size.row(), size.column());
     }
 
@@ -512,7 +707,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Double> iterator() {
         return array().iterator();
     }
 
@@ -527,8 +722,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        final SafeArray<E> array = new FastArray<>(rows * columns);
+    public SafeArray<Double> array() {
+        final SafeArray<Double> array = new FastArray<>(rows * columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
@@ -546,7 +741,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Tuple<E> tuple() {
+    public Tuple<Double> tuple() {
         return array().tuple();
     }
 
@@ -557,7 +752,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Collection<E> collect() {
+    public Collection<Double> collect() {
         return array().collect();
     }
 
@@ -568,8 +763,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Map<Index, E> map() {
-        final Map<Index, E> map = new HashMap<>();
+    public Map<Index, Double> map() {
+        final Map<Index, Double> map = new HashMap<>();
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
