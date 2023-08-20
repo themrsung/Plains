@@ -9,6 +9,14 @@ import jakarta.annotation.Nullable;
 import java.awt.*;
 import java.io.Serial;
 
+/**
+ * An 8-bit color represented by 32 bits of precision. The RGBA components are stored
+ * individually, making arithmetic operations such as linear interpolation (LERP)
+ * faster than the more compact {@link SimpleColor}.
+ *
+ * @see Color8
+ * @see SimpleColor
+ */
 public class LinearColor implements Color8 {
     //
     // Constants
@@ -117,10 +125,10 @@ public class LinearColor implements Color8 {
             throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
-        this.red = (int) t.get(0);
-        this.green = (int) t.get(1);
-        this.blue = (int) t.get(2);
-        this.alpha = (int) t.get(3);
+        this.red = t.get(0).floatValue();
+        this.green = t.get(1).floatValue();
+        this.blue = t.get(2).floatValue();
+        this.alpha = t.get(3).floatValue();
     }
 
     /**
@@ -133,10 +141,10 @@ public class LinearColor implements Color8 {
             throw new IllegalArgumentException("The provided vector does not have four components.");
         }
 
-        this.red = (int) v.get(0);
-        this.green = (int) v.get(1);
-        this.blue = (int) v.get(2);
-        this.alpha = (int) v.get(3);
+        this.red = (float) v.get(0);
+        this.green = (float) v.get(1);
+        this.blue = (float) v.get(2);
+        this.alpha = (float) v.get(3);
     }
 
     /**
@@ -145,10 +153,10 @@ public class LinearColor implements Color8 {
      * @param v The vector of which to copy component values from
      */
     public LinearColor(@Nonnull Vector4 v) {
-        this.red = (int) v.w();
-        this.green = (int) v.x();
-        this.blue = (int) v.y();
-        this.alpha = (int) v.z();
+        this.red = (float) v.w();
+        this.green = (float) v.x();
+        this.blue = (float) v.y();
+        this.alpha = (float) v.z();
     }
 
     //
@@ -264,8 +272,8 @@ public class LinearColor implements Color8 {
      */
     @Nonnull
     @Override
-    public Color awt24() {
-        return new Color(pack24());
+    public Color awt32() {
+        return new Color(pack32(), true);
     }
 
     /**
@@ -275,9 +283,24 @@ public class LinearColor implements Color8 {
      */
     @Nonnull
     @Override
-    public Color awt32() {
-        return new Color(pack32(), true);
+    public Color awt24() {
+        return new Color(pack24());
     }
+
+    //
+    // Utility
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Color8 inverse() {
+        return new LinearColor(255 - red, 255 - green, 255 - blue, alpha);
+    }
+
 
     //
     // Equality
@@ -308,10 +331,10 @@ public class LinearColor implements Color8 {
     @Nonnull
     public String toString() {
         return "LinearColor{" +
-                "red=" + red +
-                ", green=" + green +
-                ", blue=" + blue +
-                ", alpha=" + alpha +
+                "r=" + red +
+                ", g=" + green +
+                ", b=" + blue +
+                ", a=" + alpha +
                 '}';
     }
 }

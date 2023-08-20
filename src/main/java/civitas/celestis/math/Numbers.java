@@ -116,7 +116,7 @@ public final class Numbers {
      * @return The product of the provided values
      */
     public static double product(double v1, double v2, double v3, double v4) {
-        return v1 + v2 + v3 + v4;
+        return v1 * v2 * v3 * v4;
     }
 
     /**
@@ -621,7 +621,7 @@ public final class Numbers {
             result += LANCZOS_COEFFICIENTS[i] / (x + i);
         }
 
-        double t = x + LANCZOS_G + 0.5;
+        final double t = x + LANCZOS_G + 0.5;
         return Math.sqrt(2 * Math.PI) * Math.pow(t, x + 0.5) * Math.exp(-t) * result;
     }
 
@@ -647,7 +647,7 @@ public final class Numbers {
 
     /**
      * Calculates the factorial of the provided input {@code n}.
-     * Note that this requires a non-negative input. Value over {@code 20} will trigger
+     * Note that this requires a non-negative input. Values over {@code 20} will trigger
      * an integer overflow.
      *
      * @param n The number to get the factorial of

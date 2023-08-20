@@ -286,6 +286,34 @@ public class SimpleColor implements Color8 {
     }
 
     //
+    // Utility
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SimpleColor inverse() {
+        // Extract the alpha component
+        final int alpha = (rgba32 >> 24) & 0xFF;
+
+        // Extract the red, green, and blue components
+        int red = (rgba32 >> 16) & 0xFF;
+        int green = (rgba32 >> 8) & 0xFF;
+        int blue = rgba32 & 0xFF;
+
+        // Invert the RGB components
+        red = 255 - red;
+        green = 255 - green;
+        blue = 255 - blue;
+
+        // Repack the inverted components with the original alpha component
+        return new SimpleColor((alpha << 24) | (red << 16) | (green << 8) | blue);
+    }
+
+    //
     // Equality
     //
 

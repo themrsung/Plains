@@ -1,37 +1,30 @@
 package civitas.celestis;
 
-import civitas.celestis.math.Numbers;
-import civitas.celestis.util.array.FastArray;
+import civitas.celestis.graphics.Color8;
+import civitas.celestis.graphics.LinearColor;
+import civitas.celestis.graphics.SimpleColor;
+import civitas.celestis.util.tuple.Tuple;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final FastArray<Long> array = FastArray.of(
-                new long[]{
-                        0,
-                        1,
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        7,
-                        8,
-                        9,
-                        10,
-                        11,
-                        12,
-                        13,
-                        14,
-                        15,
-                        16,
-                        17,
-                        18,
-                        19,
-                        20
-                }
-        );
+        final Color8 color = new SimpleColor(120, 200, 100, 255);
+        System.out.println(color);
 
-        final FastArray<Double> factorials = array.map(v -> Numbers.factorial((double) v));
-        factorials.forEach((i, v) -> System.out.println(v + "L,"));
+        final Color awt = color.inverse().awt32();
+        final JFrame frame = new JFrame("Test");
+        final JPanel panel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                g.setColor(awt);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+
+        frame.add(panel);
+        frame.setSize(1000, 1000);
+        frame.setVisible(true);
     }
 }
