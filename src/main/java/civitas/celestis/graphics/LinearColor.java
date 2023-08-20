@@ -26,7 +26,7 @@ public class LinearColor implements Color8 {
      * The serial version UID of this class.
      */
     @Serial
-    private static final long serialVersionUID = 10L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * The color white.
