@@ -117,12 +117,12 @@ public class ArrayTuple<E> implements Tuple<E> {
     /**
      * {@inheritDoc}
      *
-     * @param t The tuple of which to check for containment
+     * @param i The iterable object of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Tuple<?> t) {
-        for (final Object o : t) {
+    public boolean containsAll(@Nonnull Iterable<?> i) {
+        for (final Object o : i) {
             if (!contains(o)) return false;
         }
 

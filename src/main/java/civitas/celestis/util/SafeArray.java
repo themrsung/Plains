@@ -294,6 +294,8 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * Sorts this array in the natural ascending order of elements. The type of this array's elements
      * {@code E} must be an instance of {@link Comparable} in order for this operation to complete successfully.
      *
+     * @throws UnsupportedOperationException When the generic type {@code E} does not implement the {@link Comparable}
+     *                                       interface, and thus is not sortable by the default comparator
      * @see Arrays#sort(Object[])
      */
     void sort();

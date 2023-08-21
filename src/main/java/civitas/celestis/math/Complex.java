@@ -41,6 +41,16 @@ public class Complex extends Number implements Comparable<Number> {
      */
     public static final Complex I = new Complex(0, 1);
 
+    /**
+     * The complex number equivalent of PI.
+     */
+    public static final Complex PI = new Complex(Math.PI, 0);
+
+    /**
+     * The complex number equivalent of TAU.
+     */
+    public static final Complex TAU = new Complex(2 * Math.PI, 0);
+
     //
     // Constructors
     //

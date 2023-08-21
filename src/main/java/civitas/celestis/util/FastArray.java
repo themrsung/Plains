@@ -351,7 +351,11 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Override
     public void sort() {
-        Arrays.sort(elements);
+        try {
+            Arrays.sort(elements);
+        } catch (final ClassCastException e) {
+            throw new UnsupportedOperationException("Cannot perform sort operations on non-comparable objects.", e);
+        }
     }
 
     /**

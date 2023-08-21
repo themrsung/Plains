@@ -5,10 +5,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -43,6 +40,52 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
             case 4 -> new Quad<>(elements);
             default -> new ArrayTuple<>(elements);
         };
+    }
+
+    /**
+     * Creates a new tuple from a primitive array of {@code double}s.
+     *
+     * @param elements The array of elements to contain in the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Tuple<Double> of(@Nonnull double[] elements) {
+        return of(Arrays.stream(elements).boxed().toArray(Double[]::new));
+    }
+
+    /**
+     * Creates a new tuple from a primitive array of {@code float}s.
+     *
+     * @param elements The array of elements to contain in the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Tuple<Float> of(@Nonnull float[] elements) {
+        final Float[] boxed = new Float[elements.length];
+        for (int i = 0; i < elements.length; i++) boxed[i] = elements[i];
+        return of(boxed);
+    }
+
+    /**
+     * Creates a new tuple from a primitive array of {@code long}s.
+     *
+     * @param elements The array of elements to contain in the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Tuple<Long> of(@Nonnull long[] elements) {
+        return of(Arrays.stream(elements).boxed().toArray(Long[]::new));
+    }
+
+    /**
+     * Creates a new tuple from a primitive array of {@code int}s.
+     *
+     * @param elements The array of elements to contain in the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Tuple<Integer> of(@Nonnull int[] elements) {
+        return of(Arrays.stream(elements).boxed().toArray(Integer[]::new));
     }
 
     /**
@@ -99,12 +142,12 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     boolean contains(@Nullable Object obj);
 
     /**
-     * Checks if this tuple contains every element of another tuple.
+     * Checks if this tuple contains multiple elements, packaged in the form of an iterable object.
      *
-     * @param t The tuple of which to check for containment
-     * @return {@code true} if this tuple contains every element of the other tuple
+     * @param i The iterable object of which to check for containment
+     * @return {@code true} if this tuple contains every element of the iterable object
      */
-    boolean containsAll(@Nonnull Tuple<?> t);
+    boolean containsAll(@Nonnull Iterable<?> i);
 
     //
     // Sub-operation
@@ -316,7 +359,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          * {@inheritDoc}
          */
         @Override
-        public boolean containsAll(@Nonnull Tuple<?> t) {
+        public boolean containsAll(@Nonnull Iterable<?> i) {
             return false;
         }
 
@@ -462,8 +505,8 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          * {@inheritDoc}
          */
         @Override
-        public boolean containsAll(@Nonnull Tuple<?> t) {
-            for (final Object o : t) {
+        public boolean containsAll(@Nonnull Iterable<?> i) {
+            for (final Object o : i) {
                 if (!Objects.equals(element, o)) return false;
             }
 
