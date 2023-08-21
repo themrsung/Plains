@@ -7,5 +7,7 @@ public class GroupTesting {
         final SafeArray<String> array = SafeArray.of("reds", "aslddask", "rredkr", "asdsdsddklk");
         System.out.println(array.cast(Object.class));
 
+        System.out.println(array.arrayList().array().arrayList());
+
     }
 }

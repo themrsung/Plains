@@ -253,7 +253,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return Arrays.asList(elements);
+        return List.copyOf(Arrays.asList(elements));
     }
 
     //

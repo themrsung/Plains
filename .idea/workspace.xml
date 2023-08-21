@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="tensoids">
+    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stf">
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/collection/RichArrayList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/collection/RichCollection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/collection/RichList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/DoubleArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/DoubleArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/FastArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/FastArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/IntArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/IntArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/LongArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/LongArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SafeArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SafeArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SyncArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SyncArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/ArrayTuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/ArrayTuple.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -162,13 +160,21 @@
       <option name="project" value="LOCAL" />
       <updated>1692649572603</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="stf">
+      <option name="closed" value="true" />
+      <created>1692649938291</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1692649938291</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="stf" />
     <MESSAGE value="tensoids" />
-    <option name="LAST_COMMIT_MESSAGE" value="tensoids" />
+    <MESSAGE value="stf" />
+    <option name="LAST_COMMIT_MESSAGE" value="stf" />
   </component>
 </project>
