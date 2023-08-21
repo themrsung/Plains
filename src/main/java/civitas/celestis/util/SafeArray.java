@@ -395,6 +395,20 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @Nonnull
     <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f);
 
+    /**
+     * Explicitly casts each element of this array to the provided class {@code c}, then returns
+     * the resulting array. The provided class {@code c} must be a superclass of this array in order
+     * for this operation to succeed. This may be an {@link FastArray#cast(Class) unsafe operation}.
+     *
+     * @param c   The class of which to cast the elements of this array to
+     * @param <F> The type of element to cast to
+     * @return The resulting array
+     * @throws ClassCastException When at least one element of this array is not an instance
+     *                            of the provided class {@code c}
+     */
+    @Nonnull
+    <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException;
+
     //
     // Conversion
     //

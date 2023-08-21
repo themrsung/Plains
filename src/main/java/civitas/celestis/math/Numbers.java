@@ -4,6 +4,10 @@ import civitas.celestis.util.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.util.Deque;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 /**
  * Contains utility methods and constants related to mathematics.
  */
@@ -14,7 +18,7 @@ public final class Numbers {
     public static final double EPSILON = 1e-6;
 
     /**
-     * THe square root of {@code 2}.
+     * Ths square root of {@code 2}.
      */
     public static final double SQRT_2 = Math.sqrt(2);
 
@@ -22,6 +26,11 @@ public final class Numbers {
      * The inverse square root of {@code 2}.
      */
     public static final double INV_SQRT_2 = 1 / Math.sqrt(2);
+
+    /**
+     * The mathematical constant TAU. (2 * pi)
+     */
+    public static final double TAU = 2 * Math.PI;
 
     //
     //
@@ -87,6 +96,58 @@ public final class Numbers {
      */
     public static boolean equals(int v1, int v2) {
         return v1 == v2;
+    }
+
+    //
+    //
+    //
+    // Randomization
+    //
+    //
+    //
+
+    /**
+     * An internally used queue of random generators
+     */
+    private static final Deque<Random> randomGenerators = new ConcurrentLinkedDeque<>();
+
+    /**
+     * Polls the next random generator, then adds it back to the queue.
+     *
+     * @return The next random generator in the queue
+     */
+    private synchronized static Random nextRandom() {
+        final Random next = randomGenerators.pollFirst();
+        randomGenerators.addLast(next);
+        return next;
+    }
+
+    static {
+        // Initialize four random generators
+        randomGenerators.add(new Random());
+        randomGenerators.add(new Random());
+        randomGenerators.add(new Random());
+        randomGenerators.add(new Random());
+    }
+
+    /**
+     * Returns a random value between the range of {@code [0, 1)}.
+     *
+     * @return A random value between {@code [0, 1)}
+     */
+    public static double random() {
+        return nextRandom().nextDouble();
+    }
+
+    /**
+     * Returns a random value between the range of {@code [min, max)}.
+     *
+     * @param min The minimum allowed value
+     * @param max The maximum allowed value
+     * @return A random value between the two values
+     */
+    public static double random(double min, double max) {
+        return min + nextRandom().nextDouble() * (max - min);
     }
 
     //

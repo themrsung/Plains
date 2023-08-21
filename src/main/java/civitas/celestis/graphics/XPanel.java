@@ -7,6 +7,7 @@ import java.awt.*;
 
 /**
  * An extended {@link JPanel} with advanced features.
+ *
  * @see JPanel
  */
 public class XPanel extends JPanel {
@@ -16,7 +17,8 @@ public class XPanel extends JPanel {
 
     /**
      * Creates a new extended panel.
-     * @param layout The layout manager object
+     *
+     * @param layout           The layout manager object
      * @param isDoubleBuffered Whether this panel should be double-buffered
      */
     public XPanel(@Nonnull LayoutManager layout, boolean isDoubleBuffered) {
@@ -25,6 +27,7 @@ public class XPanel extends JPanel {
 
     /**
      * Creates a new extended panel.
+     *
      * @param layout The layout manager object
      */
     public XPanel(@Nonnull LayoutManager layout) {
@@ -33,6 +36,7 @@ public class XPanel extends JPanel {
 
     /**
      * Creates a new extended panel.
+     *
      * @param isDoubleBuffered Whether this panel should be double-buffered
      */
     public XPanel(boolean isDoubleBuffered) {

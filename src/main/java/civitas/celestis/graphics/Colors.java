@@ -32,6 +32,24 @@ public final class Colors {
     }
 
     //
+    // Randomization
+    //
+
+    /**
+     * Returns a random opaque color.
+     *
+     * @return A random opaque color
+     */
+    @Nonnull
+    public static LinearColor random() {
+        return new LinearColor(
+                (int) Numbers.random(0, 255),
+                (int) Numbers.random(0, 255),
+                (int) Numbers.random(0, 255)
+        );
+    }
+
+    //
     // Linear Interpolation (LERP)
     //
 

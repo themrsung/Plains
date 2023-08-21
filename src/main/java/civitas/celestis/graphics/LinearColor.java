@@ -108,6 +108,18 @@ public class LinearColor extends Color {
 
     /**
      * Creates a new linear color. All components must respect the range of {@code [0, 255]}.
+     * The alpha component will be populated with {@code 255}. (opaque)
+     *
+     * @param r The red component of this color
+     * @param g The green component of this color
+     * @param b The blue component of this color
+     */
+    public LinearColor(int r, int g, int b) {
+        this(r, g, b, 255);
+    }
+
+    /**
+     * Creates a new linear color. All components must respect the range of {@code [0, 255]}.
      *
      * @param r The red component of this color
      * @param g The green component of this color

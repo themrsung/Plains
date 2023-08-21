@@ -9,15 +9,16 @@ import java.util.Comparator;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final SafeArray<Vector3> test = new FastArray<>(10);
-        test.apply(v -> new Vector3(Math.random(), Math.random(), Math.random()));
+        final SafeArray<String> source = SafeArray.of("Hello", "world");
+        final SafeArray<Object> unsafe = source.cast(Object.class);
+        final SafeArray<Object> safe = source.map(Object.class::cast);
 
-        System.out.println(test);
+        System.out.println(source);
 
-        test.shuffle();
-        System.out.println(test);
+        safe.fill("Test");
+        System.out.println(source);
 
-        test.sort(Comparator.comparing(Vector3::norm2));
-        System.out.println(test);
+        unsafe.fill("Test");
+        System.out.println(source);
     }
 }

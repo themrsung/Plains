@@ -395,6 +395,27 @@ public class SyncArray<E> extends FastArray<E> {
         return super.merge(a, f);
     }
 
+    /**
+     * Explicitly casts each element of this array to the provided class {@code c}, then returns
+     * the resulting array. The provided class {@code c} must be a superclass of this array in order
+     * for this operation to succeed.
+     * <p>
+     * Unlike {@link FastArray}, a shallow copy is performed in the process, and changes in the
+     * new array will not be reflected to this array.
+     * </p>
+     *
+     * @param c   The class of which to cast the elements of this array to
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws ClassCastException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public synchronized <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
+        return of((F[]) elements);
+    }
+
     //
     // Conversion
     //

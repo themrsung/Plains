@@ -489,6 +489,33 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
         return result;
     }
 
+    /**
+     * <p>
+     * <b>WARNING:</b> A shallow copy is <b>not</b> performed, and the cast array is directly assigned
+     * to the new instance. Thus, changes in the return value will be reflected to this array.
+     * For a shallow copy, use {@link #map(Function)} instead.
+     * </p>
+     * <p><code>
+     * final FastArray{@literal <}String{@literal >} source = FastArray.of("Hello", "world");<br>
+     * final FastArray{@literal <}Object{@literal >} unsafe = source.cast(Object.class);<br>
+     * final FastArray{@literal <}Object{@literal >} safe = source.map(Object.class::cast);
+     * </code></p>
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     *
+     * @param c   The class of which to cast the elements of this array to
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws ClassCastException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
+        return new FastArray<>((F[]) elements, false);
+    }
+
     //
     // Conversion
     //
