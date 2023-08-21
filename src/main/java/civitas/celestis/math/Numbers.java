@@ -177,6 +177,7 @@ public final class Numbers {
      * @param min The minimum allowed value
      * @param max The maximum allowed value
      * @return {@code true} if the value is within the range of {@code [min, max]}
+     * @param <V> The type of vector to use for this operation
      */
     public static <V extends Vector<V>> boolean isInRange(@Nonnull V val, @Nonnull V min, @Nonnull V max) {
         if (val.dimensions() != min.dimensions() || min.dimensions() != max.dimensions()) return false;
@@ -404,6 +405,7 @@ public final class Numbers {
      * @param v2 The second value to add
      * @return The sum of the provided values
      * @throws IllegalArgumentException When the provided array's vectors do not have the same dimension count
+     * @param <V> The type of vector to use for this operation
      */
     @Nonnull
     public static <V extends Vector<V>> V sum(@Nonnull V v1, @Nonnull V v2) {
@@ -414,6 +416,7 @@ public final class Numbers {
      * Returns the sum of the provided values.
      *
      * @param values The values to sum
+     * @param <V> The type of vector to use for this operation
      * @return The sum of the provided values
      * @throws IllegalArgumentException When the provided array's vectors do not have the same dimension count
      */
@@ -559,6 +562,7 @@ public final class Numbers {
      *
      * @param v1 The first vector to average
      * @param v2 The second vector to average
+     * @param <V> The type of vector to use for this operation
      * @return The simple average of the two vectors
      * @throws IllegalArgumentException When the provided array's vectors do not have the same dimension count
      */
@@ -573,6 +577,7 @@ public final class Numbers {
      *
      * @param values The vectors to average
      * @return The simple average of the provided vectors
+     * @param <V> The type of vector to use for this operation
      * @throws IllegalArgumentException When the provided array's vectors do not have the same dimension count
      */
     @Nonnull
@@ -706,6 +711,7 @@ public final class Numbers {
      *
      * @param s The starting value
      * @param e The ending value
+     * @param <V> The type of vector to use for this operation
      * @param t The interpolation parameter ({@code [0, 1]})
      * @return The interpolated value between the starting and ending values {@code s} and {@code e}
      * @throws IllegalArgumentException When the starting vector and the ending vector have a different
@@ -931,6 +937,7 @@ public final class Numbers {
      *
      * @param values The vectors of which to get the minimum vector of
      * @return The minimum vector of the provided vectors
+     * @param <V> The type of vector to use for this operation
      */
     @Nonnull
     @SafeVarargs
@@ -1033,6 +1040,7 @@ public final class Numbers {
      *
      * @param values The vectors of which to get the maximum vector of
      * @return The maximum vector of the provided vectors
+     * @param <V> The type of vector to use for this operation
      */
     @Nonnull
     @SafeVarargs

@@ -100,7 +100,7 @@ public class SyncArray<E> extends FastArray<E> {
      * {@inheritDoc}
      *
      * @param i The iterable object containing the values to check for containment
-     * @return
+     * @return {@inheritDoc}
      */
     @Override
     public synchronized boolean containsAll(@Nonnull Iterable<?> i) {
