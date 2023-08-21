@@ -1,6 +1,7 @@
 package civitas.celestis.util;
 
 import civitas.celestis.math.Numbers;
+import civitas.celestis.math.Vector;
 import civitas.celestis.math.Vector2;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 /**
  * A fixed-size tuple which can only hold three elements.
- * Triples use ABC notation to identity their elements.
+ * Triples use ABC notation to identify their elements.
  *
  * @param <E> The type of element this tuple should hold
  * @see Tuple

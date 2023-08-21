@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 /**
  * A fixed-size integer-typed tuple which can only hold three components.
- * Triples use ABC notation to identity their components.
+ * Triples use ABC notation to identify their components.
  *
  * @see Tuple
  * @see IntTuple

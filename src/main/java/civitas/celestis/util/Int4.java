@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 /**
  * A fixed-size integer-typed tuple which can only hold four components.
- * Quads use ABCD notation to identity their components.
+ * Quads use ABCD notation to identify their components.
  *
  * @see Tuple
  * @see IntTuple
