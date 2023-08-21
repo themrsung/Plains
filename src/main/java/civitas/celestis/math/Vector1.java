@@ -499,7 +499,7 @@ public class Vector1 implements Vector<Vector1> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        return SafeArray.of(x);
+        return SafeArray.ofDouble(x);
     }
 
     /**

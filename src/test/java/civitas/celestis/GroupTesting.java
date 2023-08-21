@@ -1,24 +1,25 @@
 package civitas.celestis;
 
 
-import civitas.celestis.math.Vector3;
-import civitas.celestis.util.FastArray;
 import civitas.celestis.util.SafeArray;
 
 import java.util.Comparator;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final SafeArray<String> source = SafeArray.of("Hello", "world");
-        final SafeArray<Object> unsafe = source.cast(Object.class);
-        final SafeArray<Object> safe = source.map(Object.class::cast);
+        final SafeArray<Double> boxed = SafeArray.of(1d, 2d, 3d, 4d);
+        final SafeArray<Double> prim = SafeArray.ofDouble(1, 2, 3, 4);
 
-        System.out.println(source);
+        boxed.shuffle();
+        prim.shuffle();
 
-        safe.fill("Test");
-        System.out.println(source);
+        System.out.println(boxed);
+        System.out.println(prim);
 
-        unsafe.fill("Test");
-        System.out.println(source);
+        boxed.sort();
+        prim.sort(Comparator.reverseOrder());
+
+        System.out.println(boxed);
+        System.out.println(prim);
     }
 }

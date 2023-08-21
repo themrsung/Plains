@@ -521,7 +521,7 @@ public class ArrayVector implements Vector<ArrayVector> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        return SafeArray.of(Arrays.stream(components).boxed().toArray(Double[]::new));
+        return SafeArray.ofDouble(components);
     }
 
     /**

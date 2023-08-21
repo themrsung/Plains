@@ -723,7 +723,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     @Nonnull
     @Override
     public SafeArray<Long> array() {
-        final SafeArray<Long> array = new FastArray<>(rows * columns);
+        final SafeArray<Long> array = new LongArray(rows * columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {

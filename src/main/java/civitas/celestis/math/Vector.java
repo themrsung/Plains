@@ -768,7 +768,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
         @Nonnull
         @Override
         public SafeArray<Double> array() {
-            return SafeArray.of();
+            return SafeArray.ofDouble();
         }
 
         /**

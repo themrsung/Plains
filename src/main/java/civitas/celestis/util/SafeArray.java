@@ -27,6 +27,9 @@ import java.util.stream.Stream;
  * @param <E> The type of element this array should hold
  * @see FastArray
  * @see SyncArray
+ * @see DoubleArray
+ * @see LongArray
+ * @see IntArray
  */
 public interface SafeArray<E> extends Iterable<E>, Serializable {
     //
@@ -37,7 +40,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * Creates a new type-safe array from the provided array of elements,
      * then returns the newly created array instance.
      *
-     * @param elements The elements this array should contain
+     * @param elements The elements the array should contain
      * @param <E>      The type of element the array should hold
      * @return The new array instance created from the provided elements
      */
@@ -48,10 +51,46 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     }
 
     /**
+     * Creates a new double-typed array from the provided array of primitive
+     * {@code double}s, then returns the newly created array instance.
+     *
+     * @param elements The elements the array should contain
+     * @return The new array instance created from the provided elements
+     */
+    @Nonnull
+    static SafeArray<Double> ofDouble(@Nonnull double... elements) {
+        return DoubleArray.of(elements);
+    }
+
+    /**
+     * Creates a new long-typed array from the provided array of primitive
+     * {@code long}s, then returns the newly created array instance.
+     *
+     * @param elements The elements the array should contain
+     * @return The new array instance created from the provided elements
+     */
+    @Nonnull
+    static SafeArray<Long> ofLong(@Nonnull long... elements) {
+        return LongArray.of(elements);
+    }
+
+    /**
+     * Creates a new integer-typed array from the provided array of primitive
+     * {@code int}s, then returns the newly created array instance.
+     *
+     * @param elements The elements the array should contain
+     * @return The new array instance created from the provided elements
+     */
+    @Nonnull
+    static SafeArray<Integer> ofInt(@Nonnull int... elements) {
+        return IntArray.of(elements);
+    }
+
+    /**
      * Creates a new thread-safe array from the provided array of elements,
      * then returns the newly created array instance.
      *
-     * @param elements The elements this array should contain
+     * @param elements The elements the array should contain
      * @param <E>      The type of element the array should hold
      * @return The new array instance created from the provided elements
      */

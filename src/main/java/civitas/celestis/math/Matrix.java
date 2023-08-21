@@ -747,7 +747,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        final SafeArray<Double> array = new FastArray<>(rows * columns);
+        final SafeArray<Double> array = new DoubleArray(rows * columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {

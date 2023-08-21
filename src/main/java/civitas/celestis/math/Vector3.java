@@ -619,7 +619,7 @@ public class Vector3 implements Vector<Vector3> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        return SafeArray.of(x, y, z);
+        return SafeArray.ofDouble(x, y, z);
     }
 
     /**

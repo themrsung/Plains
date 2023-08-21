@@ -27,7 +27,7 @@ public class GraphicsTesting {
 
     public static void main(String[] args) {
         scheduler.register(delta -> {
-            color.set(Colors.random());
+            color.getAndUpdate(c -> c.lerp(Colors.random(), 0.005));
             frame.repaint();
         });
 

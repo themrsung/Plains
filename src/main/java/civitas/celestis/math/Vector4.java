@@ -1,7 +1,6 @@
 package civitas.celestis.math;
 
 import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.SyncArray;
 import civitas.celestis.util.Tuple;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
@@ -638,7 +637,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        return SyncArray.of(w, x, y, z);
+        return SafeArray.ofDouble(w, x, y, z);
     }
 
     /**
