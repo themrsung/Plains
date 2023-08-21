@@ -16,6 +16,46 @@ import jakarta.annotation.Nonnull;
  */
 public interface IntTuple<T extends IntTuple<T>> extends Tuple<Integer> {
     //
+    // Factory
+    //
+
+    /**
+     * Creates a new integer-typed tuple.
+     * @param a The first component of the tuple
+     * @param b The second component of the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Int2 of(int a, int b) {
+        return new Int2(a, b);
+    }
+
+    /**
+     * Creates a new integer-typed tuple.
+     * @param a The first component of the tuple
+     * @param b The second component of the tuple
+     * @param c The third component of the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Int3 of(int a, int b, int c) {
+        return new Int3(a, b, c);
+    }
+
+    /**
+     * Creates a new integer-typed tuple.
+     * @param a The first component of the tuple
+     * @param b The second component of the tuple
+     * @param c The third component of the tuple
+     * @param d The fourth component of the tuple
+     * @return The constructed tuple
+     */
+    @Nonnull
+    static Int4 of(int a, int b, int c, int d) {
+        return new Int4(a, b, c, d);
+    }
+
+    //
     // Properties
     //
 

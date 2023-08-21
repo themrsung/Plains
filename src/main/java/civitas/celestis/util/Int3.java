@@ -2,6 +2,7 @@ package civitas.celestis.util;
 
 import civitas.celestis.math.Numbers;
 import civitas.celestis.math.Vector3;
+import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -77,6 +78,15 @@ public class Int3 implements IntTuple<Int3> {
         this.a = t.get(0).intValue();
         this.b = t.get(1).intValue();
         this.c = t.get(2).intValue();
+    }
+
+    /**
+     * Creates a new triple. The required format is "{@code [0, 0, 0]}".
+     * @param values The string representation of this triple
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Int3(@Nonnull String values) {
+        this(ArrayReader.readIntArray(values));
     }
 
     //

@@ -1,16 +1,14 @@
 package civitas.celestis;
 
 
+import civitas.celestis.util.Int3;
 import civitas.celestis.util.Tuple;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Tuple<Integer> int2 = Tuple.ofInt(1, 2);
-        final Tuple<Integer> int3 = Tuple.ofInt(1, 2, 3);
+        final Int3 i3 = new Int3("[1, 2, 3]");
 
-        System.out.println(int2);
-        System.out.println(int3);
-        System.out.println(int2.getClass());
-        System.out.println(int3.getClass());
+        System.out.println(i3);
+        System.out.println(new Int3(i3.toString()));
     }
 }

@@ -2,6 +2,7 @@ package civitas.celestis.util;
 
 import civitas.celestis.math.Numbers;
 import civitas.celestis.math.Vector2;
+import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -73,6 +74,15 @@ public class Int2 implements IntTuple<Int2> {
 
         this.a = t.get(0).intValue();
         this.b = t.get(1).intValue();
+    }
+
+    /**
+     * Creates a new pair. The required format is "{@code [0, 0]}".
+     * @param values The string representation of this pair
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Int2(@Nonnull String values) {
+        this(ArrayReader.readIntArray(values));
     }
 
     //
