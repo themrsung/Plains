@@ -680,6 +680,7 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
     @Override
     public synchronized void setSize(int w, int h, int d) {
         dimensions = Tensoid.newIndex(w, h, d);
+        trim();
     }
 
     /**
@@ -690,6 +691,7 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
     @Override
     public synchronized void setSize(@Nonnull Index size) {
         dimensions = Tensoid.newIndex(size.i(), size.j(), size.k());
+        trim();
     }
 
     /**
