@@ -1,27 +1,25 @@
-package civitas.celestis.util;
+package civitas.celestis.util.array;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A lightweight type-safe array suitable for single-threaded applications.
- * Thread safety is not guaranteed by this implementation.
+ * A synchronized thread-safe and type-safe array suitable for multithreaded applications.
  *
  * @param <E> The type of element this array should hold
  * @see SafeArray
- * @see SyncArray
+ * @see FastArray
  */
-public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
+public class SyncArray<E> extends FastArray<E> {
     //
     // Constants
     //
@@ -46,8 +44,9 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @SafeVarargs
-    public static <E> FastArray<E> of(@Nonnull E... elements) {
-        return new FastArray<>(elements);
+    @SuppressWarnings("unchecked")
+    public static <E> SyncArray<E> of(@Nonnull E... elements) {
+        return new SyncArray<>((E[]) Arrays.stream(elements).toArray(), false);
     }
 
     //
@@ -55,67 +54,32 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     //
 
     /**
-     * Creates a new type-safe array.
+     * Creates a new synchronized array.
      *
      * @param length The length of this array
      */
-    @SuppressWarnings("unchecked")
-    public FastArray(int length) {
-        this.elements = (E[]) new Object[length];
+    public SyncArray(int length) {
+        super(length);
     }
 
     /**
-     * Creates a new type-safe array.
+     * Creates a new synchronized array.
      *
      * @param a The array of which to copy elements from
      */
-    public FastArray(@Nonnull SafeArray<? extends E> a) {
-        this.elements = a.array();
+    public SyncArray(@Nonnull SafeArray<? extends E> a) {
+        super(a);
     }
 
     /**
-     * Creates a new type-safe array.
-     *
-     * @param elements The elements this array should contain
-     */
-    @SuppressWarnings("unchecked")
-    private FastArray(@Nonnull E... elements) {
-        this.elements = (E[]) Arrays.stream(elements).toArray();
-    }
-
-    /**
-     * Creates a new type-safe array by directly assigning the internal array.
+     * Creates a new synchronized array by directly assigning the internal array.
      * This is a dangerous constructor, and thus is hidden as protected.
      *
      * @param elements The array to assign as the elements of this array
      * @param ignored  Ignored
      */
-    protected FastArray(@Nonnull E[] elements, boolean ignored) {
-        this.elements = elements;
-    }
-
-    //
-    // Variables
-    //
-
-    /**
-     * The internal array of elements.
-     */
-    @Nonnull
-    protected final E[] elements;
-
-    //
-    // Properties
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Override
-    public final int length() {
-        return elements.length;
+    protected SyncArray(@Nonnull E[] elements, boolean ignored) {
+        super(elements, ignored);
     }
 
     //
@@ -129,12 +93,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(@Nullable Object obj) {
-        for (final E element : elements) {
-            if (Objects.equals(element, obj)) return true;
-        }
-
-        return false;
+    public synchronized boolean contains(@Nullable Object obj) {
+        return super.contains(obj);
     }
 
     /**
@@ -144,12 +104,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<?> i) {
-        for (final Object o : i) {
-            if (!contains(o)) return false;
-        }
-
-        return true;
+    public synchronized boolean containsAll(@Nonnull Iterable<?> i) {
+        return super.containsAll(i);
     }
 
     //
@@ -164,8 +120,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
-        return elements[i];
+    public synchronized E get(int i) throws IndexOutOfBoundsException {
+        return super.get(i);
     }
 
     /**
@@ -178,9 +134,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public E getOrDefault(int i, @Nonnull E fallback) throws IndexOutOfBoundsException {
-        final E element = elements[i];
-        return element != null ? element : fallback;
+    public synchronized E getOrDefault(int i, @Nonnull E fallback) throws IndexOutOfBoundsException {
+        return super.getOrDefault(i, fallback);
     }
 
     /**
@@ -191,8 +146,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int i, E v) throws IndexOutOfBoundsException {
-        elements[i] = v;
+    public synchronized void set(int i, E v) throws IndexOutOfBoundsException {
+        super.set(i, v);
     }
 
     //
@@ -205,8 +160,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param v The value to fill this array with
      */
     @Override
-    public void fill(E v) {
-        Arrays.fill(elements, v);
+    public synchronized void fill(E v) {
+        super.fill(v);
     }
 
     /**
@@ -215,8 +170,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param v The value to fill empty slots of this array with
      */
     @Override
-    public void fillEmpty(E v) {
-        replaceAll(null, v);
+    public synchronized void fillEmpty(E v) {
+        super.fillEmpty(v);
     }
 
     /**
@@ -228,10 +183,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void fillRange(int i1, int i2, E v) throws IndexOutOfBoundsException {
-        for (int i = i1; i < i2; i++) {
-            elements[i] = v;
-        }
+    public synchronized void fillRange(int i1, int i2, E v) throws IndexOutOfBoundsException {
+        super.fillRange(i1, i2, v);
     }
 
     /**
@@ -240,10 +193,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<E> f) {
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = f.apply(elements[i]);
-        }
+    public synchronized void apply(@Nonnull UnaryOperator<E> f) {
+        super.apply(f);
     }
 
     /**
@@ -253,8 +204,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
-        apply(v -> Objects.equals(v, oldValue) ? newValue : v);
+    public synchronized void replaceAll(E oldValue, E newValue) {
+        super.replaceAll(oldValue, newValue);
     }
 
     /**
@@ -264,13 +215,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceFirst(E oldValue, E newValue) {
-        for (int i = 0; i < elements.length; i++) {
-            if (Objects.equals(elements[i], oldValue)) {
-                elements[i] = newValue;
-                return;
-            }
-        }
+    public synchronized void replaceFirst(E oldValue, E newValue) {
+        super.replaceFirst(oldValue, newValue);
     }
 
     /**
@@ -280,13 +226,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceLast(E oldValue, E newValue) {
-        for (int i = (elements.length - 1); i >= 0; i--) {
-            if (Objects.equals(elements[i], oldValue)) {
-                elements[i] = newValue;
-                return;
-            }
-        }
+    public synchronized void replaceLast(E oldValue, E newValue) {
+        super.replaceLast(oldValue, newValue);
     }
 
     //
@@ -303,10 +244,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
-        final FastArray<E> result = new FastArray<>(i2 - i1);
-        System.arraycopy(elements, i1, result.elements, 0, i2 - i1);
-        return result;
+    public synchronized SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
+        return super.subArray(i1, i2);
     }
 
     /**
@@ -318,10 +257,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int i1, int i2, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
-        for (int i = i1; i < i2; i++) {
-            elements[i] = a.get(i - i1);
-        }
+    public synchronized void setRange(int i1, int i2, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
+        super.setRange(i1, i2, a);
     }
 
     //
@@ -336,10 +273,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public SafeArray<E> resize(int size) {
-        final FastArray<E> result = new FastArray<>(size);
-        System.arraycopy(elements, 0, result.elements, 0, Math.min(elements.length, size));
-        return result;
+    public synchronized SafeArray<E> resize(int size) {
+        return super.resize(size);
     }
 
     //
@@ -350,12 +285,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    public void sort() {
-        try {
-            Arrays.sort(elements);
-        } catch (final ClassCastException e) {
-            throw new UnsupportedOperationException("Cannot perform sort operations on non-comparable objects.", e);
-        }
+    public synchronized void sort() {
+        super.sort();
     }
 
     /**
@@ -364,27 +295,16 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @param f The comparator function to sort this array with
      */
     @Override
-    public void sort(@Nonnull Comparator<? super E> f) {
-        Arrays.sort(elements, f);
+    public synchronized void sort(@Nonnull Comparator<? super E> f) {
+        super.sort(f);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void shuffle() {
-        final int n = elements.length;
-        final Random random = new Random();
-
-        for (int i = n - 1; i > 0; i--) {
-            final int j = random.nextInt(i + 1);
-
-            // Swap elements at i and j
-            final E temp = elements[i];
-
-            elements[i] = elements[j];
-            elements[j] = temp;
-        }
+    public synchronized void shuffle() {
+        super.shuffle();
     }
 
     //
@@ -399,9 +319,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
-        return new FastArray<>((E[]) Arrays.stream(elements).filter(f).toArray(), false);
+    public synchronized SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
+        return super.filter(f);
     }
 
     //
@@ -417,9 +336,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
-        return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray(), false);
+    public synchronized <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
+        return super.map(f);
     }
 
     /**
@@ -431,8 +349,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
-        return Arrays.stream(elements).map(f).collect(Collectors.toList());
+    public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
+        return super.mapToCollection(f);
     }
 
     /**
@@ -444,8 +362,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
-        return Arrays.stream(elements).map(f).toList();
+    public synchronized <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
+        return super.mapToList(f);
     }
 
     /**
@@ -457,8 +375,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
-        return Arrays.stream(elements).map(f).collect(Collectors.toSet());
+    public synchronized <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
+        return super.mapToSet(f);
     }
 
     /**
@@ -475,33 +393,16 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Override
     public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-
-        if (elements.length != a.length()) {
-            throw new IllegalArgumentException("Array lengths must match for this operation.");
-        }
-
-        final FastArray<G> result = new FastArray<>(elements.length);
-
-        for (int i = 0; i < elements.length; i++) {
-            result.elements[i] = f.apply(elements[i], a.get(i));
-        }
-
-        return result;
+        return super.merge(a, f);
     }
 
     /**
+     * Explicitly casts each element of this array to the provided class {@code c}, then returns
+     * the resulting array. The provided class {@code c} must be a superclass of this array in order
+     * for this operation to succeed.
      * <p>
-     * <b>WARNING:</b> A shallow copy is <b>not</b> performed, and the cast array is directly assigned
-     * to the new instance. Thus, changes in the return value will be reflected to this array.
-     * For a shallow copy, use {@link #map(Function)} instead.
-     * </p>
-     * <p><code>
-     * final FastArray{@literal <}String{@literal >} source = FastArray.of("Hello", "world");<br>
-     * final FastArray{@literal <}Object{@literal >} unsafe = source.cast(Object.class);<br>
-     * final FastArray{@literal <}Object{@literal >} safe = source.map(Object.class::cast);
-     * </code></p>
-     * <p>
-     * {@inheritDoc}
+     * Unlike {@link FastArray}, a shallow copy is performed in the process, and changes in the
+     * new array will not be reflected to this array.
      * </p>
      *
      * @param c   The class of which to cast the elements of this array to
@@ -512,8 +413,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
-        return new FastArray<>((F[]) elements, false);
+    public synchronized <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
+        return of((F[]) elements);
     }
 
     //
@@ -527,9 +428,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public E[] array() {
-        return (E[]) Arrays.stream(elements).toArray();
+    public synchronized E[] array() {
+        return super.array();
     }
 
     /**
@@ -539,8 +439,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public Stream<E> stream() {
-        return Arrays.stream(elements);
+    public synchronized Stream<E> stream() {
+        return super.stream();
     }
 
     /**
@@ -550,8 +450,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public Collection<E> collect() {
-        return List.copyOf(Arrays.asList(elements));
+    public synchronized Collection<E> collect() {
+        return super.collect();
     }
 
     /**
@@ -561,8 +461,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public Set<E> set() {
-        return Set.copyOf(Arrays.asList(elements));
+    public synchronized Set<E> set() {
+        return super.set();
     }
 
     /**
@@ -572,8 +472,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public List<E> list() {
-        return List.copyOf(Arrays.asList(elements));
+    public synchronized List<E> list() {
+        return super.list();
     }
 
     /**
@@ -583,8 +483,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public ArrayList<E> arrayList() {
-        return new ArrayList<>(Arrays.asList(elements));
+    public synchronized ArrayList<E> arrayList() {
+        return super.arrayList();
     }
 
     /**
@@ -594,8 +494,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public Tuple<E> tuple() {
-        return Tuple.of(elements);
+    public synchronized Tuple<E> tuple() {
+        return super.tuple();
     }
 
     //
@@ -604,13 +504,14 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
 
     /**
      * {@inheritDoc}
+     * This returns a copied iterator to prevent concurrency issues.
      *
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
-        return Arrays.stream(elements).iterator();
+    public synchronized Iterator<E> iterator() {
+        return super.copy().iterator();
     }
 
     //
@@ -624,8 +525,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public SafeArray<E> copy() {
-        return new FastArray<>(array(), false);
+    public synchronized SafeArray<E> copy() {
+        return super.copy();
     }
 
     //
@@ -639,9 +540,8 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof SafeArray<?> a)) return false;
-        return Arrays.equals(elements, a.array());
+    public synchronized boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
     }
 
     //
@@ -655,7 +555,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public String toString() {
-        return Arrays.toString(elements);
+    public synchronized String toString() {
+        return super.toString();
     }
 }

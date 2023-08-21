@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 

@@ -2,8 +2,8 @@ package civitas.celestis.graphics;
 
 import civitas.celestis.math.Numbers;
 import civitas.celestis.math.Vector4;
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
+import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
 import java.awt.*;

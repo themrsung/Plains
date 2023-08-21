@@ -5,12 +5,12 @@
  * utility interfaces.
  * </p>
  * <p>
- * There are two main data structures within this package: {@link civitas.celestis.util.SafeArray}
- * and {@link civitas.celestis.util.Tuple}. Safe arrays define the contract for
+ * There are two main data structures within this package: {@link civitas.celestis.util.array.SafeArray}
+ * and {@link civitas.celestis.util.tuple.Tuple}. Safe arrays define the contract for
  * a type-safe array, while tuples define the contract for a shallowly immutable dataset.
  * </p>
  *
- * @see civitas.celestis.util.SafeArray
- * @see civitas.celestis.util.Tuple
+ * @see civitas.celestis.util.array.SafeArray
+ * @see civitas.celestis.util.tuple.Tuple
  */
 package civitas.celestis.util;

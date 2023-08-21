@@ -1,6 +1,6 @@
 package civitas.celestis.event;
 
-import civitas.celestis.util.Tuple;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
 import java.util.*;

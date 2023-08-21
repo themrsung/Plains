@@ -1,24 +1,28 @@
-package civitas.celestis.util;
+package civitas.celestis.util.array;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A synchronized thread-safe and type-safe array suitable for multithreaded applications.
+ * A lightweight type-safe array suitable for single-threaded applications.
+ * Thread safety is not guaranteed by this implementation.
  *
  * @param <E> The type of element this array should hold
  * @see SafeArray
- * @see FastArray
+ * @see SyncArray
  */
-public class SyncArray<E> extends FastArray<E> {
+public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     //
     // Constants
     //
@@ -43,9 +47,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @SafeVarargs
-    @SuppressWarnings("unchecked")
-    public static <E> SyncArray<E> of(@Nonnull E... elements) {
-        return new SyncArray<>((E[]) Arrays.stream(elements).toArray(), false);
+    public static <E> FastArray<E> of(@Nonnull E... elements) {
+        return new FastArray<>(elements);
     }
 
     //
@@ -53,32 +56,67 @@ public class SyncArray<E> extends FastArray<E> {
     //
 
     /**
-     * Creates a new synchronized array.
+     * Creates a new type-safe array.
      *
      * @param length The length of this array
      */
-    public SyncArray(int length) {
-        super(length);
+    @SuppressWarnings("unchecked")
+    public FastArray(int length) {
+        this.elements = (E[]) new Object[length];
     }
 
     /**
-     * Creates a new synchronized array.
+     * Creates a new type-safe array.
      *
      * @param a The array of which to copy elements from
      */
-    public SyncArray(@Nonnull SafeArray<? extends E> a) {
-        super(a);
+    public FastArray(@Nonnull SafeArray<? extends E> a) {
+        this.elements = a.array();
     }
 
     /**
-     * Creates a new synchronized array by directly assigning the internal array.
+     * Creates a new type-safe array.
+     *
+     * @param elements The elements this array should contain
+     */
+    @SuppressWarnings("unchecked")
+    private FastArray(@Nonnull E... elements) {
+        this.elements = (E[]) Arrays.stream(elements).toArray();
+    }
+
+    /**
+     * Creates a new type-safe array by directly assigning the internal array.
      * This is a dangerous constructor, and thus is hidden as protected.
      *
      * @param elements The array to assign as the elements of this array
      * @param ignored  Ignored
      */
-    protected SyncArray(@Nonnull E[] elements, boolean ignored) {
-        super(elements, ignored);
+    protected FastArray(@Nonnull E[] elements, boolean ignored) {
+        this.elements = elements;
+    }
+
+    //
+    // Variables
+    //
+
+    /**
+     * The internal array of elements.
+     */
+    @Nonnull
+    protected final E[] elements;
+
+    //
+    // Properties
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public final int length() {
+        return elements.length;
     }
 
     //
@@ -92,8 +130,12 @@ public class SyncArray<E> extends FastArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean contains(@Nullable Object obj) {
-        return super.contains(obj);
+    public boolean contains(@Nullable Object obj) {
+        for (final E element : elements) {
+            if (Objects.equals(element, obj)) return true;
+        }
+
+        return false;
     }
 
     /**
@@ -103,8 +145,12 @@ public class SyncArray<E> extends FastArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean containsAll(@Nonnull Iterable<?> i) {
-        return super.containsAll(i);
+    public boolean containsAll(@Nonnull Iterable<?> i) {
+        for (final Object o : i) {
+            if (!contains(o)) return false;
+        }
+
+        return true;
     }
 
     //
@@ -119,8 +165,8 @@ public class SyncArray<E> extends FastArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized E get(int i) throws IndexOutOfBoundsException {
-        return super.get(i);
+    public E get(int i) throws IndexOutOfBoundsException {
+        return elements[i];
     }
 
     /**
@@ -133,8 +179,9 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized E getOrDefault(int i, @Nonnull E fallback) throws IndexOutOfBoundsException {
-        return super.getOrDefault(i, fallback);
+    public E getOrDefault(int i, @Nonnull E fallback) throws IndexOutOfBoundsException {
+        final E element = elements[i];
+        return element != null ? element : fallback;
     }
 
     /**
@@ -145,8 +192,8 @@ public class SyncArray<E> extends FastArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void set(int i, E v) throws IndexOutOfBoundsException {
-        super.set(i, v);
+    public void set(int i, E v) throws IndexOutOfBoundsException {
+        elements[i] = v;
     }
 
     //
@@ -159,8 +206,8 @@ public class SyncArray<E> extends FastArray<E> {
      * @param v The value to fill this array with
      */
     @Override
-    public synchronized void fill(E v) {
-        super.fill(v);
+    public void fill(E v) {
+        Arrays.fill(elements, v);
     }
 
     /**
@@ -169,8 +216,8 @@ public class SyncArray<E> extends FastArray<E> {
      * @param v The value to fill empty slots of this array with
      */
     @Override
-    public synchronized void fillEmpty(E v) {
-        super.fillEmpty(v);
+    public void fillEmpty(E v) {
+        replaceAll(null, v);
     }
 
     /**
@@ -182,8 +229,10 @@ public class SyncArray<E> extends FastArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void fillRange(int i1, int i2, E v) throws IndexOutOfBoundsException {
-        super.fillRange(i1, i2, v);
+    public void fillRange(int i1, int i2, E v) throws IndexOutOfBoundsException {
+        for (int i = i1; i < i2; i++) {
+            elements[i] = v;
+        }
     }
 
     /**
@@ -192,8 +241,10 @@ public class SyncArray<E> extends FastArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public synchronized void apply(@Nonnull UnaryOperator<E> f) {
-        super.apply(f);
+    public void apply(@Nonnull UnaryOperator<E> f) {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = f.apply(elements[i]);
+        }
     }
 
     /**
@@ -203,8 +254,8 @@ public class SyncArray<E> extends FastArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public synchronized void replaceAll(E oldValue, E newValue) {
-        super.replaceAll(oldValue, newValue);
+    public void replaceAll(E oldValue, E newValue) {
+        apply(v -> Objects.equals(v, oldValue) ? newValue : v);
     }
 
     /**
@@ -214,8 +265,13 @@ public class SyncArray<E> extends FastArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public synchronized void replaceFirst(E oldValue, E newValue) {
-        super.replaceFirst(oldValue, newValue);
+    public void replaceFirst(E oldValue, E newValue) {
+        for (int i = 0; i < elements.length; i++) {
+            if (Objects.equals(elements[i], oldValue)) {
+                elements[i] = newValue;
+                return;
+            }
+        }
     }
 
     /**
@@ -225,8 +281,13 @@ public class SyncArray<E> extends FastArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public synchronized void replaceLast(E oldValue, E newValue) {
-        super.replaceLast(oldValue, newValue);
+    public void replaceLast(E oldValue, E newValue) {
+        for (int i = (elements.length - 1); i >= 0; i--) {
+            if (Objects.equals(elements[i], oldValue)) {
+                elements[i] = newValue;
+                return;
+            }
+        }
     }
 
     //
@@ -243,8 +304,10 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
-        return super.subArray(i1, i2);
+    public SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
+        final FastArray<E> result = new FastArray<>(i2 - i1);
+        System.arraycopy(elements, i1, result.elements, 0, i2 - i1);
+        return result;
     }
 
     /**
@@ -256,8 +319,10 @@ public class SyncArray<E> extends FastArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void setRange(int i1, int i2, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
-        super.setRange(i1, i2, a);
+    public void setRange(int i1, int i2, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
+        for (int i = i1; i < i2; i++) {
+            elements[i] = a.get(i - i1);
+        }
     }
 
     //
@@ -272,8 +337,10 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> resize(int size) {
-        return super.resize(size);
+    public SafeArray<E> resize(int size) {
+        final FastArray<E> result = new FastArray<>(size);
+        System.arraycopy(elements, 0, result.elements, 0, Math.min(elements.length, size));
+        return result;
     }
 
     //
@@ -284,8 +351,12 @@ public class SyncArray<E> extends FastArray<E> {
      * {@inheritDoc}
      */
     @Override
-    public synchronized void sort() {
-        super.sort();
+    public void sort() {
+        try {
+            Arrays.sort(elements);
+        } catch (final ClassCastException e) {
+            throw new UnsupportedOperationException("Cannot perform sort operations on non-comparable objects.", e);
+        }
     }
 
     /**
@@ -294,16 +365,27 @@ public class SyncArray<E> extends FastArray<E> {
      * @param f The comparator function to sort this array with
      */
     @Override
-    public synchronized void sort(@Nonnull Comparator<? super E> f) {
-        super.sort(f);
+    public void sort(@Nonnull Comparator<? super E> f) {
+        Arrays.sort(elements, f);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public synchronized void shuffle() {
-        super.shuffle();
+    public void shuffle() {
+        final int n = elements.length;
+        final Random random = new Random();
+
+        for (int i = n - 1; i > 0; i--) {
+            final int j = random.nextInt(i + 1);
+
+            // Swap elements at i and j
+            final E temp = elements[i];
+
+            elements[i] = elements[j];
+            elements[j] = temp;
+        }
     }
 
     //
@@ -318,8 +400,9 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
-        return super.filter(f);
+    @SuppressWarnings("unchecked")
+    public SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
+        return new FastArray<>((E[]) Arrays.stream(elements).filter(f).toArray(), false);
     }
 
     //
@@ -335,8 +418,9 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
-        return super.map(f);
+    @SuppressWarnings("unchecked")
+    public <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
+        return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray(), false);
     }
 
     /**
@@ -348,8 +432,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
-        return super.mapToCollection(f);
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
+        return Arrays.stream(elements).map(f).collect(Collectors.toList());
     }
 
     /**
@@ -361,8 +445,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
-        return super.mapToList(f);
+    public <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
+        return Arrays.stream(elements).map(f).toList();
     }
 
     /**
@@ -374,8 +458,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
-        return super.mapToSet(f);
+    public <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
+        return Arrays.stream(elements).map(f).collect(Collectors.toSet());
     }
 
     /**
@@ -392,16 +476,33 @@ public class SyncArray<E> extends FastArray<E> {
     @Override
     public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        return super.merge(a, f);
+
+        if (elements.length != a.length()) {
+            throw new IllegalArgumentException("Array lengths must match for this operation.");
+        }
+
+        final FastArray<G> result = new FastArray<>(elements.length);
+
+        for (int i = 0; i < elements.length; i++) {
+            result.elements[i] = f.apply(elements[i], a.get(i));
+        }
+
+        return result;
     }
 
     /**
-     * Explicitly casts each element of this array to the provided class {@code c}, then returns
-     * the resulting array. The provided class {@code c} must be a superclass of this array in order
-     * for this operation to succeed.
      * <p>
-     * Unlike {@link FastArray}, a shallow copy is performed in the process, and changes in the
-     * new array will not be reflected to this array.
+     * <b>WARNING:</b> A shallow copy is <b>not</b> performed, and the cast array is directly assigned
+     * to the new instance. Thus, changes in the return value will be reflected to this array.
+     * For a shallow copy, use {@link #map(Function)} instead.
+     * </p>
+     * <p><code>
+     * final FastArray{@literal <}String{@literal >} source = FastArray.of("Hello", "world");<br>
+     * final FastArray{@literal <}Object{@literal >} unsafe = source.cast(Object.class);<br>
+     * final FastArray{@literal <}Object{@literal >} safe = source.map(Object.class::cast);
+     * </code></p>
+     * <p>
+     * {@inheritDoc}
      * </p>
      *
      * @param c   The class of which to cast the elements of this array to
@@ -412,8 +513,8 @@ public class SyncArray<E> extends FastArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
-        return of((F[]) elements);
+    public <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
+        return new FastArray<>((F[]) elements, false);
     }
 
     //
@@ -427,8 +528,9 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized E[] array() {
-        return super.array();
+    @SuppressWarnings("unchecked")
+    public E[] array() {
+        return (E[]) Arrays.stream(elements).toArray();
     }
 
     /**
@@ -438,8 +540,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Stream<E> stream() {
-        return super.stream();
+    public Stream<E> stream() {
+        return Arrays.stream(elements);
     }
 
     /**
@@ -449,8 +551,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Collection<E> collect() {
-        return super.collect();
+    public Collection<E> collect() {
+        return List.copyOf(Arrays.asList(elements));
     }
 
     /**
@@ -460,8 +562,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Set<E> set() {
-        return super.set();
+    public Set<E> set() {
+        return Set.copyOf(Arrays.asList(elements));
     }
 
     /**
@@ -471,8 +573,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized List<E> list() {
-        return super.list();
+    public List<E> list() {
+        return List.copyOf(Arrays.asList(elements));
     }
 
     /**
@@ -482,8 +584,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized ArrayList<E> arrayList() {
-        return super.arrayList();
+    public ArrayList<E> arrayList() {
+        return new ArrayList<>(Arrays.asList(elements));
     }
 
     /**
@@ -493,8 +595,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Tuple<E> tuple() {
-        return super.tuple();
+    public Tuple<E> tuple() {
+        return Tuple.of(elements);
     }
 
     //
@@ -503,14 +605,13 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * This returns a copied iterator to prevent concurrency issues.
      *
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized Iterator<E> iterator() {
-        return super.copy().iterator();
+    public Iterator<E> iterator() {
+        return Arrays.stream(elements).iterator();
     }
 
     //
@@ -524,8 +625,8 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> copy() {
-        return super.copy();
+    public SafeArray<E> copy() {
+        return new FastArray<>(array(), false);
     }
 
     //
@@ -539,8 +640,9 @@ public class SyncArray<E> extends FastArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof SafeArray<?> a)) return false;
+        return Arrays.equals(elements, a.array());
     }
 
     //
@@ -554,7 +656,7 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized String toString() {
-        return super.toString();
+    public String toString() {
+        return Arrays.toString(elements);
     }
 }

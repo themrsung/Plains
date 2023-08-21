@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -11,14 +12,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size tuple which can only hold three elements.
- * Triples use ABC notation to identify their elements.
+ * A fixed-size tuple which can only hold two elements.
+ * Pairs use AB notation to identify their elements.
  *
  * @param <E> The type of element this tuple should hold
  * @see Tuple
- * @see TriTriple
+ * @see BiPair
  */
-public class Triple<E> implements Tuple<E> {
+public class Pair<E> implements Tuple<E> {
     //
     // Constants
     //
@@ -34,19 +35,17 @@ public class Triple<E> implements Tuple<E> {
     //
 
     /**
-     * Creates a new {@link TriTriple ternary triple} with three elements of different types.
+     * Creates a new {@link BiPair binary pair} with two elements of different types.
      *
-     * @param a   The first element of the triple
-     * @param b   The second element of the triple
-     * @param c   The third element of the triple
+     * @param a   The first element of the pair
+     * @param b   The second element of the pair
      * @param <A> The type of the first element
      * @param <B> The type of the second element
-     * @param <C> The type of the third element
-     * @return The ternary triple constructed from the provided elements
+     * @return The binary pair constructed from the provided elements
      */
     @Nonnull
-    public static <A, B, C> TriTriple<A, B, C> of(A a, B b, C c) {
-        return new TriTriple<>(a, b, c);
+    public static <A, B> BiPair<A, B> of(A a, B b) {
+        return new BiPair<>(a, b);
     }
 
     //
@@ -54,48 +53,44 @@ public class Triple<E> implements Tuple<E> {
     //
 
     /**
-     * Creates a new triple.
+     * Creates a new pair.
      *
-     * @param a The first element of this triple
-     * @param b The second element of this triple
-     * @param c The third element of this triple
+     * @param a The first element of this pair
+     * @param b The second element of this pair
      */
-    public Triple(E a, E b, E c) {
+    public Pair(E a, E b) {
         this.a = a;
         this.b = b;
-        this.c = c;
     }
 
     /**
-     * Creates a new triple.
+     * Creates a new pair.
      *
-     * @param elements An array containing the elements of this triple in ABC order
-     * @throws IllegalArgumentException When the array's length is not {@code 3}
+     * @param elements An array containing the elements of this pair in AB order
+     * @throws IllegalArgumentException When the array's length is not {@code 2}
      */
-    public Triple(@Nonnull E[] elements) {
-        if (elements.length != 3) {
-            throw new IllegalArgumentException("The provided array's length is not 3.");
+    public Pair(@Nonnull E[] elements) {
+        if (elements.length != 2) {
+            throw new IllegalArgumentException("The provided array's length is not 2.");
         }
 
         this.a = elements[0];
         this.b = elements[1];
-        this.c = elements[2];
     }
 
     /**
-     * Creates a new triple.
+     * Creates a new pair.
      *
      * @param t The tuple of which to copy elements from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 3}
+     * @throws IllegalArgumentException When the tuple's size is not {@code 2}
      */
-    public Triple(@Nonnull Tuple<? extends E> t) {
-        if (t.size() != 3) {
-            throw new IllegalArgumentException("The provided tuple's size is not 3.");
+    public Pair(@Nonnull Tuple<? extends E> t) {
+        if (t.size() != 2) {
+            throw new IllegalArgumentException("The provided tuple's length is not 2.");
         }
 
         this.a = t.get(0);
         this.b = t.get(1);
-        this.c = t.get(2);
     }
 
     //
@@ -112,11 +107,6 @@ public class Triple<E> implements Tuple<E> {
      */
     protected final E b;
 
-    /**
-     * The third element of this tuple.
-     */
-    protected final E c;
-
     //
     // Properties
     //
@@ -128,7 +118,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Override
     public int size() {
-        return 3;
+        return 2;
     }
 
     //
@@ -147,36 +137,26 @@ public class Triple<E> implements Tuple<E> {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
-            case 2 -> c;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 3.");
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this triple.
+     * Returns the A component (the first component) of this pair.
      *
-     * @return The A component of this triple
+     * @return The A component of this pair
      */
     public E a() {
         return a;
     }
 
     /**
-     * Returns the B component (the second component) of this triple.
+     * Returns the B component (the second component) of this pair.
      *
-     * @return The B component of this triple
+     * @return The B component of this pair
      */
     public E b() {
         return b;
-    }
-
-    /**
-     * Returns the C component (the third component) of this triple.
-     *
-     * @return The C component of this triple
-     */
-    public E c() {
-        return c;
     }
 
     //
@@ -191,7 +171,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) || Objects.equals(b, obj) || Objects.equals(c, obj);
+        return Objects.equals(a, obj) || Objects.equals(b, obj);
     }
 
     /**
@@ -223,7 +203,7 @@ public class Triple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new Triple<>(f.apply(a), f.apply(b), f.apply(c));
+        return new Pair<>(f.apply(a), f.apply(b));
     }
 
     /**
@@ -240,11 +220,11 @@ public class Triple<E> implements Tuple<E> {
     @Override
     public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        if (t.size() != 3) {
+        if (t.size() != 2) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Triple<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)));
+        return new Pair<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)));
     }
 
     //
@@ -258,7 +238,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return List.of(a, b, c).iterator();
+        return List.of(a, b).iterator();
     }
 
     //
@@ -273,7 +253,7 @@ public class Triple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public SafeArray<E> array() {
-        return SafeArray.of(a, b, c);
+        return SafeArray.of(a, b);
     }
 
     /**
@@ -284,7 +264,7 @@ public class Triple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return List.of(a, b, c);
+        return List.of(a, b);
     }
 
     //
@@ -303,6 +283,7 @@ public class Triple<E> implements Tuple<E> {
         return array().equals(t.array());
     }
 
+
     //
     // Serialization
     //
@@ -315,22 +296,21 @@ public class Triple<E> implements Tuple<E> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + ", " + c + "]";
+        return "[" + a + ", " + b + "]";
     }
 
     //
-    // Ternary Triple
+    // Binary Pair
     //
 
     /**
-     * A specialized triple used to hold three elements of different types.
+     * A specialized pair used to hold two elements of different types.
      *
      * @param <A> The first element's type
      * @param <B> The second element's type
-     * @param <C> The third element's type
-     * @see Triple
+     * @see Pair
      */
-    public static class TriTriple<A, B, C> extends Triple<Object> {
+    public static class BiPair<A, B> extends Pair<Object> {
         //
         // Constants
         //
@@ -346,23 +326,22 @@ public class Triple<E> implements Tuple<E> {
         //
 
         /**
-         * Creates a new ternary triple.
+         * Creates a new binary pair.
          *
-         * @param a The first element of this triple
-         * @param b The second element of this triple
-         * @param c The third element of this triple
+         * @param a The first element of this pair
+         * @param b The second element of this pair
          */
-        protected TriTriple(A a, B b, C c) {
-            super(a, b, c);
+        protected BiPair(A a, B b) {
+            super(a, b);
         }
 
         /**
-         * Creates a new ternary triple.
+         * Creates a new pair.
          *
-         * @param t The triple of which to copy elements from
+         * @param p The pair of which to copy elements from
          */
-        protected TriTriple(@Nonnull TriTriple<A, B, C> t) {
-            super(t);
+        protected BiPair(@Nonnull BiPair<A, B> p) {
+            super(p);
         }
 
         //
@@ -389,17 +368,6 @@ public class Triple<E> implements Tuple<E> {
         @SuppressWarnings("unchecked")
         public B b() {
             return (B) super.b();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public C c() {
-            return (C) super.c();
         }
     }
 }

@@ -1,6 +1,6 @@
 package civitas.celestis.math;
 
-import civitas.celestis.util.Grid;
+import civitas.celestis.util.grid.Grid;
 import jakarta.annotation.Nonnull;
 
 /**

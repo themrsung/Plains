@@ -1,7 +1,8 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Numbers;
-import civitas.celestis.math.Vector2;
+import civitas.celestis.math.Vector4;
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -14,13 +15,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size integer-typed tuple which can only hold two components.
- * Pairs use AB notation to identify their components.
+ * A fixed-size integer-typed tuple which can only hold four components.
+ * Quads use ABCD notation to identify their components.
  *
  * @see Tuple
  * @see IntTuple
  */
-public class Int2 implements IntTuple<Int2> {
+public class Int4 implements IntTuple<Int4> {
     //
     // Constants
     //
@@ -36,52 +37,59 @@ public class Int2 implements IntTuple<Int2> {
     //
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
-     * @param a The first element of this pair
-     * @param b The second element of this pair
+     * @param a The first element of this quad
+     * @param b The second element of this quad
+     * @param c The third element of this quad
+     * @param d The fourth element of this quad
      */
-    public Int2(int a, int b) {
+    public Int4(int a, int b, int c, int d) {
         this.a = a;
         this.b = b;
+        this.c = c;
+        this.d = d;
     }
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
-     * @param elements An array containing the elements of this pair in AB order
-     * @throws IllegalArgumentException When the array's length is not {@code 2}
+     * @param elements An array containing the elements of this quad in ABCD order
+     * @throws IllegalArgumentException When the array's length is not {@code 4}
      */
-    public Int2(@Nonnull int[] elements) {
-        if (elements.length != 2) {
-            throw new IllegalArgumentException("The provided array's length is not 2.");
+    public Int4(@Nonnull int[] elements) {
+        if (elements.length != 4) {
+            throw new IllegalArgumentException("The provided array's length is not 4.");
         }
 
         this.a = elements[0];
         this.b = elements[1];
+        this.c = elements[2];
+        this.d = elements[3];
     }
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
      * @param t The tuple of which to copy elements from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 2}
+     * @throws IllegalArgumentException When the tuple's size is not {@code 4}
      */
-    public Int2(@Nonnull Tuple<? extends Number> t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's size is not 2.");
+    public Int4(@Nonnull Tuple<? extends Number> t) {
+        if (t.size() != 4) {
+            throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
         this.a = t.get(0).intValue();
         this.b = t.get(1).intValue();
+        this.c = t.get(2).intValue();
+        this.d = t.get(3).intValue();
     }
 
     /**
-     * Creates a new pair. The required format is "{@code [0, 0]}".
-     * @param values The string representation of this pair
-     * @throws NumberFormatException When the format is invalid
+     * Creates a new quad. The required format is "{@code [0, 0, 0, 0]}".
+     * @param values The string representation of this quad
      */
-    public Int2(@Nonnull String values) {
+    public Int4(@Nonnull String values) {
         this(ArrayReader.readIntArray(values));
     }
 
@@ -99,6 +107,16 @@ public class Int2 implements IntTuple<Int2> {
      */
     protected final int b;
 
+    /**
+     * The third element of this tuple.
+     */
+    protected final int c;
+
+    /**
+     * The fourth element of this tuple.
+     */
+    protected final int d;
+
     //
     // Properties
     //
@@ -110,7 +128,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public int size() {
-        return 2;
+        return 4;
     }
 
     /**
@@ -120,7 +138,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public boolean isZero() {
-        return a == 0 && b == 0;
+        return a == 0 && b == 0 && c == 0 && d == 0;
     }
 
     /**
@@ -130,7 +148,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public double norm() {
-        return Math.sqrt(a * a + b * b);
+        return Math.sqrt(a * a + b * b + c * c + d * d);
     }
 
     /**
@@ -140,7 +158,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public int norm2() {
-        return a * a + b * b;
+        return a * a + b * b + c * c + d * d;
     }
 
     /**
@@ -150,7 +168,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public int normManhattan() {
-        return Math.abs(a) + Math.abs(b);
+        return Math.abs(a) + Math.abs(b) + Math.abs(c) + Math.abs(d);
     }
 
     //
@@ -169,26 +187,46 @@ public class Int2 implements IntTuple<Int2> {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
+            case 2 -> c;
+            case 3 -> d;
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this pair.
+     * Returns the A component (the first component) of this quad.
      *
-     * @return The A component of this pair
+     * @return The A component of this quad
      */
     public int a() {
         return a;
     }
 
     /**
-     * Returns the B component (the second component) of this pair.
+     * Returns the B component (the second component) of this quad.
      *
-     * @return The B component of this pair
+     * @return The B component of this quad
      */
     public int b() {
         return b;
+    }
+
+    /**
+     * Returns the C component (the third component) of this quad.
+     *
+     * @return The C component of this quad
+     */
+    public int c() {
+        return c;
+    }
+
+    /**
+     * Returns the D component (the fourth component) of this quad.
+     *
+     * @return The D component of this quad
+     */
+    public int d() {
+        return d;
     }
 
     //
@@ -203,7 +241,10 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) || Objects.equals(b, obj);
+        return Objects.equals(a, obj) ||
+                Objects.equals(b, obj) ||
+                Objects.equals(c, obj) ||
+                Objects.equals(d, obj);
     }
 
     /**
@@ -233,8 +274,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 add(int s) {
-        return new Int2(a + s, b + s);
+    public Int4 add(int s) {
+        return new Int4(a + s, b + s, c + s, d + s);
     }
 
     /**
@@ -245,8 +286,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 subtract(int s) {
-        return new Int2(a - s, b - s);
+    public Int4 subtract(int s) {
+        return new Int4(a - s, b - s, c - s, d - s);
     }
 
     /**
@@ -257,8 +298,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 multiply(int s) {
-        return new Int2(a * s, b * s);
+    public Int4 multiply(int s) {
+        return new Int4(a * s, b * s, c * s, d * s);
     }
 
     /**
@@ -270,8 +311,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 divide(int s) throws ArithmeticException {
-        return new Int2(a / s, b / s);
+    public Int4 divide(int s) throws ArithmeticException {
+        return new Int4(a / s, b / s, c / s, d / s);
     }
 
     /**
@@ -282,8 +323,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 add(@Nonnull Int2 t) {
-        return new Int2(a + t.a, b + t.b);
+    public Int4 add(@Nonnull Int4 t) {
+        return new Int4(a + t.a, b + t.b, c + t.c, d + t.d);
     }
 
     /**
@@ -294,8 +335,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 subtract(@Nonnull Int2 t) {
-        return new Int2(a - t.a, b - t.b);
+    public Int4 subtract(@Nonnull Int4 t) {
+        return new Int4(a - t.a, b - t.b, c - t.c, d - t.d);
     }
 
     /**
@@ -305,9 +346,10 @@ public class Int2 implements IntTuple<Int2> {
      * @return {@inheritDoc}
      */
     @Override
-    public int dot(@Nonnull Int2 t) {
-        return a * t.a + b * t.b;
+    public int dot(@Nonnull Int4 t) {
+        return a * t.a + b * t.b + c * t.c + d * t.d;
     }
+
 
     //
     // Distance
@@ -320,11 +362,13 @@ public class Int2 implements IntTuple<Int2> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distance(@Nonnull Int2 t) {
+    public double distance(@Nonnull Int4 t) {
         final int da = a - t.a;
         final int db = b - t.b;
+        final int dc = c - t.c;
+        final int dd = d - t.d;
 
-        return Math.sqrt(da * da + db * db);
+        return Math.sqrt(da * da + db * db + dc * dc + dd * dd);
     }
 
     /**
@@ -334,11 +378,13 @@ public class Int2 implements IntTuple<Int2> {
      * @return {@inheritDoc}
      */
     @Override
-    public int distance2(@Nonnull Int2 t) {
+    public int distance2(@Nonnull Int4 t) {
         final int da = a - t.a;
         final int db = b - t.b;
+        final int dc = c - t.c;
+        final int dd = d - t.d;
 
-        return da * da + db * db;
+        return da * da + db * db + dc * dc + dd * dd;
     }
 
     /**
@@ -348,11 +394,13 @@ public class Int2 implements IntTuple<Int2> {
      * @return {@inheritDoc}
      */
     @Override
-    public int distanceManhattan(@Nonnull Int2 t) {
+    public int distanceManhattan(@Nonnull Int4 t) {
         final int da = a - t.a;
         final int db = b - t.b;
+        final int dc = c - t.c;
+        final int dd = d - t.d;
 
-        return Math.abs(da) + Math.abs(db);
+        return Math.abs(da) + Math.abs(db) + Math.abs(dc) + Math.abs(dd);
     }
 
     //
@@ -367,8 +415,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 min(@Nonnull Int2 t) {
-        return new Int2(Math.min(a, t.a), Math.min(b, t.b));
+    public Int4 min(@Nonnull Int4 t) {
+        return new Int4(Math.min(a, t.a), Math.min(b, t.b), Math.min(c, t.c), Math.min(d, t.c));
     }
 
     /**
@@ -379,8 +427,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 max(@Nonnull Int2 t) {
-        return new Int2(Math.max(a, t.a), Math.max(b, t.b));
+    public Int4 max(@Nonnull Int4 t) {
+        return new Int4(Math.max(a, t.a), Math.max(b, t.b), Math.max(c, t.c), Math.max(d, t.c));
     }
 
     /**
@@ -392,12 +440,15 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 clamp(@Nonnull Int2 min, @Nonnull Int2 max) {
-        return new Int2(
-                (int) Numbers.clamp(a, min.a, max.a),
-                (int) Numbers.clamp(b, min.b, max.b)
+    public Int4 clamp(@Nonnull Int4 min, @Nonnull Int4 max) {
+        return new Int4(
+                (int) Numbers.clamp(a, min.a, min.a),
+                (int) Numbers.clamp(b, min.b, min.b),
+                (int) Numbers.clamp(c, min.c, min.c),
+                (int) Numbers.clamp(d, min.d, min.d)
         );
     }
+
 
     //
     // Negation
@@ -410,9 +461,10 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Int2 negate() {
-        return new Int2(-a, -b);
+    public Int4 negate() {
+        return new Int4(-a, -b, -c, -d);
     }
+
 
     //
     // Transformation
@@ -428,8 +480,9 @@ public class Int2 implements IntTuple<Int2> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
-        return new Pair<>(f.apply(a), f.apply(b));
+        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
+
 
     /**
      * {@inheritDoc}
@@ -445,11 +498,11 @@ public class Int2 implements IntTuple<Int2> {
     @Override
     public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
-        if (t.size() != 2) {
+        if (t.size() != 4) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Pair<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)));
+        return new Quad<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
     }
 
     //
@@ -463,7 +516,7 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public Iterator<Integer> iterator() {
-        return List.of(a, b).iterator();
+        return List.of(a, b, c, d).iterator();
     }
 
     //
@@ -478,7 +531,7 @@ public class Int2 implements IntTuple<Int2> {
     @Nonnull
     @Override
     public SafeArray<Integer> array() {
-        return SafeArray.ofInt(a, b);
+        return SafeArray.ofInt(a, b, c, d);
     }
 
     /**
@@ -489,7 +542,7 @@ public class Int2 implements IntTuple<Int2> {
     @Nonnull
     @Override
     public List<Integer> list() {
-        return List.of(a, b);
+        return List.of(a, b, c, d);
     }
 
     /**
@@ -499,8 +552,8 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public Vector2 vector() {
-        return new Vector2(a, b);
+    public Vector4 vector() {
+        return new Vector4(a, b, c, d);
     }
 
     //
@@ -519,7 +572,6 @@ public class Int2 implements IntTuple<Int2> {
         return array().equals(t.array());
     }
 
-
     //
     // Serialization
     //
@@ -532,6 +584,6 @@ public class Int2 implements IntTuple<Int2> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + "]";
+        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
     }
 }

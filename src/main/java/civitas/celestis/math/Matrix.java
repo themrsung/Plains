@@ -1,6 +1,10 @@
 package civitas.celestis.math;
 
-import civitas.celestis.util.*;
+import civitas.celestis.util.array.DoubleArray;
+import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.grid.ArrayGrid;
+import civitas.celestis.util.grid.Grid;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 

@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -11,14 +12,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size tuple which can only hold two elements.
- * Pairs use AB notation to identify their elements.
+ * A fixed-size tuple which can only hold four elements.
+ * Quads use ABCD notation to identify their elements.
  *
  * @param <E> The type of element this tuple should hold
  * @see Tuple
- * @see BiPair
+ * @see QuatQuad
  */
-public class Pair<E> implements Tuple<E> {
+public class Quad<E> implements Tuple<E> {
     //
     // Constants
     //
@@ -34,17 +35,21 @@ public class Pair<E> implements Tuple<E> {
     //
 
     /**
-     * Creates a new {@link BiPair binary pair} with two elements of different types.
+     * Creates a new {@link QuatQuad quaternary quad} with four elements of different types.
      *
-     * @param a   The first element of the pair
-     * @param b   The second element of the pair
+     * @param a   The first element of the quad
+     * @param b   The second element of the quad
+     * @param c   The third element of the quad
+     * @param d   The fourth element of the quad
      * @param <A> The type of the first element
      * @param <B> The type of the second element
-     * @return The binary pair constructed from the provided elements
+     * @param <C> The type of the third element
+     * @param <D> The type of the fourth element
+     * @return The quaternary quad constructed from the provided elements
      */
     @Nonnull
-    public static <A, B> BiPair<A, B> of(A a, B b) {
-        return new BiPair<>(a, b);
+    public static <A, B, C, D> QuatQuad<A, B, C, D> of(A a, B b, C c, D d) {
+        return new QuatQuad<>(a, b, c, d);
     }
 
     //
@@ -52,44 +57,52 @@ public class Pair<E> implements Tuple<E> {
     //
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
-     * @param a The first element of this pair
-     * @param b The second element of this pair
+     * @param a The first element of this quad
+     * @param b The second element of this quad
+     * @param c The third element of this quad
+     * @param d The fourth element of this quad
      */
-    public Pair(E a, E b) {
+    public Quad(E a, E b, E c, E d) {
         this.a = a;
         this.b = b;
+        this.c = c;
+        this.d = d;
     }
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
-     * @param elements An array containing the elements of this pair in AB order
-     * @throws IllegalArgumentException When the array's length is not {@code 2}
+     * @param elements An array containing the elements of this quad in ABCD order
+     * @throws IllegalArgumentException When the array's length is not {@code 4}
      */
-    public Pair(@Nonnull E[] elements) {
-        if (elements.length != 2) {
-            throw new IllegalArgumentException("The provided array's length is not 2.");
+    public Quad(@Nonnull E[] elements) {
+        if (elements.length != 4) {
+            throw new IllegalArgumentException("The provided array's length is not 4.");
         }
 
         this.a = elements[0];
         this.b = elements[1];
+        this.c = elements[2];
+        this.d = elements[3];
     }
 
     /**
-     * Creates a new pair.
+     * Creates a new quad.
      *
      * @param t The tuple of which to copy elements from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 2}
+     * @throws IllegalArgumentException When the tuple's size is not {@code 4}
      */
-    public Pair(@Nonnull Tuple<? extends E> t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's length is not 2.");
+    public Quad(@Nonnull Tuple<? extends E> t) {
+        if (t.size() != 4) {
+            throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
         this.a = t.get(0);
         this.b = t.get(1);
+        this.c = t.get(2);
+        this.d = t.get(3);
     }
 
     //
@@ -106,6 +119,16 @@ public class Pair<E> implements Tuple<E> {
      */
     protected final E b;
 
+    /**
+     * The third element of this tuple.
+     */
+    protected final E c;
+
+    /**
+     * The fourth element of this tuple.
+     */
+    protected final E d;
+
     //
     // Properties
     //
@@ -117,7 +140,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Override
     public int size() {
-        return 2;
+        return 4;
     }
 
     //
@@ -136,26 +159,46 @@ public class Pair<E> implements Tuple<E> {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
+            case 2 -> c;
+            case 3 -> d;
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this pair.
+     * Returns the A component (the first component) of this quad.
      *
-     * @return The A component of this pair
+     * @return The A component of this quad
      */
     public E a() {
         return a;
     }
 
     /**
-     * Returns the B component (the second component) of this pair.
+     * Returns the B component (the second component) of this quad.
      *
-     * @return The B component of this pair
+     * @return The B component of this quad
      */
     public E b() {
         return b;
+    }
+
+    /**
+     * Returns the C component (the third component) of this quad.
+     *
+     * @return The C component of this quad
+     */
+    public E c() {
+        return c;
+    }
+
+    /**
+     * Returns the D component (the fourth component) of this quad.
+     *
+     * @return The D component of this quad
+     */
+    public E d() {
+        return d;
     }
 
     //
@@ -170,7 +213,10 @@ public class Pair<E> implements Tuple<E> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) || Objects.equals(b, obj);
+        return Objects.equals(a, obj) ||
+                Objects.equals(b, obj) ||
+                Objects.equals(c, obj) ||
+                Objects.equals(d, obj);
     }
 
     /**
@@ -202,8 +248,9 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new Pair<>(f.apply(a), f.apply(b));
+        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
+
 
     /**
      * {@inheritDoc}
@@ -219,11 +266,11 @@ public class Pair<E> implements Tuple<E> {
     @Override
     public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        if (t.size() != 2) {
+        if (t.size() != 4) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Pair<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)));
+        return new Quad<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
     }
 
     //
@@ -237,7 +284,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return List.of(a, b).iterator();
+        return List.of(a, b, c, d).iterator();
     }
 
     //
@@ -252,7 +299,7 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public SafeArray<E> array() {
-        return SafeArray.of(a, b);
+        return SafeArray.of(a, b, c, d);
     }
 
     /**
@@ -263,7 +310,7 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return List.of(a, b);
+        return List.of(a, b, c, d);
     }
 
     //
@@ -282,7 +329,6 @@ public class Pair<E> implements Tuple<E> {
         return array().equals(t.array());
     }
 
-
     //
     // Serialization
     //
@@ -295,21 +341,23 @@ public class Pair<E> implements Tuple<E> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + "]";
+        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
     }
 
     //
-    // Binary Pair
+    // Quaternary Quad
     //
 
     /**
-     * A specialized pair used to hold two elements of different types.
+     * A specialized quad used to hold four elements of different types.
      *
      * @param <A> The first element's type
      * @param <B> The second element's type
-     * @see Pair
+     * @param <C> The third element's type
+     * @param <D> The fourth element's type
+     * @see Quad
      */
-    public static class BiPair<A, B> extends Pair<Object> {
+    public static class QuatQuad<A, B, C, D> extends Quad<Object> {
         //
         // Constants
         //
@@ -325,22 +373,24 @@ public class Pair<E> implements Tuple<E> {
         //
 
         /**
-         * Creates a new binary pair.
+         * Creates a new quaternary quad.
          *
-         * @param a The first element of this pair
-         * @param b The second element of this pair
+         * @param a The first element of this quad
+         * @param b The second element of this quad
+         * @param c The third element of this quad
+         * @param d The fourth element of this quad
          */
-        protected BiPair(A a, B b) {
-            super(a, b);
+        protected QuatQuad(A a, B b, C c, D d) {
+            super(a, b, c, d);
         }
 
         /**
-         * Creates a new pair.
+         * Creates a new quad.
          *
-         * @param p The pair of which to copy elements from
+         * @param q The quad of which to copy elements from
          */
-        protected BiPair(@Nonnull BiPair<A, B> p) {
-            super(p);
+        protected QuatQuad(@Nonnull QuatQuad<A, B, C, D> q) {
+            super(q);
         }
 
         //
@@ -367,6 +417,28 @@ public class Pair<E> implements Tuple<E> {
         @SuppressWarnings("unchecked")
         public B b() {
             return (B) super.b();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public C c() {
+            return (C) super.c();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public D d() {
+            return (D) super.c();
         }
     }
 }

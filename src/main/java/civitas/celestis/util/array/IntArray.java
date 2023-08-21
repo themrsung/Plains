@@ -1,5 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.array;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -13,13 +14,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A type-safe array whose elements' types are bound to the raw primitive {@code long}.
- * Elements are stored in their primitive form, reducing the overhead of boxed {@link Long}s.
- * Long-typed arrays are designed with speed as their first priority, and are not thread-safe.
+ * A type-safe array whose elements' types are bound to the raw primitive {@code int}.
+ * Elements are stored in their primitive form, reducing the overhead of boxed {@link Integer}s.
+ * Integer-typed arrays are designed with speed as their first priority, and are not thread-safe.
  *
  * @see SafeArray
  */
-public class LongArray implements SafeArray<Long> {
+public class IntArray implements SafeArray<Integer> {
     //
     // Constants
     //
@@ -35,15 +36,15 @@ public class LongArray implements SafeArray<Long> {
     //
 
     /**
-     * Creates a new long-typed array from the provided array of elements,
+     * Creates a new int-typed array from the provided array of elements,
      * then returns the newly created array instance.
      *
      * @param elements The elements this array should contain
      * @return The new array instance created from the provided elements
      */
     @Nonnull
-    public static LongArray of(@Nonnull long... elements) {
-        return new LongArray(elements);
+    public static IntArray of(@Nonnull int... elements) {
+        return new IntArray(elements);
     }
 
     //
@@ -51,40 +52,40 @@ public class LongArray implements SafeArray<Long> {
     //
 
     /**
-     * Creates a new long array.
+     * Creates a new int array.
      *
      * @param length The length of this array
      */
-    public LongArray(int length) {
-        this.elements = new long[length];
+    public IntArray(int length) {
+        this.elements = new int[length];
     }
 
     /**
-     * Creates a new long array.
+     * Creates a new int array.
      *
      * @param a The array of which to copy elements from
      */
-    public LongArray(@Nonnull SafeArray<? extends Number> a) {
-        this.elements = a.stream().mapToLong(Number::longValue).toArray();
+    public IntArray(@Nonnull SafeArray<? extends Number> a) {
+        this.elements = a.stream().mapToInt(Number::intValue).toArray();
     }
 
     /**
-     * Creates a new long array.
+     * Creates a new int array.
      *
      * @param elements The elements this array should contain
      */
-    private LongArray(@Nonnull long... elements) {
+    private IntArray(@Nonnull int... elements) {
         this.elements = Arrays.stream(elements).toArray();
     }
 
     /**
-     * Creates a new long array by directly assigning the internal array.
+     * Creates a new int array by directly assigning the internal array.
      * This is a dangerous constructor, and thus is hidden as protected.
      *
      * @param elements The array to assign as the elements of this array
      * @param ignored  Ignored
      */
-    protected LongArray(@Nonnull long[] elements, boolean ignored) {
+    protected IntArray(@Nonnull int[] elements, boolean ignored) {
         this.elements = elements;
     }
 
@@ -95,7 +96,7 @@ public class LongArray implements SafeArray<Long> {
     /**
      * The internal array of elements.
      */
-    protected final long[] elements;
+    protected final int[] elements;
 
     //
     // Properties
@@ -123,7 +124,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        for (final long element : elements) {
+        for (final int element : elements) {
             if (Objects.equals(element, obj)) return true;
         }
 
@@ -157,12 +158,12 @@ public class LongArray implements SafeArray<Long> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public Long get(int i) throws IndexOutOfBoundsException {
+    public Integer get(int i) throws IndexOutOfBoundsException {
         return elements[i];
     }
 
     /**
-     * As primitive long-typed arrays cannot contain {@code null} values, this method
+     * As primitive int-typed arrays cannot contain {@code null} values, this method
      * has the same effect as calling {@link #get(int)}.
      *
      * @param i       The index of the element to get
@@ -171,7 +172,7 @@ public class LongArray implements SafeArray<Long> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public Long getOrDefault(int i, Long ignored) throws IndexOutOfBoundsException {
+    public Integer getOrDefault(int i, Integer ignored) throws IndexOutOfBoundsException {
         return elements[i];
     }
 
@@ -183,7 +184,7 @@ public class LongArray implements SafeArray<Long> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int i, Long v) throws IndexOutOfBoundsException {
+    public void set(int i, Integer v) throws IndexOutOfBoundsException {
         elements[i] = v;
     }
 
@@ -197,18 +198,18 @@ public class LongArray implements SafeArray<Long> {
      * @param v The value to fill this array with
      */
     @Override
-    public void fill(Long v) {
+    public void fill(Integer v) {
         Arrays.fill(elements, v);
     }
 
     /**
-     * As primitive long-typed arrays cannot contain {@code null} values,
-     * this method has the same effect as calling {@link #fill(Long)}.
+     * As primitive int-typed arrays cannot contain {@code null} values,
+     * this method has the same effect as calling {@link #fill(Integer)}.
      *
      * @param v The value to fill this array with
      */
     @Override
-    public void fillEmpty(Long v) {
+    public void fillEmpty(Integer v) {
         Arrays.fill(elements, v);
     }
 
@@ -221,7 +222,7 @@ public class LongArray implements SafeArray<Long> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void fillRange(int i1, int i2, Long v) throws IndexOutOfBoundsException {
+    public void fillRange(int i1, int i2, Integer v) throws IndexOutOfBoundsException {
         for (int i = i1; i < i2; i++) {
             elements[i] = v;
         }
@@ -233,7 +234,7 @@ public class LongArray implements SafeArray<Long> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Long> f) {
+    public void apply(@Nonnull UnaryOperator<Integer> f) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] = f.apply(elements[i]);
         }
@@ -246,7 +247,7 @@ public class LongArray implements SafeArray<Long> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(Long oldValue, Long newValue) {
+    public void replaceAll(Integer oldValue, Integer newValue) {
         apply(v -> Objects.equals(v, oldValue) ? newValue : v);
     }
 
@@ -257,7 +258,7 @@ public class LongArray implements SafeArray<Long> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceFirst(Long oldValue, Long newValue) {
+    public void replaceFirst(Integer oldValue, Integer newValue) {
         for (int i = 0; i < elements.length; i++) {
             if (Objects.equals(elements[i], oldValue)) {
                 elements[i] = newValue;
@@ -273,7 +274,7 @@ public class LongArray implements SafeArray<Long> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceLast(Long oldValue, Long newValue) {
+    public void replaceLast(Integer oldValue, Integer newValue) {
         for (int i = (elements.length - 1); i >= 0; i--) {
             if (Objects.equals(elements[i], oldValue)) {
                 elements[i] = newValue;
@@ -296,8 +297,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public SafeArray<Long> subArray(int i1, int i2) throws IndexOutOfBoundsException {
-        final LongArray result = new LongArray(i2 - i1);
+    public SafeArray<Integer> subArray(int i1, int i2) throws IndexOutOfBoundsException {
+        final IntArray result = new IntArray(i2 - i1);
         System.arraycopy(elements, i1, result.elements, 0, i2 - i1);
         return result;
     }
@@ -311,7 +312,7 @@ public class LongArray implements SafeArray<Long> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int i1, int i2, @Nonnull SafeArray<? extends Long> a) throws IndexOutOfBoundsException {
+    public void setRange(int i1, int i2, @Nonnull SafeArray<? extends Integer> a) throws IndexOutOfBoundsException {
         for (int i = i1; i < i2; i++) {
             elements[i] = a.get(i - i1);
         }
@@ -329,8 +330,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public SafeArray<Long> resize(int size) {
-        final LongArray result = new LongArray(size);
+    public SafeArray<Integer> resize(int size) {
+        final IntArray result = new IntArray(size);
         System.arraycopy(elements, 0, result.elements, 0, Math.min(elements.length, size));
         return result;
     }
@@ -353,11 +354,11 @@ public class LongArray implements SafeArray<Long> {
      * @param f The comparator function to sort this array with
      */
     @Override
-    public void sort(@Nonnull Comparator<? super Long> f) {
-        final long[] sortedArray = Arrays.stream(elements)
+    public void sort(@Nonnull Comparator<? super Integer> f) {
+        final int[] sortedArray = Arrays.stream(elements)
                 .boxed()
                 .sorted(f)
-                .mapToLong(Long::longValue)
+                .mapToInt(Integer::intValue)
                 .toArray();
 
         // Update the elements array with the sorted values
@@ -376,7 +377,7 @@ public class LongArray implements SafeArray<Long> {
             final int j = random.nextInt(i + 1);
 
             // Swap elements at i and j
-            final long temp = elements[i];
+            final int temp = elements[i];
 
             elements[i] = elements[j];
             elements[j] = temp;
@@ -395,8 +396,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public SafeArray<Long> filter(@Nonnull Predicate<? super Long> f) {
-        return new LongArray(Arrays.stream(elements).filter(f::test).toArray(), false);
+    public SafeArray<Integer> filter(@Nonnull Predicate<? super Integer> f) {
+        return new IntArray(Arrays.stream(elements).filter(f::test).toArray(), false);
     }
 
     //
@@ -413,7 +414,7 @@ public class LongArray implements SafeArray<Long> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super Long, F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super Integer, F> f) {
         return new FastArray<>((F[]) Arrays.stream(elements).boxed().map(f).toArray(), false);
     }
 
@@ -426,7 +427,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Long, F> f) {
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Integer, F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
 
@@ -439,7 +440,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> List<F> mapToList(@Nonnull Function<? super Long, F> f) {
+    public <F> List<F> mapToList(@Nonnull Function<? super Integer, F> f) {
         return Arrays.stream(elements).boxed().map(f).toList();
     }
 
@@ -452,7 +453,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> Set<F> mapToSet(@Nonnull Function<? super Long, F> f) {
+    public <F> Set<F> mapToSet(@Nonnull Function<? super Integer, F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toSet());
     }
 
@@ -468,7 +469,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super Long, ? super F, G> f)
+    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
 
         if (elements.length != a.length()) {
@@ -517,8 +518,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Long[] array() {
-        return Arrays.stream(elements).boxed().toArray(Long[]::new);
+    public Integer[] array() {
+        return Arrays.stream(elements).boxed().toArray(Integer[]::new);
     }
 
     /**
@@ -528,7 +529,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Stream<Long> stream() {
+    public Stream<Integer> stream() {
         return Arrays.stream(elements).boxed();
     }
 
@@ -539,7 +540,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Collection<Long> collect() {
+    public Collection<Integer> collect() {
         return Arrays.stream(elements).boxed().toList();
     }
 
@@ -550,7 +551,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Set<Long> set() {
+    public Set<Integer> set() {
         return Arrays.stream(elements).boxed().collect(Collectors.toSet());
     }
 
@@ -561,7 +562,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public List<Long> list() {
+    public List<Integer> list() {
         return Arrays.stream(elements).boxed().toList();
     }
 
@@ -572,7 +573,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public ArrayList<Long> arrayList() {
+    public ArrayList<Integer> arrayList() {
         return new ArrayList<>(Arrays.stream(elements).boxed().toList());
     }
 
@@ -583,8 +584,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Tuple<Long> tuple() {
-        return Tuple.ofLong(elements);
+    public Tuple<Integer> tuple() {
+        return Tuple.ofInt(elements);
     }
 
     //
@@ -598,7 +599,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public Iterator<Long> iterator() {
+    public Iterator<Integer> iterator() {
         return Arrays.stream(elements).iterator();
     }
 
@@ -613,8 +614,8 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public SafeArray<Long> copy() {
-        return new LongArray(elements);
+    public SafeArray<Integer> copy() {
+        return new IntArray(elements);
     }
 
     //
