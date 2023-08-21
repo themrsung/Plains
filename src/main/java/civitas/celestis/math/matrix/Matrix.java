@@ -433,7 +433,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
      * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
      */
     @Nonnull
-    public civitas.celestis.math.vector.Vector<?> multiply(@Nonnull civitas.celestis.math.vector.Vector<?> v) throws ArithmeticException {
+    public Vector<?> multiply(@Nonnull Vector<?> v) throws ArithmeticException {
         if (columns != v.dimensions()) {
             throw new ArithmeticException("Vector's dimensions must match the column count of the matrix for multiplication.");
         }
