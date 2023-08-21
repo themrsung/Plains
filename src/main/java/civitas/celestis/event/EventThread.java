@@ -133,20 +133,10 @@ public class EventThread extends Thread implements EventManager {
     /**
      * {@inheritDoc}
      *
-     * @param listeners A collection containing the listeners to register to this event manager
+     * @param listeners An iterable object containing the listeners to register to this event manager
      */
     @Override
-    public void register(@Nonnull Collection<? extends Listener> listeners) {
-        listeners.forEach(this::register);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param listeners A tuple containing the listeners to register to this event manager
-     */
-    @Override
-    public void register(@Nonnull Tuple<? extends Listener> listeners) {
+    public void register(@Nonnull Iterable<? extends Listener> listeners) {
         listeners.forEach(this::register);
     }
 
@@ -163,20 +153,10 @@ public class EventThread extends Thread implements EventManager {
     /**
      * {@inheritDoc}
      *
-     * @param listeners A collection containing the listeners to unregister from this event manager
+     * @param listeners An iterable object containing the listeners to unregister from this event manager
      */
     @Override
-    public void unregister(@Nonnull Collection<? extends Listener> listeners) {
-        listeners.forEach(this::unregister);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param listeners A tuple containing the listeners to unregister from this event manager
-     */
-    @Override
-    public void unregister(@Nonnull Tuple<? extends Listener> listeners) {
+    public void unregister(@Nonnull Iterable<? extends Listener> listeners) {
         listeners.forEach(this::unregister);
     }
 
@@ -185,6 +165,7 @@ public class EventThread extends Thread implements EventManager {
      *
      * @return {@inheritDoc}
      */
+    @Nonnull
     @Override
     public Tuple<HandlerReference> getRegisteredHandlers() {
         return Tuple.copyOf(handlers);

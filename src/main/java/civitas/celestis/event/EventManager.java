@@ -4,8 +4,6 @@ import civitas.celestis.util.ThreadedModule;
 import civitas.celestis.util.Tuple;
 import jakarta.annotation.Nonnull;
 
-import java.util.Collection;
-
 /**
  * An event manager. Handles the lifecycle of events and listeners.
  *
@@ -41,16 +39,9 @@ public interface EventManager extends ThreadedModule {
     /**
      * Registers multiple listeners to this event manager.
      *
-     * @param listeners A collection containing the listeners to register to this event manager
+     * @param listeners An iterable object containing the listeners to register to this event manager
      */
-    void register(@Nonnull Collection<? extends Listener> listeners);
-
-    /**
-     * Registers multiple listeners to this event manager.
-     *
-     * @param listeners A tuple containing the listeners to register to this event manager
-     */
-    void register(@Nonnull Tuple<? extends Listener> listeners);
+    void register(@Nonnull Iterable<? extends Listener> listeners);
 
     /**
      * Unregisters a listener from this event manager.
@@ -62,16 +53,9 @@ public interface EventManager extends ThreadedModule {
     /**
      * Unregisters multiple listeners from this event manager.
      *
-     * @param listeners A collection containing the listeners to unregister from this event manager
+     * @param listeners An iterable object containing the listeners to unregister from this event manager
      */
-    void unregister(@Nonnull Collection<? extends Listener> listeners);
-
-    /**
-     * Unregisters multiple listeners from this event manager.
-     *
-     * @param listeners A tuple containing the listeners to unregister from this event manager
-     */
-    void unregister(@Nonnull Tuple<? extends Listener> listeners);
+    void unregister(@Nonnull Iterable<? extends Listener> listeners);
 
     //
     // Handlers
@@ -82,5 +66,6 @@ public interface EventManager extends ThreadedModule {
      *
      * @return A tuple of every handler currently registered to this event manager
      */
+    @Nonnull
     Tuple<HandlerReference> getRegisteredHandlers();
 }

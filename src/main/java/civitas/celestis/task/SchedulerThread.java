@@ -3,7 +3,10 @@ package civitas.celestis.task;
 import civitas.celestis.util.Tuple;
 import jakarta.annotation.Nonnull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A scheduler thread.
@@ -100,39 +103,20 @@ public class SchedulerThread extends Thread implements Scheduler {
     /**
      * {@inheritDoc}
      *
-     * @param tasks A tuple containing the tasks to register synchronously
+     * @param tasks An iterable object containing the tasks to register synchronously
      */
     @Override
-    public void registerSync(@Nonnull Tuple<? extends Task> tasks) {
+    public void registerSync(@Nonnull Iterable<? extends Task> tasks) {
         tasks.forEach(this::register);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param tasks A collection containing the tasks to register synchronously
+     * @param tasks An iterable object containing the tasks to register asynchronously
      */
     @Override
-    public void registerSync(@Nonnull Collection<? extends Task> tasks) {
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param tasks A tuple containing the tasks to register asynchronously
-     */
-    @Override
-    public void registerAsync(@Nonnull Tuple<? extends Task> tasks) {
-        tasks.forEach(this::register);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param tasks A collection containing the tasks to register asynchronously
-     */
-    @Override
-    public void registerAsync(@Nonnull Collection<? extends Task> tasks) {
+    public void registerAsync(@Nonnull Iterable<? extends Task> tasks) {
         tasks.forEach(this::register);
     }
 
@@ -149,20 +133,10 @@ public class SchedulerThread extends Thread implements Scheduler {
     /**
      * {@inheritDoc}
      *
-     * @param tasks A tuple containing the tasks to unregister from this scheduler
+     * @param tasks An iterable object containing the tasks to unregister from this scheduler
      */
     @Override
-    public void unregister(@Nonnull Tuple<? extends Task> tasks) {
-        tasks.forEach(this::unregister);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param tasks A collection containing the tasks to unregister from this scheduler
-     */
-    @Override
-    public void unregister(@Nonnull Collection<? extends Task> tasks) {
+    public void unregister(@Nonnull Iterable<? extends Task> tasks) {
         tasks.forEach(this::unregister);
     }
 
