@@ -7,14 +7,11 @@ import civitas.celestis.util.tensoid.Tensoid;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Tensoid<String> cube = new ArrayTensoid<>(30, 30, 30);
-        cube.fill("Hello world");
+        final int n = 500;
 
-        final Tensoid<String> t2 = new HashTensoid<>(30, 30, 30);
-        t2.fill("Hello world");
+        final Tensoid<String> hash = new HashTensoid<>(n, n, n);
 
-        System.out.println(cube.dimensions());
-        System.out.println(t2.dimensions());
-        System.out.println(cube.equals(t2));
+        hash.set(100, 100, 100, "Hello World");
+        System.out.println(hash.get(100, 100, 100));
     }
 }

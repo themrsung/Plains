@@ -37,18 +37,14 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     static Index newIndex(int i, int j, int k) {
-        // Reuse index objects if possible
-        for (final TensoidIndex index : TensoidIndex.indices) {
-            if (index.i == i && index.j == j && index.k == j) return index;
-        }
+        // Try to find pre-built index
+        final int key = TensoidIndex.calculateKey(i, j, k);
+        if (TensoidIndex.indices.containsKey(key)) return TensoidIndex.indices.get(key);
 
-        // No existing index found; Create a new index
+        // No index found; Create new index
         final TensoidIndex index = new TensoidIndex(i, j, k);
-
-        // Add to the set
-        TensoidIndex.indices.add(index);
+        TensoidIndex.indices.put(key, index);
         return index;
-
     }
 
     //
@@ -561,19 +557,30 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
     final class TensoidIndex implements Index {
 
         /**
-         * The set of indices to reuse.
+         * The map of indices to reuse.
          */
-        private static final Set<TensoidIndex> indices = new HashSet<>();
+        private static final Map<Integer, Index> indices = new HashMap<>();
 
         static {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     for (int k = 0; k < 5; k++) {
-                        indices.add(new TensoidIndex(i, j, k));
+                        indices.put(calculateKey(i, j, k), new TensoidIndex(i, j, k));
                     }
                 }
             }
         }
+
+        /*
+         * Indexing
+         */
+
+        private static int calculateKey(int i, int j, int k) {
+            return i + j * J_PRIME_FACTOR + k * K_PRIME_FACTOR;
+        }
+
+        private static final int J_PRIME_FACTOR = 2;
+        private static final int K_PRIME_FACTOR = 3;
 
         /**
          * Private constructor to ensure this class is used internally.

@@ -43,7 +43,7 @@ public class SyncTensoid<E> extends ArrayTensoid<E> {
      * @return An {@link SyncTensoid} constructed from the provided elements
      */
     @Nonnull
-    static <E> SyncTensoid<E> of(@Nonnull E[][][] elements) {
+    public static <E> SyncTensoid<E> of(@Nonnull E[][][] elements) {
         final int width = elements.length;
         final int height = width > 0 ? elements[0].length : 0;
         final int depth = height > 0 ? elements[0][0].length : 0;

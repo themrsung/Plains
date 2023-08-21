@@ -15,6 +15,13 @@ import java.util.function.*;
  * A three-dimensional tensoid implemented using a {@link HashMap}.
  * This implementation is suitable for datasets which are expected to be
  * sparsely populated, and in applications which require dynamic resizing.
+ * <p>
+ * Note that hash tensoids are noticeably slower than array-based implementations
+ * when it comes to access and modification speeds due to their additional overhead.
+ * Hash tensoids should only be used to hold a very large tensoid
+ * which is not intended to be entirely populated with values, but
+ * partially left uninitialized as {@code null}.
+ * </p>
  *
  * @param <E> The type of element this tensoid should hold
  * @see Tensoid
