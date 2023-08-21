@@ -8,11 +8,24 @@ import jakarta.annotation.Nonnull;
  *
  * @param <E> The type of element this tensoid should hold
  * @see Tensoid
+ * @see HashTensoid
  */
 public interface DynamicTensoid<E> extends Tensoid<E> {
     //
     // Factory
     //
+
+    /**
+     * Creates a new dynamic tensoid from a 3D array of entries.
+     *
+     * @param elements The elements the tensoid should contain
+     * @param <E>      The type of element to contain
+     * @return The constructed dynamic tensoid
+     */
+    @Nonnull
+    static <E> DynamicTensoid<E> of(@Nonnull E[][][] elements) {
+        return HashTensoid.of(elements);
+    }
 
     //
     // Properties

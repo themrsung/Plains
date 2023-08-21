@@ -18,6 +18,7 @@ import java.util.function.*;
  *
  * @param <E> The type of element this tensoid should hold
  * @see Tensoid
+ * @see DynamicTensoid
  */
 public class HashTensoid<E> implements DynamicTensoid<E> {
     //
@@ -47,7 +48,7 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
      * @return The constructed hash tensoid
      */
     @Nonnull
-    static <E> HashTensoid<E> of(@Nonnull E[][][] entries) {
+    public static <E> HashTensoid<E> of(@Nonnull E[][][] entries) {
         final int width = entries.length;
         final int height = width > 0 ? entries[0].length : 0;
         final int depth = height > 0 ? entries[0][0].length : 0;

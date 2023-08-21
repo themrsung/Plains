@@ -65,7 +65,7 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
      * @param <E>      The type of element to contain
      * @return The constructed tensoid
      * @see ArrayTensoid#of(Object[][][])
-     * @see HashTensoid#of(Object[][][])
+     * @see DynamicTensoid#of(Object[][][])
      */
     @Nonnull
     @SuppressWarnings("unchecked")

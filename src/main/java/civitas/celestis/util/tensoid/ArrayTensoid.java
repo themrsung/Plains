@@ -42,7 +42,7 @@ public class ArrayTensoid<E> implements Tensoid<E> {
      * @return An {@link ArrayTensoid} constructed from the provided elements
      */
     @Nonnull
-    static <E> ArrayTensoid<E> of(@Nonnull E[][][] elements) {
+    public static <E> ArrayTensoid<E> of(@Nonnull E[][][] elements) {
         final int width = elements.length;
         final int height = width > 0 ? elements[0].length : 0;
         final int depth = height > 0 ? elements[0][0].length : 0;
