@@ -107,6 +107,22 @@ public class Complex extends Number implements Comparable<Number> {
         this.i = v.get(1);
     }
 
+    /**
+     * Creates a new complex number. The required format is "{@code x + yi}"
+     *
+     * @param notation The notation of which to parse
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Complex(@Nonnull String notation) {
+        final double[] components = parseComplexNotation(notation);
+        if (components.length != 2) {
+            throw new NumberFormatException("The format is invalid.");
+        }
+
+        this.r = components[0];
+        this.i = components[1];
+    }
+
     //
     // Internal
     //
@@ -121,6 +137,34 @@ public class Complex extends Number implements Comparable<Number> {
         if (i != 0) {
             throw new UnsupportedOperationException("A complex number whose imaginary part is not 0 cannot be represented as a scalar.");
         }
+    }
+
+    /**
+     * Reads a complex string in the format of "{@code x + yi}" into a primitive array of {@code double}s.
+     *
+     * @param complexString The complex number string to parse
+     * @return The parse components in real-imaginary order
+     */
+    protected static double[] parseComplexNotation(@Nonnull String complexString) {
+        // Remove any leading or trailing spaces
+        complexString = complexString.replaceAll(" ", "");
+
+        // Split the string into real and imaginary parts
+        String[] parts = complexString.split("[+-]", 2);
+
+        double[] components = new double[2];
+
+        // Parse the real component
+        components[0] = Double.parseDouble(parts[0]);
+
+        // Parse the imaginary component
+        if (complexString.contains("-")) {
+            components[1] = -Double.parseDouble(parts[1].replace("i", ""));
+        } else {
+            components[1] = Double.parseDouble(parts[1].replace("i", ""));
+        }
+
+        return components;
     }
 
     //
