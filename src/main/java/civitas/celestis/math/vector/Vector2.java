@@ -1,8 +1,9 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
+import civitas.celestis.math.Numbers;
 import civitas.celestis.util.array.SafeArray;
-import civitas.celestis.util.tuple.Tuple;
 import civitas.celestis.util.io.ArrayReader;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -13,12 +14,12 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
- * An immutable four-dimensional vector. Numeric values are represented using
- * the primitive type {@code double}. Components are represented in WXYZ notation.
+ * An immutable two-dimensional vector. Numeric values are represented using
+ * the primitive type {@code double}. Components are represented in XY notation.
  *
  * @see Vector
  */
-public class Vector4 implements Vector<Vector4> {
+public class Vector2 implements Vector<Vector2> {
     //
     // Constants
     //
@@ -30,49 +31,29 @@ public class Vector4 implements Vector<Vector4> {
     private static final long serialVersionUID = 0L;
 
     /**
-     * A vector of no direction of magnitude. Represents origin.
+     * A vector of no direction or magnitude. Represents origin.
      */
-    public static final Vector4 ZERO = new Vector4(0, 0, 0, 0);
-
-    /**
-     * The positive W unit vector.
-     */
-    public static final Vector4 POSITIVE_W = new Vector4(1, 0, 0, 0);
+    public static final Vector2 ZERO = new Vector2(0, 0);
 
     /**
      * The positive X unit vector.
      */
-    public static final Vector4 POSITIVE_X = new Vector4(0, 1, 0, 0);
+    public static final Vector2 POSITIVE_X = new Vector2(1, 0);
 
     /**
      * The positive Y unit vector.
      */
-    public static final Vector4 POSITIVE_Y = new Vector4(0, 0, 1, 0);
-
-    /**
-     * The positive Z unit vector.
-     */
-    public static final Vector4 POSITIVE_Z = new Vector4(0, 0, 0, 1);
-
-    /**
-     * The negative W unit vector.
-     */
-    public static final Vector4 NEGATIVE_W = new Vector4(-1, 0, 0, 0);
+    public static final Vector2 POSITIVE_Y = new Vector2(0, 1);
 
     /**
      * The negative X unit vector.
      */
-    public static final Vector4 NEGATIVE_X = new Vector4(0, -1, 0, 0);
+    public static final Vector2 NEGATIVE_X = new Vector2(-1, 0);
 
     /**
      * The negative Y unit vector.
      */
-    public static final Vector4 NEGATIVE_Y = new Vector4(0, 0, -1, 0);
-
-    /**
-     * The negative Z unit vector.
-     */
-    public static final Vector4 NEGATIVE_Z = new Vector4(0, 0, 0, -1);
+    public static final Vector2 NEGATIVE_Y = new Vector2(0, -1);
 
     //
     // Constructors
@@ -81,87 +62,72 @@ public class Vector4 implements Vector<Vector4> {
     /**
      * Creates a new vector.
      *
-     * @param w The W component of this vector
      * @param x The X component of this vector
      * @param y The Y component of this vector
-     * @param z The Z component of this vector
      */
-    public Vector4(double w, double x, double y, double z) {
-        this.w = w;
+    public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 
     /**
      * Creates a new vector.
      *
-     * @param components An array containing the components of this vector in WXYZ order
-     * @throws IllegalArgumentException When the array's length is not {@code 4}
+     * @param components An array containing the components of this vector in XY order
+     * @throws IllegalArgumentException When the arrays' length is not {@code 2}
      */
-    public Vector4(@Nonnull double[] components) {
-        if (components.length != 4) {
-            throw new IllegalArgumentException("The provided array does not have a length of 4.");
+    public Vector2(@Nonnull double[] components) {
+        if (components.length != 2) {
+            throw new IllegalArgumentException("The provided array does not have a length of 2.");
         }
 
-        this.w = components[0];
-        this.x = components[1];
-        this.y = components[2];
-        this.z = components[3];
+        this.x = components[0];
+        this.y = components[1];
     }
 
     /**
      * Creates a new vector.
      *
      * @param v The vector of which to copy component values from
-     * @throws IllegalArgumentException When the provided vector {@code v} does not have four components
+     * @throws IllegalArgumentException When the provided vector {@code v} does not have two components
      */
-    public Vector4(@Nonnull Vector<?> v) {
-        if (v.dimensions() != 4) {
-            throw new IllegalArgumentException("The provided vector is not four-dimensional.");
+    public Vector2(@Nonnull Vector<?> v) {
+        if (v.dimensions() != 2) {
+            throw new IllegalArgumentException("The provided vector is not two-dimensional.");
         }
 
-        this.w = v.get(0);
-        this.x = v.get(1);
-        this.y = v.get(2);
-        this.z = v.get(3);
+        this.x = v.get(0);
+        this.y = v.get(1);
     }
 
     /**
      * Creates a new vector.
      *
      * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 4}
+     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 2}
      */
-    public Vector4(@Nonnull Tuple<? extends Number> t) {
-        if (t.size() != 4) {
-            throw new IllegalArgumentException("The provided tuple's size is not 4.");
+    public Vector2(@Nonnull Tuple<? extends Number> t) {
+        if (t.size() != 2) {
+            throw new IllegalArgumentException("The provided tuple's size is not 2.");
         }
 
-        this.w = t.get(0).doubleValue();
-        this.x = t.get(1).doubleValue();
-        this.y = t.get(2).doubleValue();
-        this.z = t.get(3).doubleValue();
+        this.x = t.get(0).doubleValue();
+        this.y = t.get(1).doubleValue();
     }
 
     /**
-     * Creates a new vector. The required format is "{@code [0.0, 0.0, 0.0, 0.0]}".
+     * Creates a new vector. The required format is "{@code [0.0, 0.0]}".
      *
      * @param values The string representation of this vector
      * @throws NumberFormatException When the format is invalid
      */
-    public Vector4(@Nonnull String values) {
+    public Vector2(@Nonnull String values) {
         this(ArrayReader.readDoubleArray(values));
     }
 
     //
     // Variables
     //
-
-    /**
-     * The W component of this vector.
-     */
-    protected final double w;
 
     /**
      * The X component of this vector.
@@ -172,11 +138,6 @@ public class Vector4 implements Vector<Vector4> {
      * The Y component of this vector.
      */
     protected final double y;
-
-    /**
-     * The Z component of this vector.
-     */
-    protected final double z;
 
     //
     // Properties
@@ -189,7 +150,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public int dimensions() {
-        return 4;
+        return 2;
     }
 
     /**
@@ -199,7 +160,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public boolean isZero() {
-        return w == 0 && x == 0 && y == 0 && z == 0;
+        return x == 0 && y == 0;
     }
 
     /**
@@ -209,7 +170,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public boolean isNaN() {
-        return Double.isNaN(w + x + y + z);
+        return Double.isNaN(x + y);
     }
 
     /**
@@ -219,7 +180,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public boolean isFinite() {
-        return Double.isFinite(w + x + y + z);
+        return Double.isFinite(x + y);
     }
 
     /**
@@ -229,7 +190,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public boolean isInfinite() {
-        return Double.isInfinite(w + x + y + z);
+        return Double.isInfinite(x + y);
     }
 
     /**
@@ -239,7 +200,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public double norm() {
-        return Math.sqrt(w * w + x * x + y * y + z * z);
+        return Math.sqrt(x * x + y * y);
     }
 
     /**
@@ -249,7 +210,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public double norm2() {
-        return w * w + x * x + y * y + z * z;
+        return x * x + y * y;
     }
 
     /**
@@ -259,7 +220,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Override
     public double normManhattan() {
-        return Math.abs(w) + Math.abs(x) + Math.abs(y) + Math.abs(z);
+        return Math.abs(x) + Math.abs(y);
     }
 
     //
@@ -276,21 +237,10 @@ public class Vector4 implements Vector<Vector4> {
     @Override
     public double get(int i) throws IndexOutOfBoundsException {
         return switch (i) {
-            case 0 -> w;
-            case 1 -> x;
-            case 2 -> y;
-            case 3 -> z;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
+            case 0 -> x;
+            case 1 -> y;
+            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 2.");
         };
-    }
-
-    /**
-     * Returns the W component of this vector.
-     *
-     * @return The WX component of this vector
-     */
-    public double w() {
-        return w;
     }
 
     /**
@@ -311,15 +261,6 @@ public class Vector4 implements Vector<Vector4> {
         return y;
     }
 
-    /**
-     * Returns the Z component of this vector.
-     *
-     * @return The Z component of this vector
-     */
-    public double z() {
-        return z;
-    }
-
     //
     // Arithmetic
     //
@@ -332,8 +273,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 add(double s) {
-        return new Vector4(w + s, x + s, y + s, z + s);
+    public Vector2 add(double s) {
+        return new Vector2(x + s, y + s);
     }
 
     /**
@@ -344,8 +285,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 subtract(double s) {
-        return new Vector4(w - s, x - s, y - s, z - s);
+    public Vector2 subtract(double s) {
+        return new Vector2(x - s, y - s);
     }
 
     /**
@@ -356,8 +297,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 multiply(double s) {
-        return new Vector4(w * s, x * s, y * s, z * s);
+    public Vector2 multiply(double s) {
+        return new Vector2(x * s, y * s);
     }
 
     /**
@@ -369,9 +310,9 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 divide(double s) throws ArithmeticException {
+    public Vector2 divide(double s) throws ArithmeticException {
         if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
-        return new Vector4(w / s, x / s, y / s, z / s);
+        return new Vector2(x / s, y / s);
     }
 
     /**
@@ -382,8 +323,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 add(@Nonnull Vector4 v) {
-        return new Vector4(w + v.w, x + v.x, y + v.y, z + v.z);
+    public Vector2 add(@Nonnull Vector2 v) {
+        return new Vector2(x + v.x, y + v.y);
     }
 
     /**
@@ -394,24 +335,19 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 subtract(@Nonnull Vector4 v) {
-        return new Vector4(w - v.w, x - v.x, y - v.y, z - v.z);
+    public Vector2 subtract(@Nonnull Vector2 v) {
+        return new Vector2(x - v.x, y - v.y);
     }
 
     /**
-     * Multiplies this vector by another vector using quaternion multiplication.
+     * Multiplies this vector by another vector using complex number multiplication.
      *
      * @param v The vector of which to multiply this vector by
-     * @return The quaternion left-product of the two vectors
+     * @return The complex number product between the two vectors
      */
     @Nonnull
-    public Vector4 multiply(@Nonnull Vector4 v) {
-        return new Vector4(
-                w * v.w - x * v.x - y * v.y - z * v.z,
-                w * v.x + x * v.w + y * v.z - z * v.y,
-                w * v.y - x * v.z + y * v.w + z * v.x,
-                w * v.z + x * v.y - y * v.x + z * v.w
-        );
+    public Vector2 multiply(@Nonnull Vector2 v) {
+        return new Vector2(x * v.x - y * v.y, x * v.y + y * v.x);
     }
 
     /**
@@ -421,8 +357,8 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public double dot(@Nonnull Vector4 v) {
-        return w * v.w + x * v.x + y * v.y + z * v.z;
+    public double dot(@Nonnull Vector2 v) {
+        return x * v.x + y * v.y;
     }
 
     //
@@ -436,13 +372,11 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distance(@Nonnull Vector4 v) {
-        final double dw = w - v.w;
+    public double distance(@Nonnull Vector2 v) {
         final double dx = x - v.x;
         final double dy = y - v.y;
-        final double dz = z - v.z;
 
-        return Math.sqrt(dw * dw + dx * dx + dy * dy + dz * dz);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**
@@ -452,13 +386,11 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distance2(@Nonnull Vector4 v) {
-        final double dw = w - v.w;
+    public double distance2(@Nonnull Vector2 v) {
         final double dx = x - v.x;
         final double dy = y - v.y;
-        final double dz = z - v.z;
 
-        return dw * dw + dx * dx + dy * dy + dz * dz;
+        return dx * dx + dy * dy;
     }
 
     /**
@@ -468,13 +400,11 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public double distanceManhattan(@Nonnull Vector4 v) {
-        final double dw = w - v.w;
+    public double distanceManhattan(@Nonnull Vector2 v) {
         final double dx = x - v.x;
         final double dy = y - v.y;
-        final double dz = z - v.z;
 
-        return Math.abs(dw) + Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
+        return Math.abs(dx) + Math.abs(dy);
     }
 
     //
@@ -489,8 +419,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 min(@Nonnull Vector4 v) {
-        return new Vector4(Math.min(w, v.w), Math.min(x, v.x), Math.min(y, v.y), Math.min(z, v.z));
+    public Vector2 min(@Nonnull Vector2 v) {
+        return new Vector2(Math.min(x, v.x), Math.min(y, v.y));
     }
 
     /**
@@ -501,8 +431,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 max(@Nonnull Vector4 v) {
-        return new Vector4(Math.max(w, v.w), Math.max(x, v.x), Math.max(y, v.y), Math.max(z, v.z));
+    public Vector2 max(@Nonnull Vector2 v) {
+        return new Vector2(Math.max(x, v.x), Math.max(y, v.y));
     }
 
     /**
@@ -514,13 +444,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 clamp(@Nonnull Vector4 min, @Nonnull Vector4 max) {
-        return new Vector4(
-                Numbers.clamp(w, min.w, max.w),
-                Numbers.clamp(x, min.x, max.x),
-                Numbers.clamp(y, min.y, max.y),
-                Numbers.clamp(z, min.z, max.z)
-        );
+    public Vector2 clamp(@Nonnull Vector2 min, @Nonnull Vector2 max) {
+        return new Vector2(Numbers.clamp(x, min.x, max.x), Numbers.clamp(y, min.y, max.y));
     }
 
     //
@@ -534,8 +459,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 negate() {
-        return new Vector4(-w, -x, -y, -z);
+    public Vector2 negate() {
+        return new Vector2(-x, -y);
     }
 
     //
@@ -550,10 +475,10 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 normalize() throws ArithmeticException {
-        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+    public Vector2 normalize() throws ArithmeticException {
+        double s = Math.sqrt(x * x + y * y);
         if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
-        return new Vector4(w / s, x / s, y / s, z / s);
+        return new Vector2(x / s, y / s);
     }
 
     /**
@@ -563,10 +488,10 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 normalizeOrZero() {
-        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+    public Vector2 normalizeOrZero() {
+        double s = Math.sqrt(x * x + y * y);
         if (s == 0) return this;
-        return new Vector4(w / s, x / s, y / s, z / s);
+        return new Vector2(x / s, y / s);
     }
 
     /**
@@ -577,10 +502,30 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 normalizeOrDefault(@Nonnull Vector4 v) {
-        final double s = Math.sqrt(w * w + x * x + y * y + z * z);
+    public Vector2 normalizeOrDefault(@Nonnull Vector2 v) {
+        double s = Math.sqrt(x * x + y * y);
         if (s == 0) return v;
-        return new Vector4(w / s, x / s, y / s, z / s);
+        return new Vector2(x / s, y / s);
+    }
+
+    //
+    // Rotation
+    //
+
+    /**
+     * Rotates this vector counter-clockwise by the provided angle {@code t}.
+     * Angle is denoted in radians.
+     *
+     * @param t The angle of rotation to apply in radians
+     * @return The rotated vector
+     * @see Math#toRadians(double)
+     */
+    @Nonnull
+    public Vector2 rotate(double t) {
+        final double c = Math.cos(t);
+        final double s = Math.sin(t);
+
+        return new Vector2(x * c - y * s, x * s + y * c);
     }
 
     //
@@ -595,8 +540,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 map(@Nonnull UnaryOperator<Double> f) {
-        return new Vector4(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
+    public Vector2 map(@Nonnull UnaryOperator<Double> f) {
+        return new Vector2(f.apply(x), f.apply(y));
     }
 
     /**
@@ -609,7 +554,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
-        return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
+        return Tuple.of(f.apply(x), f.apply(y));
     }
 
     /**
@@ -621,8 +566,8 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 merge(@Nonnull Vector4 v, @Nonnull BinaryOperator<Double> f) {
-        return new Vector4(f.apply(w, v.w), f.apply(x, v.x), f.apply(y, v.y), f.apply(z, v.z));
+    public Vector2 merge(@Nonnull Vector2 v, @Nonnull BinaryOperator<Double> f) {
+        return new Vector2(f.apply(x, v.x), f.apply(y, v.y));
     }
 
     //
@@ -637,7 +582,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public SafeArray<Double> array() {
-        return SafeArray.ofDouble(w, x, y, z);
+        return SafeArray.ofDouble(x, y);
     }
 
     /**
@@ -648,7 +593,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.ofDouble(w, x, y, z);
+        return Tuple.ofDouble(x, y);
     }
 
     /**
@@ -659,7 +604,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public List<Double> list() {
-        return List.of(w, x, y, z);
+        return List.of(x, y);
     }
 
     //
@@ -673,10 +618,10 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof Vector<?> v)) return false;
-        if (v.dimensions() != 4) return false;
-        return w == v.get(0) && x == v.get(1) && y == v.get(2) && z == v.get(3);
+        if (v.dimensions() != 2) return false;
+        return x == v.get(0) && y == v.get(1);
     }
 
     /**
@@ -686,8 +631,8 @@ public class Vector4 implements Vector<Vector4> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable Vector4 v) {
-        return v != null && w == v.w && x == v.x && y == v.y && z == v.z;
+    public boolean equals(@Nullable Vector2 v) {
+        return v != null && x == v.x && y == v.y;
     }
 
     //
@@ -702,6 +647,6 @@ public class Vector4 implements Vector<Vector4> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + w + ", " + x + ", " + y + ", " + z + "]";
+        return "[" + x + ", " + y + "]";
     }
 }

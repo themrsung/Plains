@@ -1,6 +1,6 @@
 package civitas.celestis.util.tuple;
 
-import civitas.celestis.math.Vector;
+import civitas.celestis.math.vector.Vector;
 import jakarta.annotation.Nonnull;
 
 /**
@@ -21,6 +21,7 @@ public interface IntTuple<T extends IntTuple<T>> extends Tuple<Integer> {
 
     /**
      * Creates a new integer-typed tuple.
+     *
      * @param a The first component of the tuple
      * @param b The second component of the tuple
      * @return The constructed tuple
@@ -32,6 +33,7 @@ public interface IntTuple<T extends IntTuple<T>> extends Tuple<Integer> {
 
     /**
      * Creates a new integer-typed tuple.
+     *
      * @param a The first component of the tuple
      * @param b The second component of the tuple
      * @param c The third component of the tuple
@@ -44,6 +46,7 @@ public interface IntTuple<T extends IntTuple<T>> extends Tuple<Integer> {
 
     /**
      * Creates a new integer-typed tuple.
+     *
      * @param a The first component of the tuple
      * @param b The second component of the tuple
      * @param c The third component of the tuple

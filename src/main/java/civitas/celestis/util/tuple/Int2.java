@@ -1,7 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Numbers;
-import civitas.celestis.math.Vector2;
+import civitas.celestis.math.vector.Vector2;
 import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
@@ -79,6 +79,7 @@ public class Int2 implements IntTuple<Int2> {
 
     /**
      * Creates a new pair. The required format is "{@code [0, 0]}".
+     *
      * @param values The string representation of this pair
      * @throws NumberFormatException When the format is invalid
      */

@@ -1,5 +1,7 @@
 package civitas.celestis.math;
 
+import civitas.celestis.math.complex.Quaternion;
+import civitas.celestis.math.vector.*;
 import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -198,7 +200,7 @@ public final class Numbers {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector1 val, @Nonnull Vector1 min, @Nonnull Vector1 max) {
-        return isInRange(val.x, min.x, max.x);
+        return isInRange(val.x(), min.x(), max.x());
     }
 
     /**
@@ -210,7 +212,7 @@ public final class Numbers {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector2 val, @Nonnull Vector2 min, @Nonnull Vector2 max) {
-        return isInRange(val.x, min.x, max.x) && isInRange(val.y, min.y, max.y);
+        return isInRange(val.x(), min.x(), max.x()) && isInRange(val.y(), min.y(), max.y());
     }
 
     /**
@@ -222,7 +224,7 @@ public final class Numbers {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector3 val, @Nonnull Vector3 min, @Nonnull Vector3 max) {
-        return isInRange(val.x, min.x, max.x) && isInRange(val.y, min.y, max.y) && isInRange(val.z, min.z, max.z);
+        return isInRange(val.x(), min.x(), max.x()) && isInRange(val.y(), min.y(), max.y()) && isInRange(val.z(), min.z(), max.z());
     }
 
     /**
@@ -234,10 +236,10 @@ public final class Numbers {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector4 val, @Nonnull Vector4 min, @Nonnull Vector4 max) {
-        return isInRange(val.w, min.w, max.w) &&
-                isInRange(val.x, min.x, max.x) &&
-                isInRange(val.y, min.y, max.y) &&
-                isInRange(val.z, min.z, max.z);
+        return isInRange(val.w(), min.w(), max.w()) &&
+                isInRange(val.x(), min.x(), max.x()) &&
+                isInRange(val.y(), min.y(), max.y()) &&
+                isInRange(val.z(), min.z(), max.z());
     }
 
     //
@@ -972,7 +974,7 @@ public final class Numbers {
         double x = Double.MAX_VALUE;
 
         for (final Vector1 value : values) {
-            x = Math.min(x, value.x);
+            x = Math.min(x, value.x());
         }
 
         return new Vector1(x);
@@ -989,8 +991,8 @@ public final class Numbers {
         double x = Double.MAX_VALUE, y = Double.MAX_VALUE;
 
         for (final Vector2 value : values) {
-            x = Math.min(x, value.x);
-            y = Math.min(y, value.y);
+            x = Math.min(x, value.x());
+            y = Math.min(y, value.y());
         }
 
         return new Vector2(x, y);
@@ -1007,9 +1009,9 @@ public final class Numbers {
         double x = Double.MAX_VALUE, y = Double.MAX_VALUE, z = Double.MAX_VALUE;
 
         for (final Vector3 value : values) {
-            x = Math.min(x, value.x);
-            y = Math.min(y, value.y);
-            z = Math.min(z, value.z);
+            x = Math.min(x, value.x());
+            y = Math.min(y, value.y());
+            z = Math.min(z, value.z());
         }
 
         return new Vector3(x, y, z);
@@ -1026,10 +1028,10 @@ public final class Numbers {
         double w = Double.MAX_VALUE, x = Double.MAX_VALUE, y = Double.MAX_VALUE, z = Double.MAX_VALUE;
 
         for (final Vector4 value : values) {
-            w = Math.min(w, value.w);
-            x = Math.min(x, value.x);
-            y = Math.min(y, value.y);
-            z = Math.min(z, value.z);
+            w = Math.min(w, value.w());
+            x = Math.min(x, value.x());
+            y = Math.min(y, value.y());
+            z = Math.min(z, value.z());
         }
 
         return new Vector4(w, x, y, z);
@@ -1075,7 +1077,7 @@ public final class Numbers {
         double x = -Double.MAX_VALUE;
 
         for (final Vector1 value : values) {
-            x = Math.max(x, value.x);
+            x = Math.max(x, value.x());
         }
 
         return new Vector1(x);
@@ -1092,8 +1094,8 @@ public final class Numbers {
         double x = -Double.MAX_VALUE, y = -Double.MAX_VALUE;
 
         for (final Vector2 value : values) {
-            x = Math.max(x, value.x);
-            y = Math.max(y, value.y);
+            x = Math.max(x, value.x());
+            y = Math.max(y, value.y());
         }
 
         return new Vector2(x, y);
@@ -1110,9 +1112,9 @@ public final class Numbers {
         double x = -Double.MAX_VALUE, y = -Double.MAX_VALUE, z = -Double.MAX_VALUE;
 
         for (final Vector3 value : values) {
-            x = Math.max(x, value.x);
-            y = Math.max(y, value.y);
-            z = Math.max(z, value.z);
+            x = Math.max(x, value.x());
+            y = Math.max(y, value.y());
+            z = Math.max(z, value.z());
         }
 
         return new Vector3(x, y, z);
@@ -1129,10 +1131,10 @@ public final class Numbers {
         double w = -Double.MAX_VALUE, x = -Double.MAX_VALUE, y = -Double.MAX_VALUE, z = -Double.MAX_VALUE;
 
         for (final Vector4 value : values) {
-            w = Math.max(w, value.w);
-            x = Math.max(x, value.x);
-            y = Math.max(y, value.y);
-            z = Math.max(z, value.z);
+            w = Math.max(w, value.w());
+            x = Math.max(x, value.x());
+            y = Math.max(y, value.y());
+            z = Math.max(z, value.z());
         }
 
         return new Vector4(w, x, y, z);

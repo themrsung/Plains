@@ -1,4 +1,4 @@
-package civitas.celestis.math;
+package civitas.celestis.math.matrix;
 
 import civitas.celestis.util.grid.Grid;
 import jakarta.annotation.Nonnull;

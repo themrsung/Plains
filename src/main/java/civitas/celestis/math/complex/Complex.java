@@ -1,5 +1,7 @@
-package civitas.celestis.math;
+package civitas.celestis.math.complex;
 
+import civitas.celestis.math.vector.Vector;
+import civitas.celestis.math.vector.Vector2;
 import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;

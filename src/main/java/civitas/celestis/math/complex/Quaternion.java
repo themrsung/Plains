@@ -1,5 +1,10 @@
-package civitas.celestis.math;
+package civitas.celestis.math.complex;
 
+import civitas.celestis.math.Numbers;
+import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.math.vector.Vector;
+import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.math.vector.Vector4;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
@@ -55,7 +60,7 @@ public class Quaternion extends Vector4 {
      * @param v The vector part (the XYZ components) of this quaternion
      */
     public Quaternion(double s, @Nonnull Vector3 v) {
-        super(s, v.x, v.y, v.z);
+        super(s, v.x(), v.y(), v.z());
     }
 
     /**
@@ -244,7 +249,7 @@ public class Quaternion extends Vector4 {
     @Nonnull
     @Override
     public Quaternion add(@Nonnull Vector4 v) {
-        return new Quaternion(w + v.w, x + v.x, y + v.y, z + v.z);
+        return new Quaternion(w + v.w(), x + v.x(), y + v.y(), z + v.z());
     }
 
     /**
@@ -256,7 +261,7 @@ public class Quaternion extends Vector4 {
     @Nonnull
     @Override
     public Quaternion subtract(@Nonnull Vector4 v) {
-        return new Quaternion(w - v.w, x - v.x, y - v.y, z - v.z);
+        return new Quaternion(w - v.w(), x - v.x(), y - v.y(), z - v.z());
     }
 
     /**
@@ -268,11 +273,16 @@ public class Quaternion extends Vector4 {
     @Nonnull
     @Override
     public Quaternion multiply(@Nonnull Vector4 v) {
+        final double vw = v.w();
+        final double vx = v.x();
+        final double vy = v.y();
+        final double vz = v.z();
+
         return new Quaternion(
-                w * v.w - x * v.x - y * v.y - z * v.z,
-                w * v.x + x * v.w + y * v.z - z * v.y,
-                w * v.y - x * v.z + y * v.w + z * v.x,
-                w * v.z + x * v.y - y * v.x + z * v.w
+                w * vw - x * vx - y * vy - z * vz,
+                w * vx + x * vw + y * vz - z * vy,
+                w * vy - x * vz + y * vw + z * vx,
+                w * vz + x * vy - y * vx + z * vw
         );
     }
 

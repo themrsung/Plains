@@ -1,8 +1,8 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
 import civitas.celestis.util.array.SafeArray;
-import civitas.celestis.util.tuple.Tuple;
 import civitas.celestis.util.io.ArrayReader;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 

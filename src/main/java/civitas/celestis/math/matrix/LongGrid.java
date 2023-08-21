@@ -1,4 +1,4 @@
-package civitas.celestis.math;
+package civitas.celestis.math.matrix;
 
 import civitas.celestis.util.array.LongArray;
 import civitas.celestis.util.array.SafeArray;

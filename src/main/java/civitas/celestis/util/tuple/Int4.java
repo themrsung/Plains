@@ -1,7 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Numbers;
-import civitas.celestis.math.Vector4;
+import civitas.celestis.math.vector.Vector4;
 import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
@@ -87,6 +87,7 @@ public class Int4 implements IntTuple<Int4> {
 
     /**
      * Creates a new quad. The required format is "{@code [0, 0, 0, 0]}".
+     *
      * @param values The string representation of this quad
      */
     public Int4(@Nonnull String values) {

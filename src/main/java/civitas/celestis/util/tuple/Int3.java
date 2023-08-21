@@ -1,7 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Numbers;
-import civitas.celestis.math.Vector3;
+import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
@@ -83,6 +83,7 @@ public class Int3 implements IntTuple<Int3> {
 
     /**
      * Creates a new triple. The required format is "{@code [0, 0, 0]}".
+     *
      * @param values The string representation of this triple
      * @throws NumberFormatException When the format is invalid
      */
