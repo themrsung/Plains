@@ -510,7 +510,7 @@ public class Vector1 implements Vector<Vector1> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.of(x);
+        return Tuple.ofDouble(x);
     }
 
     /**

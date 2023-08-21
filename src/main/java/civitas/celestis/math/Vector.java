@@ -777,7 +777,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
         @Nonnull
         @Override
         public Tuple<Double> tuple() {
-            return Tuple.of();
+            return Tuple.ofDouble();
         }
 
         /**

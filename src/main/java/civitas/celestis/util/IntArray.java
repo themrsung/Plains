@@ -584,7 +584,7 @@ public class IntArray implements SafeArray<Integer> {
     @Nonnull
     @Override
     public Tuple<Integer> tuple() {
-        return Tuple.of(elements);
+        return Tuple.ofInt(elements);
     }
 
     //

@@ -532,7 +532,7 @@ public class ArrayVector implements Vector<ArrayVector> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.of(Arrays.stream(components).boxed().toArray(Double[]::new));
+        return Tuple.ofDouble(components);
     }
 
     /**

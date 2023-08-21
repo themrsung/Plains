@@ -630,7 +630,7 @@ public class Vector3 implements Vector<Vector3> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.of(x, y, z);
+        return Tuple.ofDouble(x, y, z);
     }
 
     /**

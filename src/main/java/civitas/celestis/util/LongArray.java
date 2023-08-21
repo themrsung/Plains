@@ -584,7 +584,7 @@ public class LongArray implements SafeArray<Long> {
     @Nonnull
     @Override
     public Tuple<Long> tuple() {
-        return Tuple.of(elements);
+        return Tuple.ofLong(elements);
     }
 
     //

@@ -648,7 +648,7 @@ public class Vector4 implements Vector<Vector4> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.of(w, x, y, z);
+        return Tuple.ofDouble(w, x, y, z);
     }
 
     /**

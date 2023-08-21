@@ -584,7 +584,7 @@ public class DoubleArray implements SafeArray<Double> {
     @Nonnull
     @Override
     public Tuple<Double> tuple() {
-        return Tuple.of(elements);
+        return Tuple.ofDouble(elements);
     }
 
     //
