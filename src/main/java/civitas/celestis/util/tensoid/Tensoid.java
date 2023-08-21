@@ -575,8 +575,24 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
          * Indexing
          */
 
+        /**
+         * Calculates a key of the three IJK coordinates into an arbitrary number {@code n}
+         * which can exclusively represent the given coordinates. (in a manner where two
+         * different combinations of IJK coordinates will never yield the same key)
+         *
+         * @param i The I coordinate to use
+         * @param j The J coordinate to use
+         * @param k The K coordinate to use
+         * @return A unique exclusive key value to the provided IJK coordinates
+         */
         private static long calculateKey(int i, int j, int k) {
-            return i + j * J_PRIME_FACTOR + k * K_PRIME_FACTOR;
+            /*
+             * Explicitly cast to long to prevent integer overflow
+             * While i * j * k can never exceed the maximum value of an integer
+             * due to Java's array limitations, the key can exceed this as
+             * the coordinates are multiplied by prime factors.
+             */
+            return (long) i + (long) j * J_PRIME_FACTOR + (long) k * K_PRIME_FACTOR;
         }
 
         private static final long J_PRIME_FACTOR = 2;

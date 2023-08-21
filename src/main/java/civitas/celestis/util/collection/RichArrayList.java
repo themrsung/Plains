@@ -5,7 +5,10 @@ import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;

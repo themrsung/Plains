@@ -9,13 +9,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
- * An extended {@link List} with advanced featured.
+ * An extended {@link List} with advanced featured. Note that using rich lists adds overhead
+ * to the interface which may not be an acceptable tradeoff in certain applications.
+ * Rich lists should only be used when the additional features are necessary.
+ * <p>
+ * Rich lists are mutable data structures by design, and immutability is not supported.
+ * Using the factory methods such as {@link #of(E...)} or {@link #copyOf(Collection)}
+ * does not return an unmodifiable list in the same manner of {@link List#copyOf(Collection)}.
+ * In order to finalize the sequence and contain the data in an immutable vessel,
+ * call {@link #tuple()} to convert it directly to a tuple, of {@link #mapToTuple(Function)}
+ * to use a custom mapper function.
+ * </p>
  *
  * @param <E> The type of element this list should contain
  * @see List
  * @see Collection
+ * @see RichArrayList
  */
 public interface RichList<E> extends List<E>, RichCollection<E> {
     //
@@ -52,9 +64,10 @@ public interface RichList<E> extends List<E>, RichCollection<E> {
     /**
      * Creates a new rich list whose elements are copied from that of the provided array {@code a}'s
      * elements, then returns the new rich list instance.
-     * @param a The array of which to copy elements from
-     * @return A new rich list containing the provided array {@code a}'s elements
+     *
+     * @param a   The array of which to copy elements from
      * @param <E> The type of element to contain
+     * @return A new rich list containing the provided array {@code a}'s elements
      */
     @Nonnull
     static <E> RichList<E> copyOf(@Nonnull SafeArray<? extends E> a) {
@@ -64,9 +77,10 @@ public interface RichList<E> extends List<E>, RichCollection<E> {
     /**
      * Creates a new rich list whose elements are copied from that of the provided tuple {@code t}'s
      * elements, then returns the new rich list instance.
-     * @param t The tuple of which to copy elements from
-     * @return A new rich list containing the provided tuple {@code t}'s elements
+     *
+     * @param t   The tuple of which to copy elements from
      * @param <E> The type of element to contain
+     * @return A new rich list containing the provided tuple {@code t}'s elements
      */
     @Nonnull
     static <E> RichList<E> copyOf(@Nonnull Tuple<? extends E> t) {

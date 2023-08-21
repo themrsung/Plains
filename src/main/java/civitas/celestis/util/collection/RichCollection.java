@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 /**
  * An extended {@link Collection}. Note that using rich collections adds overhead
  * to the interface which may not be an acceptable tradeoff in certain applications.
+ * Rich collections should only be used when the additional features are necessary.
  *
  * @param <E> The type of element this collection should contain
  * @see Collection
