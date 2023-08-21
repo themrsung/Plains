@@ -49,7 +49,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The constructed tuple
      */
     @Nonnull
-    static Tuple<Double> of(@Nonnull double[] elements) {
+    static Tuple<Double> ofDouble(@Nonnull double... elements) {
         return of(Arrays.stream(elements).boxed().toArray(Double[]::new));
     }
 
@@ -60,7 +60,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The constructed tuple
      */
     @Nonnull
-    static Tuple<Float> of(@Nonnull float[] elements) {
+    static Tuple<Float> ofFloat(@Nonnull float... elements) {
         final Float[] boxed = new Float[elements.length];
         for (int i = 0; i < elements.length; i++) boxed[i] = elements[i];
         return of(boxed);
@@ -73,7 +73,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The constructed tuple
      */
     @Nonnull
-    static Tuple<Long> of(@Nonnull long[] elements) {
+    static Tuple<Long> ofLong(@Nonnull long... elements) {
         return of(Arrays.stream(elements).boxed().toArray(Long[]::new));
     }
 
@@ -84,7 +84,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The constructed tuple
      */
     @Nonnull
-    static Tuple<Integer> of(@Nonnull int[] elements) {
+    static Tuple<Integer> ofInt(@Nonnull int... elements) {
         return of(Arrays.stream(elements).boxed().toArray(Integer[]::new));
     }
 
