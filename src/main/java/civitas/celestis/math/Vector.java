@@ -1,7 +1,6 @@
 package civitas.celestis.math;
 
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
+import civitas.celestis.util.*;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -85,6 +84,54 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     @Nonnull
     static Vector<?> copyOf(@Nonnull Collection<? extends Number> c) {
         return of(c.stream().mapToDouble(Number::doubleValue).toArray());
+    }
+
+    //
+    // Utilities
+    //
+
+    /**
+     * Converts a vector into an integer-typed tuple.
+     *
+     * @param v The vector of which to convert
+     * @return An integer tuple representing the values of the provided vector {@code v}
+     */
+    @Nonnull
+    static Tuple<Integer> toIntTuple(@Nonnull Vector<?> v) {
+        return v.mapToTuple(Double::intValue);
+    }
+
+    /**
+     * Converts a vector into an integer-typed tuple.
+     *
+     * @param v The vector of which to convert
+     * @return An integer tuple representing the values of the provided vector {@code v}
+     */
+    @Nonnull
+    static Int2 toIntTuple(@Nonnull Vector2 v) {
+        return new Int2((int) v.x, (int) v.y);
+    }
+
+    /**
+     * Converts a vector into an integer-typed tuple.
+     *
+     * @param v The vector of which to convert
+     * @return An integer tuple representing the values of the provided vector {@code v}
+     */
+    @Nonnull
+    static Int3 toIntTuple(@Nonnull Vector3 v) {
+        return new Int3((int) v.x, (int) v.y, (int) v.z);
+    }
+
+    /**
+     * Converts a vector into an integer-typed tuple.
+     *
+     * @param v The vector of which to convert
+     * @return An integer tuple representing the values of the provided vector {@code v}
+     */
+    @Nonnull
+    static Int4 toIntTuple(@Nonnull Vector4 v) {
+        return new Int4((int) v.w, (int) v.x, (int) v.y, (int) v.z);
     }
 
     //

@@ -1,8 +1,6 @@
 package civitas.celestis;
 
 
-import civitas.celestis.math.Vector2;
-import civitas.celestis.math.Vector3;
 import civitas.celestis.util.Tuple;
 
 public class GroupTesting {
