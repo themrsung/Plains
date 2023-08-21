@@ -7,9 +7,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 /**
  * An immutable set of elements. Tuples have a fixed size, and are shallowly immutable,
@@ -263,6 +261,23 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Override
     Iterator<E> iterator();
 
+    /**
+     * Executes the provided action for each element of this tuple. The value is
+     * given as the input parameter of the function.
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    @Override
+    void forEach(@Nonnull Consumer<? super E> action);
+
+    /**
+     * Executes the provided action for each element of this tuple. The index of the element
+     * is given as the first input parameter, and the value is given as the second parameter.
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    void forEach(@Nonnull BiConsumer<Integer, ? super E> action);
+
     //
     // Conversion
     //
@@ -428,6 +443,18 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         /**
          * {@inheritDoc}
          */
+        @Override
+        public void forEach(@Nonnull Consumer<? super E> action) {}
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {}
+
+        /**
+         * {@inheritDoc}
+         */
         @Nonnull
         @Override
         public SafeArray<E> array() {
@@ -567,6 +594,22 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         @Override
         public Iterator<E> iterator() {
             return List.of(element).iterator();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void forEach(@Nonnull Consumer<? super E> action) {
+            action.accept(element);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+            action.accept(0, element);
         }
 
         /**

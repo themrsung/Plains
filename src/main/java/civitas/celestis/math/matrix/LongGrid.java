@@ -2,6 +2,8 @@ package civitas.celestis.math.matrix;
 
 import civitas.celestis.util.array.LongArray;
 import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.function.TriConsumer;
+import civitas.celestis.util.function.TriFunction;
 import civitas.celestis.util.grid.ArrayGrid;
 import civitas.celestis.util.grid.Grid;
 import civitas.celestis.util.tuple.Tuple;
@@ -10,10 +12,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A two-dimensional grid of {@code long}s.
@@ -469,6 +468,34 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public void apply(@Nonnull BiFunction<Index, Long, ? extends Long> f) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = f.apply(Grid.newIndex(r, c), values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public void apply(@Nonnull TriFunction<Integer, Integer, Long, ? extends Long> f) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = f.apply(r, c, values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param e The element to fill this grid with
      */
     @Override
@@ -713,6 +740,48 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     @Override
     public Iterator<Long> iterator() {
         return array().iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super Long> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Index, ? super Long> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(Grid.newIndex(r, c), values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Long> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(r, c, values[r][c]);
+            }
+        }
     }
 
     //

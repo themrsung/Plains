@@ -7,10 +7,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -612,6 +609,30 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Override
     public Iterator<E> iterator() {
         return Arrays.stream(elements).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super E> action) {
+        for (final E element : elements) {
+            action.accept(element);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+        for (int i = 0; i < elements.length; i++) {
+            action.accept(i, elements[i]);
+        }
     }
 
     //

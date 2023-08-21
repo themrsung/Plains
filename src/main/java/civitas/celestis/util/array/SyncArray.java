@@ -6,10 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -512,6 +509,26 @@ public class SyncArray<E> extends FastArray<E> {
     @Override
     public synchronized Iterator<E> iterator() {
         return super.copy().iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public synchronized void forEach(@Nonnull Consumer<? super E> action) {
+        super.forEach(action);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public synchronized void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+        super.forEach(action);
     }
 
     //

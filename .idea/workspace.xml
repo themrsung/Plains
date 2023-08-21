@@ -5,12 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stf">
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/function/TernaryOperator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/function/TriConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/function/TriFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Numbers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Numbers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/matrix/LongGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/matrix/LongGrid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/matrix/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/matrix/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/DoubleArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/DoubleArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/FastArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/FastArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/IntArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/IntArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/LongArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/LongArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SafeArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SafeArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SyncArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/array/SyncArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/ArrayGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/ArrayGrid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/Grid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/SyncGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/grid/SyncGrid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/ArrayTuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/ArrayTuple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Quad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Triple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Triple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Tuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Tuple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -26,6 +57,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2UITaLS8kWaeBTtsLpM6X3ZhyNQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,6 +70,26 @@
     "git-widget-placeholder": "master"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="GroupTesting" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="civitas.celestis.GroupTesting" />
+      <module name="Plains" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="civitas.celestis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GroupTesting" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -53,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692626350499</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="stf">
+      <option name="closed" value="true" />
+      <created>1692626651144</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1692626651144</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

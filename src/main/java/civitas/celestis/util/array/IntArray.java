@@ -6,10 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -601,6 +598,30 @@ public class IntArray implements SafeArray<Integer> {
     @Override
     public Iterator<Integer> iterator() {
         return Arrays.stream(elements).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super Integer> action) {
+        for (final int element : elements) {
+            action.accept(element);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Integer, ? super Integer> action) {
+        for (int i = 0; i < elements.length; i++) {
+            action.accept(i, elements[i]);
+        }
     }
 
     //

@@ -100,6 +100,69 @@ public final class Numbers {
         return v1 == v2;
     }
 
+    /**
+     * Checks for loose equality between the provided values {@code v1} and {@code v2}.
+     * This accounts for potential floating point imprecision by accepting a small margin of error
+     * defined by {@link #EPSILON}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the unsigned difference is less than {@link #EPSILON}
+     */
+    public static boolean looseEquals(double v1, double v2) {
+        return Math.abs(v1 - v2) < EPSILON;
+    }
+
+    /**
+     * Checks for loose equality between the provided values {@code v1} and {@code v2}.
+     * This accounts for potential floating point imprecision by accepting a small margin of error
+     * defined by {@link #EPSILON}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the unsigned difference is less than {@link #EPSILON}
+     */
+    public static boolean looseEquals(float v1, float v2) {
+        return Math.abs(v1 - v2) < EPSILON;
+    }
+
+    /**
+     * Checks for loose equality between the provided values {@code v1} and {@code v2}.
+     * This accounts for potential floating point imprecision by accepting a small margin of error
+     * defined by {@link #EPSILON}. Although geometrically accurate in Euclidean space,
+     * this is more computationally expensive compared to {@link #fastEquals(Vector, Vector)}.
+     *
+     * @param v1  The first value to compare
+     * @param v2  The second value to compare
+     * @param <V> The type of vector to compare
+     * @return {@code true} if the squared Euclidean distance between the two vectors
+     * is less than {@link #EPSILON} raised to the power of {@code 2}
+     * @throws IllegalArgumentException When the vector is a variable size vector, and the dimensions
+     *                                  (the number of scalar components) of the two vectors are different
+     * @see #fastEquals(Vector, Vector)
+     */
+    public static <V extends Vector<V>> boolean looseEquals(@Nonnull V v1, @Nonnull V v2) {
+        return v1.distance2(v2) < (EPSILON * EPSILON);
+    }
+
+    /**
+     * Checks for loose equality between the provided values {@code v1} and {@code v2}.
+     * This account for potential floating point imprecision by accepting a small margin of error
+     * defined by {@link #EPSILON}. Unlike {@link #looseEquals(Vector, Vector)}, this uses the
+     * Manhattan distance between the two vectors, and may lead to unexpected behavior.
+     *
+     * @param v1  The first value to compare
+     * @param v2  The second value to compare
+     * @param <V> The type of vector to compare
+     * @return {@code true} if the Manhattan distance between the two vectors is less than {@link #EPSILON}
+     * @throws IllegalArgumentException When the vector is a variable size vector, and the dimensions
+     *                                  (the number of scalar components) of the two vectors are different
+     * @see #looseEquals(Vector, Vector)
+     */
+    public static <V extends Vector<V>> boolean fastEquals(@Nonnull V v1, @Nonnull V v2) {
+        return v1.distanceManhattan(v2) < EPSILON;
+    }
+
     //
     //
     //
@@ -150,6 +213,60 @@ public final class Numbers {
      */
     public static double random(double min, double max) {
         return min + nextRandom().nextDouble() * (max - min);
+    }
+
+    /**
+     * Returns a random unit vector. (a vector whose Euclidean norm is {@code 1})
+     *
+     * @return A random unit vector
+     */
+    @Nonnull
+    public static Vector1 randomVector1() {
+        return random() < 0.5 ? Vector1.POSITIVE_X : Vector1.NEGATIVE_X;
+    }
+
+    /**
+     * Returns a random unit vector. (a vector whose Euclidean norm is {@code 1})
+     * When all random scalar components are zero, this will fall back to {@link Vector2#POSITIVE_X}.
+     *
+     * @return A random unit vector
+     */
+    @Nonnull
+    public static Vector2 randomVector2() {
+        return new Vector2(random(-1, 1), random(-1, 1)).normalizeOrDefault(Vector2.POSITIVE_X);
+    }
+
+    /**
+     * Returns a random unit vector. (a vector whose Euclidean norm is {@code 1})
+     * When all random scalar components are zero, this will fall back to {@link Vector3#POSITIVE_X}.
+     *
+     * @return A random unit vector
+     */
+    @Nonnull
+    public static Vector3 randomVector3() {
+        return new Vector3(random(-1, 1), random(-1, 1), random(-1, 1)).normalizeOrDefault(Vector3.POSITIVE_X);
+    }
+
+    /**
+     * Returns a random unit vector. (a vector whose Euclidean norm is {@code 1})
+     * When all random scalar components are zero, this will fall back to {@link Vector4#POSITIVE_X}.
+     *
+     * @return A random unit vector
+     */
+    @Nonnull
+    public static Vector4 randomVector4() {
+        return new Vector4(random(-1, 1), random(-1, 1), random(-1, 1), random(-1, 1)).normalizeOrDefault(Vector4.POSITIVE_X);
+    }
+
+    /**
+     * Returns a random rotation quaternion. (a quaternion whose Euclidean norm is {@code 1})
+     * When all random scalar components are zero, this will fall back to {@link Quaternion#IDENTITY}.
+     *
+     * @return A random rotation quaternion
+     */
+    @Nonnull
+    public static Quaternion randomQuaternion() {
+        return new Quaternion(random(-1, 1), random(-1, 1), random(-1, 1), random(-1, 1)).normalizeOrDefault(Quaternion.IDENTITY);
     }
 
     //

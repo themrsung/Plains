@@ -4,6 +4,8 @@ import civitas.celestis.math.vector.Vector;
 import civitas.celestis.math.vector.*;
 import civitas.celestis.util.array.DoubleArray;
 import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.function.TriConsumer;
+import civitas.celestis.util.function.TriFunction;
 import civitas.celestis.util.grid.ArrayGrid;
 import civitas.celestis.util.grid.Grid;
 import civitas.celestis.util.tuple.Tuple;
@@ -12,10 +14,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A two-dimensional grid of {@code double}s.
@@ -52,6 +51,26 @@ public class Matrix implements NumericGrid<Double, Matrix> {
 
         for (int r = 0; r < rows; r++) {
             System.arraycopy(components[r], 0, matrix.values[r], 0, columns);
+        }
+
+        return matrix;
+    }
+
+    /**
+     * Creates a new {@code n*n} identity matrix.
+     *
+     * @param n The number of dimensions to initialize
+     * @return A new identity matrix of {@code n} dimensions
+     */
+    @Nonnull
+    public static Matrix newIdentity(int n) {
+        final Matrix matrix = new Matrix(n, n);
+
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
+                if (r != c) continue;
+                matrix.values[r][c] = 1;
+            }
         }
 
         return matrix;
@@ -167,6 +186,32 @@ public class Matrix implements NumericGrid<Double, Matrix> {
         return Grid.newIndex(rows, columns);
     }
 
+    //
+    // Properties
+    //
+
+    /**
+     * Returns whether this matrix is an identity matrix. This is achieved by first checking
+     * if this matrix is a square matrix, then checking if all diagonal components are {@code 1}
+     * and every non-diagonal component is {@code 0}. If all conditions hold, this return {@code true}.
+     *
+     * @return {@code true} if this matrix is an identity matrix
+     */
+    public boolean isIdentity() {
+        if (rows != columns) return false;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                if (r == c) {
+                    if (values[r][c] != 1) return false;
+                } else {
+                    if (values[r][c] != 0) return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     //
     // Containment
@@ -567,6 +612,34 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public void apply(@Nonnull BiFunction<Index, Double, ? extends Double> f) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = f.apply(Grid.newIndex(r, c), values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public void apply(@Nonnull TriFunction<Integer, Integer, Double, ? extends Double> f) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = f.apply(r, c, values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param e The element to fill this grid with
      */
     @Override
@@ -811,6 +884,48 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     @Override
     public Iterator<Double> iterator() {
         return array().iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super Double> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Index, ? super Double> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(Grid.newIndex(r, c), values[r][c]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Double> action) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                action.accept(r, c, values[r][c]);
+            }
+        }
     }
 
     //

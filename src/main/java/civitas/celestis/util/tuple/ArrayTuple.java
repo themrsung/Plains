@@ -9,9 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 /**
  * An array-based implementation of a tuple.
@@ -206,6 +204,30 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     public Iterator<E> iterator() {
         return Arrays.stream(elements).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super E> action) {
+        for (final E element : elements) {
+            action.accept(element);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+        for (int i = 0; i < elements.length; i++) {
+            action.accept(i, elements[i]);
+        }
     }
 
     //

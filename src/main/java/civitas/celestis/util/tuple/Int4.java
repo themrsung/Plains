@@ -11,7 +11,9 @@ import java.io.Serial;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -518,6 +520,32 @@ public class Int4 implements IntTuple<Int4> {
     @Override
     public Iterator<Integer> iterator() {
         return List.of(a, b, c, d).iterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super Integer> action) {
+        action.accept(a);
+        action.accept(b);
+        action.accept(c);
+        action.accept(d);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this tuple
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Integer, ? super Integer> action) {
+        action.accept(0, a);
+        action.accept(1, b);
+        action.accept(2, c);
+        action.accept(3, d);
     }
 
     //

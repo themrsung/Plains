@@ -1,6 +1,8 @@
 package civitas.celestis.util.grid;
 
 import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.function.TriConsumer;
+import civitas.celestis.util.function.TriFunction;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -9,10 +11,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A two-dimensional structure of objects.
@@ -177,6 +176,26 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * @param f The function of which to apply to each slot of this grid
      */
     void apply(@Nonnull UnaryOperator<E> f);
+
+    /**
+     * Applies the provided function {@code f} to every slot of this grid.
+     * The index of the slot is given as the first parameter, and the original value
+     * is given as the second parameter. The return value of the function
+     * is then assigned to the corresponding slot.
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    void apply(@Nonnull BiFunction<Index, E, ? extends E> f);
+
+    /**
+     * Applies the provided function {@code f} to every slot of this grid.
+     * The row and column indices of the slot are given as the first and second parameter
+     * respectively, and the original value is given as the third parameter.
+     * The return value of the function is then assigned to the corresponding slot.
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    void apply(@Nonnull TriFunction<Integer, Integer, E, ? extends E> f);
 
     /**
      * Fills this grid with the provided element {@code e}.
@@ -347,6 +366,33 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     @Override
     @Nonnull
     Iterator<E> iterator();
+
+    /**
+     * Executes the provided action for each element of this grid. The current
+     * value is provided as the input parameter.
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    void forEach(@Nonnull Consumer<? super E> action);
+
+    /**
+     * Executes the provided action for each element of this grid. The index
+     * of the corresponding slot is given as the first parameter, and the current value
+     * is given as the second parameter.
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    void forEach(@Nonnull BiConsumer<Index, ? super E> action);
+
+    /**
+     * Executes the provided action for each element of this grid. The row and
+     * column indices are given as the first and second parameter respectively,
+     * and the current value if given as the third parameter.
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action);
 
     //
     // Conversion

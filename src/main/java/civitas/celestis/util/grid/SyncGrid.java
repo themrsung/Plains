@@ -1,6 +1,8 @@
 package civitas.celestis.util.grid;
 
 import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.util.function.TriConsumer;
+import civitas.celestis.util.function.TriFunction;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -9,10 +11,7 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 
 /**
  * A thread-safe implementation of a grid.
@@ -155,6 +154,26 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      */
     @Override
     public synchronized void apply(@Nonnull UnaryOperator<E> f) {
+        super.apply(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public synchronized void apply(@Nonnull BiFunction<Index, E, ? extends E> f) {
+        super.apply(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each slot of this grid
+     */
+    @Override
+    public synchronized void apply(@Nonnull TriFunction<Integer, Integer, E, ? extends E> f) {
         super.apply(f);
     }
 
@@ -355,6 +374,35 @@ public class SyncGrid<E> extends ArrayGrid<E> {
         return super.iterator();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull Consumer<? super E> action) {
+        super.forEach(action);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull BiConsumer<Index, ? super E> action) {
+        super.forEach(action);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param action The action of which to execute for each element of this grid
+     */
+    @Override
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+        super.forEach(action);
+    }
     //
     // Conversion
     //

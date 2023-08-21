@@ -6,10 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -538,6 +535,24 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @Nonnull
     @Override
     Iterator<E> iterator();
+
+    /**
+     * Executes the provided action for each element of this array. The current value
+     * is provided as the input parameter.
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    @Override
+    void forEach(@Nonnull Consumer<? super E> action);
+
+    /**
+     * Executes the provided action for each element of this array. The index of the
+     * element if provided as the first parameter, and the current value is provided
+     * as the second parameter.
+     *
+     * @param action The action of which to execute for each element of this array
+     */
+    void forEach(@Nonnull BiConsumer<Integer, ? super E> action);
 
     //
     // Copying
