@@ -1,7 +1,5 @@
 package civitas.celestis.math;
 
-import civitas.celestis.graphics.Color8;
-import civitas.celestis.graphics.LinearColor;
 import civitas.celestis.util.SafeArray;
 import jakarta.annotation.Nonnull;
 
@@ -699,33 +697,6 @@ public final class Numbers {
         final double e4 = e.z();
 
         return new Quaternion(
-                s1 + (e1 - s1) * t,
-                s2 + (e2 - s2) * t,
-                s3 + (e3 - s3) * t,
-                s4 + (e4 - s4) * t
-        );
-    }
-
-    /**
-     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
-     *
-     * @param s The starting value
-     * @param e The ending value
-     * @param t The interpolation parameter ({@code [0, 1]})
-     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
-     */
-    @Nonnull
-    public static Color8 lerp(@Nonnull Color8 s, @Nonnull Color8 e, float t) {
-        final float s1 = s.red();
-        final float e1 = e.red();
-        final float s2 = s.green();
-        final float e2 = e.green();
-        final float s3 = s.blue();
-        final float e3 = e.blue();
-        final float s4 = s.alpha();
-        final float e4 = e.alpha();
-
-        return new LinearColor(
                 s1 + (e1 - s1) * t,
                 s2 + (e2 - s2) * t,
                 s3 + (e3 - s3) * t,

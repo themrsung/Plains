@@ -1,15 +1,19 @@
 package civitas.celestis;
 
 
-import civitas.celestis.math.*;
+import civitas.celestis.graphics.Colors;
+import civitas.celestis.graphics.LinearColor;
+
+import java.awt.*;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Vector3 v1 = new Vector3(1, 2, 3);
-        final Vector3 min = new Vector3(-1, -1, -1);
-        final Vector3 max = new Vector3(10, 10, 10);
+        final Color c1 = Color.RED;
+        final Color c2 = Color.BLUE;
 
-        System.out.println(Numbers.isInRange(v1, min, max));
+        final Color c3 = Colors.lerp(c1, c2, Double.MIN_VALUE);
+
+        System.out.println(Colors.toString(c3));
 
     }
 }
