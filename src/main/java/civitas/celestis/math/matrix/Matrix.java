@@ -1,6 +1,7 @@
 package civitas.celestis.math.matrix;
 
 import civitas.celestis.math.vector.Vector;
+import civitas.celestis.math.vector.*;
 import civitas.celestis.util.array.DoubleArray;
 import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.grid.ArrayGrid;
@@ -426,6 +427,30 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     }
 
     /**
+     * Internal method used to multiply this matrix by a vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector in primitive array form
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    protected double[] multiply(@Nonnull SafeArray<Double> v) throws ArithmeticException {
+        if (columns != v.length()) {
+            throw new ArithmeticException("Vector's dimensions must match the column count of the matrix for multiplication.");
+        }
+
+        final double[] result = new double[v.length()];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result[r] += values[r][c] * v.get(c);
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
      *
      * @param v The vector of which to multiply by this matrix
@@ -434,19 +459,67 @@ public class Matrix implements NumericGrid<Double, Matrix> {
      */
     @Nonnull
     public Vector<?> multiply(@Nonnull Vector<?> v) throws ArithmeticException {
-        if (columns != v.dimensions()) {
-            throw new ArithmeticException("Vector's dimensions must match the column count of the matrix for multiplication.");
-        }
+        return Vector.of(multiply(v.array()));
+    }
 
-        final double[] result = new double[rows];
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public Vector1 multiply(@Nonnull Vector1 v) throws ArithmeticException {
+        return new Vector1(multiply(v.array())[0]);
+    }
 
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                result[r] += values[r][c] * v.get(c);
-            }
-        }
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public Vector2 multiply(@Nonnull Vector2 v) throws ArithmeticException {
+        return new Vector2(multiply(v.array()));
+    }
 
-        return Vector.of(result);
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public Vector3 multiply(@Nonnull Vector3 v) throws ArithmeticException {
+        return new Vector3(multiply(v.array()));
+    }
+
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public Vector4 multiply(@Nonnull Vector4 v) throws ArithmeticException {
+        return new Vector4(multiply(v.array()));
+    }
+
+    /**
+     * Applies this matrix to the provided vector {@code v}, then returns the resulting vector.
+     *
+     * @param v The vector of which to multiply by this matrix
+     * @return The resulting vector
+     * @throws ArithmeticException When the vector's dimensions are different from this matrix's column count
+     */
+    @Nonnull
+    public ArrayVector multiply(@Nonnull ArrayVector v) throws ArithmeticException {
+        return new ArrayVector(multiply(v.array()));
     }
 
     //
