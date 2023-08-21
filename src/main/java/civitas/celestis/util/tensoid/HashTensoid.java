@@ -477,8 +477,24 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
-        values.replaceAll((i, v) -> Objects.equals(v, oldValue) ? newValue : v);
+    public synchronized void replaceAll(E oldValue, E newValue) {
+        // Call replaceAll in HashMap if oldValue is a valid value
+        if (oldValue != null) {
+            values.replaceAll((i, v) -> Objects.equals(v, oldValue) ? newValue : v);
+            return;
+        }
+
+        // Iterate through all possible indices
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                for (int k = 0; k < depth(); k++) {
+                    final Index index = Tensoid.newIndex(i, j, k);
+                    if (values.get(index) != null) continue;
+
+                    values.put(index, newValue);
+                }
+            }
+        }
     }
 
     //

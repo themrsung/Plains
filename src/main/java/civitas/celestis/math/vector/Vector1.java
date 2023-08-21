@@ -471,7 +471,7 @@ public class Vector1 implements Vector<Vector1> {
      */
     @Nonnull
     @Override
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
         return Tuple.of(f.apply(x));
     }
 

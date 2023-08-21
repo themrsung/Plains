@@ -428,7 +428,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
         return new FastArray<>((F[]) Arrays.stream(elements).map(f).toArray(), false);
     }
 
@@ -454,7 +454,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
+    public <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(elements).map(f).toList();
     }
 
@@ -467,7 +467,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
+    public <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(elements).map(f).collect(Collectors.toSet());
     }
 
@@ -503,7 +503,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      * <p>
      * <b>WARNING:</b> A shallow copy is <b>not</b> performed, and the cast array is directly assigned
      * to the new instance. Thus, changes in the return value will be reflected to this array.
-     * For a shallow copy, use {@link #map(Function)} instead.
+     * For a shallow copy, use {@link SafeArray#map(Function)} instead.
      * </p>
      * <p><code>
      * final FastArray{@literal <}String{@literal >} source = FastArray.of("Hello", "world");<br>

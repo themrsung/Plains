@@ -38,7 +38,7 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
     @Nonnull
     static Index newIndex(int i, int j, int k) {
         // Try to find pre-built index
-        final int key = TensoidIndex.calculateKey(i, j, k);
+        final long key = TensoidIndex.calculateKey(i, j, k);
         if (TensoidIndex.indices.containsKey(key)) return TensoidIndex.indices.get(key);
 
         // No index found; Create new index
@@ -559,7 +559,7 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
         /**
          * The map of indices to reuse.
          */
-        private static final Map<Integer, Index> indices = new HashMap<>();
+        private static final Map<Long, Index> indices = new HashMap<>();
 
         static {
             for (int i = 0; i < 5; i++) {
@@ -575,12 +575,12 @@ public interface Tensoid<E> extends Iterable<E>, Serializable {
          * Indexing
          */
 
-        private static int calculateKey(int i, int j, int k) {
+        private static long calculateKey(int i, int j, int k) {
             return i + j * J_PRIME_FACTOR + k * K_PRIME_FACTOR;
         }
 
-        private static final int J_PRIME_FACTOR = 2;
-        private static final int K_PRIME_FACTOR = 3;
+        private static final long J_PRIME_FACTOR = 2;
+        private static final long K_PRIME_FACTOR = 3;
 
         /**
          * Private constructor to ensure this class is used internally.

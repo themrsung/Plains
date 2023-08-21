@@ -423,7 +423,7 @@ public class LongArray implements SafeArray<Long> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super Long, F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super Long, ? extends F> f) {
         return new FastArray<>((F[]) Arrays.stream(elements).boxed().map(f).toArray(), false);
     }
 
@@ -449,7 +449,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> List<F> mapToList(@Nonnull Function<? super Long, F> f) {
+    public <F> List<F> mapToList(@Nonnull Function<? super Long, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).toList();
     }
 
@@ -462,7 +462,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> Set<F> mapToSet(@Nonnull Function<? super Long, F> f) {
+    public <F> Set<F> mapToSet(@Nonnull Function<? super Long, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toSet());
     }
 

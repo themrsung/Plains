@@ -609,7 +609,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
         return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 

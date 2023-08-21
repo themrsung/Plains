@@ -442,7 +442,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * @return A tuple containing the resulting values in the proper order
      */
     @Nonnull
-    <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f);
+    <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f);
 
     /**
      * Between this vector and the provided vector {@code v}, this applies the merger function
@@ -800,7 +800,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
-        public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
+        public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
             return Tuple.of();
         }
 

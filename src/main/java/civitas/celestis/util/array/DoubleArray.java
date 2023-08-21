@@ -423,7 +423,7 @@ public class DoubleArray implements SafeArray<Double> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super Double, F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super Double, ? extends F> f) {
         return new FastArray<>((F[]) Arrays.stream(elements).boxed().map(f).toArray(), false);
     }
 
@@ -449,7 +449,7 @@ public class DoubleArray implements SafeArray<Double> {
      */
     @Nonnull
     @Override
-    public <F> List<F> mapToList(@Nonnull Function<? super Double, F> f) {
+    public <F> List<F> mapToList(@Nonnull Function<? super Double, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).toList();
     }
 
@@ -462,7 +462,7 @@ public class DoubleArray implements SafeArray<Double> {
      */
     @Nonnull
     @Override
-    public <F> Set<F> mapToSet(@Nonnull Function<? super Double, F> f) {
+    public <F> Set<F> mapToSet(@Nonnull Function<? super Double, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toSet());
     }
 

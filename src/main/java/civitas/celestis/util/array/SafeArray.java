@@ -385,7 +385,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @return The resulting array
      */
     @Nonnull
-    <F> SafeArray<F> map(@Nonnull Function<? super E, F> f);
+    <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
@@ -409,7 +409,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @see List
      */
     @Nonnull
-    <F> List<F> mapToList(@Nonnull Function<? super E, F> f);
+    <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
@@ -421,7 +421,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @see Set
      */
     @Nonnull
-    <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f);
+    <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f);
 
 
     /**

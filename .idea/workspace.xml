@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stf">
+    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="tensoids">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/HashTensoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/HashTensoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/SyncTensoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/SyncTensoid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/Tensoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tensoid/Tensoid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/civitas/celestis/GroupTesting.java" afterDir="false" />
     </list>
@@ -52,7 +51,20 @@
     "git-widget-placeholder": "master"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.GraphicsTesting">
+    <configuration name="GraphicsTesting" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="civitas.celestis.GraphicsTesting" />
+      <module name="Plains" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="civitas.celestis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GroupTesting" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="civitas.celestis.GroupTesting" />
       <module name="Plains" />
@@ -68,6 +80,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.GraphicsTesting" />
         <item itemvalue="Application.GroupTesting" />
       </list>
     </recent_temporary>
@@ -129,12 +142,21 @@
       <option name="project" value="LOCAL" />
       <updated>1692646188463</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="tensoids">
+      <option name="closed" value="true" />
+      <created>1692647809990</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1692647809990</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="stf" />
-    <option name="LAST_COMMIT_MESSAGE" value="stf" />
+    <MESSAGE value="tensoids" />
+    <option name="LAST_COMMIT_MESSAGE" value="tensoids" />
   </component>
 </project>

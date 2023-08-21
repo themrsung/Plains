@@ -343,7 +343,7 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> SafeArray<F> map(@Nonnull Function<? super E, F> f) {
+    public synchronized <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
         return super.map(f);
     }
 
@@ -369,7 +369,7 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> List<F> mapToList(@Nonnull Function<? super E, F> f) {
+    public synchronized <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f) {
         return super.mapToList(f);
     }
 
@@ -382,7 +382,7 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Set<F> mapToSet(@Nonnull Function<? super E, F> f) {
+    public synchronized <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f) {
         return super.mapToSet(f);
     }
 

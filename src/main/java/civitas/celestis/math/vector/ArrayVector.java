@@ -480,7 +480,7 @@ public class ArrayVector implements Vector<ArrayVector> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
         return Tuple.of((T[]) Arrays.stream(components).mapToObj(f::apply).toArray());
     }
 
