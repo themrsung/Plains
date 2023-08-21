@@ -22,6 +22,13 @@ import java.util.function.*;
  * which is not intended to be entirely populated with values, but
  * partially left uninitialized as {@code null}.
  * </p>
+ * <p>
+ * Hash tensoids do not support the use of custom {@link Index Index}
+ * implementations, as the underlying {@link HashMap} compares key equality not by
+ * {@link Index#equals(Object)}, but by comparing whether the two keys are of the same instance.
+ * This issue is automatically handled in the factory method {@link Tensoid#newIndex(int, int, int)},
+ * where all constructed indices are cached into an internal map and reused.
+ * </p>
  *
  * @param <E> The type of element this tensoid should hold
  * @see Tensoid
@@ -369,7 +376,9 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
      */
     @Override
     public synchronized boolean remove(int i, int j, int k) {
-        return remove(Tensoid.newIndex(i, j, k));
+        final boolean result = remove(Tensoid.newIndex(i, j, k));
+        if (result) adjustDimensions();
+        return result;
     }
 
     /**
@@ -381,7 +390,10 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
     @Override
     public synchronized boolean remove(@Nonnull Index i) {
         final boolean exists = values.containsKey(i);
+
         values.remove(i);
+        adjustDimensions();
+
         return exists;
     }
 
@@ -613,7 +625,7 @@ public class HashTensoid<E> implements DynamicTensoid<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Tensoid<G> merge(@Nonnull Tensoid<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public synchronized  <F, G> Tensoid<G> merge(@Nonnull Tensoid<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
         if (!dimensions.equals(t.dimensions())) {
             throw new IllegalArgumentException("Tensoid dimensions must match for this operation.");
