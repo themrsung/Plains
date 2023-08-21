@@ -11,14 +11,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size tuple which can only hold four elements.
- * Quads use ABCD notation to identity their elements.
+ * A fixed-size integer-typed tuple which can only hold four components.
+ * Quads use ABCD notation to identity their components.
  *
- * @param <E> The type of element this tuple should hold
  * @see Tuple
- * @see QuatQuad
  */
-public class Quad<E> implements Tuple<E> {
+public class IntQuad implements Tuple<Integer> {
     //
     // Constants
     //
@@ -28,28 +26,6 @@ public class Quad<E> implements Tuple<E> {
      */
     @Serial
     private static final long serialVersionUID = 0L;
-
-    //
-    // Static Initializers
-    //
-
-    /**
-     * Creates a new {@link QuatQuad quaternary quad} with four elements of different types.
-     *
-     * @param a   The first element of the quad
-     * @param b   The second element of the quad
-     * @param c   The third element of the quad
-     * @param d   The fourth element of the quad
-     * @param <A> The type of the first element
-     * @param <B> The type of the second element
-     * @param <C> The type of the third element
-     * @param <D> The type of the fourth element
-     * @return The quaternary quad constructed from the provided elements
-     */
-    @Nonnull
-    public static <A, B, C, D> QuatQuad<A, B, C, D> of(A a, B b, C c, D d) {
-        return new QuatQuad<>(a, b, c, d);
-    }
 
     //
     // Constructors
@@ -63,7 +39,7 @@ public class Quad<E> implements Tuple<E> {
      * @param c The third element of this quad
      * @param d The fourth element of this quad
      */
-    public Quad(E a, E b, E c, E d) {
+    public IntQuad(int a, int b, int c, int d) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -76,7 +52,7 @@ public class Quad<E> implements Tuple<E> {
      * @param elements An array containing the elements of this quad in ABCD order
      * @throws IllegalArgumentException When the array's length is not {@code 4}
      */
-    public Quad(@Nonnull E[] elements) {
+    public IntQuad(@Nonnull int[] elements) {
         if (elements.length != 4) {
             throw new IllegalArgumentException("The provided array's length is not 4.");
         }
@@ -93,15 +69,15 @@ public class Quad<E> implements Tuple<E> {
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the tuple's size is not {@code 4}
      */
-    public Quad(@Nonnull Tuple<? extends E> t) {
+    public IntQuad(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 4) {
             throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
-        this.a = t.get(0);
-        this.b = t.get(1);
-        this.c = t.get(2);
-        this.d = t.get(3);
+        this.a = t.get(0).intValue();
+        this.b = t.get(1).intValue();
+        this.c = t.get(2).intValue();
+        this.d = t.get(3).intValue();
     }
 
     //
@@ -111,22 +87,22 @@ public class Quad<E> implements Tuple<E> {
     /**
      * The first element of this tuple.
      */
-    protected final E a;
+    protected final int a;
 
     /**
      * The second element of this tuple.
      */
-    protected final E b;
+    protected final int b;
 
     /**
      * The third element of this tuple.
      */
-    protected final E c;
+    protected final int c;
 
     /**
      * The fourth element of this tuple.
      */
-    protected final E d;
+    protected final int d;
 
     //
     // Properties
@@ -154,7 +130,7 @@ public class Quad<E> implements Tuple<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
+    public Integer get(int i) throws IndexOutOfBoundsException {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
@@ -169,7 +145,7 @@ public class Quad<E> implements Tuple<E> {
      *
      * @return The A component of this quad
      */
-    public E a() {
+    public int a() {
         return a;
     }
 
@@ -178,7 +154,7 @@ public class Quad<E> implements Tuple<E> {
      *
      * @return The B component of this quad
      */
-    public E b() {
+    public int b() {
         return b;
     }
 
@@ -187,7 +163,7 @@ public class Quad<E> implements Tuple<E> {
      *
      * @return The C component of this quad
      */
-    public E c() {
+    public int c() {
         return c;
     }
 
@@ -196,7 +172,7 @@ public class Quad<E> implements Tuple<E> {
      *
      * @return The D component of this quad
      */
-    public E d() {
+    public int d() {
         return d;
     }
 
@@ -246,7 +222,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
         return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
     }
 
@@ -263,7 +239,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
         if (t.size() != 4) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
@@ -282,7 +258,7 @@ public class Quad<E> implements Tuple<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Integer> iterator() {
         return List.of(a, b, c, d).iterator();
     }
 
@@ -297,8 +273,8 @@ public class Quad<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        return SafeArray.of(a, b, c, d);
+    public SafeArray<Integer> array() {
+        return SafeArray.ofInt(a, b, c, d);
     }
 
     /**
@@ -308,7 +284,7 @@ public class Quad<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public List<E> list() {
+    public List<Integer> list() {
         return List.of(a, b, c, d);
     }
 
@@ -341,103 +317,5 @@ public class Quad<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + ", " + c + ", " + d + "]";
-    }
-
-    //
-    // Quaternary Quad
-    //
-
-    /**
-     * A specialized quad used to hold four elements of different types.
-     *
-     * @param <A> The first element's type
-     * @param <B> The second element's type
-     * @param <C> The third element's type
-     * @param <D> The fourth element's type
-     * @see Quad
-     */
-    public static class QuatQuad<A, B, C, D> extends Quad<Object> {
-        //
-        // Constants
-        //
-
-        /**
-         * The serial version UID of this class.
-         */
-        @Serial
-        private static final long serialVersionUID = 0L;
-
-        //
-        // Constructors
-        //
-
-        /**
-         * Creates a new quaternary quad.
-         *
-         * @param a The first element of this quad
-         * @param b The second element of this quad
-         * @param c The third element of this quad
-         * @param d The fourth element of this quad
-         */
-        protected QuatQuad(A a, B b, C c, D d) {
-            super(a, b, c, d);
-        }
-
-        /**
-         * Creates a new quad.
-         *
-         * @param q The quad of which to copy elements from
-         */
-        protected QuatQuad(@Nonnull QuatQuad<A, B, C, D> q) {
-            super(q);
-        }
-
-        //
-        // Getters
-        //
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public A a() {
-            return (A) super.a();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public B b() {
-            return (B) super.b();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public C c() {
-            return (C) super.c();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public D d() {
-            return (D) super.c();
-        }
     }
 }

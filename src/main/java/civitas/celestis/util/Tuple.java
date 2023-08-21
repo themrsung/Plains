@@ -15,6 +15,13 @@ import java.util.function.Predicate;
  * meaning that the component variables cannot be reassigned after instantiation.
  *
  * @param <E> The type of element this tuple should hold
+ * @see Pair
+ * @see Triple
+ * @see Quad
+ * @see ArrayTuple
+ * @see IntPair
+ * @see IntTriple
+ * @see IntQuad
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
     //
@@ -50,7 +57,11 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     static Tuple<Double> ofDouble(@Nonnull double... elements) {
-        return of(Arrays.stream(elements).boxed().toArray(Double[]::new));
+        return switch (elements.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(elements[0]);
+            default -> of(Arrays.stream(elements).boxed().toArray(Double[]::new));
+        };
     }
 
     /**
@@ -61,9 +72,15 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     static Tuple<Float> ofFloat(@Nonnull float... elements) {
-        final Float[] boxed = new Float[elements.length];
-        for (int i = 0; i < elements.length; i++) boxed[i] = elements[i];
-        return of(boxed);
+        return switch (elements.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(elements[0]);
+            default -> {
+                final Float[] boxed = new Float[elements.length];
+                for (int i = 0; i < elements.length; i++) boxed[i] = elements[i];
+                yield of(boxed);
+            }
+        };
     }
 
     /**
@@ -74,7 +91,11 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     static Tuple<Long> ofLong(@Nonnull long... elements) {
-        return of(Arrays.stream(elements).boxed().toArray(Long[]::new));
+        return switch (elements.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(elements[0]);
+            default -> of(Arrays.stream(elements).boxed().toArray(Long[]::new));
+        };
     }
 
     /**
@@ -85,7 +106,14 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     static Tuple<Integer> ofInt(@Nonnull int... elements) {
-        return of(Arrays.stream(elements).boxed().toArray(Integer[]::new));
+        return switch (elements.length) {
+            case 0 -> new Empty<>();
+            case 1 -> new Single<>(elements[0]);
+            case 2 -> new IntPair(elements);
+            case 3 -> new IntTriple(elements);
+            case 4 -> new IntQuad(elements);
+            default -> of(Arrays.stream(elements).boxed().toArray(Integer[]::new));
+        };
     }
 
     /**

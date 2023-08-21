@@ -11,14 +11,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size tuple which can only hold three elements.
- * Triples use ABC notation to identity their elements.
+ * A fixed-size integer-typed tuple which can only hold three components.
+ * Triples use ABC notation to identity their components.
  *
- * @param <E> The type of element this tuple should hold
  * @see Tuple
- * @see TriTriple
  */
-public class Triple<E> implements Tuple<E> {
+public class IntTriple implements Tuple<Integer> {
     //
     // Constants
     //
@@ -28,26 +26,6 @@ public class Triple<E> implements Tuple<E> {
      */
     @Serial
     private static final long serialVersionUID = 0L;
-
-    //
-    // Static Initializers
-    //
-
-    /**
-     * Creates a new {@link TriTriple ternary triple} with three elements of different types.
-     *
-     * @param a   The first element of the triple
-     * @param b   The second element of the triple
-     * @param c   The third element of the triple
-     * @param <A> The type of the first element
-     * @param <B> The type of the second element
-     * @param <C> The type of the third element
-     * @return The ternary triple constructed from the provided elements
-     */
-    @Nonnull
-    public static <A, B, C> TriTriple<A, B, C> of(A a, B b, C c) {
-        return new TriTriple<>(a, b, c);
-    }
 
     //
     // Constructors
@@ -60,7 +38,7 @@ public class Triple<E> implements Tuple<E> {
      * @param b The second element of this triple
      * @param c The third element of this triple
      */
-    public Triple(E a, E b, E c) {
+    public IntTriple(int a, int b, int c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -72,7 +50,7 @@ public class Triple<E> implements Tuple<E> {
      * @param elements An array containing the elements of this triple in ABC order
      * @throws IllegalArgumentException When the array's length is not {@code 3}
      */
-    public Triple(@Nonnull E[] elements) {
+    public IntTriple(@Nonnull int[] elements) {
         if (elements.length != 3) {
             throw new IllegalArgumentException("The provided array's length is not 3.");
         }
@@ -88,14 +66,14 @@ public class Triple<E> implements Tuple<E> {
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the tuple's size is not {@code 3}
      */
-    public Triple(@Nonnull Tuple<? extends E> t) {
+    public IntTriple(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 3) {
             throw new IllegalArgumentException("The provided tuple's size is not 3.");
         }
 
-        this.a = t.get(0);
-        this.b = t.get(1);
-        this.c = t.get(2);
+        this.a = t.get(0).intValue();
+        this.b = t.get(1).intValue();
+        this.c = t.get(2).intValue();
     }
 
     //
@@ -105,17 +83,17 @@ public class Triple<E> implements Tuple<E> {
     /**
      * The first element of this tuple.
      */
-    protected final E a;
+    protected final int a;
 
     /**
      * The second element of this tuple.
      */
-    protected final E b;
+    protected final int b;
 
     /**
      * The third element of this tuple.
      */
-    protected final E c;
+    protected final int c;
 
     //
     // Properties
@@ -143,7 +121,7 @@ public class Triple<E> implements Tuple<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
+    public Integer get(int i) throws IndexOutOfBoundsException {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
@@ -157,7 +135,7 @@ public class Triple<E> implements Tuple<E> {
      *
      * @return The A component of this triple
      */
-    public E a() {
+    public int a() {
         return a;
     }
 
@@ -166,7 +144,7 @@ public class Triple<E> implements Tuple<E> {
      *
      * @return The B component of this triple
      */
-    public E b() {
+    public int b() {
         return b;
     }
 
@@ -175,7 +153,7 @@ public class Triple<E> implements Tuple<E> {
      *
      * @return The C component of this triple
      */
-    public E c() {
+    public int c() {
         return c;
     }
 
@@ -222,7 +200,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
         return new Triple<>(f.apply(a), f.apply(b), f.apply(c));
     }
 
@@ -238,7 +216,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
         if (t.size() != 3) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
@@ -257,7 +235,7 @@ public class Triple<E> implements Tuple<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Integer> iterator() {
         return List.of(a, b, c).iterator();
     }
 
@@ -272,8 +250,8 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        return SafeArray.of(a, b, c);
+    public SafeArray<Integer> array() {
+        return SafeArray.ofInt(a, b, c);
     }
 
     /**
@@ -283,7 +261,7 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public List<E> list() {
+    public List<Integer> list() {
         return List.of(a, b, c);
     }
 
@@ -316,90 +294,5 @@ public class Triple<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + ", " + c + "]";
-    }
-
-    //
-    // Ternary Triple
-    //
-
-    /**
-     * A specialized triple used to hold three elements of different types.
-     *
-     * @param <A> The first element's type
-     * @param <B> The second element's type
-     * @param <C> The third element's type
-     * @see Triple
-     */
-    public static class TriTriple<A, B, C> extends Triple<Object> {
-        //
-        // Constants
-        //
-
-        /**
-         * The serial version UID of this class.
-         */
-        @Serial
-        private static final long serialVersionUID = 0L;
-
-        //
-        // Constructors
-        //
-
-        /**
-         * Creates a new ternary triple.
-         *
-         * @param a The first element of this triple
-         * @param b The second element of this triple
-         * @param c The third element of this triple
-         */
-        protected TriTriple(A a, B b, C c) {
-            super(a, b, c);
-        }
-
-        /**
-         * Creates a new ternary triple.
-         *
-         * @param t The triple of which to copy elements from
-         */
-        protected TriTriple(@Nonnull TriTriple<A, B, C> t) {
-            super(t);
-        }
-
-        //
-        // Getters
-        //
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public A a() {
-            return (A) super.a();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public B b() {
-            return (B) super.b();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public C c() {
-            return (C) super.c();
-        }
     }
 }

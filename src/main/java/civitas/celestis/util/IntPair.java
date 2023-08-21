@@ -11,14 +11,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * A fixed-size tuple which can only hold two elements.
- * Pairs use AB notation to identify their elements.
+ * A fixed-size integer-typed tuple which can only hold two components.
+ * Pairs use AB notation to identify their components.
  *
- * @param <E> The type of element this tuple should hold
  * @see Tuple
- * @see BiPair
  */
-public class Pair<E> implements Tuple<E> {
+public class IntPair implements Tuple<Integer> {
     //
     // Constants
     //
@@ -30,24 +28,6 @@ public class Pair<E> implements Tuple<E> {
     private static final long serialVersionUID = 0L;
 
     //
-    // Static Initializers
-    //
-
-    /**
-     * Creates a new {@link BiPair binary pair} with two elements of different types.
-     *
-     * @param a   The first element of the pair
-     * @param b   The second element of the pair
-     * @param <A> The type of the first element
-     * @param <B> The type of the second element
-     * @return The binary pair constructed from the provided elements
-     */
-    @Nonnull
-    public static <A, B> BiPair<A, B> of(A a, B b) {
-        return new BiPair<>(a, b);
-    }
-
-    //
     // Constructors
     //
 
@@ -57,7 +37,7 @@ public class Pair<E> implements Tuple<E> {
      * @param a The first element of this pair
      * @param b The second element of this pair
      */
-    public Pair(E a, E b) {
+    public IntPair(int a, int b) {
         this.a = a;
         this.b = b;
     }
@@ -68,7 +48,7 @@ public class Pair<E> implements Tuple<E> {
      * @param elements An array containing the elements of this pair in AB order
      * @throws IllegalArgumentException When the array's length is not {@code 2}
      */
-    public Pair(@Nonnull E[] elements) {
+    public IntPair(@Nonnull int[] elements) {
         if (elements.length != 2) {
             throw new IllegalArgumentException("The provided array's length is not 2.");
         }
@@ -83,13 +63,13 @@ public class Pair<E> implements Tuple<E> {
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the tuple's size is not {@code 2}
      */
-    public Pair(@Nonnull Tuple<? extends E> t) {
+    public IntPair(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's length is not 2.");
+            throw new IllegalArgumentException("The provided tuple's size is not 2.");
         }
 
-        this.a = t.get(0);
-        this.b = t.get(1);
+        this.a = t.get(0).intValue();
+        this.b = t.get(1).intValue();
     }
 
     //
@@ -99,12 +79,12 @@ public class Pair<E> implements Tuple<E> {
     /**
      * The first element of this tuple.
      */
-    protected final E a;
+    protected final int a;
 
     /**
      * The second element of this tuple.
      */
-    protected final E b;
+    protected final int b;
 
     //
     // Properties
@@ -132,7 +112,7 @@ public class Pair<E> implements Tuple<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
+    public Integer get(int i) throws IndexOutOfBoundsException {
         return switch (i) {
             case 0 -> a;
             case 1 -> b;
@@ -145,7 +125,7 @@ public class Pair<E> implements Tuple<E> {
      *
      * @return The A component of this pair
      */
-    public E a() {
+    public int a() {
         return a;
     }
 
@@ -154,7 +134,7 @@ public class Pair<E> implements Tuple<E> {
      *
      * @return The B component of this pair
      */
-    public E b() {
+    public int b() {
         return b;
     }
 
@@ -201,7 +181,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
         return new Pair<>(f.apply(a), f.apply(b));
     }
 
@@ -217,7 +197,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
         if (t.size() != 2) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
@@ -236,7 +216,7 @@ public class Pair<E> implements Tuple<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Integer> iterator() {
         return List.of(a, b).iterator();
     }
 
@@ -251,8 +231,8 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        return SafeArray.of(a, b);
+    public SafeArray<Integer> array() {
+        return SafeArray.ofInt(a, b);
     }
 
     /**
@@ -262,7 +242,7 @@ public class Pair<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public List<E> list() {
+    public List<Integer> list() {
         return List.of(a, b);
     }
 
@@ -296,77 +276,5 @@ public class Pair<E> implements Tuple<E> {
     @Nonnull
     public String toString() {
         return "[" + a + ", " + b + "]";
-    }
-
-    //
-    // Binary Pair
-    //
-
-    /**
-     * A specialized pair used to hold two elements of different types.
-     *
-     * @param <A> The first element's type
-     * @param <B> The second element's type
-     * @see Pair
-     */
-    public static class BiPair<A, B> extends Pair<Object> {
-        //
-        // Constants
-        //
-
-        /**
-         * The serial version UID of this class.
-         */
-        @Serial
-        private static final long serialVersionUID = 0L;
-
-        //
-        // Constructors
-        //
-
-        /**
-         * Creates a new binary pair.
-         *
-         * @param a The first element of this pair
-         * @param b The second element of this pair
-         */
-        protected BiPair(A a, B b) {
-            super(a, b);
-        }
-
-        /**
-         * Creates a new pair.
-         *
-         * @param p The pair of which to copy elements from
-         */
-        protected BiPair(@Nonnull BiPair<A, B> p) {
-            super(p);
-        }
-
-        //
-        // Getters
-        //
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public A a() {
-            return (A) super.a();
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public B b() {
-            return (B) super.b();
-        }
     }
 }
