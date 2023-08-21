@@ -2,6 +2,7 @@ package civitas.celestis.math;
 
 import civitas.celestis.util.SafeArray;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Contains utility methods and constants related to mathematics.
@@ -21,6 +22,72 @@ public final class Numbers {
      * The inverse square root of {@code 2}.
      */
     public static final double INV_SQRT_2 = 1 / Math.sqrt(2);
+
+    //
+    //
+    //
+    // Equality
+    //
+    //
+    //
+
+    /**
+     * Checks for equality between two numbers {@code n1} and {@code n2}.
+     * This is a null-safe operation.
+     *
+     * @param n1 The first number to compare
+     * @param n2 The second number to compare
+     * @return {@code true} if the numbers are equal
+     */
+    public static boolean equals(@Nullable Number n1, @Nullable Number n2) {
+        if (n1 == null) return n2 == null;
+        if (n2 == null) return false;
+        return n1.equals(n2) || n2.equals(n1);
+    }
+
+    /**
+     * Checks for equality between the provided values {@code v1} and {@code v2}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the values are equal
+     */
+    public static boolean equals(double v1, double v2) {
+        return v1 == v2;
+    }
+
+    /**
+     * Checks for equality between the provided values {@code v1} and {@code v2}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the values are equal
+     */
+    public static boolean equals(float v1, float v2) {
+        return v1 == v2;
+    }
+
+    /**
+     * Checks for equality between the provided values {@code v1} and {@code v2}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the values are equal
+     */
+    public static boolean equals(long v1, long v2) {
+        return v1 == v2;
+    }
+
+    /**
+     * Checks for equality between the provided values {@code v1} and {@code v2}.
+     *
+     * @param v1 The first value to compare
+     * @param v2 The second value to compare
+     * @return {@code true} if the values are equal
+     */
+    public static boolean equals(int v1, int v2) {
+        return v1 == v2;
+    }
 
     //
     //

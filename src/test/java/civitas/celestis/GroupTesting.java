@@ -2,14 +2,11 @@ package civitas.celestis;
 
 
 import civitas.celestis.math.Complex;
+import civitas.celestis.math.Vector3;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Complex c = new Complex(23, -3);
-
-        System.out.println(c.multiply(c));
-        System.out.println(c.pow(2));
-
-
+        System.out.println(new Vector3("[2, 3, 10]"));
+        System.out.println(new Vector3(new Vector3(1, 2, 3).toString()));
     }
 }

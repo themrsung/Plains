@@ -293,6 +293,7 @@ public class Complex extends Number implements Comparable<Number> {
 
     /**
      * Raises this complex number to the {@code e}th power, then returns the exponentiation.
+     *
      * @param e The exponent to raise this number to
      * @return The {@code e}th power of this complex number
      * @throws IllegalArgumentException When the exponent {@code e} is smaller than zero ({@code e < 0})
@@ -319,6 +320,7 @@ public class Complex extends Number implements Comparable<Number> {
 
     /**
      * Returns the square roots of this complex number.
+     *
      * @return A tuple containing the two square roots of this complex number
      */
     @Nonnull

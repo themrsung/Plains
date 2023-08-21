@@ -2,6 +2,7 @@ package civitas.celestis.math;
 
 import civitas.celestis.util.SafeArray;
 import civitas.celestis.util.Tuple;
+import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -111,6 +112,16 @@ public class Vector2 implements Vector<Vector2> {
 
         this.x = t.get(0).doubleValue();
         this.y = t.get(1).doubleValue();
+    }
+
+    /**
+     * Creates a new vector. The required format is "{@code [0.0, 0.0]}".
+     *
+     * @param values The string representation of this vector
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Vector2(@Nonnull String values) {
+        this(ArrayReader.readDoubleArray(values));
     }
 
     //

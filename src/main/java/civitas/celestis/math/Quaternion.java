@@ -88,6 +88,16 @@ public class Quaternion extends Vector4 {
         super(t);
     }
 
+    /**
+     * Creates a new quaternion. The required format is "{@code [0.0, 0.0, 0.0, 0.0]}".
+     *
+     * @param values The string representation of this quaternion
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Quaternion(@Nonnull String values) {
+        super(values);
+    }
+
     //
     // Properties
     //

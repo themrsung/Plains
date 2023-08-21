@@ -80,6 +80,16 @@ public class Vector1 implements Vector<Vector1> {
         this.x = t.get(0).doubleValue();
     }
 
+    /**
+     * Creates a new vector. The required format is "{@code [0.0]}".
+     *
+     * @param values The string representation of this vector
+     * @throws NumberFormatException When the format is invalid
+     */
+    public Vector1(@Nonnull String values) {
+        this.x = Double.parseDouble(values.replaceAll("[\\[]]", ""));
+    }
+
     //
     // Variables
     //

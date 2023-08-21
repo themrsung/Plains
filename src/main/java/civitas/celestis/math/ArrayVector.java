@@ -2,6 +2,7 @@ package civitas.celestis.math;
 
 import civitas.celestis.util.SafeArray;
 import civitas.celestis.util.Tuple;
+import civitas.celestis.util.io.ArrayReader;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -67,6 +68,16 @@ public class ArrayVector implements Vector<ArrayVector> {
      */
     public ArrayVector(@Nonnull Tuple<? extends Number> t) {
         this.components = t.array().stream().mapToDouble(Number::doubleValue).toArray();
+    }
+
+    /**
+     * Creates a new vector. The required format is "{@code [0.0, 0.0, 0.0...]}".
+     *
+     * @param values The string representation of this vector
+     * @throws NumberFormatException When the format is invalid
+     */
+    public ArrayVector(@Nonnull String values) {
+        this.components = ArrayReader.readDoubleArray(values);
     }
 
     //
