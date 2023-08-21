@@ -377,7 +377,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * @return The resulting vector
      */
     @Nonnull
-    V transform(@Nonnull UnaryOperator<Double> f);
+    V map(@Nonnull UnaryOperator<Double> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this vector,
@@ -391,7 +391,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * @return A tuple containing the resulting values in the proper order
      */
     @Nonnull
-    <T> Tuple<T> map(@Nonnull Function<Double, T> f);
+    <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f);
 
     /**
      * Between this vector and the provided vector {@code v}, this applies the merger function
@@ -740,7 +740,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
-        public Vector0 transform(@Nonnull UnaryOperator<Double> f) {
+        public Vector0 map(@Nonnull UnaryOperator<Double> f) {
             return this;
         }
 
@@ -749,7 +749,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
-        public <T> Tuple<T> map(@Nonnull Function<Double, T> f) {
+        public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
             return Tuple.of();
         }
 

@@ -447,7 +447,7 @@ public class Vector1 implements Vector<Vector1> {
      */
     @Nonnull
     @Override
-    public Vector1 transform(@Nonnull UnaryOperator<Double> f) {
+    public Vector1 map(@Nonnull UnaryOperator<Double> f) {
         return new Vector1(f.apply(x));
     }
 
@@ -460,7 +460,7 @@ public class Vector1 implements Vector<Vector1> {
      */
     @Nonnull
     @Override
-    public <T> Tuple<T> map(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
         return Tuple.of(f.apply(x));
     }
 

@@ -455,7 +455,7 @@ public class ArrayVector implements Vector<ArrayVector> {
      */
     @Nonnull
     @Override
-    public ArrayVector transform(@Nonnull UnaryOperator<Double> f) {
+    public ArrayVector map(@Nonnull UnaryOperator<Double> f) {
         return new ArrayVector(Arrays.stream(components).map(f::apply).toArray());
     }
 
@@ -469,7 +469,7 @@ public class ArrayVector implements Vector<ArrayVector> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Tuple<T> map(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
         return Tuple.of((T[]) Arrays.stream(components).mapToObj(f::apply).toArray());
     }
 

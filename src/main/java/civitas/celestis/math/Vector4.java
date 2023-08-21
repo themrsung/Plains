@@ -585,7 +585,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public Vector4 transform(@Nonnull UnaryOperator<Double> f) {
+    public Vector4 map(@Nonnull UnaryOperator<Double> f) {
         return new Vector4(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 
@@ -598,7 +598,7 @@ public class Vector4 implements Vector<Vector4> {
      */
     @Nonnull
     @Override
-    public <T> Tuple<T> map(@Nonnull Function<Double, T> f) {
+    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
         return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 
