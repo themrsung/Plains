@@ -1,5 +1,7 @@
 package civitas.celestis.util;
 
+import civitas.celestis.math.Numbers;
+import civitas.celestis.math.Vector2;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -15,8 +17,9 @@ import java.util.function.Function;
  * Pairs use AB notation to identify their components.
  *
  * @see Tuple
+ * @see IntTuple
  */
-public class IntPair implements Tuple<Integer> {
+public class Int2 implements IntTuple<Int2> {
     //
     // Constants
     //
@@ -37,7 +40,7 @@ public class IntPair implements Tuple<Integer> {
      * @param a The first element of this pair
      * @param b The second element of this pair
      */
-    public IntPair(int a, int b) {
+    public Int2(int a, int b) {
         this.a = a;
         this.b = b;
     }
@@ -48,7 +51,7 @@ public class IntPair implements Tuple<Integer> {
      * @param elements An array containing the elements of this pair in AB order
      * @throws IllegalArgumentException When the array's length is not {@code 2}
      */
-    public IntPair(@Nonnull int[] elements) {
+    public Int2(@Nonnull int[] elements) {
         if (elements.length != 2) {
             throw new IllegalArgumentException("The provided array's length is not 2.");
         }
@@ -63,7 +66,7 @@ public class IntPair implements Tuple<Integer> {
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the tuple's size is not {@code 2}
      */
-    public IntPair(@Nonnull Tuple<? extends Number> t) {
+    public Int2(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 2) {
             throw new IllegalArgumentException("The provided tuple's size is not 2.");
         }
@@ -98,6 +101,46 @@ public class IntPair implements Tuple<Integer> {
     @Override
     public int size() {
         return 2;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean isZero() {
+        return a == 0 && b == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public double norm() {
+        return Math.sqrt(a * a + b * b);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int norm2() {
+        return a * a + b * b;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int normManhattan() {
+        return Math.abs(a) + Math.abs(b);
     }
 
     //
@@ -166,6 +209,199 @@ public class IntPair implements Tuple<Integer> {
         }
 
         return true;
+    }
+
+    //
+    // Arithmetic
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to add to this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 add(int s) {
+        return new Int2(a + s, b + s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to subtract from this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 subtract(int s) {
+        return new Int2(a - s, b - s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to multiply this tuple by
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 multiply(int s) {
+        return new Int2(a * s, b * s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to divide this tuple by
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 divide(int s) throws ArithmeticException {
+        return new Int2(a / s, b / s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to add to this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 add(@Nonnull Int2 t) {
+        return new Int2(a + t.a, b + t.b);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to subtract from this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 subtract(@Nonnull Int2 t) {
+        return new Int2(a - t.a, b - t.b);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the dot product between
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int dot(@Nonnull Int2 t) {
+        return a * t.a + b * t.b;
+    }
+
+    //
+    // Distance
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the Euclidean distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public double distance(@Nonnull Int2 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+
+        return Math.sqrt(da * da + db * db);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the squared Euclidean distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int distance2(@Nonnull Int2 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+
+        return da * da + db * db;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the Manhattan distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int distanceManhattan(@Nonnull Int2 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+
+        return Math.abs(da) + Math.abs(db);
+    }
+
+    //
+    // Clamping
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 min(@Nonnull Int2 t) {
+        return new Int2(Math.min(a, t.a), Math.min(b, t.b));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 max(@Nonnull Int2 t) {
+        return new Int2(Math.max(a, t.a), Math.max(b, t.b));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param min The minimum boundary tuple to compare to
+     * @param max The maximum boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 clamp(@Nonnull Int2 min, @Nonnull Int2 max) {
+        return new Int2(
+                (int) Numbers.clamp(a, min.a, max.a),
+                (int) Numbers.clamp(b, min.b, max.b)
+        );
+    }
+
+    //
+    // Negation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 negate() {
+        return new Int2(-a, -b);
     }
 
     //
@@ -244,6 +480,17 @@ public class IntPair implements Tuple<Integer> {
     @Override
     public List<Integer> list() {
         return List.of(a, b);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Vector2 vector() {
+        return new Vector2(a, b);
     }
 
     //

@@ -1,25 +1,18 @@
 package civitas.celestis;
 
 
-import civitas.celestis.util.SafeArray;
-
-import java.util.Comparator;
+import civitas.celestis.math.Vector2;
+import civitas.celestis.math.Vector3;
+import civitas.celestis.util.Tuple;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final SafeArray<Double> boxed = SafeArray.of(1d, 2d, 3d, 4d);
-        final SafeArray<Double> prim = SafeArray.ofDouble(1, 2, 3, 4);
+        final Tuple<Integer> int2 = Tuple.ofInt(1, 2);
+        final Tuple<Integer> int3 = Tuple.ofInt(1, 2, 3);
 
-        boxed.shuffle();
-        prim.shuffle();
-
-        System.out.println(boxed);
-        System.out.println(prim);
-
-        boxed.sort();
-        prim.sort(Comparator.reverseOrder());
-
-        System.out.println(boxed);
-        System.out.println(prim);
+        System.out.println(int2);
+        System.out.println(int3);
+        System.out.println(int2.getClass());
+        System.out.println(int3.getClass());
     }
 }

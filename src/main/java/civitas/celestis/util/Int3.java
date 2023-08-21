@@ -1,5 +1,7 @@
 package civitas.celestis.util;
 
+import civitas.celestis.math.Numbers;
+import civitas.celestis.math.Vector3;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -15,8 +17,9 @@ import java.util.function.Function;
  * Triples use ABC notation to identity their components.
  *
  * @see Tuple
+ * @see IntTuple
  */
-public class IntTriple implements Tuple<Integer> {
+public class Int3 implements IntTuple<Int3> {
     //
     // Constants
     //
@@ -38,7 +41,7 @@ public class IntTriple implements Tuple<Integer> {
      * @param b The second element of this triple
      * @param c The third element of this triple
      */
-    public IntTriple(int a, int b, int c) {
+    public Int3(int a, int b, int c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -50,7 +53,7 @@ public class IntTriple implements Tuple<Integer> {
      * @param elements An array containing the elements of this triple in ABC order
      * @throws IllegalArgumentException When the array's length is not {@code 3}
      */
-    public IntTriple(@Nonnull int[] elements) {
+    public Int3(@Nonnull int[] elements) {
         if (elements.length != 3) {
             throw new IllegalArgumentException("The provided array's length is not 3.");
         }
@@ -66,7 +69,7 @@ public class IntTriple implements Tuple<Integer> {
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the tuple's size is not {@code 3}
      */
-    public IntTriple(@Nonnull Tuple<? extends Number> t) {
+    public Int3(@Nonnull Tuple<? extends Number> t) {
         if (t.size() != 3) {
             throw new IllegalArgumentException("The provided tuple's size is not 3.");
         }
@@ -107,6 +110,46 @@ public class IntTriple implements Tuple<Integer> {
     @Override
     public int size() {
         return 3;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean isZero() {
+        return a == 0 && b == 0 && c == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public double norm() {
+        return Math.sqrt(a * a + b * b + c * c);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int norm2() {
+        return a * a + b * b + c * c;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int normManhattan() {
+        return Math.abs(a) + Math.abs(b) + Math.abs(c);
     }
 
     //
@@ -188,6 +231,203 @@ public class IntTriple implements Tuple<Integer> {
     }
 
     //
+    // Arithmetic
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to add to this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 add(int s) {
+        return new Int3(a + s, b + s, c + s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to subtract from this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 subtract(int s) {
+        return new Int3(a - s, b - s, c - s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to multiply this tuple by
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 multiply(int s) {
+        return new Int3(a * s, b * s, c * s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param s The scalar to divide this tuple by
+     * @return {@inheritDoc}
+     * @throws ArithmeticException {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 divide(int s) throws ArithmeticException {
+        return new Int3(a / s, b / s, c / s);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to add to this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 add(@Nonnull Int3 t) {
+        return new Int3(a + t.a, b + t.b, c + t.c);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to subtract from this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 subtract(@Nonnull Int3 t) {
+        return new Int3(a - t.a, b - t.b, c - t.c);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the dot product between
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int dot(@Nonnull Int3 t) {
+        return a * t.a + b * t.b + c * t.c;
+    }
+
+    //
+    // Distance
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the Euclidean distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public double distance(@Nonnull Int3 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+        final int dc = c - t.c;
+
+        return Math.sqrt(da * da + db * db + dc * dc);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the squared Euclidean distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int distance2(@Nonnull Int3 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+        final int dc = c - t.c;
+
+        return da * da + db * db + dc * dc;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The tuple of which to get the Manhattan distance to
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int distanceManhattan(@Nonnull Int3 t) {
+        final int da = a - t.a;
+        final int db = b - t.b;
+        final int dc = c - t.c;
+
+        return Math.abs(da) + Math.abs(db) + Math.abs(dc);
+    }
+
+    //
+    // Clamping
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 min(@Nonnull Int3 t) {
+        return new Int3(Math.min(a, t.a), Math.min(b, t.b), Math.min(c, t.c));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param t The boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 max(@Nonnull Int3 t) {
+        return new Int3(Math.max(a, t.a), Math.max(b, t.b), Math.max(c, t.c));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param min The minimum boundary tuple to compare to
+     * @param max The maximum boundary tuple to compare to
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 clamp(@Nonnull Int3 min, @Nonnull Int3 max) {
+        return new Int3(
+                (int) Numbers.clamp(a, min.a, max.a),
+                (int) Numbers.clamp(b, min.b, max.b),
+                (int) Numbers.clamp(c, min.c, max.c)
+        );
+    }
+
+    //
+    // Negation
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 negate() {
+        return new Int3(-a, -b, -c);
+    }
+
+    //
     // Transformation
     //
 
@@ -263,6 +503,17 @@ public class IntTriple implements Tuple<Integer> {
     @Override
     public List<Integer> list() {
         return List.of(a, b, c);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Vector3 vector() {
+        return new Vector3(a, b, c);
     }
 
     //
