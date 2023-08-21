@@ -29,7 +29,7 @@ public class LongArray implements SafeArray<Long> {
     private static final long serialVersionUID = 0L;
 
     //
-    // Factory
+    // Static Initializers
     //
 
     /**

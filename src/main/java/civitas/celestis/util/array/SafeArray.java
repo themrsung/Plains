@@ -218,7 +218,6 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      */
     void set(int i, E v) throws IndexOutOfBoundsException;
 
-
     //
     // Bulk Operation
     //

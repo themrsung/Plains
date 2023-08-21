@@ -640,34 +640,34 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill this grid with
+     * @param v The value to fill this grid with
      */
     @Override
-    public void fill(Double e) {
+    public void fill(Double v) {
         for (int r = 0; r < rows; r++) {
-            Arrays.fill(values[r], e);
+            Arrays.fill(values[r], v);
         }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill empty slots of this grid with
+     * @param v The value to fill empty slots of this grid with
      */
     @Override
-    public void fillEmpty(Double e) {
-        replaceAll(null, e);
+    public void fillEmpty(Double v) {
+        replaceAll(null, v);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill this grid selectively with
+     * @param v The value to fill this grid selectively with
      * @param f The filter function of which to test each original element with
      */
     @Override
-    public void fillIf(Double e, @Nonnull Predicate<? super Double> f) {
-        apply(old -> f.test(old) ? e : old);
+    public void fillIf(Double v, @Nonnull Predicate<? super Double> f) {
+        apply(old -> f.test(old) ? v : old);
     }
 
     /**

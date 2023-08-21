@@ -29,7 +29,7 @@ public class DoubleArray implements SafeArray<Double> {
     private static final long serialVersionUID = 0L;
 
     //
-    // Factory
+    // Static Initializers
     //
 
     /**

@@ -496,34 +496,34 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill this grid with
+     * @param v The value to fill this grid with
      */
     @Override
-    public void fill(Long e) {
+    public void fill(Long v) {
         for (int r = 0; r < rows; r++) {
-            Arrays.fill(values[r], e);
+            Arrays.fill(values[r], v);
         }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill empty slots of this grid with
+     * @param v The value to fill empty slots of this grid with
      */
     @Override
-    public void fillEmpty(Long e) {
-        replaceAll(null, e);
+    public void fillEmpty(Long v) {
+        replaceAll(null, v);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param e The element to fill this grid selectively with
+     * @param v The value to fill this grid selectively with
      * @param f The filter function of which to test each original element with
      */
     @Override
-    public void fillIf(Long e, @Nonnull Predicate<? super Long> f) {
-        apply(old -> f.test(old) ? e : old);
+    public void fillIf(Long v, @Nonnull Predicate<? super Long> f) {
+        apply(old -> f.test(old) ? v : old);
     }
 
     /**

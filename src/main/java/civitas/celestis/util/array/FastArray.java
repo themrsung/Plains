@@ -31,7 +31,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     private static final long serialVersionUID = 0L;
 
     //
-    // Factory
+    // Static Initializers
     //
 
     /**

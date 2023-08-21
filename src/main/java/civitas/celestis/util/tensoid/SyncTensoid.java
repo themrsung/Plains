@@ -1,8 +1,8 @@
-package civitas.celestis.util.grid;
+package civitas.celestis.util.tensoid;
 
 import civitas.celestis.util.array.SafeArray;
-import civitas.celestis.util.function.TriConsumer;
-import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.function.QuadConsumer;
+import civitas.celestis.util.function.QuadFunction;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.function.*;
 
 /**
- * A thread-safe implementation of a grid.
+ * A thread-safe implementation of a tensoid.
  *
- * @param <E> The type of element this grid should hold
- * @see Grid
- * @see ArrayGrid
+ * @param <E> The type of element this tensoid should hold
+ * @see Tensoid
+ * @see ArrayTensoid
  */
-public class SyncGrid<E> extends ArrayGrid<E> {
+public class SyncTensoid<E> extends ArrayTensoid<E> {
     //
     // Constants
     //
@@ -36,24 +36,27 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     //
 
     /**
-     * Creates a new thread-safe grid from a two-dimensional primitive array.
+     * Creates a new thread-safe tensoid from a three-dimensional primitive array.
      *
-     * @param elements The 2D array of elements to map into a grid
+     * @param elements The 3D array of elements to map into a tensoid
      * @param <E>      The type of element to contain
-     * @return An {@link ArrayGrid} constructed from the provided elements
+     * @return An {@link SyncTensoid} constructed from the provided elements
      */
     @Nonnull
-    public static <E> SyncGrid<E> of(@Nonnull E[][] elements) {
-        final int rows = elements.length;
-        final int columns = rows > 0 ? elements[0].length : 0;
+    static <E> SyncTensoid<E> of(@Nonnull E[][][] elements) {
+        final int width = elements.length;
+        final int height = width > 0 ? elements[0].length : 0;
+        final int depth = height > 0 ? elements[0][0].length : 0;
 
-        final SyncGrid<E> grid = new SyncGrid<>(rows, columns);
+        final SyncTensoid<E> tensoid = new SyncTensoid<>(width, height, depth);
 
-        for (int r = 0; r < rows; r++) {
-            System.arraycopy(elements[r], 0, grid.values[r], 0, columns);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                System.arraycopy(elements[i][j], 0, tensoid.values[i][j], 0, depth);
+            }
         }
 
-        return grid;
+        return tensoid;
     }
 
     //
@@ -61,31 +64,32 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     //
 
     /**
-     * Creates a new thread-safe array grid.
+     * Creates a new thread-safe tensoid.
      *
-     * @param rows    The number of rows to initialize
-     * @param columns The number of columns to initialize
+     * @param w The width (range of I) of this tensoid
+     * @param h The height (range of J) of this tensoid
+     * @param d The depth (range of K) of this tensoid
      */
-    public SyncGrid(int rows, int columns) {
-        super(rows, columns);
+    public SyncTensoid(int w, int h, int d) {
+        super(w, h, d);
     }
 
     /**
-     * Creates a new thread-safe array grid.
+     * Creates a new thread-safe tensoid.
      *
-     * @param size The size to initialize this grid to
+     * @param size The size to initialize this tensoid to
      */
-    public SyncGrid(@Nonnull Index size) {
+    public SyncTensoid(@Nonnull Index size) {
         super(size);
     }
 
     /**
-     * Creates a new thread-safe grid.
+     * Creates a new thread-safe tensoid.
      *
-     * @param g The grid of which to copy values from
+     * @param t The tensoid of which to copy values from
      */
-    public SyncGrid(@Nonnull Grid<? extends E> g) {
-        super(g);
+    public SyncTensoid(@Nonnull Tensoid<? extends E> t) {
+        super(t);
     }
 
     //
@@ -121,14 +125,15 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param r The index of the row to get
-     * @param c The index of the column to get
+     * @param i The I coordinate of the element to get
+     * @param j The J coordinate of the element to get
+     * @param k The K coordinate of the element to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized E get(int r, int c) throws IndexOutOfBoundsException {
-        return super.get(r, c);
+    public synchronized E get(int i, int j, int k) throws IndexOutOfBoundsException {
+        return super.get(i, j, k);
     }
 
     /**
@@ -146,14 +151,15 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param r The index of the row to set
-     * @param c The index of the column to set
+     * @param i The I coordinate of the slot to set
+     * @param j The J coordinate of the slot to set
+     * @param k The K coordinate of the slot to set
      * @param v The value to assign to the specified slot
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void set(int r, int c, E v) throws IndexOutOfBoundsException {
-        super.set(r, c, v);
+    public synchronized void set(int i, int j, int k, E v) throws IndexOutOfBoundsException {
+        super.set(i, j, k, v);
     }
 
     /**
@@ -175,7 +181,7 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each slot of this grid
+     * @param f The function of which to apply to each slot of this tensoid
      */
     @Override
     public synchronized void apply(@Nonnull Function<? super E, E> f) {
@@ -185,27 +191,27 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each slot of this grid
+     * @param f The function of which to apply to each slot of this tensoid
      */
     @Override
-    public synchronized void apply(@Nonnull BiFunction<Index, E, ? extends E> f) {
+    public synchronized void apply(@Nonnull BiFunction<Index, ? super E, E> f) {
         super.apply(f);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each slot of this grid
+     * @param f The function of which to apply to each slot of this tensoid
      */
     @Override
-    public synchronized void apply(@Nonnull TriFunction<Integer, Integer, E, ? extends E> f) {
+    public synchronized void apply(@Nonnull QuadFunction<Integer, Integer, Integer, ? super E, E> f) {
         super.apply(f);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param v The value to fill this grid with
+     * @param v The value to fill this tensoid with
      */
     @Override
     public synchronized void fill(E v) {
@@ -215,7 +221,7 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param v The value to fill empty slots of this grid with
+     * @param v The value to fill empty slots of this tensoid with
      */
     @Override
     public synchronized void fillEmpty(E v) {
@@ -225,7 +231,7 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param v The value to fill this grid selectively with
+     * @param v The value to fill this tensoid selectively with
      * @param f The filter function of which to test each original element with
      */
     @Override
@@ -251,59 +257,65 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param r1 The starting point's row index
-     * @param c1 The starting point's column index
-     * @param r2 The ending point's row index
-     * @param c2 The ending point's column index
+     * @param i1 The I coordinate of the starting point
+     * @param j1 The J coordinate of the starting point
+     * @param k1 The K coordinate of the starting point
+     * @param i2 The I coordinate of the ending point
+     * @param j2 The J coordinate of the ending point
+     * @param k2 The K coordinate of the ending point
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
-        return super.subGrid(r1, c1, r2, c2);
+    public synchronized Tensoid<E> subTensoid(int i1, int j1, int k1, int i2, int j2, int k2) throws IndexOutOfBoundsException {
+        return super.subTensoid(i1, j1, k1, i2, j2, k2);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param i1 The starting index of the sub-grid
-     * @param i2 The ending index of the sub-grid
+     * @param i1 The starting point's index
+     * @param i2 The ending point's index
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized Grid<E> subGrid(@Nonnull Index i1, @Nonnull Index i2) throws IndexOutOfBoundsException {
-        return super.subGrid(i1, i2);
+    public synchronized Tensoid<E> subTensoid(@Nonnull Index i1, @Nonnull Index i2) throws IndexOutOfBoundsException {
+        return super.subTensoid(i1, i2);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param r1 The starting point's row index
-     * @param c1 The starting point's column index
-     * @param r2 The ending point's row index
-     * @param c2 The ending point's column index
-     * @param g  The grid containing the values to assign
+     * @param i1 The I coordinate of the starting point
+     * @param j1 The J coordinate of the starting point
+     * @param k1 The K coordinate of the starting point
+     * @param i2 The I coordinate of the ending point
+     * @param j2 The J coordinate of the ending point
+     * @param k2 The K coordinate of the ending point
+     * @param t  The tensoid containing the values to assign
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException {
-        super.setRange(r1, c1, r2, c2, g);
+    public synchronized void setRange(int i1, int j1, int k1, int i2, int j2, int k2, @Nonnull Tensoid<? extends E> t)
+            throws IndexOutOfBoundsException {
+        super.setRange(i1, j1, k1, i2, j2, k2, t);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param i1 The starting index at which to start assigning values
-     * @param i2 The ending index at which to stop assigning values
-     * @param g  The grid containing the values to assign
+     * @param i1 The starting point's index
+     * @param i2 The ending point's index
+     * @param t  The tensoid containing the values to assign
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void setRange(@Nonnull Index i1, @Nonnull Index i2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException {
-        super.setRange(i1, i2, g);
+    public synchronized void setRange(@Nonnull Index i1, @Nonnull Index i2, @Nonnull Tensoid<? extends E> t)
+            throws IndexOutOfBoundsException {
+        super.setRange(i1, i2, t);
     }
 
     //
@@ -313,21 +325,21 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param f   The function of which to apply to each element of this grid
+     * @param f   The function of which to apply to each element of this tensoid
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public synchronized <F> Tensoid<F> map(@Nonnull Function<? super E, ? extends F> f) {
         return super.map(f);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param g   The grid of which to merge this grid with
-     * @param f   The merger function to handle the merging of the two grids
+     * @param t   The tensoid of which to merge this tensoid with
+     * @param f   The merger function to handle the merging of the two tensoids
      * @param <F> {@inheritDoc}
      * @param <G> {@inheritDoc}
      * @return {@inheritDoc}
@@ -335,24 +347,9 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public synchronized <F, G> Tensoid<G> merge(@Nonnull Tensoid<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
-        return super.merge(g, f);
-    }
-
-    //
-    // Transposition
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public synchronized Grid<E> transpose() {
-        return super.transpose();
+        return super.merge(t, f);
     }
 
     //
@@ -362,25 +359,26 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param r The number of rows the resized grid should have
-     * @param c The number of columns the resized grid should have
+     * @param width  The resulting tensoid's width
+     * @param height The resulting tensoid's height
+     * @param depth  The resulting tensoid's depth
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized Grid<E> resize(int r, int c) {
-        return super.resize(r, c);
+    public synchronized Tensoid<E> resize(int width, int height, int depth) {
+        return super.resize(width, height, depth);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param size The size the resized grid should have
+     * @param size The size the resized tensoid should have
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public synchronized Grid<E> resize(@Nonnull Index size) {
+    public synchronized Tensoid<E> resize(@Nonnull Index size) {
         return super.resize(size);
     }
 
@@ -402,32 +400,36 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param action The action of which to execute for each element of this tensoid
+     * @return {@inheritDoc}
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
+    public synchronized void forEach(@Nonnull Consumer<? super E> action) {
         super.forEach(action);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param action The action of which to execute for each element of this tensoid
+     * @return {@inheritDoc}
      */
     @Override
-    public void forEach(@Nonnull BiConsumer<Index, ? super E> action) {
+    public synchronized void forEach(@Nonnull BiConsumer<Index, ? super E> action) {
         super.forEach(action);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param action The action of which to execute for each element of this tensoid
+     * @return {@inheritDoc}
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+    public synchronized void forEach(@Nonnull QuadConsumer<Integer, Integer, Integer, ? super E> action) {
         super.forEach(action);
     }
+
     //
     // Conversion
     //

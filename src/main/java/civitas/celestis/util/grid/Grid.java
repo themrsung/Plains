@@ -28,7 +28,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * Returns a new {@link Index} object with the specified row and column indices.
+     * Returns a new {@link Index index} with the specified row and column indices.
      *
      * @param row    The index of the row
      * @param column The index of the column
@@ -95,7 +95,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     int columns();
 
     /**
-     * Returns the dimensions of this grid as an {@link Index} object.
+     * Returns the dimensions of this grid as an {@link Index Index} object.
      *
      * @return The dimensions of this grid, packaged as an index object
      */
@@ -198,28 +198,28 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     void apply(@Nonnull TriFunction<Integer, Integer, E, ? extends E> f);
 
     /**
-     * Fills this grid with the provided element {@code e}.
+     * Fills this grid with the provided element {@code v}.
      *
-     * @param e The element to fill this grid with
+     * @param v The value to fill this grid with
      */
-    void fill(E e);
+    void fill(E v);
 
     /**
      * Fills this grid, but only assigns empty slots (slots which are {@code null})
-     * to the provided element {@code 2}.
+     * to the provided element {@code v}.
      *
-     * @param e The element to fill empty slots of this grid with
+     * @param v The value to fill empty slots of this grid with
      */
-    void fillEmpty(E e);
+    void fillEmpty(E v);
 
     /**
      * Fills this grid, but only if the filter function {@code f} returns {@code true}
-     * fot the corresponding slot's original value.
+     * for the corresponding slot's original value.
      *
-     * @param e The element to fill this grid selectively with
+     * @param v The value to fill this grid selectively with
      * @param f The filter function of which to test each original element with
      */
-    void fillIf(E e, @Nonnull Predicate<? super E> f);
+    void fillIf(E v, @Nonnull Predicate<? super E> f);
 
     /**
      * Replaces all instances of the old value to the new value.
@@ -251,7 +251,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      *
      * @param i1 The starting index of the sub-grid
      * @param i2 The ending index of the sub-grid
-     * @return The sub=grid of this grid of the specified range
+     * @return The sub-grid of this grid of the specified range
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     @Nonnull
@@ -287,12 +287,10 @@ public interface Grid<E> extends Iterable<E>, Serializable {
 
     /**
      * Applies the provided mapper function {@code f} to each element of this grid,
-     * then returns a new grid containing the resulting elements. This operation does not
-     * preserve the type bounds of this grid.
+     * then returns a new grid containing the resulting elements.
      *
      * @param f   The function of which to apply to each element of this grid
-     * @param <F> The type of element ot map this grid to (does not require that it is
-     *            a subtype of {@code E})
+     * @param <F> The type of element to map this grid to
      * @return The resulting grid
      */
     @Nonnull
@@ -300,14 +298,12 @@ public interface Grid<E> extends Iterable<E>, Serializable {
 
     /**
      * Between this grid and the provided grid {@code g}, this applies the merger function {@code f}
-     * to each corresponding pair of elements, then returns a new grid containing the resulting
-     * elements. This operation does not preserve the type bounds of this grid.
+     * to each corresponding pair of elements, then returns a new grid containing the resulting elements.
      *
      * @param g   The grid of which to merge this grid with
      * @param f   The merger function to handle the merging of the two grids
      * @param <F> The type of element to merge this grid with
-     * @param <G> The type of element to merge the two grids to (does not require that it is a subtype
-     *            if {@code E} or the other tuple's generic component type)
+     * @param <G> The type of element to merge the two grids to
      * @return The resulting grid
      * @throws IllegalArgumentException When the two grids' dimensions are different
      */
@@ -426,7 +422,8 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     Collection<E> collect();
 
     /**
-     * Returns a map containing every element of this grid, mapped by their corresponding {@link Index}.
+     * Returns a map containing every element of this grid, mapped
+     * by their corresponding {@link Index index}.
      *
      * @return The map representation of this grid
      * @see Map
@@ -512,7 +509,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * The default implementation of a grid's {@link Index}
+     * The default implementation of a grid's {@link Index index}.
      */
     final class SimpleIndex implements Index {
         /**
@@ -573,8 +570,8 @@ public interface Grid<E> extends Iterable<E>, Serializable {
          *
          * @return The string representation of this index
          */
-        @Override
         @Nonnull
+        @Override
         public String toString() {
             return "[" + row + ", " + column + "]";
         }

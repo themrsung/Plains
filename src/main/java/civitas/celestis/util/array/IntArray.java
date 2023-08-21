@@ -29,7 +29,7 @@ public class IntArray implements SafeArray<Integer> {
     private static final long serialVersionUID = 0L;
 
     //
-    // Factory
+    // Static Initializers
     //
 
     /**

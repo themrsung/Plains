@@ -28,7 +28,7 @@ public class SyncArray<E> extends FastArray<E> {
     private static final long serialVersionUID = 0L;
 
     //
-    // Factory
+    // Static Initializers
     //
 
     /**
