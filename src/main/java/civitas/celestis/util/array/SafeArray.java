@@ -254,7 +254,16 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @param f The function of which to apply to each element of this array
      */
-    void apply(@Nonnull UnaryOperator<E> f);
+    void apply(@Nonnull Function<? super E, E> f);
+
+    /**
+     * Applies the provided update function {@code f} to each element of this array, then assigns
+     * the return value of the function to the corresponding index of this array. The first
+     * parameter is the index of the value which was provided.
+     *
+     * @param f The function of which to apply to each element of this array
+     */
+    void apply(@Nonnull BiFunction<Integer, ? super E, E> f);
 
     /**
      * Replaces all instances of the old value to the new value.

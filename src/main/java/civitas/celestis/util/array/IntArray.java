@@ -231,9 +231,21 @@ public class IntArray implements SafeArray<Integer> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Integer> f) {
+    public void apply(@Nonnull Function<? super Integer, Integer> f) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] = f.apply(elements[i]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     */
+    @Override
+    public void apply(@Nonnull BiFunction<Integer, ? super Integer, Integer> f) {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = f.apply(i, elements[i]);
         }
     }
 

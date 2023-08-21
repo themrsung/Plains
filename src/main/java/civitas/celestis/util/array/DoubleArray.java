@@ -231,9 +231,21 @@ public class DoubleArray implements SafeArray<Double> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Double> f) {
+    public void apply(@Nonnull Function<? super Double, Double> f) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] = f.apply(elements[i]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     */
+    @Override
+    public void apply(@Nonnull BiFunction<Integer, ? super Double, Double> f) {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = f.apply(i, elements[i]);
         }
     }
 

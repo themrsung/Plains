@@ -175,7 +175,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      *
      * @param f The function of which to apply to each slot of this grid
      */
-    void apply(@Nonnull UnaryOperator<E> f);
+    void apply(@Nonnull Function<? super E, E> f);
 
     /**
      * Applies the provided function {@code f} to every slot of this grid.

@@ -457,7 +457,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Long> f) {
+    public void apply(@Nonnull Function<? super Long, Long> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);

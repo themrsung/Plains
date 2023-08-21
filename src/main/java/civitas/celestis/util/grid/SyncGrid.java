@@ -153,7 +153,7 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
-    public synchronized void apply(@Nonnull UnaryOperator<E> f) {
+    public synchronized void apply(@Nonnull Function<? super E, E> f) {
         super.apply(f);
     }
 

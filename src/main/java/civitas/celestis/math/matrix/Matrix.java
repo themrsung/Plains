@@ -601,7 +601,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Double> f) {
+    public void apply(@Nonnull Function<? super Double, Double> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);

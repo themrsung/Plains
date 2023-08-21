@@ -190,7 +190,17 @@ public class SyncArray<E> extends FastArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public synchronized void apply(@Nonnull UnaryOperator<E> f) {
+    public synchronized void apply(@Nonnull Function<? super E, E> f) {
+        super.apply(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     */
+    @Override
+    public synchronized void apply(@Nonnull BiFunction<Integer, ? super E, E> f) {
         super.apply(f);
     }
 

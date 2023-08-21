@@ -231,9 +231,21 @@ public class LongArray implements SafeArray<Long> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<Long> f) {
+    public void apply(@Nonnull Function<? super Long, Long> f) {
         for (int i = 0; i < elements.length; i++) {
             elements[i] = f.apply(elements[i]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     */
+    @Override
+    public void apply(@Nonnull BiFunction<Integer, ? super Long, Long> f) {
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = f.apply(i, elements[i]);
         }
     }
 

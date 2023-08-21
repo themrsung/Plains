@@ -261,7 +261,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each slot of this grid
      */
     @Override
-    public void apply(@Nonnull UnaryOperator<E> f) {
+    public void apply(@Nonnull Function<? super E, E> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);
