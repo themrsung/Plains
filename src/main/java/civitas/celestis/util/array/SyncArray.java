@@ -356,7 +356,7 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
+    public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
         return super.mapToCollection(f);
     }
 

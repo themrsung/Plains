@@ -436,7 +436,7 @@ public class LongArray implements SafeArray<Long> {
      */
     @Nonnull
     @Override
-    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Long, F> f) {
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Long, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
 
@@ -450,7 +450,7 @@ public class LongArray implements SafeArray<Long> {
     @Nonnull
     @Override
     public <F> List<F> mapToList(@Nonnull Function<? super Long, ? extends F> f) {
-        return Arrays.stream(elements).boxed().map(f).toList();
+        return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
 
     /**

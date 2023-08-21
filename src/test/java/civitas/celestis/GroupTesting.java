@@ -1,18 +1,11 @@
 package civitas.celestis;
 
-
-import civitas.celestis.util.grid.Grid;
-import civitas.celestis.util.tensoid.ArrayTensoid;
-import civitas.celestis.util.tensoid.Tensoid;
+import civitas.celestis.util.array.SafeArray;
 
 public class GroupTesting {
     public static void main(String[] args) {
-        final Tensoid<Grid<String>> something = new ArrayTensoid<>(10, 10, 10);
-        something.fill(Grid.of(new String[][] {
-                {"Hello", "world"},
-                {"foo", "bar"}
-        }));
-
+        final SafeArray<String> array = SafeArray.of("reds", "aslddask", "rredkr", "asdsdsddklk");
+        System.out.println(array.cast(Object.class));
 
     }
 }

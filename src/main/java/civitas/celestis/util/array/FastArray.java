@@ -441,7 +441,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
-    public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f) {
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(elements).map(f).collect(Collectors.toList());
     }
 
@@ -455,7 +455,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
     @Nonnull
     @Override
     public <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f) {
-        return Arrays.stream(elements).map(f).toList();
+        return Arrays.stream(elements).map(f).collect(Collectors.toList());
     }
 
     /**

@@ -397,7 +397,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @see Collection
      */
     @Nonnull
-    <F> Collection<F> mapToCollection(@Nonnull Function<? super E, F> f);
+    <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this array,

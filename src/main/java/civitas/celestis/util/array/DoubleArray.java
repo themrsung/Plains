@@ -436,7 +436,7 @@ public class DoubleArray implements SafeArray<Double> {
      */
     @Nonnull
     @Override
-    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Double, F> f) {
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super Double, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
 
@@ -450,7 +450,7 @@ public class DoubleArray implements SafeArray<Double> {
     @Nonnull
     @Override
     public <F> List<F> mapToList(@Nonnull Function<? super Double, ? extends F> f) {
-        return Arrays.stream(elements).boxed().map(f).toList();
+        return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
 
     /**
