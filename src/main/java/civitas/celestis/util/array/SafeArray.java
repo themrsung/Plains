@@ -13,7 +13,9 @@ import java.util.stream.Stream;
  * A type-safe array. Type-safe arrays have multiple implementations with different
  * approaches when it comes to thread safety. {@link FastArray}s have no built-in thread
  * safety measures and are designed to be very fast, while {@link SyncArray}s have
- * synchronization measures in place to enable multithreaded usage.
+ * synchronization measures in place to enable multithreaded usage. If the required
+ * level of thread safety is sufficiently high to require atomization, {@link AtomicArray}s
+ * can be used instead.
  * <p>
  * Arrays can be preferred to {@link Collection}s in that they have a fixed size,
  * which cannot be changed without re-instantiation. This makes the dataset more efficient
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
  * @param <E> The type of element this array should hold
  * @see FastArray
  * @see SyncArray
+ * @see AtomicArray
  * @see DoubleArray
  * @see LongArray
  * @see IntArray
@@ -91,11 +94,27 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @param elements The elements the array should contain
      * @param <E>      The type of element the array should hold
      * @return The new array instance created from the provided elements
+     * @see SyncArray
      */
     @Nonnull
     @SafeVarargs
     static <E> SafeArray<E> syncOf(@Nonnull E... elements) {
         return SyncArray.of(elements);
+    }
+
+    /**
+     * Creates a new atomic array from the provided array of elements,
+     * then returns the newly created array instance.
+     *
+     * @param elements The elements the array should contain
+     * @param <E>      The type of element the array should hold
+     * @return The new array instance created from the provided elements
+     * @see AtomicArray
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> SafeArray<E> atomicOf(@Nonnull E... elements) {
+        return AtomicArray.of(elements);
     }
 
     /**
@@ -132,11 +151,27 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @param c   The collection of which to copy elements from
      * @param <E> The type of element the array should hold
      * @return A new type-safe array containing the elements of the provided collection {@code c}
+     * @see SyncArray
      */
     @Nonnull
     @SuppressWarnings("unchecked")
     static <E> SafeArray<E> syncCopyOf(@Nonnull Collection<E> c) {
         return SyncArray.of((E[]) c.toArray());
+    }
+
+    /**
+     * Returns a new atomic array whose elements are populated from
+     * that of the provided collection {@code c}.
+     *
+     * @param c   The collection of which to copy elements from
+     * @param <E> The type of element the array should hold
+     * @return A new atomic array containing the elements of the provided collection {@code c}
+     * @see AtomicArray
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> SafeArray<E> atomicCopyOf(@Nonnull Collection<E> c) {
+        return AtomicArray.of((E[]) c.toArray());
     }
 
     /**
@@ -146,10 +181,25 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @param a   The array of which to copy elements from
      * @param <E> The type of element the array should hold
      * @return A new type-safe array containing the elements of the provided array {@code a}
+     * @see SyncArray
      */
     @Nonnull
     static <E> SafeArray<E> syncCopyOf(@Nonnull SafeArray<E> a) {
         return new SyncArray<>(a);
+    }
+
+    /**
+     * Returns a new atomic array whose elements are populated from
+     * that of the provided array {@code a}.
+     *
+     * @param a   The array of which to copy elements from
+     * @param <E> The type of element the array should hold
+     * @return A new atomic array containing the elements of the provided array {@code a}
+     * @see AtomicArray
+     */
+    @Nonnull
+    static <E> SafeArray<E> atomicCopyOf(@Nonnull SafeArray<E> a) {
+        return new AtomicArray<>(a);
     }
 
     //
@@ -451,7 +501,8 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *                                  to that of this array's length
      */
     @Nonnull
-    <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f);
+    <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
+            throws IllegalArgumentException;
 
     /**
      * Explicitly casts each element of this array to the provided class {@code c}, then returns
