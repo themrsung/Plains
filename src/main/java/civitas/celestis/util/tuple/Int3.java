@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 /**
  * A fixed-size integer-typed tuple which can only hold three components.
- * Triples use ABC notation to identify their components.
+ * Integer triples use IJK notation to identify their components.
  *
  * @see Tuple
  * @see IntTuple
@@ -42,14 +42,14 @@ public class Int3 implements IntTuple<Int3> {
     /**
      * Creates a new triple.
      *
-     * @param a The first element of this triple
-     * @param b The second element of this triple
-     * @param c The third element of this triple
+     * @param i The first element of this triple
+     * @param j The second element of this triple
+     * @param k The third element of this triple
      */
-    public Int3(int a, int b, int c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+    public Int3(int i, int j, int k) {
+        this.i = i;
+        this.j = j;
+        this.k = k;
     }
 
     /**
@@ -63,9 +63,9 @@ public class Int3 implements IntTuple<Int3> {
             throw new IllegalArgumentException("The provided array's length is not 3.");
         }
 
-        this.a = elements[0];
-        this.b = elements[1];
-        this.c = elements[2];
+        this.i = elements[0];
+        this.j = elements[1];
+        this.k = elements[2];
     }
 
     /**
@@ -79,9 +79,9 @@ public class Int3 implements IntTuple<Int3> {
             throw new IllegalArgumentException("The provided tuple's size is not 3.");
         }
 
-        this.a = t.get(0).intValue();
-        this.b = t.get(1).intValue();
-        this.c = t.get(2).intValue();
+        this.i = t.get(0).intValue();
+        this.j = t.get(1).intValue();
+        this.k = t.get(2).intValue();
     }
 
     //
@@ -91,17 +91,17 @@ public class Int3 implements IntTuple<Int3> {
     /**
      * The first element of this tuple.
      */
-    protected final int a;
+    protected final int i;
 
     /**
      * The second element of this tuple.
      */
-    protected final int b;
+    protected final int j;
 
     /**
      * The third element of this tuple.
      */
-    protected final int c;
+    protected final int k;
 
     //
     // Properties
@@ -124,7 +124,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public boolean isZero() {
-        return a == 0 && b == 0 && c == 0;
+        return i == 0 && j == 0 && k == 0;
     }
 
     /**
@@ -134,7 +134,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public double norm() {
-        return Math.sqrt(a * a + b * b + c * c);
+        return Math.sqrt(i * i + j * j + k * k);
     }
 
     /**
@@ -144,7 +144,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int norm2() {
-        return a * a + b * b + c * c;
+        return i * i + j * j + k * k;
     }
 
     /**
@@ -154,7 +154,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int normManhattan() {
-        return Math.abs(a) + Math.abs(b) + Math.abs(c);
+        return Math.abs(i) + Math.abs(j) + Math.abs(k);
     }
 
     //
@@ -164,45 +164,45 @@ public class Int3 implements IntTuple<Int3> {
     /**
      * {@inheritDoc}
      *
-     * @param i The index of the element to retrieve
+     * @param index The index of the element to retrieve
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public Integer get(int i) throws IndexOutOfBoundsException {
-        return switch (i) {
-            case 0 -> a;
-            case 1 -> b;
-            case 2 -> c;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 3.");
+    public Integer get(int index) throws IndexOutOfBoundsException {
+        return switch (index) {
+            case 0 -> i;
+            case 1 -> j;
+            case 2 -> k;
+            default -> throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for size 3.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this triple.
+     * Returns the I component (the first component) of this triple.
      *
-     * @return The A component of this triple
+     * @return The I component of this triple
      */
-    public int a() {
-        return a;
+    public int i() {
+        return i;
     }
 
     /**
-     * Returns the B component (the second component) of this triple.
+     * Returns the J component (the second component) of this triple.
      *
-     * @return The B component of this triple
+     * @return The J component of this triple
      */
-    public int b() {
-        return b;
+    public int j() {
+        return j;
     }
 
     /**
-     * Returns the C component (the third component) of this triple.
+     * Returns the K component (the third component) of this triple.
      *
-     * @return The C component of this triple
+     * @return The K component of this triple
      */
-    public int c() {
-        return c;
+    public int k() {
+        return k;
     }
 
     //
@@ -217,7 +217,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) || Objects.equals(b, obj) || Objects.equals(c, obj);
+        return Objects.equals(i, obj) || Objects.equals(j, obj) || Objects.equals(k, obj);
     }
 
     /**
@@ -248,7 +248,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 add(int s) {
-        return new Int3(a + s, b + s, c + s);
+        return new Int3(i + s, j + s, k + s);
     }
 
     /**
@@ -260,7 +260,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 subtract(int s) {
-        return new Int3(a - s, b - s, c - s);
+        return new Int3(i - s, j - s, k - s);
     }
 
     /**
@@ -272,7 +272,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 multiply(int s) {
-        return new Int3(a * s, b * s, c * s);
+        return new Int3(i * s, j * s, k * s);
     }
 
     /**
@@ -285,7 +285,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 divide(int s) throws ArithmeticException {
-        return new Int3(a / s, b / s, c / s);
+        return new Int3(i / s, j / s, k / s);
     }
 
     /**
@@ -297,7 +297,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 add(@Nonnull Int3 t) {
-        return new Int3(a + t.a, b + t.b, c + t.c);
+        return new Int3(i + t.i, j + t.j, k + t.k);
     }
 
     /**
@@ -309,7 +309,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 subtract(@Nonnull Int3 t) {
-        return new Int3(a - t.a, b - t.b, c - t.c);
+        return new Int3(i - t.i, j - t.j, k - t.k);
     }
 
     /**
@@ -320,7 +320,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int dot(@Nonnull Int3 t) {
-        return a * t.a + b * t.b + c * t.c;
+        return i * t.i + j * t.j + k * t.k;
     }
 
     //
@@ -335,9 +335,9 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public double distance(@Nonnull Int3 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
 
         return Math.sqrt(da * da + db * db + dc * dc);
     }
@@ -350,9 +350,9 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int distance2(@Nonnull Int3 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
 
         return da * da + db * db + dc * dc;
     }
@@ -365,9 +365,9 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int distanceManhattan(@Nonnull Int3 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
 
         return Math.abs(da) + Math.abs(db) + Math.abs(dc);
     }
@@ -385,7 +385,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 min(@Nonnull Int3 t) {
-        return new Int3(Math.min(a, t.a), Math.min(b, t.b), Math.min(c, t.c));
+        return new Int3(Math.min(i, t.i), Math.min(j, t.j), Math.min(k, t.k));
     }
 
     /**
@@ -397,7 +397,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 max(@Nonnull Int3 t) {
-        return new Int3(Math.max(a, t.a), Math.max(b, t.b), Math.max(c, t.c));
+        return new Int3(Math.max(i, t.i), Math.max(j, t.j), Math.max(k, t.k));
     }
 
     /**
@@ -411,9 +411,9 @@ public class Int3 implements IntTuple<Int3> {
     @Override
     public Int3 clamp(@Nonnull Int3 min, @Nonnull Int3 max) {
         return new Int3(
-                (int) Scalars.clamp(a, min.a, max.a),
-                (int) Scalars.clamp(b, min.b, max.b),
-                (int) Scalars.clamp(c, min.c, max.c)
+                (int) Scalars.clamp(i, min.i, max.i),
+                (int) Scalars.clamp(j, min.j, max.j),
+                (int) Scalars.clamp(k, min.k, max.k)
         );
     }
 
@@ -429,7 +429,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Int3 negate() {
-        return new Int3(-a, -b, -c);
+        return new Int3(-i, -j, -k);
     }
 
     //
@@ -446,7 +446,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
-        return new Triple<>(f.apply(a), f.apply(b), f.apply(c));
+        return new Triple<>(f.apply(i), f.apply(j), f.apply(k));
     }
 
     /**
@@ -467,7 +467,7 @@ public class Int3 implements IntTuple<Int3> {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Triple<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)));
+        return new Triple<>(f.apply(i, t.get(0)), f.apply(j, t.get(1)), f.apply(k, t.get(2)));
     }
 
     //
@@ -481,7 +481,7 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public Iterator<Integer> iterator() {
-        return List.of(a, b, c).iterator();
+        return List.of(i, j, k).iterator();
     }
 
     /**
@@ -491,9 +491,9 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public void forEach(@Nonnull Consumer<? super Integer> action) {
-        action.accept(a);
-        action.accept(b);
-        action.accept(c);
+        action.accept(i);
+        action.accept(j);
+        action.accept(k);
     }
 
     /**
@@ -503,9 +503,9 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public void forEach(@Nonnull BiConsumer<Integer, ? super Integer> action) {
-        action.accept(0, a);
-        action.accept(1, b);
-        action.accept(2, c);
+        action.accept(0, i);
+        action.accept(1, j);
+        action.accept(2, k);
     }
 
     //
@@ -520,7 +520,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Integer[] array() {
-        return new Integer[]{a, b, c};
+        return new Integer[]{i, j, k};
     }
 
     /**
@@ -531,7 +531,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public SafeArray<Integer> safeArray() {
-        return SafeArray.ofInt(a, b, c);
+        return SafeArray.ofInt(i, j, k);
     }
 
     /**
@@ -553,7 +553,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public List<Integer> list() {
-        return List.of(a, b, c);
+        return List.of(i, j, k);
     }
 
     /**
@@ -564,7 +564,7 @@ public class Int3 implements IntTuple<Int3> {
     @Nonnull
     @Override
     public Vector3 vector() {
-        return new Vector3(a, b, c);
+        return new Vector3(i, j, k);
     }
 
     //
@@ -595,6 +595,6 @@ public class Int3 implements IntTuple<Int3> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + ", " + c + "]";
+        return "[" + i + ", " + j + ", " + k + "]";
     }
 }

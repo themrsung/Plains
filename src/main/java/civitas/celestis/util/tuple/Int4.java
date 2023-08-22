@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 /**
  * A fixed-size integer-typed tuple which can only hold four components.
- * Quads use ABCD notation to identify their components.
+ * Integer quads use IJKL notation to identify their components.
  *
  * @see Tuple
  * @see IntTuple
@@ -42,16 +42,16 @@ public class Int4 implements IntTuple<Int4> {
     /**
      * Creates a new quad.
      *
-     * @param a The first element of this quad
-     * @param b The second element of this quad
-     * @param c The third element of this quad
-     * @param d The fourth element of this quad
+     * @param i The first element of this quad
+     * @param j The second element of this quad
+     * @param k The third element of this quad
+     * @param l The fourth element of this quad
      */
-    public Int4(int a, int b, int c, int d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+    public Int4(int i, int j, int k, int l) {
+        this.i = i;
+        this.j = j;
+        this.k = k;
+        this.l = l;
     }
 
     /**
@@ -65,10 +65,10 @@ public class Int4 implements IntTuple<Int4> {
             throw new IllegalArgumentException("The provided array's length is not 4.");
         }
 
-        this.a = elements[0];
-        this.b = elements[1];
-        this.c = elements[2];
-        this.d = elements[3];
+        this.i = elements[0];
+        this.j = elements[1];
+        this.k = elements[2];
+        this.l = elements[3];
     }
 
     /**
@@ -82,10 +82,10 @@ public class Int4 implements IntTuple<Int4> {
             throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
 
-        this.a = t.get(0).intValue();
-        this.b = t.get(1).intValue();
-        this.c = t.get(2).intValue();
-        this.d = t.get(3).intValue();
+        this.i = t.get(0).intValue();
+        this.j = t.get(1).intValue();
+        this.k = t.get(2).intValue();
+        this.l = t.get(3).intValue();
     }
 
     //
@@ -95,22 +95,22 @@ public class Int4 implements IntTuple<Int4> {
     /**
      * The first element of this tuple.
      */
-    protected final int a;
+    protected final int i;
 
     /**
      * The second element of this tuple.
      */
-    protected final int b;
+    protected final int j;
 
     /**
      * The third element of this tuple.
      */
-    protected final int c;
+    protected final int k;
 
     /**
      * The fourth element of this tuple.
      */
-    protected final int d;
+    protected final int l;
 
     //
     // Properties
@@ -133,7 +133,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public boolean isZero() {
-        return a == 0 && b == 0 && c == 0 && d == 0;
+        return i == 0 && j == 0 && k == 0 && l == 0;
     }
 
     /**
@@ -143,7 +143,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public double norm() {
-        return Math.sqrt(a * a + b * b + c * c + d * d);
+        return Math.sqrt(i * i + j * j + k * k + l * l);
     }
 
     /**
@@ -153,7 +153,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int norm2() {
-        return a * a + b * b + c * c + d * d;
+        return i * i + j * j + k * k + l * l;
     }
 
     /**
@@ -163,7 +163,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int normManhattan() {
-        return Math.abs(a) + Math.abs(b) + Math.abs(c) + Math.abs(d);
+        return Math.abs(i) + Math.abs(j) + Math.abs(k) + Math.abs(l);
     }
 
     //
@@ -173,55 +173,55 @@ public class Int4 implements IntTuple<Int4> {
     /**
      * {@inheritDoc}
      *
-     * @param i The index of the element to retrieve
+     * @param index The index of the element to retrieve
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public Integer get(int i) throws IndexOutOfBoundsException {
-        return switch (i) {
-            case 0 -> a;
-            case 1 -> b;
-            case 2 -> c;
-            case 3 -> d;
-            default -> throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for size 4.");
+    public Integer get(int index) throws IndexOutOfBoundsException {
+        return switch (index) {
+            case 0 -> i;
+            case 1 -> j;
+            case 2 -> k;
+            case 3 -> l;
+            default -> throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for size 4.");
         };
     }
 
     /**
-     * Returns the A component (the first component) of this quad.
+     * Returns the I component (the first component) of this quad.
      *
-     * @return The A component of this quad
+     * @return The I component of this quad
      */
-    public int a() {
-        return a;
+    public int i() {
+        return i;
     }
 
     /**
-     * Returns the B component (the second component) of this quad.
+     * Returns the J component (the second component) of this quad.
      *
-     * @return The B component of this quad
+     * @return The J component of this quad
      */
-    public int b() {
-        return b;
+    public int j() {
+        return j;
     }
 
     /**
-     * Returns the C component (the third component) of this quad.
+     * Returns the K component (the third component) of this quad.
      *
-     * @return The C component of this quad
+     * @return The K component of this quad
      */
-    public int c() {
-        return c;
+    public int k() {
+        return k;
     }
 
     /**
-     * Returns the D component (the fourth component) of this quad.
+     * Returns the L component (the fourth component) of this quad.
      *
-     * @return The D component of this quad
+     * @return The L component of this quad
      */
-    public int d() {
-        return d;
+    public int l() {
+        return l;
     }
 
     //
@@ -236,10 +236,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public boolean contains(@Nullable Object obj) {
-        return Objects.equals(a, obj) ||
-                Objects.equals(b, obj) ||
-                Objects.equals(c, obj) ||
-                Objects.equals(d, obj);
+        return Objects.equals(i, obj) ||
+                Objects.equals(j, obj) ||
+                Objects.equals(k, obj) ||
+                Objects.equals(l, obj);
     }
 
     /**
@@ -270,7 +270,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 add(int s) {
-        return new Int4(a + s, b + s, c + s, d + s);
+        return new Int4(i + s, j + s, k + s, l + s);
     }
 
     /**
@@ -282,7 +282,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 subtract(int s) {
-        return new Int4(a - s, b - s, c - s, d - s);
+        return new Int4(i - s, j - s, k - s, l - s);
     }
 
     /**
@@ -294,7 +294,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 multiply(int s) {
-        return new Int4(a * s, b * s, c * s, d * s);
+        return new Int4(i * s, j * s, k * s, l * s);
     }
 
     /**
@@ -307,7 +307,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 divide(int s) throws ArithmeticException {
-        return new Int4(a / s, b / s, c / s, d / s);
+        return new Int4(i / s, j / s, k / s, l / s);
     }
 
     /**
@@ -319,7 +319,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 add(@Nonnull Int4 t) {
-        return new Int4(a + t.a, b + t.b, c + t.c, d + t.d);
+        return new Int4(i + t.i, j + t.j, k + t.k, l + t.l);
     }
 
     /**
@@ -331,7 +331,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 subtract(@Nonnull Int4 t) {
-        return new Int4(a - t.a, b - t.b, c - t.c, d - t.d);
+        return new Int4(i - t.i, j - t.j, k - t.k, l - t.l);
     }
 
     /**
@@ -342,7 +342,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int dot(@Nonnull Int4 t) {
-        return a * t.a + b * t.b + c * t.c + d * t.d;
+        return i * t.i + j * t.j + k * t.k + l * t.l;
     }
 
 
@@ -358,10 +358,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public double distance(@Nonnull Int4 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
-        final int dd = d - t.d;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
+        final int dd = l - t.l;
 
         return Math.sqrt(da * da + db * db + dc * dc + dd * dd);
     }
@@ -374,10 +374,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int distance2(@Nonnull Int4 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
-        final int dd = d - t.d;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
+        final int dd = l - t.l;
 
         return da * da + db * db + dc * dc + dd * dd;
     }
@@ -390,10 +390,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int distanceManhattan(@Nonnull Int4 t) {
-        final int da = a - t.a;
-        final int db = b - t.b;
-        final int dc = c - t.c;
-        final int dd = d - t.d;
+        final int da = i - t.i;
+        final int db = j - t.j;
+        final int dc = k - t.k;
+        final int dd = l - t.l;
 
         return Math.abs(da) + Math.abs(db) + Math.abs(dc) + Math.abs(dd);
     }
@@ -411,7 +411,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 min(@Nonnull Int4 t) {
-        return new Int4(Math.min(a, t.a), Math.min(b, t.b), Math.min(c, t.c), Math.min(d, t.c));
+        return new Int4(Math.min(i, t.i), Math.min(j, t.j), Math.min(k, t.k), Math.min(l, t.k));
     }
 
     /**
@@ -423,7 +423,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 max(@Nonnull Int4 t) {
-        return new Int4(Math.max(a, t.a), Math.max(b, t.b), Math.max(c, t.c), Math.max(d, t.c));
+        return new Int4(Math.max(i, t.i), Math.max(j, t.j), Math.max(k, t.k), Math.max(l, t.k));
     }
 
     /**
@@ -437,10 +437,10 @@ public class Int4 implements IntTuple<Int4> {
     @Override
     public Int4 clamp(@Nonnull Int4 min, @Nonnull Int4 max) {
         return new Int4(
-                (int) Scalars.clamp(a, min.a, min.a),
-                (int) Scalars.clamp(b, min.b, min.b),
-                (int) Scalars.clamp(c, min.c, min.c),
-                (int) Scalars.clamp(d, min.d, min.d)
+                (int) Scalars.clamp(i, min.i, min.i),
+                (int) Scalars.clamp(j, min.j, min.j),
+                (int) Scalars.clamp(k, min.k, min.k),
+                (int) Scalars.clamp(l, min.l, min.l)
         );
     }
 
@@ -457,7 +457,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Int4 negate() {
-        return new Int4(-a, -b, -c, -d);
+        return new Int4(-i, -j, -k, -l);
     }
 
 
@@ -475,7 +475,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
-        return new Quad<>(f.apply(a), f.apply(b), f.apply(c), f.apply(d));
+        return new Quad<>(f.apply(i), f.apply(j), f.apply(k), f.apply(l));
     }
 
 
@@ -497,7 +497,7 @@ public class Int4 implements IntTuple<Int4> {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        return new Quad<>(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
+        return new Quad<>(f.apply(i, t.get(0)), f.apply(j, t.get(1)), f.apply(k, t.get(2)), f.apply(l, t.get(3)));
     }
 
     //
@@ -511,7 +511,7 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public Iterator<Integer> iterator() {
-        return List.of(a, b, c, d).iterator();
+        return List.of(i, j, k, l).iterator();
     }
 
     /**
@@ -521,10 +521,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public void forEach(@Nonnull Consumer<? super Integer> action) {
-        action.accept(a);
-        action.accept(b);
-        action.accept(c);
-        action.accept(d);
+        action.accept(i);
+        action.accept(j);
+        action.accept(k);
+        action.accept(l);
     }
 
     /**
@@ -534,10 +534,10 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public void forEach(@Nonnull BiConsumer<Integer, ? super Integer> action) {
-        action.accept(0, a);
-        action.accept(1, b);
-        action.accept(2, c);
-        action.accept(3, d);
+        action.accept(0, i);
+        action.accept(1, j);
+        action.accept(2, k);
+        action.accept(3, l);
     }
 
     //
@@ -552,7 +552,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Integer[] array() {
-        return new Integer[]{a, b, c, d};
+        return new Integer[]{i, j, k, l};
     }
 
     /**
@@ -563,7 +563,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public SafeArray<Integer> safeArray() {
-        return SafeArray.ofInt(a, b, c, d);
+        return SafeArray.ofInt(i, j, k, l);
     }
 
     /**
@@ -585,7 +585,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public List<Integer> list() {
-        return List.of(a, b, c, d);
+        return List.of(i, j, k, l);
     }
 
     /**
@@ -596,7 +596,7 @@ public class Int4 implements IntTuple<Int4> {
     @Nonnull
     @Override
     public Vector4 vector() {
-        return new Vector4(a, b, c, d);
+        return new Vector4(i, j, k, l);
     }
 
     //
@@ -627,6 +627,6 @@ public class Int4 implements IntTuple<Int4> {
     @Override
     @Nonnull
     public String toString() {
-        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
+        return "[" + i + ", " + j + ", " + k + ", " + l + "]";
     }
 }
