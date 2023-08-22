@@ -2,18 +2,20 @@ package civitas.celestis;
 
 
 import civitas.celestis.util.array.AtomicArray;
+import civitas.celestis.util.array.DoubleArray;
+import civitas.celestis.util.array.SafeArray;
 
 import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {
-        final AtomicArray<Double> doubles = AtomicArray.of(1d, 2d, 3d, 4d, 5d, 6d);
-        System.out.println(doubles);
+        final SafeArray<String> first = SafeArray.of("Hello", "world", "foo");
+        final SafeArray<String> second = SafeArray.of("bar", "fuzz", "bizz");
 
-        doubles.shuffle();
-        System.out.println(doubles);
+        final SafeArray<String> a1 = first.append(second);
+        final SafeArray<String> a2 = first.prepend(second);
 
-        doubles.sort(Comparator.reverseOrder());
-        System.out.println(doubles);
+        System.out.println(a1);
+        System.out.println(a2);
     }
 }

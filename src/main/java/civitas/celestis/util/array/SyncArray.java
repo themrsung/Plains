@@ -437,6 +437,28 @@ public class SyncArray<E> extends FastArray<E> {
         return of((F[]) elements);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to append to the end of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized SafeArray<E> append(@Nonnull SafeArray<? extends E> a) {
+        return super.append(a);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to prepend to the front of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized SafeArray<E> prepend(@Nonnull SafeArray<? extends E> a) {
+        return super.prepend(a);
+    }
+
     //
     // Conversion
     //

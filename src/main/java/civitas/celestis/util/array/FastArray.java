@@ -540,6 +540,48 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
         return new FastArray<>((F[]) elements, false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to append to the end of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> append(@Nonnull SafeArray<? extends E> a) {
+        final int length = elements.length + a.length();
+        final FastArray<E> result = new FastArray<>(length);
+
+        System.arraycopy(elements, 0, result.elements, 0, elements.length);
+
+        for (int i = elements.length; i < length; i++) {
+            result.elements[i] = a.get(i - elements.length);
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to prepend to the front of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> prepend(@Nonnull SafeArray<? extends E> a) {
+        final int length = elements.length + a.length();
+        final FastArray<E> result = new FastArray<>(length);
+
+        for (int i = 0; i < a.length(); i++) {
+            result.elements[i] = a.get(i);
+        }
+
+        for (int i = a.length(); i < length; i++) {
+            result.elements[i] = elements[i - a.length()];
+        }
+
+        return result;
+    }
+
     //
     // Conversion
     //

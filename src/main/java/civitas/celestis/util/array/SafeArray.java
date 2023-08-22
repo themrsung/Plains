@@ -424,7 +424,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     SafeArray<E> filter(@Nonnull Predicate<? super E> f);
 
     //
-    // Mapping
+    // Transformation
     //
 
     /**
@@ -486,7 +486,6 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @Nonnull
     <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f);
 
-
     /**
      * Between this array and the provided array {@code a}, this applies the merger
      * function {@code f} to each corresponding pair of elements, then returns
@@ -517,6 +516,24 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException;
+
+    /**
+     * Appends the elements of the provided array {@code a} to the end of this array, then returns
+     * a new array containing the collective elements.
+     * @param a The array of which to append to the end of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    SafeArray<E> append(@Nonnull SafeArray<? extends E> a);
+
+    /**
+     * Prepends the elements of the provided array {@code a} to the front of this array, then
+     * returns a new array containing the collective elements.
+     * @param a The array of which to prepend to the front of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    SafeArray<E> prepend(@Nonnull SafeArray<? extends E> a);
 
     //
     // Conversion

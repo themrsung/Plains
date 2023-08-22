@@ -135,7 +135,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean contains(@Nullable Object obj) {
+    public boolean contains(@Nullable Object obj) {
         for (final AtomicReference<E> reference : references) {
             if (Objects.equals(reference.get(), obj)) return true;
         }
@@ -150,7 +150,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean containsAll(@Nonnull Iterable<?> i) {
+    public boolean containsAll(@Nonnull Iterable<?> i) {
         for (final Object o : i) {
             if (!contains(o)) return false;
         }
@@ -170,7 +170,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized E get(int i) throws IndexOutOfBoundsException {
+    public E get(int i) throws IndexOutOfBoundsException {
         return references[i].get();
     }
 
@@ -183,7 +183,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized E getOrDefault(int i, E fallback) throws IndexOutOfBoundsException {
+    public E getOrDefault(int i, E fallback) throws IndexOutOfBoundsException {
         final E value = references[i].get();
         return value != null ? value : fallback;
     }
@@ -327,8 +327,8 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
-        final FastArray<E> result = new FastArray<>(i2 - i1);
+    public SafeArray<E> subArray(int i1, int i2) throws IndexOutOfBoundsException {
+        final SyncArray<E> result = new SyncArray<>(i2 - i1);
         for (int i = i1; i < i2; i++) {
             result.elements[i - i1] = references[i].get();
         }
@@ -363,8 +363,8 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> resize(int size) {
-        final FastArray<E> result = new FastArray<>(size);
+    public SafeArray<E> resize(int size) {
+        final SyncArray<E> result = new SyncArray<>(size);
         final int min = Math.min(references.length, size);
 
         for (int i = 0; i < min; i++) {
@@ -455,8 +455,8 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
-        return FastArray.of((E[]) Arrays.stream(references).map(AtomicReference::get).toArray());
+    public SafeArray<E> filter(@Nonnull Predicate<? super E> f) {
+        return SyncArray.of((E[]) Arrays.stream(references).map(AtomicReference::get).toArray());
     }
 
     //
@@ -473,8 +473,8 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return FastArray.of((F[]) Arrays.stream(references).map(AtomicReference::get).map(f).toArray());
+    public <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
+        return SyncArray.of((F[]) Arrays.stream(references).map(AtomicReference::get).map(f).toArray());
     }
 
     /**
@@ -487,7 +487,7 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized <F> Tuple<F> mapToTuple(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<? super E, ? extends F> f) {
         return Tuple.of((F[]) Arrays.stream(references).map(AtomicReference::get).map(f).toArray());
     }
 
@@ -500,7 +500,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(references).map(AtomicReference::get).map(f).collect(Collectors.toList());
     }
 
@@ -513,7 +513,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> List<F> mapToList(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(references).map(AtomicReference::get).map(f).collect(Collectors.toList());
     }
 
@@ -526,7 +526,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Set<F> mapToSet(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(references).map(AtomicReference::get).map(f).collect(Collectors.toSet());
     }
 
@@ -542,13 +542,13 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException {
         if (references.length != a.length()) {
             throw new IllegalArgumentException("Array lengths must match for this operation.");
         }
 
-        final FastArray<G> result = new FastArray<>(references.length);
+        final SyncArray<G> result = new SyncArray<>(references.length);
 
         for (int i = 0; i < references.length; i++) {
             result.elements[i] = f.apply(references[i].get(), a.get(i));
@@ -568,8 +568,52 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
+    public <F> SafeArray<F> cast(@Nonnull Class<F> c) throws ClassCastException {
         return map(c::cast);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to append to the end of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> append(@Nonnull SafeArray<? extends E> a) {
+        final int length = references.length + a.length();
+        final SyncArray<E> result = new SyncArray<>(length);
+
+        for (int i = 0; i < references.length; i++) {
+            result.elements[i] = references[i].get();
+        }
+
+        for (int i = references.length; i < length; i++) {
+            result.elements[i] = a.get(i - references.length);
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to prepend to the front of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> prepend(@Nonnull SafeArray<? extends E> a) {
+        final int length = references.length + a.length();
+        final SyncArray<E> result = new SyncArray<>(length);
+
+        for (int i = 0; i < a.length(); i++) {
+            result.elements[i] = a.get(i);
+        }
+
+        for (int i = a.length(); i < length; i++) {
+            result.elements[i] = references[i - a.length()].get();
+        }
+
+        return result;
     }
 
     //
@@ -584,7 +628,7 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized E[] array() {
+    public E[] array() {
         return (E[]) Arrays.stream(references).map(AtomicReference::get).toArray();
     }
 
@@ -595,7 +639,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Stream<E> stream() {
+    public Stream<E> stream() {
         return Arrays.stream(references).map(AtomicReference::get);
     }
 
@@ -606,7 +650,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Collection<E> collect() {
+    public Collection<E> collect() {
         return Arrays.stream(references).map(AtomicReference::get).toList();
     }
 
@@ -617,7 +661,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Set<E> set() {
+    public Set<E> set() {
         return Arrays.stream(references).map(AtomicReference::get).collect(Collectors.toSet());
     }
 
@@ -628,7 +672,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized List<E> list() {
+    public List<E> list() {
         return Arrays.stream(references).map(AtomicReference::get).toList();
     }
 
@@ -639,7 +683,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized ArrayList<E> arrayList() {
+    public ArrayList<E> arrayList() {
         return new ArrayList<>(Arrays.stream(references).map(AtomicReference::get).toList());
     }
 
@@ -651,7 +695,7 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized Tuple<E> tuple() {
+    public Tuple<E> tuple() {
         return Tuple.of((E[]) Arrays.stream(references).map(AtomicReference::get).toArray());
     }
 
@@ -666,7 +710,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized Iterator<E> iterator() {
+    public Iterator<E> iterator() {
         return Arrays.stream(references).map(AtomicReference::get).iterator();
     }
 
@@ -676,7 +720,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @param action The action of which to execute for each element of this array
      */
     @Override
-    public synchronized void forEach(@Nonnull Consumer<? super E> action) {
+    public void forEach(@Nonnull Consumer<? super E> action) {
         for (final AtomicReference<E> reference : references) {
             action.accept(reference.get());
         }
@@ -688,7 +732,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @param action The action of which to execute for each element of this array
      */
     @Override
-    public synchronized void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+    public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
         for (int i = 0; i < references.length; i++) {
             action.accept(i, references[i].get());
         }
@@ -706,9 +750,9 @@ public class AtomicArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized SafeArray<E> copy() {
+    public SafeArray<E> copy() {
         // Dereferences the array and creates a non-atomic copy
-        return SafeArray.of((E[]) Arrays.stream(references).map(AtomicReference::get).toArray());
+        return SyncArray.of((E[]) Arrays.stream(references).map(AtomicReference::get).toArray());
     }
 
     //
@@ -722,7 +766,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public synchronized boolean equals(@Nullable Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SafeArray<?> a)) return false;
         if (references.length != a.length()) return false;
 
@@ -744,7 +788,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public synchronized String toString() {
+    public String toString() {
         return Arrays.toString(Arrays.stream(references).map(AtomicReference::get).toArray());
     }
 }

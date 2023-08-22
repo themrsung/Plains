@@ -529,6 +529,47 @@ public class LongArray implements SafeArray<Long> {
         return map(c::cast);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to append to the end of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<Long> append(@Nonnull SafeArray<? extends Long> a) {
+        final int length = elements.length + a.length();
+        final LongArray result = new LongArray(length);
+
+        System.arraycopy(elements, 0, result.elements, 0, elements.length);
+
+        for (int i = elements.length; i < length; i++) {
+            result.elements[i] = a.get(i - elements.length);
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param a The array of which to prepend to the front of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<Long> prepend(@Nonnull SafeArray<? extends Long> a) {
+        final int length = elements.length + a.length();
+        final LongArray result = new LongArray(length);
+
+        for (int i = 0; i < a.length(); i++) {
+            result.elements[i] = a.get(i);
+        }
+
+        for (int i = a.length(); i < length; i++) {
+            result.elements[i] = elements[i - a.length()];
+        }
+
+        return result;
+    }
 
     //
     // Conversion
