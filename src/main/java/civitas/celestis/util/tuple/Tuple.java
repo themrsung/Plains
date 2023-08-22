@@ -1,5 +1,6 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -291,6 +292,15 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     E[] array();
 
     /**
+     * Returns a type-safe array representing the elements of this tuple.
+     *
+     * @return The type-safe array representing the elements of this tuple
+     * @see SafeArray
+     */
+    @Nonnull
+    SafeArray<E> safeArray();
+
+    /**
      * Returns a stream whose source is the elements of this tuple.
      *
      * @return A stream of this tuple's elements
@@ -472,6 +482,17 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
 
         /**
          * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public SafeArray<E> safeArray() {
+            return SafeArray.of();
+        }
+
+        /**
+         * {@inheritDoc}
          */
         @Nonnull
         @Override
@@ -638,6 +659,17 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         @SuppressWarnings("unchecked")
         public E[] array() {
             return (E[]) new Object[]{element};
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public SafeArray<E> safeArray() {
+            return SafeArray.of(element);
         }
 
         /**

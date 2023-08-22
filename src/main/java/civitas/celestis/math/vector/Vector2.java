@@ -1,6 +1,7 @@
 package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -581,8 +582,30 @@ public class Vector2 implements Vector<Vector2> {
      */
     @Nonnull
     @Override
+    public SafeArray<Double> safeArray() {
+        return SafeArray.ofDouble(x, y);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public List<Double> list() {
         return List.of(x, y);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<Double> tuple() {
+        return Tuple.ofDouble(x, y);
     }
 
     //

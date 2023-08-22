@@ -2,6 +2,7 @@ package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Scalars;
 import civitas.celestis.math.vector.Vector4;
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -552,6 +553,17 @@ public class Int4 implements IntTuple<Int4> {
     @Override
     public Integer[] array() {
         return new Integer[]{a, b, c, d};
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<Integer> safeArray() {
+        return SafeArray.ofInt(a, b, c, d);
     }
 
     /**

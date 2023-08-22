@@ -2,6 +2,7 @@ package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
 import civitas.celestis.math.complex.Quaternion;
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -619,8 +620,30 @@ public class Vector3 implements Vector<Vector3> {
      */
     @Nonnull
     @Override
+    public SafeArray<Double> safeArray() {
+        return SafeArray.ofDouble(x, y, z);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public List<Double> list() {
         return List.of(x, y, z);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<Double> tuple() {
+        return Tuple.ofDouble(x, y, z);
     }
 
     /**

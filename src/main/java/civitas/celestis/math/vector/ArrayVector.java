@@ -1,5 +1,6 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -519,8 +520,30 @@ public class ArrayVector implements Vector<ArrayVector> {
      */
     @Nonnull
     @Override
+    public SafeArray<Double> safeArray() {
+        return SafeArray.ofDouble(components);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public List<Double> list() {
         return List.of(Arrays.stream(components).boxed().toArray(Double[]::new));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<Double> tuple() {
+        return Tuple.ofDouble(components);
     }
 
     //
@@ -538,7 +561,7 @@ public class ArrayVector implements Vector<ArrayVector> {
         if (!(obj instanceof Vector<?> v)) return false;
         if (components.length != v.dimensions()) return false;
 
-        return array().equals(v.array());
+        return Arrays.equals(array(), v.array());
     }
 
     /**

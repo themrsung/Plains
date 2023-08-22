@@ -1,5 +1,6 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -244,6 +245,17 @@ public class ArrayTuple<E> implements Tuple<E> {
     @SuppressWarnings("unchecked")
     public E[] array() {
         return (E[]) Arrays.stream(elements).toArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> safeArray() {
+        return SafeArray.of(elements);
     }
 
     /**

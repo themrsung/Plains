@@ -1,5 +1,6 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -330,6 +331,17 @@ public class Quad<E> implements Tuple<E> {
     @SuppressWarnings("unchecked")
     public E[] array() {
         return (E[]) new Object[]{a, b, c, d};
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<E> safeArray() {
+        return SafeArray.of(a, b, c, d);
     }
 
     /**

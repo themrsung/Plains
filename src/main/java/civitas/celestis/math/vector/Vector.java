@@ -1,5 +1,6 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -464,13 +465,31 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     double[] array();
 
     /**
+     * Returns a type-safe array representing the components of this vector.
+     *
+     * @return A type-safe array representing the components of this vector
+     * @see SafeArray
+     */
+    @Nonnull
+    SafeArray<Double> safeArray();
+
+    /**
      * Converts this vector into an unmodifiable list, then returns the converted list.
      *
-     * @return An unmodifiable list representing the elements of this vector
+     * @return An unmodifiable list representing the components of this vector
      * @see List
      */
     @Nonnull
     List<Double> list();
+
+    /**
+     * Converts this vector into a tuple, then returns the converted tuple.
+     *
+     * @return A tuple representing the components of this vector
+     * @see Tuple
+     */
+    @Nonnull
+    Tuple<Double> tuple();
 
     //
     // Equality
@@ -812,8 +831,26 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
+        public SafeArray<Double> safeArray() {
+            return SafeArray.ofDouble();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
         public List<Double> list() {
             return List.of();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Tuple<Double> tuple() {
+            return Tuple.ofDouble();
         }
 
         /**
