@@ -5,6 +5,7 @@ import jakarta.annotation.Nonnull;
 
 /**
  * Contains mathematical utilities related to vectors.
+ *
  * @see Vector
  */
 public final class Vectors {
