@@ -10,6 +10,11 @@ import jakarta.annotation.Nonnull;
  * Contains utility methods related to quaternions.
  */
 public final class Quaternions {
+
+    /*
+     * LERP and SLERP methods are in Vectors, due to package-specific access to variables.
+     */
+
     //
     //
     //
