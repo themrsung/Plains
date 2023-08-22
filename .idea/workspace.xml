@@ -4,34 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="trinity">
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/Test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/ArrayVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Complex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Quaternion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector4.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayTuple.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/DoubleArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/FastArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int4.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntTuple.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/LongArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Quad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SafeArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SyncArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Triple.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Tuple.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stuff">
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vectors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -259,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1692690955770</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="stuff">
+      <option name="closed" value="true" />
+      <created>1692691550186</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1692691550186</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,6 +250,7 @@
     <MESSAGE value="tensoids" />
     <MESSAGE value="stf" />
     <MESSAGE value="trinity" />
-    <option name="LAST_COMMIT_MESSAGE" value="trinity" />
+    <MESSAGE value="stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="stuff" />
   </component>
 </project>
