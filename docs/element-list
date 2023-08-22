@@ -1,6 +1,11 @@
-civitas.celestis.event
-civitas.celestis.graphics
+civitas.celestis
 civitas.celestis.math
-civitas.celestis.task
+civitas.celestis.math.complex
+civitas.celestis.math.matrix
+civitas.celestis.math.vector
 civitas.celestis.util
-civitas.celestis.util.io
+civitas.celestis.util.array
+civitas.celestis.util.atomic
+civitas.celestis.util.function
+civitas.celestis.util.grid
+civitas.celestis.util.tuple
