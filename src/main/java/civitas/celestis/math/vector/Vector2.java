@@ -1,15 +1,12 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
-import civitas.celestis.util.ArrayReader;
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
+import civitas.celestis.math.Scalars;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -97,31 +94,6 @@ public class Vector2 implements Vector<Vector2> {
 
         this.x = v.get(0);
         this.y = v.get(1);
-    }
-
-    /**
-     * Creates a new vector.
-     *
-     * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 2}
-     */
-    public Vector2(@Nonnull Tuple<? extends Number> t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's size is not 2.");
-        }
-
-        this.x = t.get(0).doubleValue();
-        this.y = t.get(1).doubleValue();
-    }
-
-    /**
-     * Creates a new vector. The required format is "{@code [0.0, 0.0]}".
-     *
-     * @param values The string representation of this vector
-     * @throws NumberFormatException When the format is invalid
-     */
-    public Vector2(@Nonnull String values) {
-        this(ArrayReader.readDoubleArray(values));
     }
 
     //
@@ -546,19 +518,6 @@ public class Vector2 implements Vector<Vector2> {
     /**
      * {@inheritDoc}
      *
-     * @param f   The function of which to apply to each element of this vector
-     * @param <T> {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
-        return Tuple.of(f.apply(x), f.apply(y));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return {@inheritDoc}
@@ -580,19 +539,8 @@ public class Vector2 implements Vector<Vector2> {
      */
     @Nonnull
     @Override
-    public SafeArray<Double> array() {
-        return SafeArray.ofDouble(x, y);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Tuple<Double> tuple() {
-        return Tuple.ofDouble(x, y);
+    public double[] array() {
+        return new double[]{x, y};
     }
 
     /**

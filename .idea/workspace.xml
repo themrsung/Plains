@@ -5,8 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stuff">
-      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vectors.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Unique.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/ArrayVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/ArrayVector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/complex/Complex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Quaternion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/complex/Quaternion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vector1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vector2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vector3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vector4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vectors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/vector/Vectors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayGrid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayTuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/ArrayTuple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/DoubleArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/FastArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Grid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Int4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntTuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/IntTuple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/LongArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Quad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SafeArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SyncArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SyncGrid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Triple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Triple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Tuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/tuple/Tuple.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -52,13 +80,15 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "openjdk-20",
-    "last_opened_file_path": "C:/Users/themr/OneDrive/바탕 화면/Projects/Plains/src/main/java/civitas/celestis/util"
+    "last_opened_file_path": "C:/Users/themr/OneDrive/바탕 화면/Projects/Plains/src/main/java/civitas/celestis/util/tuple"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\util" />
+      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\util\tuple" />
       <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\math" />
+      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\math\vector" />
+      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\util" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="civitas.celestis.util" />
@@ -242,7 +272,23 @@
       <option name="project" value="LOCAL" />
       <updated>1692691550186</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="stuff">
+      <option name="closed" value="true" />
+      <created>1692691811388</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1692691811388</updated>
+    </task>
+    <task id="LOCAL-00017" summary="stuff">
+      <option name="closed" value="true" />
+      <created>1692691948791</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1692691948791</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

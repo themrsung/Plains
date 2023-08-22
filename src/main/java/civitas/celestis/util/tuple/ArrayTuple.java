@@ -1,4 +1,4 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 /**
  * An array-based implementation of a tuple.
@@ -240,8 +241,20 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        return SafeArray.of(elements);
+    @SuppressWarnings("unchecked")
+    public E[] array() {
+        return (E[]) Arrays.stream(elements).toArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Stream<E> stream() {
+        return Arrays.stream(elements);
     }
 
     /**

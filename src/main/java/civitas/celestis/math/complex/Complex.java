@@ -1,14 +1,13 @@
-package civitas.celestis.math;
+package civitas.celestis.math.complex;
 
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
+import civitas.celestis.math.vector.Vector;
+import civitas.celestis.math.vector.Vector2;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -83,23 +82,6 @@ public class Complex extends Number implements Comparable<Number> {
     public Complex(@Nonnull Complex c) {
         this.r = c.r;
         this.i = c.i;
-    }
-
-    /**
-     * Creates a new complex number. The first component of the tuple is mapped
-     * to the real part, and the second component of the tuple is mapped to the
-     * imaginary part.
-     *
-     * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 2}
-     */
-    public Complex(@Nonnull Tuple<? extends Number> t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's size is not 2.");
-        }
-
-        this.r = t.get(0).doubleValue();
-        this.i = t.get(0).doubleValue();
     }
 
     /**
@@ -378,12 +360,12 @@ public class Complex extends Number implements Comparable<Number> {
      * @return A tuple containing the two square roots of this complex number
      */
     @Nonnull
-    public Tuple<Double> sqrt() {
+    public double[] sqrt() {
         final double magnitude = Math.sqrt(r * r + i * i);
-        return Tuple.of(
+        return new double[]{
                 Math.sqrt((magnitude + r) / 2),
                 Math.sqrt((magnitude - r) / 2) * Math.signum(i)
-        );
+        };
     }
 
     //
@@ -451,21 +433,6 @@ public class Complex extends Number implements Comparable<Number> {
     @Nonnull
     public Complex map(@Nonnull UnaryOperator<Double> f) {
         return new Complex(f.apply(r), f.apply(i));
-    }
-
-    /**
-     * Applies the provided mapper function {@code f} to each component of this complex number,
-     * then returns a tuple containing the resulting elements. This operation does not preserve
-     * the type bounds of {@link Double}, and thus requires conversion into tuple form in
-     * order to work properly.
-     *
-     * @param f   The function of which to apply to each component of this complex number
-     * @param <T> The type of element to map the components to
-     * @return A tuple containing the resulting values in real-imaginary order
-     */
-    @Nonnull
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, T> f) {
-        return Tuple.of(f.apply(r), f.apply(i));
     }
 
     /**
@@ -544,18 +511,8 @@ public class Complex extends Number implements Comparable<Number> {
      * @return An array containing the components of this complex number in real-imaginary order
      */
     @Nonnull
-    public SafeArray<Double> array() {
-        return SafeArray.of(r, i);
-    }
-
-    /**
-     * Returns a tuple whose components are populated with that of this number's components.
-     *
-     * @return A tuple containing the components of this complex number in real-imaginary order
-     */
-    @Nonnull
-    public Tuple<Double> tuple() {
-        return Tuple.of(r, i);
+    public double[] array() {
+        return new double[]{r, i};
     }
 
     /**

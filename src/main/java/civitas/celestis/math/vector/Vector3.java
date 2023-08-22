@@ -1,15 +1,13 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
-import civitas.celestis.util.ArrayReader;
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
+import civitas.celestis.math.Scalars;
+import civitas.celestis.math.complex.Quaternion;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -111,32 +109,6 @@ public class Vector3 implements Vector<Vector3> {
         this.x = v.get(0);
         this.y = v.get(1);
         this.z = v.get(2);
-    }
-
-    /**
-     * Creates a new vector.
-     *
-     * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 3}
-     */
-    public Vector3(@Nonnull Tuple<? extends Number> t) {
-        if (t.size() != 3) {
-            throw new IllegalArgumentException("The provided tuple's size is not 3.");
-        }
-
-        this.x = t.get(0).doubleValue();
-        this.y = t.get(1).doubleValue();
-        this.z = t.get(2).doubleValue();
-    }
-
-    /**
-     * Creates a new vector. The required format is "{@code [0.0, 0.0, 0.0]}".
-     *
-     * @param values The string representation of this vector
-     * @throws NumberFormatException When the format is invalid
-     */
-    public Vector3(@Nonnull String values) {
-        this(ArrayReader.readDoubleArray(values));
     }
 
     //
@@ -584,19 +556,6 @@ public class Vector3 implements Vector<Vector3> {
     /**
      * {@inheritDoc}
      *
-     * @param f   The function of which to apply to each element of this vector
-     * @param <T> {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
-        return Tuple.of(f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return {@inheritDoc}
@@ -618,19 +577,8 @@ public class Vector3 implements Vector<Vector3> {
      */
     @Nonnull
     @Override
-    public SafeArray<Double> array() {
-        return SafeArray.ofDouble(x, y, z);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Tuple<Double> tuple() {
-        return Tuple.ofDouble(x, y, z);
+    public double[] array() {
+        return new double[]{x, y, z};
     }
 
     /**

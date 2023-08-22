@@ -1,6 +1,6 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
-import civitas.celestis.math.Vector;
+import civitas.celestis.math.vector.Vector;
 import jakarta.annotation.Nonnull;
 
 /**

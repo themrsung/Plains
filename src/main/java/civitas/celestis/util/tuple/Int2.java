@@ -1,11 +1,12 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import civitas.celestis.math.Scalars;
-import civitas.celestis.math.Vector2;
+import civitas.celestis.math.vector.Vector2;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * A fixed-size integer-typed tuple which can only hold two components.
@@ -75,16 +77,6 @@ public class Int2 implements IntTuple<Int2> {
 
         this.a = t.get(0).intValue();
         this.b = t.get(1).intValue();
-    }
-
-    /**
-     * Creates a new pair. The required format is "{@code [0, 0]}".
-     *
-     * @param values The string representation of this pair
-     * @throws NumberFormatException When the format is invalid
-     */
-    public Int2(@Nonnull String values) {
-        this(ArrayReader.readIntArray(values));
     }
 
     //
@@ -501,8 +493,19 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Nonnull
     @Override
-    public SafeArray<Integer> array() {
-        return SafeArray.ofInt(a, b);
+    public Integer[] array() {
+        return new Integer[]{a, b};
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Stream<Integer> stream() {
+        return Arrays.stream(array());
     }
 
     /**

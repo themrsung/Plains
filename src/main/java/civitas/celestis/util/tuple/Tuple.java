@@ -1,4 +1,4 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -7,6 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 /**
  * An immutable set of elements. Tuples have a fixed size, and are shallowly immutable,
@@ -214,7 +215,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Nonnull
     @SuppressWarnings("unchecked")
     default Tuple<E> filter(@Nonnull Predicate<? super E> f) {
-        return of((E[]) array().stream().filter(f).toArray());
+        return of((E[]) stream().filter(f).toArray());
     }
 
     //
@@ -287,7 +288,15 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The array representation of this tuple
      */
     @Nonnull
-    SafeArray<E> array();
+    E[] array();
+
+    /**
+     * Returns a stream whose source is the elements of this tuple.
+     *
+     * @return A stream of this tuple's elements
+     */
+    @Nonnull
+    Stream<E> stream();
 
     /**
      * Converts this tuple into an unmodifiable list, then returns the converted list.
@@ -456,8 +465,18 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          */
         @Nonnull
         @Override
-        public SafeArray<E> array() {
-            return SafeArray.of(); // An empty array
+        @SuppressWarnings("unchecked")
+        public E[] array() {
+            return (E[]) new Object[0];
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Stream<E> stream() {
+            return Arrays.stream(array());
         }
 
         /**
@@ -616,8 +635,18 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
          */
         @Nonnull
         @Override
-        public SafeArray<E> array() {
-            return SafeArray.of(element);
+        @SuppressWarnings("unchecked")
+        public E[] array() {
+            return (E[]) new Object[]{element};
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public Stream<E> stream() {
+            return Arrays.stream(array());
         }
 
         /**

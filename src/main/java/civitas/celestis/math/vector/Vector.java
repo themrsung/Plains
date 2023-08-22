@@ -1,6 +1,5 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
-import civitas.celestis.util.*;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -9,7 +8,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -47,35 +45,6 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     }
 
     /**
-     * Creates a new vector from the provided tuple of numbers.
-     *
-     * @param t The tuple of which to copy component values from
-     * @return A new vector instance created from the components of the tuple
-     */
-    @Nonnull
-    static Vector<?> copyOf(@Nonnull Tuple<? extends Number> t) {
-        return switch (t.size()) {
-            case 0 -> Vector0.ZERO;
-            case 1 -> new Vector1(t);
-            case 2 -> new Vector2(t);
-            case 3 -> new Vector3(t);
-            case 4 -> new Vector4(t);
-            default -> new ArrayVector(t);
-        };
-    }
-
-    /**
-     * Creates a new vector from the provided array of numbers.
-     *
-     * @param a The array of which to copy component values from
-     * @return A new vector instance created from the components of the array
-     */
-    @Nonnull
-    static Vector<?> copyOf(@Nonnull SafeArray<? extends Number> a) {
-        return of(a.stream().mapToDouble(Number::doubleValue).toArray());
-    }
-
-    /**
      * Creates a new vector from the provided collection of numbers.
      *
      * @param c The collection of which to copy component values from
@@ -84,54 +53,6 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     @Nonnull
     static Vector<?> copyOf(@Nonnull Collection<? extends Number> c) {
         return of(c.stream().mapToDouble(Number::doubleValue).toArray());
-    }
-
-    //
-    // Utilities
-    //
-
-    /**
-     * Converts a vector into an integer-typed tuple.
-     *
-     * @param v The vector of which to convert
-     * @return An integer tuple representing the values of the provided vector {@code v}
-     */
-    @Nonnull
-    static Tuple<Integer> toIntTuple(@Nonnull Vector<?> v) {
-        return v.mapToTuple(Double::intValue);
-    }
-
-    /**
-     * Converts a vector into an integer-typed tuple.
-     *
-     * @param v The vector of which to convert
-     * @return An integer tuple representing the values of the provided vector {@code v}
-     */
-    @Nonnull
-    static Int2 toIntTuple(@Nonnull Vector2 v) {
-        return new Int2((int) v.x, (int) v.y);
-    }
-
-    /**
-     * Converts a vector into an integer-typed tuple.
-     *
-     * @param v The vector of which to convert
-     * @return An integer tuple representing the values of the provided vector {@code v}
-     */
-    @Nonnull
-    static Int3 toIntTuple(@Nonnull Vector3 v) {
-        return new Int3((int) v.x, (int) v.y, (int) v.z);
-    }
-
-    /**
-     * Converts a vector into an integer-typed tuple.
-     *
-     * @param v The vector of which to convert
-     * @return An integer tuple representing the values of the provided vector {@code v}
-     */
-    @Nonnull
-    static Int4 toIntTuple(@Nonnull Vector4 v) {
-        return new Int4((int) v.w, (int) v.x, (int) v.y, (int) v.z);
     }
 
     //
@@ -427,20 +348,6 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     V map(@Nonnull UnaryOperator<Double> f);
 
     /**
-     * Applies the provided mapper function {@code f} to each element of this vector,
-     * then returns a new tuple containing the resulting elements. This operation
-     * does not preserve the type bounds of {@link Double}, and thus requires conversion
-     * into tuple form in order to work properly.
-     *
-     * @param f   The function of which to apply to each element of this vector
-     * @param <T> The type of element to map this vector to (does not require that it
-     *            is a numeric type)
-     * @return A tuple containing the resulting values in the proper order
-     */
-    @Nonnull
-    <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f);
-
-    /**
      * Between this vector and the provided vector {@code v}, this applies the merger function
      * {@code f} to each corresponding pair of components, then returns a new vector containing
      * the resulting components.
@@ -460,19 +367,9 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * Returns an array representing the components of this vector.
      *
      * @return The array representation of this vector
-     * @see SafeArray
      */
     @Nonnull
-    SafeArray<Double> array();
-
-    /**
-     * Converts this vector into a tuple, then returns the converted tuple.
-     *
-     * @return The tuple representation of this vector
-     * @see Tuple
-     */
-    @Nonnull
-    Tuple<Double> tuple();
+    double[] array();
 
     /**
      * Converts this vector into an unmodifiable list, then returns the converted list.
@@ -796,15 +693,6 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
-        public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
-            return Tuple.of();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Nonnull
-        @Override
         public Vector0 merge(@Nonnull Vector0 v, @Nonnull BinaryOperator<Double> f) {
             return this;
         }
@@ -814,17 +702,8 @@ public interface Vector<V extends Vector<V>> extends Serializable {
          */
         @Nonnull
         @Override
-        public SafeArray<Double> array() {
-            return SafeArray.ofDouble();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Nonnull
-        @Override
-        public Tuple<Double> tuple() {
-            return Tuple.ofDouble();
+        public double[] array() {
+            return new double[0];
         }
 
         /**

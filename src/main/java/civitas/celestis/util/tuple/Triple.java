@@ -1,9 +1,10 @@
-package civitas.celestis.util;
+package civitas.celestis.util.tuple;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * A fixed-size tuple which can only hold three elements.
@@ -298,8 +300,20 @@ public class Triple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> array() {
-        return SafeArray.of(a, b, c);
+    @SuppressWarnings("unchecked")
+    public E[] array() {
+        return (E[]) new Object[]{a, b, c};
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Stream<E> stream() {
+        return Arrays.stream(array());
     }
 
     /**

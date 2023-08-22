@@ -1,6 +1,9 @@
-package civitas.celestis.math;
+package civitas.celestis.math.complex;
 
-import civitas.celestis.util.Tuple;
+import civitas.celestis.math.Scalars;
+import civitas.celestis.math.vector.Vector;
+import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.math.vector.Vector4;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;
@@ -76,26 +79,6 @@ public class Quaternion extends Vector4 {
      */
     public Quaternion(@Nonnull Vector<?> v) {
         super(v);
-    }
-
-    /**
-     * Creates a new quaternion.
-     *
-     * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the tuple's size is not {@code 4}
-     */
-    public Quaternion(@Nonnull Tuple<? extends Number> t) {
-        super(t);
-    }
-
-    /**
-     * Creates a new quaternion. The required format is "{@code [0.0, 0.0, 0.0, 0.0]}".
-     *
-     * @param values The string representation of this quaternion
-     * @throws NumberFormatException When the format is invalid
-     */
-    public Quaternion(@Nonnull String values) {
-        super(values);
     }
 
     //

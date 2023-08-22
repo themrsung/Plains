@@ -1,8 +1,5 @@
-package civitas.celestis.math;
+package civitas.celestis.math.vector;
 
-import civitas.celestis.util.ArrayReader;
-import civitas.celestis.util.SafeArray;
-import civitas.celestis.util.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -10,7 +7,6 @@ import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -59,25 +55,6 @@ public class ArrayVector implements Vector<ArrayVector> {
         for (int i = 0; i < v.dimensions(); i++) {
             components[i] = v.get(i);
         }
-    }
-
-    /**
-     * Creates a new vector.
-     *
-     * @param t The tuple of which to copy component values from
-     */
-    public ArrayVector(@Nonnull Tuple<? extends Number> t) {
-        this.components = t.array().stream().mapToDouble(Number::doubleValue).toArray();
-    }
-
-    /**
-     * Creates a new vector. The required format is "{@code [0.0, 0.0, 0.0...]}".
-     *
-     * @param values The string representation of this vector
-     * @throws NumberFormatException When the format is invalid
-     */
-    public ArrayVector(@Nonnull String values) {
-        this.components = ArrayReader.readDoubleArray(values);
     }
 
     //
@@ -473,20 +450,6 @@ public class ArrayVector implements Vector<ArrayVector> {
     /**
      * {@inheritDoc}
      *
-     * @param f   The function of which to apply to each element of this vector
-     * @param <T> {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Tuple<T> mapToTuple(@Nonnull Function<Double, ? extends T> f) {
-        return Tuple.of((T[]) Arrays.stream(components).mapToObj(f::apply).toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return {@inheritDoc}
@@ -520,19 +483,8 @@ public class ArrayVector implements Vector<ArrayVector> {
      */
     @Nonnull
     @Override
-    public SafeArray<Double> array() {
-        return SafeArray.ofDouble(components);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Tuple<Double> tuple() {
-        return Tuple.ofDouble(components);
+    public double[] array() {
+        return Arrays.stream(components).toArray();
     }
 
     /**
