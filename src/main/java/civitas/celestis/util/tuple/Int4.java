@@ -358,12 +358,12 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public double distance(@Nonnull Int4 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
-        final int dd = l - t.l;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
+        final int dl = l - t.l;
 
-        return Math.sqrt(da * da + db * db + dc * dc + dd * dd);
+        return Math.sqrt(di * di + dj * dj + dk * dk + dl * dl);
     }
 
     /**
@@ -374,12 +374,12 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int distance2(@Nonnull Int4 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
-        final int dd = l - t.l;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
+        final int dl = l - t.l;
 
-        return da * da + db * db + dc * dc + dd * dd;
+        return di * di + dj * dj + dk * dk + dl * dl;
     }
 
     /**
@@ -390,12 +390,12 @@ public class Int4 implements IntTuple<Int4> {
      */
     @Override
     public int distanceManhattan(@Nonnull Int4 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
-        final int dd = l - t.l;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
+        final int dl = l - t.l;
 
-        return Math.abs(da) + Math.abs(db) + Math.abs(dc) + Math.abs(dd);
+        return Math.abs(di) + Math.abs(dj) + Math.abs(dk) + Math.abs(dl);
     }
 
     //

@@ -316,10 +316,10 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public double distance(@Nonnull Int2 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
+        final int di = i - t.i;
+        final int dj = j - t.j;
 
-        return Math.sqrt(da * da + db * db);
+        return Math.sqrt(di * di + dj * dj);
     }
 
     /**
@@ -330,10 +330,10 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public int distance2(@Nonnull Int2 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
+        final int di = i - t.i;
+        final int dj = j - t.j;
 
-        return da * da + db * db;
+        return di * di + dj * dj;
     }
 
     /**
@@ -344,10 +344,10 @@ public class Int2 implements IntTuple<Int2> {
      */
     @Override
     public int distanceManhattan(@Nonnull Int2 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
+        final int di = i - t.i;
+        final int dj = j - t.j;
 
-        return Math.abs(da) + Math.abs(db);
+        return Math.abs(di) + Math.abs(dj);
     }
 
     //

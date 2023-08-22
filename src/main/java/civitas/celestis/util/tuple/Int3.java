@@ -335,11 +335,11 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public double distance(@Nonnull Int3 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
 
-        return Math.sqrt(da * da + db * db + dc * dc);
+        return Math.sqrt(di * di + dj * dj + dk * dk);
     }
 
     /**
@@ -350,11 +350,11 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int distance2(@Nonnull Int3 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
 
-        return da * da + db * db + dc * dc;
+        return di * di + dj * dj + dk * dk;
     }
 
     /**
@@ -365,11 +365,11 @@ public class Int3 implements IntTuple<Int3> {
      */
     @Override
     public int distanceManhattan(@Nonnull Int3 t) {
-        final int da = i - t.i;
-        final int db = j - t.j;
-        final int dc = k - t.k;
+        final int di = i - t.i;
+        final int dj = j - t.j;
+        final int dk = k - t.k;
 
-        return Math.abs(da) + Math.abs(db) + Math.abs(dc);
+        return Math.abs(di) + Math.abs(dj) + Math.abs(dk);
     }
 
     //
