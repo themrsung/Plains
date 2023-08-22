@@ -69,6 +69,15 @@ public class ArrayVector implements Vector<ArrayVector> {
         this.components = t.stream().mapToDouble(Number::doubleValue).toArray();
     }
 
+    /**
+     * Creates a new vector.
+     *
+     * @param a The array of which to copy component values from
+     */
+    public ArrayVector(@Nonnull SafeArray<? extends Number> a) {
+        this.components = a.stream().mapToDouble(Number::doubleValue).toArray();
+    }
+
     //
     // Variables
     //

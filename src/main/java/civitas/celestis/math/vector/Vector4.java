@@ -144,6 +144,23 @@ public class Vector4 implements Vector<Vector4> {
         this.z = t.get(2).doubleValue();
     }
 
+    /**
+     * Creates a new vector.
+     *
+     * @param a The array of which to copy component values from
+     * @throws IllegalArgumentException When the provided array {@code a}'s length is not {@code 4}
+     */
+    public Vector4(@Nonnull SafeArray<? extends Number> a) {
+        if (a.length() != 4) {
+            throw new IllegalArgumentException("The provided array's length is not 4.");
+        }
+
+        this.w = a.get(0).doubleValue();
+        this.x = a.get(1).doubleValue();
+        this.y = a.get(2).doubleValue();
+        this.z = a.get(3).doubleValue();
+    }
+
     //
     // Variables
     //

@@ -3,7 +3,7 @@ package civitas.celestis.math.complex;
 import civitas.celestis.math.Scalars;
 import civitas.celestis.math.matrix.Matrix;
 import civitas.celestis.math.vector.Vector3;
-import civitas.celestis.util.tuple.Pair;
+import civitas.celestis.math.vector.Vector4;
 import jakarta.annotation.Nonnull;
 
 /**
@@ -17,6 +17,32 @@ public final class Quaternions {
     //
     //
     //
+
+    /**
+     * Creates a new rotation quaternion from Euler angle representation. This method
+     * uses the right-handed coordinate system.
+     *
+     * @param pitch The pitch of the rotation in radians (rotation along X axis)
+     * @param yaw   The yaw of the rotation in radians (rotation along Y axis)
+     * @param roll  The roll of the rotation in radians (rotation along Z axis)
+     * @return The constructed quaternion
+     */
+    @Nonnull
+    public static Quaternion quaternion(double pitch, double yaw, double roll) {
+        final double cy = Math.cos(yaw * 0.5);
+        final double sy = Math.sin(yaw * 0.5);
+        final double cr = Math.cos(roll * 0.5);
+        final double sr = Math.sin(roll * 0.5);
+        final double cp = Math.cos(pitch * 0.5);
+        final double sp = Math.sin(pitch * 0.5);
+
+        final double w = cy * cr * cp + sy * sr * sp;
+        final double x = cy * sr * cp - sy * cr * sp;
+        final double y = cy * cr * sp + sy * sr * cp;
+        final double z = sy * cr * cp - cy * sr * sp;
+
+        return new Quaternion(w, x, y, z);
+    }
 
     /**
      * Given a rotation quaternion {@code q}, this returns the pitch of the rotation.
@@ -66,15 +92,61 @@ public final class Quaternions {
     //
 
     /**
+     * Creates a new rotation quaternion from an axis/angle notation. This method uses
+     * the right-handed coordinate system.
+     *
+     * @param axisAngle The axis/angle representation of the rotation
+     * @return The constructed quaternion
+     */
+    @Nonnull
+    public static Quaternion quaternion(@Nonnull Vector4 axisAngle) {
+        return quaternion(new Vector3(axisAngle.x(), axisAngle.y(), axisAngle.z()), axisAngle.w());
+    }
+
+    /**
+     * Creates a new rotation quaternion from an axis/angle notation. This method uses
+     * the right-handed coordinate system.
+     *
+     * @param axis  The axis of rotation as a unit vector
+     * @param angle The angle of rotation in radians
+     * @return The constructed quaternion
+     */
+    @Nonnull
+    public static Quaternion quaternion(@Nonnull Vector3 axis, double angle) {
+        final double halfAngle = angle * 0.5;
+        final double sinHalfAngle = Math.sin(halfAngle);
+
+        final double w = Math.cos(halfAngle);
+        final double x = axis.x() * sinHalfAngle;
+        final double y = axis.y() * sinHalfAngle;
+        final double z = axis.z() * sinHalfAngle;
+
+        return new Quaternion(w, x, y, z);
+    }
+
+    /**
      * Given a rotation quaternion {@code q}, this returns an axis/angle pair denoting
      * the rotation of the quaternion. Axis/angle notation follows the right-handed coordinate system.
+     * The W component represents the angle of rotation in radians, and the XYZ components
+     * represent the axis of rotation.
      *
      * @param q The quaternion of which to convert to axis/angle notation
      * @return The axis/angle representation of the quaternion
      */
     @Nonnull
-    public static Pair.BiPair<Vector3, Double> axisAngle(@Nonnull Quaternion q) {
-        return Pair.of(axis(q), angle(q));
+    public static Vector4 axisAngle(@Nonnull Quaternion q) {
+        final double magnitude = q.norm();
+        if (magnitude < Scalars.EPSILON) {
+            // Angle: 0, Axis: positive Y
+            return new Vector4(0, 0, 1, 0);
+        }
+
+        final double w = Math.acos(q.w());
+        final double x = q.x() / magnitude;
+        final double y = q.y() / magnitude;
+        final double z = q.z() / magnitude;
+
+        return new Vector4(w, x, y, z);
     }
 
     /**
@@ -112,6 +184,51 @@ public final class Quaternions {
     //
     //
     //
+
+    /**
+     * Creates a new quaternion from a 3x3 rotation matrix.
+     *
+     * @param m The rotation matrix which represents the rotation
+     * @return The constructed quaternion
+     * @throws IllegalArgumentException When the matrix's dimensions is not 3x3
+     */
+    @Nonnull
+    public static Quaternion quaternion(@Nonnull Matrix m) throws IllegalArgumentException {
+        if (m.rows() != 3 || m.columns() != 3) {
+            throw new IllegalArgumentException("Only a 3x3 matrix can be converted into a quaternion.");
+        }
+
+        final double trace = m.get(0, 0) + m.get(1, 1) + m.get(2, 2);
+        final double w, x, y, z;
+
+        if (trace > 0) {
+            final double S = 0.5 / Math.sqrt(trace + 1.0);
+            w = 0.25 / S;
+            x = (m.get(2, 1) - m.get(1, 2)) * S;
+            y = (m.get(0, 2) - m.get(2, 0)) * S;
+            z = (m.get(1, 0) - m.get(0, 1)) * S;
+        } else if (m.get(0, 0) > m.get(1, 1) && m.get(0, 0) > m.get(2, 2)) {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(0, 0) - m.get(1, 1) - m.get(2, 2));
+            w = (m.get(2, 1) - m.get(1, 2)) / S;
+            x = 0.25 * S;
+            y = (m.get(0, 1) + m.get(1, 0)) / S;
+            z = (m.get(0, 2) + m.get(2, 0)) / S;
+        } else if (m.get(1, 1) > m.get(2, 2)) {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(1, 1) - m.get(0, 0) - m.get(2, 2));
+            w = (m.get(0, 2) - m.get(2, 0)) / S;
+            x = (m.get(0, 1) + m.get(1, 0)) / S;
+            y = 0.25 * S;
+            z = (m.get(1, 2) + m.get(2, 1)) / S;
+        } else {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(2, 2) - m.get(0, 0) - m.get(1, 1));
+            w = (m.get(1, 0) - m.get(0, 1)) / S;
+            x = (m.get(0, 2) + m.get(2, 0)) / S;
+            y = (m.get(1, 2) + m.get(2, 1)) / S;
+            z = 0.25 * S;
+        }
+
+        return new Quaternion(w, x, y, z);
+    }
 
     /**
      * Given a rotation quaternion {@code q}, this converts the rotation into a 3x3 rotation matrix.

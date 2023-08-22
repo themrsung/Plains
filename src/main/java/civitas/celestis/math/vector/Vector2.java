@@ -114,6 +114,21 @@ public class Vector2 implements Vector<Vector2> {
         this.y = t.get(1).doubleValue();
     }
 
+    /**
+     * Creates a new vector.
+     *
+     * @param a The array of which to copy component values from
+     * @throws IllegalArgumentException When the provided array {@code a}'s length is not {@code 2}
+     */
+    public Vector2(@Nonnull SafeArray<? extends Number> a) {
+        if (a.length() != 2) {
+            throw new IllegalArgumentException("The provided array's length is not 2.");
+        }
+
+        this.x = a.get(0).doubleValue();
+        this.y = a.get(1).doubleValue();
+    }
+
     //
     // Variables
     //

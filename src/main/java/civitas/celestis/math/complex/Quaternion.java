@@ -4,6 +4,7 @@ import civitas.celestis.math.Scalars;
 import civitas.celestis.math.vector.Vector;
 import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.math.vector.Vector4;
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
@@ -90,6 +91,16 @@ public class Quaternion extends Vector4 {
      */
     public Quaternion(@Nonnull Tuple<? extends Number> t) {
         super(t);
+    }
+
+    /**
+     * Creates a new quaternion.
+     *
+     * @param a The array of which to copy component values from
+     * @throws IllegalArgumentException When the provided array {@code a}'s length is not {@code 4}
+     */
+    public Quaternion(@Nonnull SafeArray<? extends Number> a) {
+        super(a);
     }
 
     //

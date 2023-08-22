@@ -130,6 +130,22 @@ public class Vector3 implements Vector<Vector3> {
         this.z = t.get(2).doubleValue();
     }
 
+    /**
+     * Creates a new vector.
+     *
+     * @param a The array of which to copy component values from
+     * @throws IllegalArgumentException When the provided array {@code a}'s length is not {@code 3}
+     */
+    public Vector3(@Nonnull SafeArray<? extends Number> a) {
+        if (a.length() != 3) {
+            throw new IllegalArgumentException("The provided array's length is not 3.");
+        }
+
+        this.x = a.get(0).doubleValue();
+        this.y = a.get(1).doubleValue();
+        this.z = a.get(2).doubleValue();
+    }
+
     //
     // Variables
     //

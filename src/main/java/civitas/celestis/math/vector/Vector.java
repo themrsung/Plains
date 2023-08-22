@@ -123,7 +123,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * Creates a new vector from the provided tuple of numbers.
      *
      * @param t The tuple of which to copy component values from
-     * @return A new vector instance creates from the components of the tuple
+     * @return A new vector instance created from the components of the tuple
      */
     @Nonnull
     static Vector<?> copyOf(@Nonnull Tuple<? extends Number> t) {
@@ -134,6 +134,24 @@ public interface Vector<V extends Vector<V>> extends Serializable {
             case 3 -> new Vector3(t);
             case 4 -> new Vector4(t);
             default -> new ArrayVector(t);
+        };
+    }
+
+    /**
+     * Creates a new vector from the provided array of numbers.
+     *
+     * @param a The array of which to copy component values from
+     * @return A new vector instance created from the elements of the array
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull SafeArray<? extends Number> a) {
+        return switch (a.length()) {
+            case 0 -> of();
+            case 1 -> new Vector1(a);
+            case 2 -> new Vector2(a);
+            case 3 -> new Vector3(a);
+            case 4 -> new Vector4(a);
+            default -> new ArrayVector(a);
         };
     }
 
