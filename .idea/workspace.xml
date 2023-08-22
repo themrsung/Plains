@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="stf">
+    <list default="true" id="5fca7d07-3d0f-43f3-af5a-4a5e8f7ff7df" name="Changes" comment="trinity">
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/ArrayVector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Complex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Quaternion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Scalars.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/math/Vector4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/ArrayTuple.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/DoubleArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/FastArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Int4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/IntTuple.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/LongArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Pair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Quad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SafeArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/SyncArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Triple.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/civitas/celestis/util/Tuple.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +41,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -49,10 +75,22 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "jdk.selected.JAVA_MODULE": "openjdk-20",
+    "last_opened_file_path": "C:/Users/themr/OneDrive/바탕 화면/Projects/Plains/src/main/java/civitas/celestis/util"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.GroupTesting">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\util" />
+      <recent name="C:\Users\themr\OneDrive\바탕 화면\Projects\Plains\src\main\java\civitas\celestis\math" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="civitas.celestis.util" />
+      <recent name="civitas.celestis.math" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Test">
     <configuration name="GraphicsTesting" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="civitas.celestis.GraphicsTesting" />
       <module name="Plains" />
@@ -79,8 +117,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="civitas.celestis.Test" />
+      <module name="Plains" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="civitas.celestis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Test" />
         <item itemvalue="Application.GroupTesting" />
         <item itemvalue="Application.GraphicsTesting" />
       </list>
@@ -199,13 +251,22 @@
       <option name="project" value="LOCAL" />
       <updated>1692656448824</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="trinity">
+      <option name="closed" value="true" />
+      <created>1692690955770</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1692690955770</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="tensoids" />
     <MESSAGE value="stf" />
-    <option name="LAST_COMMIT_MESSAGE" value="stf" />
+    <MESSAGE value="trinity" />
+    <option name="LAST_COMMIT_MESSAGE" value="trinity" />
   </component>
 </project>
