@@ -389,6 +389,18 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
+     * then returns a new tuple containing the resulting elements.
+     *
+     * @param f   The mapper function of which to apply to each element of this array
+     * @param <F> The type of element to map this array to
+     * @return The resulting tuple
+     * @see Tuple
+     */
+    @Nonnull
+    <F> Tuple<F> mapToTuple(@Nonnull Function<? super E, ? extends F> f);
+
+    /**
+     * Applies the provided mapper function {@code f} to each element of this array,
      * then returns a new collection containing the resulting elements.
      *
      * @param f   The mapper function of which to apply to each element of this array

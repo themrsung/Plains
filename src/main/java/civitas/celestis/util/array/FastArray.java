@@ -441,6 +441,20 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
      */
     @Nonnull
     @Override
+    @SuppressWarnings("unchecked")
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<? super E, ? extends F> f) {
+        return Tuple.of((F[]) Arrays.stream(elements).map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The mapper function of which to apply to each element of this array
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
         return Arrays.stream(elements).map(f).collect(Collectors.toList());
     }

@@ -436,6 +436,7 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      * @param f   The function of which to apply to each element of this vector
      * @param <F> The type of element to map this vector to
      * @return The resulting vector
+     * @see Tuple
      */
     @Nonnull
     <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f);

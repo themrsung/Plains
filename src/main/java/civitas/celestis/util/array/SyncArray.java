@@ -356,6 +356,19 @@ public class SyncArray<E> extends FastArray<E> {
      */
     @Nonnull
     @Override
+    public synchronized <F> Tuple<F> mapToTuple(@Nonnull Function<? super E, ? extends F> f) {
+        return super.mapToTuple(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The mapper function of which to apply to each element of this array
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public synchronized <F> Collection<F> mapToCollection(@Nonnull Function<? super E, ? extends F> f) {
         return super.mapToCollection(f);
     }

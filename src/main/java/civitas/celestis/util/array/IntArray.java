@@ -436,6 +436,20 @@ public class IntArray implements SafeArray<Integer> {
      */
     @Nonnull
     @Override
+    @SuppressWarnings("unchecked")
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<? super Integer, ? extends F> f) {
+        return Tuple.of((F[]) Arrays.stream(elements).boxed().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The mapper function of which to apply to each element of this array
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public <F> Collection<F> mapToCollection(@Nonnull Function<? super Integer, ? extends F> f) {
         return Arrays.stream(elements).boxed().map(f).collect(Collectors.toList());
     }
