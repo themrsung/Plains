@@ -1,12 +1,14 @@
 package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -53,6 +55,20 @@ public class Vector1 implements Vector<Vector1> {
     /**
      * Creates a new vector.
      *
+     * @param components A singular array containing the component of this vector
+     * @throws IllegalArgumentException When the arrays' length is not {@code 1}
+     */
+    public Vector1(@Nonnull double[] components) {
+        if (components.length != 1) {
+            throw new IllegalArgumentException("The provided array's length is not 1.");
+        }
+
+        this.x = components[0];
+    }
+
+    /**
+     * Creates a new vector.
+     *
      * @param v The vector of which to copy component values from
      * @throws IllegalArgumentException When the provided vector {@code v} does not have one component
      */
@@ -62,6 +78,20 @@ public class Vector1 implements Vector<Vector1> {
         }
 
         this.x = v.get(0);
+    }
+
+    /**
+     * Creates a new vector.
+     *
+     * @param t The tuple of which to copy component values from
+     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 1}
+     */
+    public Vector1(@Nonnull Tuple<? extends Number> t) {
+        if (t.size() != 1) {
+            throw new IllegalArgumentException("The provided tuple's size is not 1.");
+        }
+
+        this.x = t.get(0).doubleValue();
     }
 
     //
@@ -433,6 +463,19 @@ public class Vector1 implements Vector<Vector1> {
     @Override
     public Vector1 map(@Nonnull UnaryOperator<Double> f) {
         return new Vector1(f.apply(x));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The function of which to apply to each element of this vector
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f) {
+        return Tuple.of(f.apply(x));
     }
 
     /**

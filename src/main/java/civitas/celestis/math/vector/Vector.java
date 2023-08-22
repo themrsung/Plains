@@ -1,5 +1,6 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -36,12 +38,73 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     static Vector<?> of(@Nonnull double... components) {
         return switch (components.length) {
             case 0 -> Vector0.ZERO;
-            case 1 -> new Vector1(components[0]);
+            case 1 -> new Vector1(components);
             case 2 -> new Vector2(components);
             case 3 -> new Vector3(components);
             case 4 -> new Vector4(components);
             default -> new ArrayVector(components);
         };
+    }
+
+    /**
+     * Returns an empty vector with zero dimensions. Since the same instance is reused
+     * to conserve memory, this will always return the same instance.
+     *
+     * @return The {@link Vector0#ZERO} instance
+     */
+    @Nonnull
+    static Vector0 of() {
+        return Vector0.ZERO;
+    }
+
+    /**
+     * Creates a new vector from the provided X components.
+     *
+     * @param x The X (first and only) component of the vector
+     * @return A new vector instance created from the provided components
+     */
+    @Nonnull
+    static Vector1 of(double x) {
+        return new Vector1(x);
+    }
+
+    /**
+     * Creates a new vector from the provided XY components.
+     *
+     * @param x The X component of the vector
+     * @param y The Y component of the vector
+     * @return A new vector instance created from the provided components
+     */
+    @Nonnull
+    static Vector2 of(double x, double y) {
+        return new Vector2(x, y);
+    }
+
+    /**
+     * Creates a new vector from the provided XYZ components.
+     *
+     * @param x The X component of the vector
+     * @param y The Y component of the vector
+     * @param z The Z component of the vector
+     * @return A new vector instance created from the provided components
+     */
+    @Nonnull
+    static Vector3 of(double x, double y, double z) {
+        return new Vector3(x, y, z);
+    }
+
+    /**
+     * Creates a new vector from the provided WXYZ components.
+     *
+     * @param w The W component of the vector
+     * @param x The X component of the vector
+     * @param y The Y component of the vector
+     * @param z The Z component of the vector
+     * @return A new vector instance created from the provided components
+     */
+    @Nonnull
+    static Vector4 of(double w, double x, double y, double z) {
+        return new Vector4(w, x, y, z);
     }
 
     /**
@@ -53,6 +116,24 @@ public interface Vector<V extends Vector<V>> extends Serializable {
     @Nonnull
     static Vector<?> copyOf(@Nonnull Collection<? extends Number> c) {
         return of(c.stream().mapToDouble(Number::doubleValue).toArray());
+    }
+
+    /**
+     * Creates a new vector from the provided tuple of numbers.
+     *
+     * @param t The tuple of which to copy component values from
+     * @return A new vector instance creates from the components of the tuple
+     */
+    @Nonnull
+    static Vector<?> copyOf(@Nonnull Tuple<? extends Number> t) {
+        return switch (t.size()) {
+            case 0 -> of();
+            case 1 -> new Vector1(t);
+            case 2 -> new Vector2(t);
+            case 3 -> new Vector3(t);
+            case 4 -> new Vector4(t);
+            default -> new ArrayVector(t);
+        };
     }
 
     //
@@ -346,6 +427,17 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      */
     @Nonnull
     V map(@Nonnull UnaryOperator<Double> f);
+
+    /**
+     * Applies the provided function {@code f} to each component of this vector,
+     * then returns a new tuple instance containing the resulting elements.
+     *
+     * @param f   The function of which to apply to each element of this vector
+     * @param <F> The type of element to map this vector to
+     * @return The resulting vector
+     */
+    @Nonnull
+    <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f);
 
     /**
      * Between this vector and the provided vector {@code v}, this applies the merger function
@@ -686,6 +778,15 @@ public interface Vector<V extends Vector<V>> extends Serializable {
         @Override
         public Vector0 map(@Nonnull UnaryOperator<Double> f) {
             return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Nonnull
+        @Override
+        public <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f) {
+            return Tuple.of();
         }
 
         /**

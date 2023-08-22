@@ -1,5 +1,6 @@
 package civitas.celestis.math.vector;
 
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -7,6 +8,7 @@ import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -55,6 +57,15 @@ public class ArrayVector implements Vector<ArrayVector> {
         for (int i = 0; i < v.dimensions(); i++) {
             components[i] = v.get(i);
         }
+    }
+
+    /**
+     * Creates a new vector.
+     *
+     * @param t The tuple of which to copy component values from
+     */
+    public ArrayVector(@Nonnull Tuple<? extends Number> t) {
+        this.components = t.stream().mapToDouble(Number::doubleValue).toArray();
     }
 
     //
@@ -445,6 +456,20 @@ public class ArrayVector implements Vector<ArrayVector> {
     @Override
     public ArrayVector map(@Nonnull UnaryOperator<Double> f) {
         return new ArrayVector(Arrays.stream(components).map(f::apply).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The function of which to apply to each element of this vector
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f) {
+        return Tuple.of((F[]) Arrays.stream(components).boxed().map(f).toArray());
     }
 
     /**

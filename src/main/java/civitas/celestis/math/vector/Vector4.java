@@ -1,12 +1,14 @@
 package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -122,6 +124,23 @@ public class Vector4 implements Vector<Vector4> {
         this.x = v.get(1);
         this.y = v.get(2);
         this.z = v.get(3);
+    }
+
+    /**
+     * Creates a new vector.
+     *
+     * @param t The tuple of which to copy component values from
+     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 4}
+     */
+    public Vector4(@Nonnull Tuple<? extends Number> t) {
+        if (t.size() != 4) {
+            throw new IllegalArgumentException("The provided tuple's size is not 4.");
+        }
+
+        this.w = t.get(0).doubleValue();
+        this.x = t.get(1).doubleValue();
+        this.y = t.get(2).doubleValue();
+        this.z = t.get(2).doubleValue();
     }
 
     //
@@ -567,6 +586,19 @@ public class Vector4 implements Vector<Vector4> {
     @Override
     public Vector4 map(@Nonnull UnaryOperator<Double> f) {
         return new Vector4(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f   The function of which to apply to each element of this vector
+     * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public <F> Tuple<F> mapToTuple(@Nonnull Function<Double, ? extends F> f) {
+        return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 
     /**
