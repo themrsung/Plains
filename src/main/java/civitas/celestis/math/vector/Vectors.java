@@ -8,8 +8,6 @@ import jakarta.annotation.Nonnull;
  * Contains mathematical utilities related to vectors.
  */
 public final class Vectors {
-
-
     //
     //
     //
@@ -274,7 +272,7 @@ public final class Vectors {
     public static Vector1 sum(@Nonnull Vector1... values) {
         double x = 0;
         for (final Vector1 value : values) {
-            x += value.x();
+            x += value.x;
         }
         return new Vector1(x);
     }
@@ -301,8 +299,8 @@ public final class Vectors {
     public static Vector2 sum(@Nonnull Vector2... values) {
         double x = 0, y = 0;
         for (final Vector2 value : values) {
-            x += value.x();
-            y += value.y();
+            x += value.x;
+            y += value.y;
         }
         return new Vector2(x, y);
     }
@@ -329,9 +327,9 @@ public final class Vectors {
     public static Vector3 sum(@Nonnull Vector3... values) {
         double x = 0, y = 0, z = 0;
         for (final Vector3 value : values) {
-            x += value.x();
-            y += value.y();
-            z += value.z();
+            x += value.x;
+            y += value.y;
+            z += value.z;
         }
         return new Vector3(x, y, z);
     }
@@ -358,10 +356,10 @@ public final class Vectors {
     public static Vector4 sum(@Nonnull Vector4... values) {
         double w = 0, x = 0, y = 0, z = 0;
         for (final Vector4 value : values) {
-            w += value.w();
-            x += value.x();
-            y += value.y();
-            z += value.z();
+            w += value.w;
+            x += value.x;
+            y += value.y;
+            z += value.z;
         }
         return new Vector4(w, x, y, z);
     }
@@ -530,8 +528,8 @@ public final class Vectors {
      */
     @Nonnull
     public static Vector1 lerp(@Nonnull Vector1 s, @Nonnull Vector1 e, double t) {
-        final double s1 = s.x();
-        final double e1 = e.x();
+        final double s1 = s.x;
+        final double e1 = e.x;
 
         return new Vector1(s1 + (e1 - s1) * t);
     }
@@ -547,10 +545,10 @@ public final class Vectors {
      */
     @Nonnull
     public static Vector2 lerp(@Nonnull Vector2 s, @Nonnull Vector2 e, double t) {
-        final double s1 = s.x();
-        final double e1 = e.x();
-        final double s2 = s.y();
-        final double e2 = e.y();
+        final double s1 = s.x;
+        final double e1 = e.x;
+        final double s2 = s.y;
+        final double e2 = e.y;
 
         return new Vector2(
                 s1 + (e1 - s1) * t,
@@ -568,12 +566,12 @@ public final class Vectors {
      */
     @Nonnull
     public static Vector3 lerp(@Nonnull Vector3 s, @Nonnull Vector3 e, double t) {
-        final double s1 = s.x();
-        final double e1 = e.x();
-        final double s2 = s.y();
-        final double e2 = e.y();
-        final double s3 = s.z();
-        final double e3 = e.z();
+        final double s1 = s.x;
+        final double e1 = e.x;
+        final double s2 = s.y;
+        final double e2 = e.y;
+        final double s3 = s.z;
+        final double e3 = e.z;
 
         return new Vector3(
                 s1 + (e1 - s1) * t,
@@ -592,14 +590,14 @@ public final class Vectors {
      */
     @Nonnull
     public static Vector4 lerp(@Nonnull Vector4 s, @Nonnull Vector4 e, double t) {
-        final double s1 = s.w();
-        final double e1 = e.w();
-        final double s2 = s.x();
-        final double e2 = e.x();
-        final double s3 = s.y();
-        final double e3 = e.y();
-        final double s4 = s.z();
-        final double e4 = e.z();
+        final double s1 = s.w;
+        final double e1 = e.w;
+        final double s2 = s.x;
+        final double e2 = e.x;
+        final double s3 = s.y;
+        final double e3 = e.y;
+        final double s4 = s.z;
+        final double e4 = e.z;
 
         return new Vector4(
                 s1 + (e1 - s1) * t,
@@ -619,14 +617,14 @@ public final class Vectors {
      */
     @Nonnull
     public static Quaternion lerp(@Nonnull Quaternion s, @Nonnull Quaternion e, double t) {
-        final double s1 = s.w();
-        final double e1 = e.w();
-        final double s2 = s.x();
-        final double e2 = e.x();
-        final double s3 = s.y();
-        final double e3 = e.y();
-        final double s4 = s.z();
-        final double e4 = e.z();
+        final double s1 = s.w;
+        final double e1 = e.w;
+        final double s2 = s.x;
+        final double e2 = e.x;
+        final double s3 = s.y;
+        final double e3 = e.y;
+        final double s4 = s.z;
+        final double e4 = e.z;
 
         return new Quaternion(
                 s1 + (e1 - s1) * t,
@@ -725,7 +723,7 @@ public final class Vectors {
         double x = Double.MAX_VALUE;
 
         for (final Vector1 value : values) {
-            x = Math.min(x, value.x());
+            x = Math.min(x, value.x);
         }
 
         return new Vector1(x);
@@ -742,8 +740,8 @@ public final class Vectors {
         double x = Double.MAX_VALUE, y = Double.MAX_VALUE;
 
         for (final Vector2 value : values) {
-            x = Math.min(x, value.x());
-            y = Math.min(y, value.y());
+            x = Math.min(x, value.x);
+            y = Math.min(y, value.y);
         }
 
         return new Vector2(x, y);
@@ -760,9 +758,9 @@ public final class Vectors {
         double x = Double.MAX_VALUE, y = Double.MAX_VALUE, z = Double.MAX_VALUE;
 
         for (final Vector3 value : values) {
-            x = Math.min(x, value.x());
-            y = Math.min(y, value.y());
-            z = Math.min(z, value.z());
+            x = Math.min(x, value.x);
+            y = Math.min(y, value.y);
+            z = Math.min(z, value.z);
         }
 
         return new Vector3(x, y, z);
@@ -779,10 +777,10 @@ public final class Vectors {
         double w = Double.MAX_VALUE, x = Double.MAX_VALUE, y = Double.MAX_VALUE, z = Double.MAX_VALUE;
 
         for (final Vector4 value : values) {
-            w = Math.min(w, value.w());
-            x = Math.min(x, value.x());
-            y = Math.min(y, value.y());
-            z = Math.min(z, value.z());
+            w = Math.min(w, value.w);
+            x = Math.min(x, value.x);
+            y = Math.min(y, value.y);
+            z = Math.min(z, value.z);
         }
 
         return new Vector4(w, x, y, z);
@@ -828,7 +826,7 @@ public final class Vectors {
         double x = -Double.MAX_VALUE;
 
         for (final Vector1 value : values) {
-            x = Math.max(x, value.x());
+            x = Math.max(x, value.x);
         }
 
         return new Vector1(x);
@@ -845,8 +843,8 @@ public final class Vectors {
         double x = -Double.MAX_VALUE, y = -Double.MAX_VALUE;
 
         for (final Vector2 value : values) {
-            x = Math.max(x, value.x());
-            y = Math.max(y, value.y());
+            x = Math.max(x, value.x);
+            y = Math.max(y, value.y);
         }
 
         return new Vector2(x, y);
@@ -863,9 +861,9 @@ public final class Vectors {
         double x = -Double.MAX_VALUE, y = -Double.MAX_VALUE, z = -Double.MAX_VALUE;
 
         for (final Vector3 value : values) {
-            x = Math.max(x, value.x());
-            y = Math.max(y, value.y());
-            z = Math.max(z, value.z());
+            x = Math.max(x, value.x);
+            y = Math.max(y, value.y);
+            z = Math.max(z, value.z);
         }
 
         return new Vector3(x, y, z);
@@ -882,10 +880,10 @@ public final class Vectors {
         double w = -Double.MAX_VALUE, x = -Double.MAX_VALUE, y = -Double.MAX_VALUE, z = -Double.MAX_VALUE;
 
         for (final Vector4 value : values) {
-            w = Math.max(w, value.w());
-            x = Math.max(x, value.x());
-            y = Math.max(y, value.y());
-            z = Math.max(z, value.z());
+            w = Math.max(w, value.w);
+            x = Math.max(x, value.x);
+            y = Math.max(y, value.y);
+            z = Math.max(z, value.z);
         }
 
         return new Vector4(w, x, y, z);
