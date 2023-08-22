@@ -196,7 +196,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void set(int i, E v) throws IndexOutOfBoundsException {
+    public void set(int i, E v) throws IndexOutOfBoundsException {
         references[i].set(v);
     }
 
