@@ -57,6 +57,17 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     }
 
     /**
+     * Vien a
+     * @param elements
+     * @return
+     * @param <N>
+     */
+    @Nonnull
+    static <N extends Number> Grid<Double> ofNumber(@Nonnull N[][] elements) {
+        return NumericGrid.of(elements);
+    }
+
+    /**
      * Given a two-dimensional primitive array of elements, this returns a thread-safe grid
      * constructed from those elements.
      *

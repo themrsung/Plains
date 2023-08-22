@@ -138,7 +138,7 @@ public class Complex extends Number implements Comparable<Number> {
      * @return The parse components in real-imaginary order
      */
     protected static double[] parseComplexNotation(@Nonnull String complexString) {
-        // Remove any leading or trailing spaces
+        // Remove any spaces
         complexString = complexString.replaceAll(" ", "");
 
         // Split the string into real and imaginary parts

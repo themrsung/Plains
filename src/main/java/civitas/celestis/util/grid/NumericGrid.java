@@ -4,6 +4,8 @@ import civitas.celestis.math.matrix.LongGrid;
 import civitas.celestis.math.matrix.Matrix;
 import jakarta.annotation.Nonnull;
 
+import java.util.Arrays;
+
 /**
  * A numerical grid of numbers.
  *
@@ -17,6 +19,30 @@ public interface NumericGrid<N extends Number, M extends NumericGrid<N, M>> exte
     //
     // Factory
     //
+
+    /**
+     * Creates a new matrix from a two-dimensional array of {@link Number}s.
+     * @param values The 2D array of values to map into a matrix
+     * @return A new matrix instance whose components are populated from that of the provided array
+     * @param <N> The type of number to map into a matrix
+     */
+    @Nonnull
+    static <N extends Number> Matrix of(@Nonnull N[][] values) {
+        final int rows = values.length;
+        final int columns = rows > 0 ? values[0].length : 0;
+
+        if (rows == 0 || columns == 0) {
+            return Matrix.of(new double[0][0]);
+        }
+
+        final double[][] unboxed = new double[rows][columns];
+
+        for (int r = 0; r < rows; r++) {
+            unboxed[r] = Arrays.stream(values[r]).mapToDouble(Number::doubleValue).toArray();
+        }
+
+        return of(unboxed);
+    }
 
     /**
      * Creates a new matrix from a two-dimensional array of {@code double}s.

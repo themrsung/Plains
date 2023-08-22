@@ -341,6 +341,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @throws UnsupportedOperationException When the generic type {@code E} does not implement the {@link Comparable}
      *                                       interface, and thus is not sortable by the default comparator
+     * @throws NullPointerException When this array contains at least one element whose value is {@code null}
      * @see Arrays#sort(Object[])
      */
     void sort();
