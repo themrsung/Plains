@@ -16,29 +16,14 @@ import java.util.function.*;
 /**
  * A two-dimensional structure of objects.
  * Grids can be traversed by either providing two separate indices
- * for the row and column, or by providing am {@link Index Index} object.
+ * for the row and column, or by providing an {@link Index Index} object.
  *
  * @param <E> The type of element this grid should hold
+ * @see GridIndex
  * @see ArrayGrid
  * @see SyncGrid
  */
 public interface Grid<E> extends Iterable<E>, Serializable {
-    //
-    // Static Methods
-    //
-
-    /**
-     * Returns a new {@link Index index} with the specified row and column indices.
-     *
-     * @param row    The index of the row
-     * @param column The index of the column
-     * @return The index object corresponding to the specified position
-     */
-    @Nonnull
-    static Index newIndex(int row, int column) {
-        return new SimpleIndex(row, column);
-    }
-
     //
     // Factory
     //
@@ -477,6 +462,8 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * the number of rows (the height), and the column index corresponds to the
      * number of columns (the width).
      * </p>
+     *
+     * @see GridIndex
      */
     interface Index {
         /**
@@ -502,78 +489,5 @@ public interface Grid<E> extends Iterable<E>, Serializable {
          */
         @Override
         boolean equals(@Nullable Object obj);
-    }
-
-    //
-    // Internal
-    //
-
-    /**
-     * The default implementation of a grid's {@link Index index}.
-     */
-    final class SimpleIndex implements Index {
-        /**
-         * Private constructor to ensure this class is used internally.
-         *
-         * @param row    The row of this index
-         * @param column The column of this index
-         */
-        private SimpleIndex(int row, int column) {
-            this.row = row;
-            this.column = column;
-        }
-
-        /**
-         * The row of this index.
-         */
-        private final int row;
-
-        /**
-         * The column of this index.
-         */
-        private final int column;
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        public int row() {
-            return row;
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @return {@inheritDoc}
-         */
-        @Override
-        public int column() {
-            return column;
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * @param obj The object to compare to
-         * @return {@inheritDoc}
-         */
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            if (!(obj instanceof Index i)) return false;
-            return row == i.row() && column == i.column();
-        }
-
-        /**
-         * Serializes this index into a string.
-         *
-         * @return The string representation of this index
-         */
-        @Nonnull
-        @Override
-        public String toString() {
-            return "[" + row + ", " + column + "]";
-        }
     }
 }

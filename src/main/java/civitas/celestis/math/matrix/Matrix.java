@@ -8,6 +8,7 @@ import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
 import civitas.celestis.util.grid.ArrayGrid;
 import civitas.celestis.util.grid.Grid;
+import civitas.celestis.util.grid.GridIndex;
 import civitas.celestis.util.grid.NumericGrid;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
@@ -184,7 +185,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     @Nonnull
     @Override
     public Index dimensions() {
-        return Grid.newIndex(rows, columns);
+        return new GridIndex(rows, columns);
     }
 
     //
@@ -619,7 +620,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     public void apply(@Nonnull BiFunction<Index, Double, ? extends Double> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                values[r][c] = f.apply(Grid.newIndex(r, c), values[r][c]);
+                values[r][c] = f.apply(new GridIndex(r, c), values[r][c]);
             }
         }
     }
@@ -910,7 +911,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
     public void forEach(@Nonnull BiConsumer<Index, ? super Double> action) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(Grid.newIndex(r, c), values[r][c]);
+                action.accept(new GridIndex(r, c), values[r][c]);
             }
         }
     }
@@ -986,7 +987,7 @@ public class Matrix implements NumericGrid<Double, Matrix> {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                map.put(Grid.newIndex(r, c), values[r][c]);
+                map.put(new GridIndex(r, c), values[r][c]);
             }
         }
 

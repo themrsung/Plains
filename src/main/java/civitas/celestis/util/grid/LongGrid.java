@@ -159,7 +159,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     @Nonnull
     @Override
     public Index dimensions() {
-        return Grid.newIndex(rows, columns);
+        return new GridIndex(rows, columns);
     }
 
 
@@ -472,7 +472,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     public void apply(@Nonnull BiFunction<Index, Long, ? extends Long> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                values[r][c] = f.apply(Grid.newIndex(r, c), values[r][c]);
+                values[r][c] = f.apply(new GridIndex(r, c), values[r][c]);
             }
         }
     }
@@ -763,7 +763,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
     public void forEach(@Nonnull BiConsumer<Index, ? super Long> action) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(Grid.newIndex(r, c), values[r][c]);
+                action.accept(new GridIndex(r, c), values[r][c]);
             }
         }
     }
@@ -839,7 +839,7 @@ public class LongGrid implements NumericGrid<Long, LongGrid> {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                map.put(Grid.newIndex(r, c), values[r][c]);
+                map.put(new GridIndex(r, c), values[r][c]);
             }
         }
 
