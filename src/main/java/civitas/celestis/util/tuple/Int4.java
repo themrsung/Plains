@@ -57,7 +57,7 @@ public class Int4 implements IntTuple<Int4> {
     /**
      * Creates a new quad.
      *
-     * @param elements An array containing the elements of this quad in ABCD order
+     * @param elements An array containing the elements of this quad in IJKL order
      * @throws IllegalArgumentException When the array's length is not {@code 4}
      */
     public Int4(@Nonnull int[] elements) {

@@ -55,7 +55,7 @@ public class Int3 implements IntTuple<Int3> {
     /**
      * Creates a new triple.
      *
-     * @param elements An array containing the elements of this triple in ABC order
+     * @param elements An array containing the elements of this triple in IJK order
      * @throws IllegalArgumentException When the array's length is not {@code 3}
      */
     public Int3(@Nonnull int[] elements) {

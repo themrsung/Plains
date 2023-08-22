@@ -53,7 +53,7 @@ public class Int2 implements IntTuple<Int2> {
     /**
      * Creates a new pair.
      *
-     * @param elements An array containing the elements of this pair in AB order
+     * @param elements An array containing the elements of this pair in IJ order
      * @throws IllegalArgumentException When the array's length is not {@code 2}
      */
     public Int2(@Nonnull int[] elements) {
