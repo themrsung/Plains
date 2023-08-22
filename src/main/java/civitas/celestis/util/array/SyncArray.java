@@ -439,6 +439,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to append to the end of this array
      * @return {@inheritDoc}
      */
@@ -450,6 +451,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to prepend to the front of this array
      * @return {@inheritDoc}
      */

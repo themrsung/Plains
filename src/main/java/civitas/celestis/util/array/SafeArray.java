@@ -520,6 +520,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     /**
      * Appends the elements of the provided array {@code a} to the end of this array, then returns
      * a new array containing the collective elements.
+     *
      * @param a The array of which to append to the end of this array
      * @return The resulting array
      */
@@ -529,6 +530,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     /**
      * Prepends the elements of the provided array {@code a} to the front of this array, then
      * returns a new array containing the collective elements.
+     *
      * @param a The array of which to prepend to the front of this array
      * @return The resulting array
      */

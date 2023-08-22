@@ -12,48 +12,92 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.*;
-import java.util.stream.Stream;
 
 /**
- * A two-dimensional structure of objects. Grids can be traversed
- * by either providing two separate indices, or by providing an {@link Index index}.
+ * A two-dimensional structure of objects.
+ * Grids can be traversed by either providing two separate indices
+ * for the row and column, or by providing am {@link Index Index} object.
  *
  * @param <E> The type of element this grid should hold
- * @see Index Index
+ * @see ArrayGrid
+ * @see SyncGrid
  */
 public interface Grid<E> extends Iterable<E>, Serializable {
+    //
+    // Static Methods
+    //
+
+    /**
+     * Returns a new {@link Index index} with the specified row and column indices.
+     *
+     * @param row    The index of the row
+     * @param column The index of the column
+     * @return The index object corresponding to the specified position
+     */
+    @Nonnull
+    static Index newIndex(int row, int column) {
+        return new SimpleIndex(row, column);
+    }
+
+    //
+    // Factory
+    //
+
+    /**
+     * Given a two-dimensional primitive array of elements, this returns a grid
+     * constructed from those elements.
+     *
+     * @param elements The 2D array of elements to construct the grid from
+     * @param <E>      The type of element to contain
+     * @return The constructed grid
+     */
+    @Nonnull
+    static <E> Grid<E> of(@Nonnull E[][] elements) {
+        return ArrayGrid.of(elements);
+    }
+
+    /**
+     * Given a two-dimensional primitive array of elements, this returns a thread-safe grid
+     * constructed from those elements.
+     *
+     * @param elements The 2D array of elements to construct the grid from
+     * @param <E>      The type of element to contain
+     * @return The constructed grid
+     */
+    @Nonnull
+    static <E> Grid<E> syncOf(@Nonnull E[][] elements) {
+        return SyncGrid.of(elements);
+    }
+
     //
     // Properties
     //
 
     /**
-     * Returns the size of this grid. The size is defined as the geometric area (rows * columns)
-     * of this grid. In other words, this is the maximum capacity of this grid.
+     * Returns the size of this grid. (the number of slots this grid has)
      *
-     * @return The number of elements this grid can contain
+     * @return The size of this grid
      */
     int size();
 
     /**
-     * Returns the number of rows (the height) of this grid. This is equivalent to the traversable
-     * range of this grid along the I axis plus one.
+     * Returns the row count of this grid. (the height)
      *
      * @return The number of rows this grid has
      */
     int rows();
 
     /**
-     * Returns the number of columns (the width) of this grid. This is equivalent to the traversable
-     * range of this grid along the J axis plus one.
+     * Returns the column count of this grid. (the width)
      *
      * @return The number of columns this grid has
      */
     int columns();
 
     /**
-     * Returns the dimensions of this grid in the form of an {@link Index index}.
+     * Returns the dimensions of this grid as an {@link Index Index} object.
      *
-     * @return An {@link Index index} which represents the dimensions of this grid
+     * @return The dimensions of this grid, packaged as an index object
      */
     @Nonnull
     Index dimensions();
@@ -65,58 +109,58 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     /**
      * Checks if this grid contains the provided object {@code obj}.
      *
-     * @param obj The object of which to check for containment
-     * @return {@code true} if at least one element of this grid is equal
-     * to the provided object {@code obj}
+     * @param obj The object to check for containment
+     * @return {@code true} if at least one element of this grid is equal to
+     * the provided object {@code obj}
      */
     boolean contains(@Nullable Object obj);
 
     /**
-     * Checks if this grid contains multiple objects.
+     * Checks if this grid contains every element within the iterable object {@code i}.
      *
-     * @param iterable The iterable object containing the values to check for containment
-     * @return {@code true} if this grid contains every element of the iterable object
+     * @param t The iterable object of which to check for containment
+     * @return {@code true} if this grid contains every element of the iterable object {@code i}
      */
-    boolean containsAll(@Nonnull Iterable<?> iterable);
+    boolean containsAll(@Nonnull Iterable<?> t);
 
     //
     // Accessors
     //
 
     /**
-     * Returns the element at the specified index.
+     * Returns the element currently present at the specified slot.
      *
-     * @param i The I index (the row index) of the element to get
-     * @param j The J index (the column index) of the element to get
-     * @return The element at the specified index
+     * @param r The index of the row to get
+     * @param c The index of the column to get
+     * @return The value at the specified slot
      * @throws IndexOutOfBoundsException When the index is out of bounds
      */
-    E get(int i, int j) throws IndexOutOfBoundsException;
+    E get(int r, int c) throws IndexOutOfBoundsException;
 
     /**
      * Returns the {@code i}th element of this grid.
      *
-     * @param i The index of the element to get
-     * @return The {@code i}th element of this grid
+     * @param i The index of the slot to get
+     * @return The value at the specified slot
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
     E get(@Nonnull Index i) throws IndexOutOfBoundsException;
 
     /**
-     * Sets the value of the specified index.
+     * Sets the value at the specified position.
      *
-     * @param i The I index (the row index) of the position to assign the value to
-     * @param j The J index (the column index) of ths position to assign the value to
-     * @param v The value of which to assign to the specified position
+     * @param r The index of the row to set
+     * @param c The index of the column to set
+     * @param v The value to assign to the specified slot
      * @throws IndexOutOfBoundsException When the index is out of bounds
      */
-    void set(int i, int j, E v) throws IndexOutOfBoundsException;
+    void set(int r, int c, E v) throws IndexOutOfBoundsException;
 
     /**
-     * Sets {@code i}th value of this grid.
+     * Sets the value at the specified position.
      *
-     * @param i The index of which to assign the value to
-     * @param v The value of which to assign to the specified index
+     * @param i The index of the slot to set
+     * @param v The value to assign to the specified slot
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
     void set(@Nonnull Index i, E v) throws IndexOutOfBoundsException;
@@ -126,73 +170,62 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * Fills this grid, assigning every index of this grid to the provided value {@code v}.
+     * Applies the provided function {@code f} to every slot of this grid.
+     * The return value of the function will be assigned to the corresponding slot.
      *
-     * @param v The value of which to fill this grid with
-     */
-    void fill(E v);
-
-    /**
-     * Fills this grid, but only does so if the original element at that index is {@code null}.
-     *
-     * @param v The value of which to conditionally fill this grid with
-     */
-    void fillEmpty(E v);
-
-    /**
-     * Fills this grid, but only within the specified range.
-     *
-     * @param i1 The starting point's I index
-     * @param j1 The starting point's J index
-     * @param i2 The ending point's I index
-     * @param j2 The ending point's J index
-     * @param v  The value of which to fill the specified range with
-     * @throws IndexOutOfBoundsException When the range is out of bounds
-     */
-    void fillRange(int i1, int j1, int i2, int j2, E v) throws IndexOutOfBoundsException;
-
-    /**
-     * Fills this grid, but only within the specified range.
-     *
-     * @param i1 The starting point's index
-     * @param i2 The ending point's index
-     * @param v  The value of which to fill the specified range with
-     * @throws IndexOutOfBoundsException When the range is out of bounds
-     */
-    void fillRange(@Nonnull Index i1, @Nonnull Index i2, E v) throws IndexOutOfBoundsException;
-
-    /**
-     * Applies the provided function {@code f} to each element of this grid. The return
-     * value of the function is then assigned to the corresponding position.
-     *
-     * @param f The function of which to apply to this grid's elements
+     * @param f The function of which to apply to each slot of this grid
      */
     void apply(@Nonnull Function<? super E, E> f);
 
     /**
-     * Applies the provided function {@code f} to each element of this grid. The index of
-     * the element is provided as the first element, and the original value is provided as
-     * the second element. The return value is then assigned to the corresponding position.
+     * Applies the provided function {@code f} to every slot of this grid.
+     * The index of the slot is given as the first parameter, and the original value
+     * is given as the second parameter. The return value of the function
+     * is then assigned to the corresponding slot.
      *
-     * @param f The function of which to apply to this grid's elements
+     * @param f The function of which to apply to each slot of this grid
      */
-    void apply(@Nonnull BiFunction<Index, ? super E, E> f);
+    void apply(@Nonnull BiFunction<Index, E, ? extends E> f);
 
     /**
-     * Applies the provided function {@code f} to each element of this grid. The IJ
-     * indices are provided as the first and second element respectively, and the original
-     * value is provided as the third element. The return value is then assigned to the
-     * corresponding position.
+     * Applies the provided function {@code f} to every slot of this grid.
+     * The row and column indices of the slot are given as the first and second parameter
+     * respectively, and the original value is given as the third parameter.
+     * The return value of the function is then assigned to the corresponding slot.
      *
-     * @param f The function of which to apply to this grid's elements
+     * @param f The function of which to apply to each slot of this grid
      */
-    void apply(@Nonnull TriFunction<Integer, Integer, ? super E, E> f);
+    void apply(@Nonnull TriFunction<Integer, Integer, E, ? extends E> f);
 
     /**
-     * Replaces all occurrences of the old value to the new value.
+     * Fills this grid with the provided element {@code v}.
      *
-     * @param oldValue The old value of which to replace
-     * @param newValue The new value of which to replace to
+     * @param v The value to fill this grid with
+     */
+    void fill(E v);
+
+    /**
+     * Fills this grid, but only assigns empty slots (slots which are {@code null})
+     * to the provided element {@code v}.
+     *
+     * @param v The value to fill empty slots of this grid with
+     */
+    void fillEmpty(E v);
+
+    /**
+     * Fills this grid, but only if the filter function {@code f} returns {@code true}
+     * for the corresponding slot's original value.
+     *
+     * @param v The value to fill this grid selectively with
+     * @param f The filter function of which to test each original element with
+     */
+    void fillIf(E v, @Nonnull Predicate<? super E> f);
+
+    /**
+     * Replaces all instances of the old value to the new value.
+     *
+     * @param oldValue The old value to replace
+     * @param newValue The new value to replace to
      */
     void replaceAll(E oldValue, E newValue);
 
@@ -201,108 +234,62 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * Returns a sub-grid of this grid, whose values are populated from that of the specified range.
+     * Returns a sub-grid of this grid, constructed from the provided range.
      *
-     * @param i1 The starting point's I index
-     * @param j1 The starting point's J index
-     * @param i2 The ending point's I index
-     * @param j2 The ending point's J index
-     * @return The sub-grid at the specified range
-     * @throws IndexOutOfBoundsException When the range is either invalid or out of bounds
+     * @param r1 The starting point's row index
+     * @param c1 The starting point's column index
+     * @param r2 The ending point's row index
+     * @param c2 The ending point's column index
+     * @return The sub-grid of this grid of the specified range
+     * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     @Nonnull
-    Grid<E> subGrid(int i1, int j1, int i2, int j2) throws IndexOutOfBoundsException;
+    Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException;
 
     /**
-     * Returns a sub-grid of this grid, whose values are populated from that of the specified range.
+     * Returns a sub-grid of this grid, constructed from the provided range.
      *
-     * @param i1 The starting point's index
-     * @param i2 The ending point's index
-     * @return The sub-grid at the specified range
-     * @throws IndexOutOfBoundsException When the range is either invalid or out of bounds
+     * @param i1 The starting index of the sub-grid
+     * @param i2 The ending index of the sub-grid
+     * @return The sub-grid of this grid of the specified range
+     * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     @Nonnull
     Grid<E> subGrid(@Nonnull Index i1, @Nonnull Index i2) throws IndexOutOfBoundsException;
 
     /**
-     * Sets a sub-grid of this grid, populating the elements between the specified range with
-     * the values provided by the sub-grid {@code g}.
+     * Sets a sub-grid of this grid by providing the values in the form of another grid.
      *
-     * @param i1 The starting point's I index
-     * @param j1 The starting point's J index
-     * @param i2 The ending point's I index
-     * @param j2 The ending point's J index
-     * @param g  The sub-grid containing the values to assign
+     * @param r1 The starting point's row index
+     * @param c1 The starting point's column index
+     * @param r2 The ending point's row index
+     * @param c2 The ending point's column index
+     * @param g  The grid containing the values to assign
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
-    void setRange(int i1, int j1, int i2, int j2, @Nonnull Grid<? extends E> g)
+    void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g)
             throws IndexOutOfBoundsException;
 
     /**
-     * Sets a sub-grid of this grid, populating the elements between the specified range with
-     * the values provided by the sub-grid {@code g}.
+     * Sets a sub-grid of this grid by providing the values in the form of another grid.
      *
-     * @param i1 The starting point's index
-     * @param i2 The ending point's index
-     * @param g  The sub-grid containing the values to assign
+     * @param i1 The starting index at which to start assigning values
+     * @param i2 The ending index at which to stop assigning values
+     * @param g  The grid containing the values to assign
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     void setRange(@Nonnull Index i1, @Nonnull Index i2, @Nonnull Grid<? extends E> g)
             throws IndexOutOfBoundsException;
 
     //
-    // Resizing
+    // Transformation
     //
 
     /**
-     * Returns a resized grid whose dimensions are {@code i * j}, and whose values are
-     * mapped from that of this grid's elements. If the requested size is larger than that
-     * of this grid's size, the oversized part will not be populated, leaving it uninitialized
-     * as {@code null}.
+     * Applies the provided mapper function {@code f} to each element of this grid,
+     * then returns a new grid containing the resulting elements.
      *
-     * @param i The width (range of I) of the resized grid
-     * @param j The height (range of J) of ths resized grid
-     * @return A resized grid whose values are mapped from that of this grid's values
-     */
-    @Nonnull
-    Grid<E> resize(int i, int j);
-
-    /**
-     * Returns a resized grid whose dimensions are of the specified size, and whose values
-     * are mapped from that of this grid's elements. If the requested size is larger than that
-     * of this grid's size, the oversized part will not be populated, leaving it uninitialized
-     * as {@code null}.
-     *
-     * @param size The size of the resized grid
-     * @return A resized grid whose values are mapped from that of this grid's values
-     */
-    @Nonnull
-    Grid<E> resize(@Nonnull Index size);
-
-    //
-    // Filtration
-    //
-
-    /**
-     * Tests every element of this grid with provided filter function {@code f}, collects only
-     * the values which the filter function returns {@code true} to, then returns a new grid
-     * with the same dimensions as this grid, but only containing the filtered values.
-     *
-     * @param f The filter function of which to test each element of this grid with
-     * @return The filtered grid
-     */
-    @Nonnull
-    Grid<E> filter(@Nonnull Predicate<? super E> f);
-
-    //
-    // Mapping
-    //
-
-    /**
-     * Applies the provided mapper function {@code f} to each element of this grid, then returns
-     * a new grid containing the resulting values.
-     *
-     * @param f   The mapper function of which to apply to each element of this grid
+     * @param f   The function of which to apply to each element of this grid
      * @param <F> The type of element to map this grid to
      * @return The resulting grid
      */
@@ -310,93 +297,75 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f);
 
     /**
-     * Between this grid and the provided grid {@code f}, this applies the provided merger
-     * function {@code f} to each corresponding pair of elements, then returns a new grid whose
-     * values are populated from that of the resulting values.
+     * Between this grid and the provided grid {@code g}, this applies the merger function {@code f}
+     * to each corresponding pair of elements, then returns a new grid containing the resulting elements.
      *
      * @param g   The grid of which to merge this grid with
      * @param f   The merger function to handle the merging of the two grids
      * @param <F> The type of element to merge this grid with
      * @param <G> The type of element to merge the two grids to
      * @return The resulting grid
-     * @throws IllegalArgumentException When the provided grid {@code g}'s dimensions are different
-     *                                  from that of this grid's dimensions
+     * @throws IllegalArgumentException When the two grids' dimensions are different
      */
     @Nonnull
     <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f)
             throws IllegalArgumentException;
 
     //
-    // Conversion
+    // Transposition
     //
 
     /**
-     * Converts the elements in this grid into a one-dimensional array,
-     * then returns the resulting array.
+     * Transposes this grid, (swaps the rows and columns) then returns the resulting grid.
      *
-     * @return The array representation of this grid
+     * @return The transpose of this grid
      */
     @Nonnull
-    E[] array();
+    Grid<E> transpose();
+
+    //
+    // Resizing
+    //
 
     /**
-     * Converts the elements in this grid into a type-safe one-dimensional array,
-     * then returns the resulting array.
+     * Returns a resized grid of {@code r} rows and {@code c} columns, where the values of
+     * this grid are mapped to. If the requested size is larger than this grid, the oversized
+     * slots will not be populated with values, thus leaving them to be {@code null}.
      *
-     * @return The type-safe array representation of this grid
+     * @param r The number of rows the resized grid should have
+     * @param c The number of columns the resized grid should have
+     * @return The resized grid
      */
     @Nonnull
-    SafeArray<E> safeArray();
+    Grid<E> resize(int r, int c);
 
     /**
-     * Returns a stream object whose source is the elements of this grid.
+     * Returns a resized grid of the provided size, where the values of this grid are mapped to.
+     * If the requested size is larger than this grid, the oversized slots will not be populated with
+     * values, thus leaving them to be {@code null}.
      *
-     * @return A stream object derived from this grid's elements
+     * @param size The size the resized grid should have
+     * @return The resized grid
      */
     @Nonnull
-    Stream<E> stream();
-
-    /**
-     * Converts this grid into a map of {@link Index index}-value pairs,
-     * then returns the resulting map.
-     *
-     * @return The map representation of this grid
-     */
-    @Nonnull
-    Map<? extends Index, E> map();
-
-    /**
-     * Returns a collection containing every element of this grid.
-     *
-     * @return The collection representation of this grid
-     */
-    @Nonnull
-    Collection<E> collect();
-
-    /**
-     * Returns a tuple containing every element of this grid.
-     *
-     * @return The tuple representation of this grid
-     */
-    @Nonnull
-    Tuple<E> tuple();
+    Grid<E> resize(@Nonnull Index size);
 
     //
     // Iteration
     //
 
     /**
-     * Returns an iterator of this grid's elements.
-     * The order of iteration is not guaranteed to be consistent.
+     * Returns an iterator of every element within this grid, in a consistent order.
      *
-     * @return An iterator of this grid's elements
+     * @return An iterator of every element within this grid
      */
-    @Nonnull
     @Override
+    @Nonnull
     Iterator<E> iterator();
 
     /**
-     * Executes the provided action for each element of this grid.
+     * Executes the provided action for each element of this grid. The current
+     * value is provided as the input parameter.
      *
      * @param action The action of which to execute for each element of this grid
      */
@@ -404,35 +373,63 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     void forEach(@Nonnull Consumer<? super E> action);
 
     /**
-     * Executes the provided action for each element of this grid. The index of the
-     * element is provided as the first parameter, and the current value is provided
-     * as the second parameter.
+     * Executes the provided action for each element of this grid. The index
+     * of the corresponding slot is given as the first parameter, and the current value
+     * is given as the second parameter.
      *
      * @param action The action of which to execute for each element of this grid
      */
     void forEach(@Nonnull BiConsumer<Index, ? super E> action);
 
     /**
-     * Executes the provided action for each element of this grid. The IJ indices
-     * are provided as the first and second parameter respectively, and the current
-     * value is provided as the third parameter.
+     * Executes the provided action for each element of this grid. The row and
+     * column indices are given as the first and second parameter respectively,
+     * and the current value if given as the third parameter.
      *
      * @param action The action of which to execute for each element of this grid
      */
     void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action);
 
     //
-    // Copying
+    // Conversion
     //
 
     /**
-     * Returns a new grid whose dimensions, order of elements, and composition are all
-     * equal to this grid. In other words, this operation performs a shallow copy of this grid.
+     * Returns a one-dimensional type-safe array containing every element of this grid.
+     * Changes in the return value will not be reflected to this grid.
      *
-     * @return A shallow copy of this grid
+     * @return The array representation of this grid
      */
     @Nonnull
-    Grid<E> copy();
+    SafeArray<E> array();
+
+    /**
+     * Returns a tuple containing every element of this grid.
+     *
+     * @return The tuple representation of this grid
+     * @see Tuple
+     */
+    @Nonnull
+    Tuple<E> tuple();
+
+    /**
+     * Returns a collection containing every element of this grid.
+     *
+     * @return The collection representation of this grid
+     * @see Collection
+     */
+    @Nonnull
+    Collection<E> collect();
+
+    /**
+     * Returns a map containing every element of this grid, mapped
+     * by their corresponding {@link Index index}.
+     *
+     * @return The map representation of this grid
+     * @see Map
+     */
+    @Nonnull
+    Map<Index, E> map();
 
     //
     // Equality
@@ -442,8 +439,8 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * Checks for equality between this grid and the provided object {@code obj}.
      *
      * @param obj The object to compare to
-     * @return {@code true} if the other object is also a grid, and the dimensions, order of
-     * elements, and composition are all equal
+     * @return {@code true} if the other object is also a grid, and the dimensions, composition,
+     * and order of elements are all equal
      */
     @Override
     boolean equals(@Nullable Object obj);
@@ -466,65 +463,117 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * Creates a new {@link Index index} from the provided IJ indices.
-     *
-     * @param i The I component (the row index) of the index
-     * @param j The J component (the column index) of the index
-     * @return The constructed index object
-     */
-    @Nonnull
-    static Index index(int i, int j) {
-        return new GridIndex(i, j);
-    }
-
-    /**
-     * An index object which can be used to traverse a grid. The I component
-     * represents the row index, and the J component represents the column index.
+     * The index of a grid. Indices start at {@code 0} and increment from
+     * top-to-bottom and left-to-right.
+     * <p>
+     * 0, 1, 2, 3<br>
+     * 4, 5, 6, 7<br>
+     * 8, 9, 10, 11<br>
+     * <b>In this grid, the value {@code 6} is currently in row {@code 1} and
+     * column {@code 2}.</b>
+     * </p>
+     * <p>
+     * When representing the dimensions of a grid, the row index corresponds to
+     * the number of rows (the height), and the column index corresponds to the
+     * number of columns (the width).
+     * </p>
      */
     interface Index {
-        //
-        // Components
-        //
+        /**
+         * Returns the row of this index.
+         *
+         * @return The row of this index
+         */
+        int row();
 
         /**
-         * Returns the I component (the row index) of this index.
+         * Returns the column of this index.
          *
-         * @return The I component of this index
+         * @return The column of this index
          */
-        int i();
-
-        /**
-         * Returns the J component (the column index) of this index.
-         *
-         * @return The J component of this index
-         */
-        int j();
-
-        //
-        // Equality
-        //
+        int column();
 
         /**
          * Checks for equality between this index and the provided object {@code obj}.
          *
          * @param obj The object to compare to
-         * @return {@code true} if the other object is also an index, and the IJ components are equal
+         * @return {@code true} if the other object is also an index,
+         * and the row and column indices are equal
          */
         @Override
         boolean equals(@Nullable Object obj);
+    }
 
-        //
-        // Serialization
-        //
+    //
+    // Internal
+    //
+
+    /**
+     * The default implementation of a grid's {@link Index index}.
+     */
+    final class SimpleIndex implements Index {
+        /**
+         * Private constructor to ensure this class is used internally.
+         *
+         * @param row    The row of this index
+         * @param column The column of this index
+         */
+        private SimpleIndex(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
 
         /**
-         * Serializes this index into a string. The standard format is "{@code [i, j]}".
+         * The row of this index.
+         */
+        private final int row;
+
+        /**
+         * The column of this index.
+         */
+        private final int column;
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        public int row() {
+            return row;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         */
+        @Override
+        public int column() {
+            return column;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @param obj The object to compare to
+         * @return {@inheritDoc}
+         */
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (!(obj instanceof Index i)) return false;
+            return row == i.row() && column == i.column();
+        }
+
+        /**
+         * Serializes this index into a string.
          *
          * @return The string representation of this index
-         * @see GridIndex#toString() Standard Formatting
          */
         @Nonnull
         @Override
-        String toString();
+        public String toString() {
+            return "[" + row + ", " + column + "]";
+        }
     }
 }

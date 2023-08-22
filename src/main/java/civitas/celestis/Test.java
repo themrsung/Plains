@@ -1,11 +1,7 @@
 package civitas.celestis;
 
 
-import civitas.celestis.util.array.AtomicArray;
-import civitas.celestis.util.array.DoubleArray;
 import civitas.celestis.util.array.SafeArray;
-
-import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) {

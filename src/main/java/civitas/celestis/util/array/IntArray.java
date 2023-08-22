@@ -531,6 +531,7 @@ public class IntArray implements SafeArray<Integer> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to append to the end of this array
      * @return {@inheritDoc}
      */
@@ -551,6 +552,7 @@ public class IntArray implements SafeArray<Integer> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to prepend to the front of this array
      * @return {@inheritDoc}
      */

@@ -574,6 +574,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to append to the end of this array
      * @return {@inheritDoc}
      */
@@ -596,6 +597,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to prepend to the front of this array
      * @return {@inheritDoc}
      */

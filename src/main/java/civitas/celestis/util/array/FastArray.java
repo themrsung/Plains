@@ -542,6 +542,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to append to the end of this array
      * @return {@inheritDoc}
      */
@@ -562,6 +563,7 @@ public class FastArray<E> implements SafeArray<E>, Iterable<E>, Serializable {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The array of which to prepend to the front of this array
      * @return {@inheritDoc}
      */
