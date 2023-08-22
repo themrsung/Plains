@@ -11,6 +11,122 @@ public final class Vectors {
     //
     //
     //
+    // IO
+    //
+    //
+    //
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws NumberFormatException When the format is invalid
+     */
+    @Nonnull
+    public static Vector<?> parseVector(@Nonnull String input) throws NumberFormatException {
+        return Vector.of(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws IllegalArgumentException When the number of components is not {@code 1}
+     * @throws NumberFormatException    When the format is invalid
+     */
+    @Nonnull
+    public static Vector1 parseVector1(@Nonnull String input) throws IllegalArgumentException {
+        return new Vector1(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws IllegalArgumentException When the number of components is not {@code 2}
+     * @throws NumberFormatException    When the format is invalid
+     */
+    @Nonnull
+    public static Vector2 parseVector2(@Nonnull String input) throws IllegalArgumentException {
+        return new Vector2(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws IllegalArgumentException When the number of components is not {@code 3}
+     * @throws NumberFormatException    When the format is invalid
+     */
+    @Nonnull
+    public static Vector3 parseVector3(@Nonnull String input) throws IllegalArgumentException {
+        return new Vector3(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws IllegalArgumentException When the number of components is not {@code 4}
+     * @throws NumberFormatException    When the format is invalid
+     */
+    @Nonnull
+    public static Vector4 parseVector4(@Nonnull String input) throws IllegalArgumentException {
+        return new Vector4(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a quaternion.
+     *
+     * @param input The input string to parse
+     * @return The parsed quaternion instance
+     * @throws IllegalArgumentException When the number of components is not {@code 4}
+     * @throws NumberFormatException    When the format is invalid
+     */
+    @Nonnull
+    public static Quaternion parseQuaternion(@Nonnull String input) throws IllegalArgumentException {
+        return new Quaternion(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into a vector.
+     *
+     * @param input The input string to parse
+     * @return The parsed vector instance
+     * @throws NumberFormatException When the format is invalid
+     */
+    @Nonnull
+    public static ArrayVector parseArrayVector(@Nonnull String input) throws NumberFormatException {
+        return new ArrayVector(parseVectorNotation(input));
+    }
+
+    /**
+     * Parses a vector notation of "{@code [0, 0, 0...]}" into an array of {@code double}s.
+     *
+     * @param input The input string of which to parse
+     * @return The parsed array
+     * @throws NumberFormatException When the format is invalid
+     */
+    @Nonnull
+    private static double[] parseVectorNotation(@Nonnull String input) throws NumberFormatException {
+        final String[] strings = input.replaceAll("[\\[\\] ]", "").split(",");
+        final double[] result = new double[strings.length];
+
+        for (int i = 0; i < strings.length; i++) {
+            result[i] = Double.parseDouble(strings[i]);
+        }
+
+        return result;
+    }
+
+    //
+    //
+    //
     // Equality
     //
     //

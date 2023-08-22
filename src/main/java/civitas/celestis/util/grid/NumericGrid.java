@@ -22,9 +22,10 @@ public interface NumericGrid<N extends Number, M extends NumericGrid<N, M>> exte
 
     /**
      * Creates a new matrix from a two-dimensional array of {@link Number}s.
+     *
      * @param values The 2D array of values to map into a matrix
+     * @param <N>    The type of number to map into a matrix
      * @return A new matrix instance whose components are populated from that of the provided array
-     * @param <N> The type of number to map into a matrix
      */
     @Nonnull
     static <N extends Number> Matrix of(@Nonnull N[][] values) {

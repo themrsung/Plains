@@ -1,18 +1,11 @@
 package civitas.celestis;
 
-import civitas.celestis.util.array.SafeArray;
-import civitas.celestis.util.tuple.Tuple;
+import civitas.celestis.util.atomic.AtomicDouble;
+import civitas.celestis.util.reference.DynamicReference;
 
-import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Test {
     public static void main(String[] args) {
-        final SafeArray<String> strings = SafeArray.of("Hello", "World", null, "Foo", null, null, "bar");
-
-        final Tuple<String> tuple = strings.tuple();
-        System.out.println(tuple);
-
-        strings.shuffle();
-        System.out.println(tuple);
     }
 }

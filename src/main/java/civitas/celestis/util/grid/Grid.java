@@ -58,9 +58,10 @@ public interface Grid<E> extends Iterable<E>, Serializable {
 
     /**
      * Vien a
+     *
      * @param elements
-     * @return
      * @param <N>
+     * @return
      */
     @Nonnull
     static <N extends Number> Grid<Double> ofNumber(@Nonnull N[][] elements) {
