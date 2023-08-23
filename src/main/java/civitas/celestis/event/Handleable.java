@@ -8,6 +8,9 @@ import java.util.UUID;
 
 /**
  * A marker interface which marks a class as being handleable by an event manager.
+ * For standards of serialization, see {@link Event}.
+ *
+ * @see Event
  */
 public interface Handleable extends Unique<UUID> {
     /**

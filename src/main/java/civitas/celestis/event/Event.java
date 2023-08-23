@@ -7,7 +7,36 @@ import java.util.UUID;
 
 /**
  * The default implementation of {@link Handleable}. This class serves as the
- * superclass for all events.
+ * superclass for all events.<br><br>
+ * <h3>Serialization Standards</h3>
+ * <p>
+ * This section summarizes the standards subclasses of this class should meet
+ * in order to be properly serialized by {@link Events#toString(Handleable)}.
+ * If these standards are to be ignored, {@link #toString()} must be overridden
+ * to properly print a string representation of the specific event. The default
+ * serialization standards will be used if not overridden.
+ * </p>
+ * <p>
+ * All fields will be serialized, along with their values separated by an
+ * equals sign. ({@code "="}) If the field is not public, the serializer will
+ * attempt to find its getter method. The getter method should be in the format
+ * of {@code "get"} followed by its field's name with its first letter capitalized.
+ * Getter methods must also have no parameters.
+ * </p>
+ * <p>
+ * For example, the getter method for a variable {@code content} would be {@code getContent()},
+ * which takes no parameters and returns the type of {@code content}.<br>
+ * <code>
+ * protected final String content;<br>
+ * public String getContent() {<br>
+ * &nbsp return content;<br>
+ * }
+ * </code>
+ * </p>
+ * <p>
+ * As long as these standards are met, the serializer will automatically serialize
+ * the event, eliminating the need to implement {@link #toString()} for every event.
+ * </p>
  *
  * @see Handleable
  * @see Listener
@@ -110,9 +139,6 @@ public class Event implements Handleable {
     @Nonnull
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" +
-                "uniqueId=" + uniqueId + ", " +
-                "cause=" + (cause != null ? cause.getUniqueId() : "null") +
-                "}";
+        return Events.toString(this);
     }
 }

@@ -11,6 +11,7 @@ public class GroupTesting {
         final Event e3 = new Event(e2);
         final NotificationEvent e4 = new NotificationEvent("Hello World!", e3);
 
-        Events.printEventCauseTrace(System.out, e4);
+//        Events.printEventCauseTrace(System.out, e4);
+        System.out.println(e4);
     }
 }

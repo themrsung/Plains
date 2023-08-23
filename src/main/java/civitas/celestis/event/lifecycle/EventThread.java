@@ -139,8 +139,9 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param event The event of which to handle
-     * @param <E> {@inheritDoc}
+     * @param <E>   {@inheritDoc}
      */
     @Override
     public <E extends Handleable> void call(@Nonnull E event) {
@@ -149,8 +150,9 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param event THe event of which to prioritize
-     * @param <E> {@inheritDoc}
+     * @param <E>   {@inheritDoc}
      */
     @Override
     public <E extends Handleable> void priorityCall(@Nonnull E event) {
@@ -159,6 +161,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener The event listener to register to this event manager
      */
     @Override
@@ -169,6 +172,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listeners The iterable object containing the listeners to register
      */
     @Override
@@ -179,6 +183,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener The event listener to unregister from this event manager
      */
     @Override
@@ -189,6 +194,7 @@ public class EventThread extends Thread implements EventManager {
 
     /**
      * {@inheritDoc}
+     *
      * @param listeners The iterable object containing the listeners to unregister
      */
     @Override

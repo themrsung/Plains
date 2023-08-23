@@ -8,6 +8,7 @@ import jakarta.annotation.Nonnull;
 
 /**
  * A program which demonstrates the usage of an event manager to print a message to the console.
+ *
  * @see EventManager
  */
 public final class EventDemo {
