@@ -25,7 +25,7 @@ public final class EventDemo {
     public static void main(@Nonnull String[] args) {
 
         // This is not required for SyncEventManager,
-        // but other event managers may require it to be called
+        // but other event managers may require it to be called.
         eventManager.initialize();
 
         // Sets up the program
