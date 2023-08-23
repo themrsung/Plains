@@ -14,15 +14,11 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * A static grid implemented using primitive arrays. An array grid's size
- * cannot be changed after instantiation. Since the underlying data structure
- * is a fixed-size array, array grids are memory-efficient and random access
- * operations tend to be faster than other grid implementations.
+ * An array-typed static grid which uses the type {@code int}.
  *
- * @param <E> The type of element this grid should hold
  * @see Grid
  */
-public class ArrayGrid<E> implements Grid<E> {
+public class IntGrid implements Grid<Integer> {
     //
     // Constants
     //
@@ -41,14 +37,13 @@ public class ArrayGrid<E> implements Grid<E> {
      * Creates a new array grid from a 2D array of values.
      *
      * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
      * @return The constructed grid
      */
     @Nonnull
-    public static <E> ArrayGrid<E> of(@Nonnull E[][] values) {
+    public static IntGrid of(@Nonnull int[][] values) {
         final int rows = values.length;
         final int columns = rows > 0 ? values[0].length : 0;
-        final ArrayGrid<E> grid = new ArrayGrid<>(rows, columns);
+        final IntGrid grid = new IntGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             System.arraycopy(values[r], 0, grid.values[r], 0, columns);
@@ -67,11 +62,10 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
      */
-    @SuppressWarnings("unchecked")
-    public ArrayGrid(int rows, int columns) {
+    public IntGrid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.values = (E[][]) new Object[rows][columns];
+        this.values = new int [rows][columns];
     }
 
     /**
@@ -79,9 +73,14 @@ public class ArrayGrid<E> implements Grid<E> {
      *
      * @param g The grid of which to copy component values from
      */
-    public ArrayGrid(@Nonnull Grid<? extends E> g) {
+    public IntGrid(@Nonnull Grid<? extends Number> g) {
         this(g.rows(), g.columns());
-        setRange(0, 0, rows, columns, g);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                values[r][c] = g.get(r, c).intValue();
+            }
+        }
     }
 
     //
@@ -91,7 +90,7 @@ public class ArrayGrid<E> implements Grid<E> {
     /**
      * The internal 2D array of values.
      */
-    protected final E[][] values;
+    protected final int[][] values;
 
     /**
      * The number of rows this grid has.
@@ -186,23 +185,23 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int r, int c) throws IndexOutOfBoundsException {
+    public Integer get(int r, int c) throws IndexOutOfBoundsException {
         return values[r][c];
     }
 
     /**
-     * {@inheritDoc}
+     * Since primitive grids cannot contain {@code null}, this method has the same effect
+     * as simply calling {@link #get(int, int)}.
      *
      * @param r        The index of the row to get
      * @param c        The index of the column to get
-     * @param fallback The fallback value of which to return if the element is {@code null}
+     * @param ignored Ignored
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E getOrDefault(int r, int c, E fallback) throws IndexOutOfBoundsException {
-        final E value = values[r][c];
-        return value != null ? value : fallback;
+    public Integer getOrDefault(int r, int c, Integer ignored) throws IndexOutOfBoundsException {
+        return values[r][c];
     }
 
     /**
@@ -214,7 +213,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int r, int c, E v) throws IndexOutOfBoundsException {
+    public void set(int r, int c, Integer v) throws IndexOutOfBoundsException {
         values[r][c] = v;
     }
 
@@ -228,26 +227,19 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param v The value of which to fill this grid with
      */
     @Override
-    public void fill(E v) {
-        for (final E[] row : values) {
+    public void fill(Integer v) {
+        for (final int[] row : values) {
             Arrays.fill(row, v);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Since primitive arrays cannot contain {@code null}, this method does nothing.
      *
-     * @param v The values of which to selectively fill this grid with
+     * @param ignored Ignored
      */
     @Override
-    public void fillEmpty(E v) {
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                if (values[r][c] != null) continue;
-                values[r][c] = v;
-            }
-        }
-    }
+    public void fillEmpty(Integer ignored) {}
 
     /**
      * {@inheritDoc}
@@ -260,7 +252,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void fillRange(int r1, int c1, int r2, int c2, E v) throws IndexOutOfBoundsException {
+    public void fillRange(int r1, int c1, int r2, int c2, Integer v) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
                 values[r][c] = v;
@@ -274,7 +266,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void apply(@Nonnull Function<? super E, E> f) {
+    public void apply(@Nonnull Function<? super Integer, Integer> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);
@@ -288,7 +280,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void apply(@Nonnull TriFunction<Integer, Integer, ? super E, E> f) {
+    public void apply(@Nonnull TriFunction<Integer, Integer, ? super Integer, Integer> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(r, c, values[r][c]);
@@ -303,7 +295,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param newValue The new value of which to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
+    public void replaceAll(Integer oldValue, Integer newValue) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 if (!(Objects.equals(values[r][c], oldValue))) continue;
@@ -328,8 +320,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
-        final ArrayGrid<E> result = new ArrayGrid<>(r2 - r1, c2 - c1);
+    public Grid<Integer> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
+        final IntGrid result = new IntGrid(r2 - r1, c2 - c1);
 
         for (int r = r1; r < r2; r++) {
             System.arraycopy(values[r], c1, result.values[r - r1], 0, c2 - c1);
@@ -349,7 +341,8 @@ public class ArrayGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException {
+    public void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends Integer> g)
+            throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
                 values[r][c] = g.get(r - r1, c - c1);
@@ -370,8 +363,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> resize(int rows, int columns) {
-        final ArrayGrid<E> result = new ArrayGrid<>(rows, columns);
+    public Grid<Integer> resize(int rows, int columns) {
+        final IntGrid result = new IntGrid(rows, columns);
 
         final int minRows = Math.min(this.rows, rows);
         final int minCols = Math.min(this.columns, columns);
@@ -394,8 +387,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> transpose() {
-        final ArrayGrid<E> result = new ArrayGrid<>(columns, rows);
+    public Grid<Integer> transpose() {
+        final IntGrid result = new IntGrid(columns, rows);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
@@ -419,7 +412,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> Grid<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
         final ArrayGrid<F> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
@@ -443,7 +436,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super Integer, ? super F, G> f)
             throws IllegalArgumentException {
         if (rows != g.rows() || columns != g.columns()) {
             throw new IllegalArgumentException("Grid sizes must match for this operation.");
@@ -471,9 +464,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public E[] array() {
-        final E[] result = (E[]) new Object[rows * columns];
+    public Integer[] array() {
+        final Integer[] result = new Integer[rows * columns];
 
         /*
          * This is faster than calculating r * columns * c each iteration
@@ -495,12 +487,20 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> safeArray() {
+    public SafeArray<Integer> safeArray() {
+        final int[] array = new int[rows * columns];
+
         /*
-         * Since type-safe arrays perform a shallow copy using streams upon instantiation,
-         * this should be faster than manually copying over values using SafeArray#set(int).
+         * This is faster than calculating r * columns * c each iteration
          */
-        return SafeArray.of(array());
+        int i = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                array[i++] = values[r][c];
+            }
+        }
+
+        return SafeArray.ofInt(array);
     }
 
     /**
@@ -510,7 +510,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Stream<E> stream() {
+    public Stream<Integer> stream() {
         return Arrays.stream(array());
     }
 
@@ -521,7 +521,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Collection<E> collect() {
+    public Collection<Integer> collect() {
         return List.of(array());
     }
 
@@ -532,7 +532,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Set<E> set() {
+    public Set<Integer> set() {
         return Set.of(array());
     }
 
@@ -547,7 +547,7 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Integer> iterator() {
         return stream().iterator();
     }
 
@@ -557,7 +557,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param action The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
+    public void forEach(@Nonnull Consumer<? super Integer> action) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 action.accept(values[r][c]);
@@ -571,7 +571,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param action The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Integer> action) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 action.accept(r, c, values[r][c]);
@@ -590,8 +590,8 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> copy() {
-        final ArrayGrid<E> result = new ArrayGrid<>(rows, columns);
+    public Grid<Integer> copy() {
+        final IntGrid result = new IntGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             System.arraycopy(values[r], 0, result.values[r], 0, columns);
@@ -638,7 +638,7 @@ public class ArrayGrid<E> implements Grid<E> {
     public String toString() {
         final StringBuilder out = new StringBuilder("{");
 
-        for (final E[] row : values) {
+        for (final int[] row : values) {
             out.append("\n").append("  ").append(Arrays.toString(row)).append(",");
         }
 

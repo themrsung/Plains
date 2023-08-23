@@ -8,6 +8,6 @@ public class Test {
     public static void main(String[] args) {
         final Grid<String> g = new AtomicGrid<>(3, 3);
         g.fill("Hello world");
-        System.out.println(g);
+        System.out.println(Grid.copyOf(g));
     }
 }

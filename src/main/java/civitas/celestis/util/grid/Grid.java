@@ -44,6 +44,42 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     }
 
     /**
+     * Creates a new grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @return The constructed grid instance
+     * @see DoubleGrid
+     */
+    @Nonnull
+    static Grid<Double> ofDouble(@Nonnull double[][] values) {
+        return DoubleGrid.of(values);
+    }
+
+    /**
+     * Creates a new grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @return The constructed grid instance
+     * @see LongGrid
+     */
+    @Nonnull
+    static Grid<Long> ofLong(@Nonnull long[][] values) {
+        return LongGrid.of(values);
+    }
+
+    /**
+     * Creates a new grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @return The constructed grid instance
+     * @see IntGrid
+     */
+    @Nonnull
+    static Grid<Integer> ofInt(@Nonnull int[][] values) {
+        return IntGrid.of(values);
+    }
+
+    /**
      * Creates a new thread-safe grid from a two-dimensional array of values.
      *
      * @param values The values of which to contain in the grid
