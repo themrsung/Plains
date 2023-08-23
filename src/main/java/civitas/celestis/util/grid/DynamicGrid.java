@@ -57,7 +57,7 @@ public interface DynamicGrid<E> extends Grid<E> {
     void clean();
 
     /**
-     * Trims this grid, reducing its size to the minimum possible size
+     * Trims this grid, reducing its size to the minimum possible size.
      * required to hold all elements. This does not clean {@code null} values.
      *
      * @see #clean()
