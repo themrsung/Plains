@@ -1,27 +1,23 @@
 package civitas.celestis;
 
 
-import civitas.celestis.util.grid.AtomicGrid;
-import civitas.celestis.util.grid.Grid;
+import civitas.celestis.math.complex.Quaternion;
+import civitas.celestis.math.matrix.Matrix;
 
 public class Test {
     public static void main(String[] args) {
-        final Grid<Double> g1 = Grid.of(new Double[][] {
-                {1d, 2d},
-                {3d, 4d}
-        });
+        final Matrix identity = new Matrix(4, 4);
 
-        final Grid<Double> g2 = Grid.ofDouble(new double[][] {
-                {1, 2},
-                {3, 4}
-        });
+        identity.fill(0d);
 
-        final Grid<Double> g3 = Grid.atomicCopyOf(g1);
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 4; c++) {
+                if (r != c) continue;
+                identity.set(r, c, 1d);
+            }
+        }
 
-        System.out.println(g1);
-        System.out.println(g2);
-        System.out.println(g3);
-        System.out.println(g1.equals(g2));
-        System.out.println(g2.equals(g3));
+        final var q = identity.multiply(Quaternion.IDENTITY);
+        System.out.println(q);
     }
 }

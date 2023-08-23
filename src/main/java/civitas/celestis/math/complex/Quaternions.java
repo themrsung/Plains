@@ -1,6 +1,7 @@
 package civitas.celestis.math.complex;
 
 import civitas.celestis.math.Scalars;
+import civitas.celestis.math.matrix.Matrix;
 import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.math.vector.Vector4;
 import jakarta.annotation.Nonnull;
@@ -188,79 +189,79 @@ public final class Quaternions {
     //
     //
     //
-//
-//    /**
-//     * Creates a new quaternion from a 3x3 rotation matrix.
-//     *
-//     * @param m The rotation matrix which represents the rotation
-//     * @return The constructed quaternion
-//     * @throws IllegalArgumentException When the matrix's dimensions is not 3x3
-//     */
-//    @Nonnull
-//    public static Quaternion quaternion(@Nonnull Matrix m) throws IllegalArgumentException {
-//        if (m.rows() != 3 || m.columns() != 3) {
-//            throw new IllegalArgumentException("Only a 3x3 matrix can be converted into a quaternion.");
-//        }
-//
-//        final double trace = m.get(0, 0) + m.get(1, 1) + m.get(2, 2);
-//        final double w, x, y, z;
-//
-//        if (trace > 0) {
-//            final double S = 0.5 / Math.sqrt(trace + 1.0);
-//            w = 0.25 / S;
-//            x = (m.get(2, 1) - m.get(1, 2)) * S;
-//            y = (m.get(0, 2) - m.get(2, 0)) * S;
-//            z = (m.get(1, 0) - m.get(0, 1)) * S;
-//        } else if (m.get(0, 0) > m.get(1, 1) && m.get(0, 0) > m.get(2, 2)) {
-//            final double S = 2.0 * Math.sqrt(1.0 + m.get(0, 0) - m.get(1, 1) - m.get(2, 2));
-//            w = (m.get(2, 1) - m.get(1, 2)) / S;
-//            x = 0.25 * S;
-//            y = (m.get(0, 1) + m.get(1, 0)) / S;
-//            z = (m.get(0, 2) + m.get(2, 0)) / S;
-//        } else if (m.get(1, 1) > m.get(2, 2)) {
-//            final double S = 2.0 * Math.sqrt(1.0 + m.get(1, 1) - m.get(0, 0) - m.get(2, 2));
-//            w = (m.get(0, 2) - m.get(2, 0)) / S;
-//            x = (m.get(0, 1) + m.get(1, 0)) / S;
-//            y = 0.25 * S;
-//            z = (m.get(1, 2) + m.get(2, 1)) / S;
-//        } else {
-//            final double S = 2.0 * Math.sqrt(1.0 + m.get(2, 2) - m.get(0, 0) - m.get(1, 1));
-//            w = (m.get(1, 0) - m.get(0, 1)) / S;
-//            x = (m.get(0, 2) + m.get(2, 0)) / S;
-//            y = (m.get(1, 2) + m.get(2, 1)) / S;
-//            z = 0.25 * S;
-//        }
-//
-//        return new Quaternion(w, x, y, z);
-//    }
-//
-//    /**
-//     * Given a rotation quaternion {@code q}, this converts the rotation into a 3x3 rotation matrix.
-//     *
-//     * @param q The quaternion of which to convert into a rotation matrix
-//     * @return The matrix representation of the provided quaternion {@code q}
-//     */
-//    @Nonnull
-//    public static Matrix matrix(@Nonnull Quaternion q) {
-//        final double[][] values = new double[3][3];
-//
-//        final double w = q.w();
-//        final double x = q.x();
-//        final double y = q.y();
-//        final double z = q.z();
-//
-//        values[0][0] = 1 - 2 * y * y - 2 * z * z;
-//        values[0][1] = 2 * x * y - 2 * w * z;
-//        values[0][2] = 2 * x * z + 2 * w * y;
-//
-//        values[1][0] = 2 * x * y + 2 * w * z;
-//        values[1][1] = 1 - 2 * x * x - 2 * z * z;
-//        values[1][2] = 2 * y * z - 2 * w * x;
-//
-//        values[2][0] = 2 * x * z - 2 * w * y;
-//        values[2][1] = 2 * y * z + 2 * w * x;
-//        values[2][2] = 1 - 2 * x * x - 2 * y * y;
-//
-//        return Matrix.of(values);
-//    }
+
+    /**
+     * Creates a new quaternion from a 3x3 rotation matrix.
+     *
+     * @param m The rotation matrix which represents the rotation
+     * @return The constructed quaternion
+     * @throws IllegalArgumentException When the matrix's dimensions is not 3x3
+     */
+    @Nonnull
+    public static Quaternion quaternion(@Nonnull Matrix m) throws IllegalArgumentException {
+        if (m.rows() != 3 || m.columns() != 3) {
+            throw new IllegalArgumentException("Only a 3x3 matrix can be converted into a quaternion.");
+        }
+
+        final double trace = m.get(0, 0) + m.get(1, 1) + m.get(2, 2);
+        final double w, x, y, z;
+
+        if (trace > 0) {
+            final double S = 0.5 / Math.sqrt(trace + 1.0);
+            w = 0.25 / S;
+            x = (m.get(2, 1) - m.get(1, 2)) * S;
+            y = (m.get(0, 2) - m.get(2, 0)) * S;
+            z = (m.get(1, 0) - m.get(0, 1)) * S;
+        } else if (m.get(0, 0) > m.get(1, 1) && m.get(0, 0) > m.get(2, 2)) {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(0, 0) - m.get(1, 1) - m.get(2, 2));
+            w = (m.get(2, 1) - m.get(1, 2)) / S;
+            x = 0.25 * S;
+            y = (m.get(0, 1) + m.get(1, 0)) / S;
+            z = (m.get(0, 2) + m.get(2, 0)) / S;
+        } else if (m.get(1, 1) > m.get(2, 2)) {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(1, 1) - m.get(0, 0) - m.get(2, 2));
+            w = (m.get(0, 2) - m.get(2, 0)) / S;
+            x = (m.get(0, 1) + m.get(1, 0)) / S;
+            y = 0.25 * S;
+            z = (m.get(1, 2) + m.get(2, 1)) / S;
+        } else {
+            final double S = 2.0 * Math.sqrt(1.0 + m.get(2, 2) - m.get(0, 0) - m.get(1, 1));
+            w = (m.get(1, 0) - m.get(0, 1)) / S;
+            x = (m.get(0, 2) + m.get(2, 0)) / S;
+            y = (m.get(1, 2) + m.get(2, 1)) / S;
+            z = 0.25 * S;
+        }
+
+        return new Quaternion(w, x, y, z);
+    }
+
+    /**
+     * Given a rotation quaternion {@code q}, this converts the rotation into a 3x3 rotation matrix.
+     *
+     * @param q The quaternion of which to convert into a rotation matrix
+     * @return The matrix representation of the provided quaternion {@code q}
+     */
+    @Nonnull
+    public static Matrix matrix(@Nonnull Quaternion q) {
+        final double[][] values = new double[3][3];
+
+        final double w = q.w();
+        final double x = q.x();
+        final double y = q.y();
+        final double z = q.z();
+
+        values[0][0] = 1 - 2 * y * y - 2 * z * z;
+        values[0][1] = 2 * x * y - 2 * w * z;
+        values[0][2] = 2 * x * z + 2 * w * y;
+
+        values[1][0] = 2 * x * y + 2 * w * z;
+        values[1][1] = 1 - 2 * x * x - 2 * z * z;
+        values[1][2] = 2 * y * z - 2 * w * x;
+
+        values[2][0] = 2 * x * z - 2 * w * y;
+        values[2][1] = 2 * y * z + 2 * w * x;
+        values[2][2] = 1 - 2 * x * x - 2 * y * y;
+
+        return Matrix.of(values);
+    }
 }

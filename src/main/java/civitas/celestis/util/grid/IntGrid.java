@@ -34,7 +34,7 @@ public class IntGrid implements Grid<Integer> {
     //
 
     /**
-     * Creates a new array grid from a 2D array of values.
+     * Creates a new integer grid from a 2D array of values.
      *
      * @param values The values of which to contain in the grid
      * @return The constructed grid
@@ -57,7 +57,7 @@ public class IntGrid implements Grid<Integer> {
     //
 
     /**
-     * Creates a new array grid.
+     * Creates a new integer grid.
      *
      * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
@@ -65,11 +65,11 @@ public class IntGrid implements Grid<Integer> {
     public IntGrid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.values = new int [rows][columns];
+        this.values = new int[rows][columns];
     }
 
     /**
-     * Creates a new array grid.
+     * Creates a new integer grid.
      *
      * @param g The grid of which to copy component values from
      */
@@ -193,8 +193,8 @@ public class IntGrid implements Grid<Integer> {
      * Since primitive grids cannot contain {@code null}, this method has the same effect
      * as simply calling {@link #get(int, int)}.
      *
-     * @param r        The index of the row to get
-     * @param c        The index of the column to get
+     * @param r       The index of the row to get
+     * @param c       The index of the column to get
      * @param ignored Ignored
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
