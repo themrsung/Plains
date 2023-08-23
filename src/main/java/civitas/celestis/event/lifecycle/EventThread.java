@@ -7,10 +7,7 @@ import civitas.celestis.exception.event.HandlerException;
 import jakarta.annotation.Nonnull;
 
 import java.io.PrintStream;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 /**
  * A thread which processes events. Event threads can either have an independent queue
@@ -49,11 +46,13 @@ public class EventThread extends Thread implements EventManager {
      * @param printStream The print stream to print error messages to
      */
     public EventThread(@Nonnull String name, @Nonnull PrintStream printStream) {
+
         /*
          * Since this constructor is used to create an event thread which uses an independent
          * event queue and an independent handler list, the deque and list instance do not
          * have to be concurrent. This ensures that there is no unnecessary overhead.
          */
+
         this(name, new ArrayDeque<>(), new ArrayList<>(), printStream);
     }
 
@@ -138,33 +137,63 @@ public class EventThread extends Thread implements EventManager {
     // Methods
     //
 
+    /**
+     * {@inheritDoc}
+     * @param event The event of which to handle
+     * @param <E> {@inheritDoc}
+     */
     @Override
     public <E extends Handleable> void call(@Nonnull E event) {
         eventQueue.offerLast(event);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param event THe event of which to prioritize
+     * @param <E> {@inheritDoc}
+     */
     @Override
     public <E extends Handleable> void priorityCall(@Nonnull E event) {
         eventQueue.addFirst(event);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param listener The event listener to register to this event manager
+     */
     @Override
     public void register(@Nonnull Listener listener) {
+        Objects.requireNonNull(listener);
         handlers.addAll(listener.getHandlerReferences());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param listeners The iterable object containing the listeners to register
+     */
     @Override
     public void register(@Nonnull Iterable<? extends Listener> listeners) {
+        Objects.requireNonNull(listeners);
         listeners.forEach(this::register);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param listener The event listener to unregister from this event manager
+     */
     @Override
     public void unregister(@Nonnull Listener listener) {
+        Objects.requireNonNull(listener);
         handlers.removeAll(listener.getHandlerReferences());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param listeners The iterable object containing the listeners to unregister
+     */
     @Override
     public void unregister(@Nonnull Iterable<? extends Listener> listeners) {
+        Objects.requireNonNull(listeners);
         listeners.forEach(this::unregister);
     }
 
