@@ -80,6 +80,10 @@ public class HashGrid<E> implements DynamicGrid<E> {
      * @param columns The number of columns to initialize
      */
     public HashGrid(int rows, int columns) {
+        if (rows < 0 || columns < 0) {
+            throw new IllegalArgumentException("A grid cannot have negative dimensions.");
+        }
+
         this.rows = rows;
         this.columns = columns;
         this.values = new HashMap<>();
@@ -236,6 +240,14 @@ public class HashGrid<E> implements DynamicGrid<E> {
         }
 
         values.put(r * columns + c, v);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        values.clear();
     }
 
     /**
@@ -512,6 +524,11 @@ public class HashGrid<E> implements DynamicGrid<E> {
      */
     @Override
     public synchronized void setSize(int rows, int columns) {
+        // Validate the new size
+        if (rows < 0 || columns < 0) {
+            throw new IllegalArgumentException("A grid cannot have negative dimensions.");
+        }
+
         // Remap values to the new indexing system
         remapValues(columns);
 

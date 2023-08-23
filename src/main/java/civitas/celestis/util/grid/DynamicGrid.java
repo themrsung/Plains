@@ -32,6 +32,14 @@ public interface DynamicGrid<E> extends Grid<E> {
     //
 
     /**
+     * Clears all entries within this grid, removing them from memory. This differs from
+     * filling the grid with {@code null} in that it reduces the footprint of this grid.
+     * This is the equivalent of setting this grid's size to {@code {0, 0}}, then resizing
+     * it back to its original size.
+     */
+    void clear();
+
+    /**
      * Removes the element from the specified position. This differs from setting the
      * value to {@code null} in that it physically removes the entry corresponding to
      * the specified index, as opposed to simply setting the value to {@code null}.

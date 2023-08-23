@@ -32,6 +32,7 @@ import java.util.stream.Stream;
  * @param <E> The type of element this grid should hold
  * @see ArrayGrid
  * @see DynamicGrid
+ * @see HashGrid
  * @see SyncGrid
  * @see AtomicGrid
  * @see DoubleGrid

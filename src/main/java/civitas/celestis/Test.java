@@ -6,14 +6,12 @@ import civitas.celestis.util.grid.HashGrid;
 
 public class Test {
     public static void main(String[] args) {
-        final DynamicGrid<String> grid = new HashGrid<>();
-        grid.setSize(10, 10);
-        grid.set(2, 3, "Hello world");
-        grid.setSize(4, 7);
+        final DynamicGrid<String> grid = new HashGrid<>(10, 10);
+        grid.fill("Hello World");
 
-        grid.setSize(0, 0);
-        grid.setSize(10, 10);
+        System.out.println(grid);
 
-        System.out.println(grid.get(2, 3));
+        grid.clear();
+        System.out.println(grid);
     }
 }
