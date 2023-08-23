@@ -3,15 +3,15 @@ package civitas.celestis;
 import civitas.celestis.event.Event;
 import civitas.celestis.event.Events;
 import civitas.celestis.event.notification.NotificationEvent;
+import civitas.celestis.task.DelayedTask;
+import civitas.celestis.task.lifecycle.AtomicScheduler;
+import civitas.celestis.task.lifecycle.Scheduler;
 
 public class GroupTesting {
+    private static final Scheduler scheduler = new AtomicScheduler();
     public static void main(String[] args) {
-        final Event e1 = new Event();
-        final Event e2 = new Event(e1);
-        final Event e3 = new Event(e2);
-        final NotificationEvent e4 = new NotificationEvent("Hello World!", e3);
-
-//        Events.printEventCauseTrace(System.out, e4);
-        System.out.println(e4);
+        scheduler.register(System.out::println);
+        scheduler.start();
+        scheduler.register(new DelayedTask(scheduler::interrupt, 1000));
     }
 }

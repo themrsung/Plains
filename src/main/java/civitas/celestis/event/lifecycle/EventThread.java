@@ -49,7 +49,7 @@ public class EventThread extends Thread implements EventManager {
 
         /*
          * Since this constructor is used to create an event thread which uses an independent
-         * event queue and an independent handler list, the deque and list instance do not
+         * event queue and an independent handler list, the deque and list instances do not
          * have to be concurrent. This ensures that there is no unnecessary overhead.
          */
 
