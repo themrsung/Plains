@@ -15,10 +15,44 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * A two-dimensional structure of elements. Grids can be traversed by providing
+ * two indices: one for the row, and one for the column. Static grids which use
+ * two-dimensional arrays as their underlying data structure are fixed-size,
+ * meaning the dimensions cannot be changes without re-instantiation.
+ *
+ * @param <E> The type of element this grid should hold
+ * @see ArrayGrid
+ * @see SyncGrid
+ */
 public interface Grid<E> extends Iterable<E>, Serializable {
     //
     // Factory
     //
+
+    /**
+     * Creates a new grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @param <E>    The type of element to contain
+     * @return The constructed grid instance
+     */
+    @Nonnull
+    static <E> Grid<E> of(@Nonnull E[][] values) {
+        return ArrayGrid.of(values);
+    }
+
+    /**
+     * Creates a new thread-safe grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @param <E>    The type of element to contain
+     * @return The constructed thread-safe grid instance
+     */
+    @Nonnull
+    static <E> Grid<E> syncOf(@Nonnull E[][] values) {
+        return SyncGrid.of(values);
+    }
 
     //
     // Properties
