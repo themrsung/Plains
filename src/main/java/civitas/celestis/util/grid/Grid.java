@@ -17,12 +17,21 @@ import java.util.stream.Stream;
 
 /**
  * A two-dimensional structure of elements. Grids can be traversed by providing
- * two indices: one for the row, and one for the column. Static grids which use
- * two-dimensional arrays as their underlying data structure are fixed-size,
- * meaning the dimensions cannot be changes without re-instantiation.
+ * two indices: one for the row, and one for the column.
+ * <p>
+ * Static grids which use two-dimensional arrays as their underlying data structure
+ * are fixed-size, meaning the dimensions cannot be changes without re-instantiation.
+ * </p>
+ * <p>
+ * On the other hand, {@link DynamicGrid dynamic grids} use a more flexible underlying
+ * data structure, allowing the resizing of the grid without re-instantiation. Note
+ * that dynamic grids have more overhead in terms of memory consumption, and primitive
+ * types are not supported. (the boxed object types such as {@link Double}s are used)
+ * </p>
  *
  * @param <E> The type of element this grid should hold
  * @see ArrayGrid
+ * @see DynamicGrid
  * @see SyncGrid
  * @see AtomicGrid
  * @see DoubleGrid
@@ -83,6 +92,19 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     }
 
     /**
+     * Creates a new dynamic grid from a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @param <E>    The type of element to contain
+     * @return The constructed dynamic grid instance
+     * @see DynamicGrid
+     */
+    @Nonnull
+    static <E> Grid<E> dynamicOf(@Nonnull E[][] values) {
+        return HashGrid.of(values);
+    }
+
+    /**
      * Creates a new thread-safe grid from a two-dimensional array of values.
      *
      * @param values The values of which to contain in the grid
@@ -118,6 +140,19 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     @Nonnull
     static <E> Grid<E> copyOf(@Nonnull Grid<? extends E> g) {
         return new ArrayGrid<>(g);
+    }
+
+    /**
+     * Creates a dynamic copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @param <E> The type of element to contain
+     * @return A dynamic shallow copy of the provided grid {@code g}
+     * @see DynamicGrid
+     */
+    @Nonnull
+    static <E> Grid<E> dynamicCopyOf(@Nonnull Grid<? extends E> g) {
+        return new HashGrid<>(g);
     }
 
     /**

@@ -1,23 +1,19 @@
 package civitas.celestis;
 
 
-import civitas.celestis.math.complex.Quaternion;
-import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.util.grid.DynamicGrid;
+import civitas.celestis.util.grid.HashGrid;
 
 public class Test {
     public static void main(String[] args) {
-        final Matrix identity = new Matrix(4, 4);
+        final DynamicGrid<String> grid = new HashGrid<>();
+        grid.setSize(10, 10);
+        grid.set(2, 3, "Hello world");
+        grid.setSize(4, 7);
 
-        identity.fill(0d);
+        grid.setSize(0, 0);
+        grid.setSize(10, 10);
 
-        for (int r = 0; r < 4; r++) {
-            for (int c = 0; c < 4; c++) {
-                if (r != c) continue;
-                identity.set(r, c, 1d);
-            }
-        }
-
-        final var q = identity.multiply(Quaternion.IDENTITY);
-        System.out.println(q);
+        System.out.println(grid.get(2, 3));
     }
 }
