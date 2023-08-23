@@ -57,7 +57,7 @@ public class EventThread extends Thread implements EventManager {
     }
 
     /**
-     * Creates a new event thread. If the event queue or list of handler references are shared
+     * Creates a new event thread. If the event queue and/or list of handler references are shared
      * across threads, they must be a thread-safe collection. They must also not be immutable.
      *
      * @param name        The name of this thread
