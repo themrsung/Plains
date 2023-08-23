@@ -1,4 +1,4 @@
-package civitas.celestis;
+package civitas.celestis.demo;
 
 import civitas.celestis.event.lifecycle.EventManager;
 import civitas.celestis.event.lifecycle.SyncEventManager;
