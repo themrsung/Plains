@@ -143,6 +143,42 @@ public interface Grid<E> extends Iterable<E>, Serializable {
         return new AtomicGrid<>(g);
     }
 
+    /**
+     * Creates a {@code double}-typed copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @return A {@code double}-typed shallow copy of the provided grid {@code g}
+     * @see DoubleGrid
+     */
+    @Nonnull
+    static Grid<Double> doubleCopyOf(@Nonnull Grid<? extends Number> g) {
+        return new DoubleGrid(g);
+    }
+
+    /**
+     * Creates a {@code long}-typed copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @return A {@code long}-typed shallow copy of the provided grid {@code g}
+     * @see LongGrid
+     */
+    @Nonnull
+    static Grid<Long> longCopyOf(@Nonnull Grid<? extends Number> g) {
+        return new LongGrid(g);
+    }
+
+    /**
+     * Creates an {@code int}-typed copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @return An {@code int}-typed shallow copy of the provided grid {@code g}
+     * @see IntGrid
+     */
+    @Nonnull
+    static Grid<Integer> intCopyOf(@Nonnull Grid<? extends Number> g) {
+        return new IntGrid(g);
+    }
+
     //
     // Properties
     //

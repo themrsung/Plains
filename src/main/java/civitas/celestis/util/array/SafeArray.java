@@ -202,6 +202,42 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
         return new AtomicArray<>(a);
     }
 
+    /**
+     * Returns a new {@code double}-typed array whose elements are converted
+     * from the provided numeric array {@code a}.
+     * @param a The array of which to copy values from
+     * @return A new {@code double}-typed array containing the elements of the provided array {@code a}
+     * @see DoubleArray
+     */
+    @Nonnull
+    static SafeArray<Double> doubleCopyOf(@Nonnull SafeArray<? extends Number> a) {
+        return new DoubleArray(a);
+    }
+
+    /**
+     * Returns a new {@code long}-typed array whose elements are converted
+     * from the provided numeric array {@code a}.
+     * @param a The array of which to copy values from
+     * @return A new {@code long}-typed array containing the elements of the provided array {@code a}
+     * @see LongArray
+     */
+    @Nonnull
+    static SafeArray<Long> longCopyOf(@Nonnull SafeArray<? extends Number> a) {
+        return new LongArray(a);
+    }
+
+    /**
+     * Returns a new {@code int}-typed array whose elements are converted
+     * from the provided numeric array {@code a}.
+     * @param a The array of which to copy values from
+     * @return A new {@code int}-typed array containing the elements of the provided array {@code a}
+     * @see IntArray
+     */
+    @Nonnull
+    static SafeArray<Integer> intCopyOf(@Nonnull SafeArray<? extends Number> a) {
+        return new IntArray(a);
+    }
+
     //
     // Properties
     //
