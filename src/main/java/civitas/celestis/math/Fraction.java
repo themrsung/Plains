@@ -45,6 +45,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Creates a new fraction.
+     *
      * @param n The numerator of this fraction
      * @param d The denominator of this fraction
      */
@@ -55,6 +56,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Creates a new fraction.
+     *
      * @param n The number of which this fraction should represent
      */
     public Fraction(@Nonnull Number n) {
@@ -64,6 +66,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Creates a new fraction.
+     *
      * @param f The fraction of which to copy values from
      */
     public Fraction(@Nonnull Fraction f) {
@@ -73,6 +76,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Creates a new fraction. The required format is "{@code n / d}".
+     *
      * @param notation The notation of which to parse
      * @throws NumberFormatException When the format is invalid
      */
@@ -88,6 +92,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Reads a fractional string in the format of "{@code n / d}" into a primitive array of {@code double}s.
+     *
      * @param fractionalString The fractional string to parse
      * @return The parsed components in numerator-denominator order
      */
@@ -125,6 +130,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Returns the numerator of this fraction.
+     *
      * @return The numerator of this fraction
      */
     public double numerator() {
@@ -133,6 +139,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Returns the denominator of this fraction.
+     *
      * @return The denominator of this fraction
      */
     public double denominator() {
@@ -141,6 +148,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Returns the sign of this fraction. For special cases, see {@link Math#signum(double)}.
+     *
      * @return {@code 0} if this fraction represents zero, {@code 1} if it is positive,
      * {@code -1} if it is negative
      * @see Math#signum(double)
@@ -348,6 +356,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Negates this fraction, then returns the negated fraction.
+     *
      * @return The negation of this fraction
      */
     @Nonnull
@@ -395,6 +404,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      * @throws ArithmeticException When the denominator of this fraction is zero
      */
@@ -405,6 +415,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      * @throws ArithmeticException When the denominator of this fraction is zero
      */
@@ -415,6 +426,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -424,6 +436,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -437,6 +450,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Compares this fraction to another number.
+     *
      * @param n The number to compare to
      * @return {@code 0} if the values they represent are equal, {@code 1} if this fraction's value is
      * larger, {@code -1} otherwise
@@ -452,6 +466,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Checks for equality between this fraction and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the other object is also a number, and the value it represents it equal
      * to that of this fraction's value
@@ -464,6 +479,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Checks for equality between this fraction and the provided number {@code n}.
+     *
      * @param n The number to compare to
      * @return {@code true} if the values they represent are equal
      */
@@ -477,6 +493,7 @@ public class Fraction extends Number implements Comparable<Number> {
 
     /**
      * Serializes this fraction into a string.
+     *
      * @return The string representation of this fraction
      */
     @Nonnull
