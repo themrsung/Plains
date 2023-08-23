@@ -1,8 +1,17 @@
 civitas.celestis
+civitas.celestis.event
+civitas.celestis.event.lifecycle
+civitas.celestis.event.notification
+civitas.celestis.exception.event
+civitas.celestis.graphics
+civitas.celestis.listener
+civitas.celestis.listener.notification
 civitas.celestis.math
 civitas.celestis.math.complex
 civitas.celestis.math.matrix
 civitas.celestis.math.vector
+civitas.celestis.task
+civitas.celestis.task.lifecycle
 civitas.celestis.util
 civitas.celestis.util.array
 civitas.celestis.util.atomic

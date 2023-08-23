@@ -196,7 +196,7 @@ public class HashGrid<E> implements DynamicGrid<E> {
      * @param r The index of the row to get
      * @param c The index of the column to get
      * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public synchronized E get(int r, int c) throws IndexOutOfBoundsException {

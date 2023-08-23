@@ -243,6 +243,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @param f   The merger function to handle the merging of the two tuples
      * @param <F> The type of element to merge this tuple with
      * @param <G> The type of element to merge the two tuples to
+     * @return The resulting tuple
      * @throws IllegalArgumentException When the provided tuple's size is
      *                                  not equal to this tuple's size
      */

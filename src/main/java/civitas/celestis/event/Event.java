@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * The default implementation of {@link Handleable}. This class serves as the
  * superclass for all events.<br><br>
- * <h3>Serialization Standards</h3>
+ * <b>Serialization Standards</b>
  * <p>
  * This section summarizes the standards subclasses of this class should meet
  * in order to be properly serialized by {@link Events#toString(Handleable)}.
@@ -29,7 +29,7 @@ import java.util.UUID;
  * <code>
  * protected final String content;<br>
  * public String getContent() {<br>
- * &nbsp return content;<br>
+ * &nbsp; return content;<br>
  * }
  * </code>
  * </p>

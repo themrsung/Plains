@@ -234,7 +234,7 @@ public class AtomicArray<E> implements SafeArray<E> {
      * @param i1 The starting index at which to start assigning values from
      * @param i2 The ending index at which to stop assigning values at
      * @param v  The value of which to assign to every slot within the specified range
-     * @throws IndexOutOfBoundsException
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public synchronized void fillRange(int i1, int i2, E v) throws IndexOutOfBoundsException {
