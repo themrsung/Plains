@@ -83,4 +83,18 @@ public class NotificationEvent extends Event {
     //
     // Serialization
     //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "uniqueId=" + uniqueId + ", " +
+                "cause=" + cause + ", " +
+                "message='" + message + "'" +
+                "}";
+    }
 }
