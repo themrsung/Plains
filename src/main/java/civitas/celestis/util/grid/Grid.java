@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * two indices: one for the row, and one for the column.
  * <p>
  * Static grids which use two-dimensional arrays as their underlying data structure
- * are fixed-size, meaning the dimensions cannot be changes without re-instantiation.
+ * are fixed-size, meaning the dimensions cannot be changed without re-instantiation.
  * </p>
  * <p>
  * On the other hand, {@link DynamicGrid dynamic grids} use a more flexible underlying
