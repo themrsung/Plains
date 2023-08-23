@@ -359,7 +359,6 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      */
     void replaceAll(E oldValue, E newValue);
 
-
     //
     // Sub Operation
     //
