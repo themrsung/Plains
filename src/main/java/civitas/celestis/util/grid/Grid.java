@@ -24,6 +24,7 @@ import java.util.stream.Stream;
  * @param <E> The type of element this grid should hold
  * @see ArrayGrid
  * @see SyncGrid
+ * @see AtomicGrid
  */
 public interface Grid<E> extends Iterable<E>, Serializable {
     //
@@ -48,10 +49,62 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * @param values The values of which to contain in the grid
      * @param <E>    The type of element to contain
      * @return The constructed thread-safe grid instance
+     * @see SyncGrid
      */
     @Nonnull
     static <E> Grid<E> syncOf(@Nonnull E[][] values) {
         return SyncGrid.of(values);
+    }
+
+    /**
+     * Creates a new atomic grid form a two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @param <E>    The type of element to contain
+     * @return The constructed atomic grid instance
+     * @see AtomicGrid
+     */
+    @Nonnull
+    static <E> Grid<E> atomicOf(@Nonnull E[][] values) {
+        return AtomicGrid.of(values);
+    }
+
+    /**
+     * Creates a copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @param <E> The type of element to contain
+     * @return A shallow copy of the provided grid {@code g}
+     */
+    @Nonnull
+    static <E> Grid<E> copyOf(@Nonnull Grid<? extends E> g) {
+        return new ArrayGrid<>(g);
+    }
+
+    /**
+     * Creates a thread-safe copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @param <E> The type of element to contain
+     * @return A thread-safe shallow copy of the provided grid {@code g}
+     * @see SyncGrid
+     */
+    @Nonnull
+    static <E> Grid<E> syncCopyOf(@Nonnull Grid<? extends E> g) {
+        return new SyncGrid<>(g);
+    }
+
+    /**
+     * Creates an atomic copy of an existing grid.
+     *
+     * @param g   The grid of which to copy elements from
+     * @param <E> The type of element to contain
+     * @return An atomic shallow copy of the provided grid {@code g}
+     * @see AtomicGrid
+     */
+    @Nonnull
+    static <E> Grid<E> atomicCopyOf(@Nonnull Grid<? extends E> g) {
+        return new AtomicGrid<>(g);
     }
 
     //

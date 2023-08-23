@@ -37,7 +37,7 @@ public class Fraction extends Number implements Comparable<Number> {
     /**
      * The fraction which represents TAU.
      */
-    public static final Fraction TAU = new Fraction(2 * Math.PI);
+    public static final Fraction TAU = new Fraction(Scalars.TAU);
 
     //
     // Constructors
