@@ -57,6 +57,7 @@ public class Matrix extends DoubleGrid {
 
     /**
      * Returns a new {@code n*n} identity matrix.
+     *
      * @param n The number of dimensions to create the identity matrix of
      * @return A new {@code n*n} identity matrix
      */

@@ -1,17 +1,24 @@
 package civitas.celestis;
 
 
-import civitas.celestis.math.matrix.Matrix;
-import civitas.celestis.math.vector.Vector3;
-import civitas.celestis.util.grid.DynamicGrid;
-import civitas.celestis.util.grid.HashGrid;
+import civitas.celestis.event.lifecycle.EventManager;
+import civitas.celestis.event.lifecycle.SyncEventManager;
+import civitas.celestis.event.notification.NotificationEvent;
+import civitas.celestis.listener.notification.NotificationListener;
 
 public class Test {
-    public static void main(String[] args) {
-        final Matrix m = Matrix.newIdentity(3);
-        final Vector3 v = new Vector3(23, -33, 10);
-        final Vector3 p = m.multiply(v);
+    private static final EventManager eventManager = new SyncEventManager();
 
-        System.out.println(p);
+    public static void main(String[] args) {
+        eventManager.register(new NotificationListener(System.out));
+        eventManager.start();
+
+        eventManager.call(new NotificationEvent("Hello world!"));
+
+        try {
+            Thread.sleep(1000);
+        } catch (final InterruptedException ignored) {}
+
+        eventManager.terminate();
     }
 }
