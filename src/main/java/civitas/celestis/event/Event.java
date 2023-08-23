@@ -83,7 +83,6 @@ public class Event implements Handleable {
         this.cause = cause;
     }
 
-
     //
     // Variables
     //
