@@ -42,14 +42,59 @@ public class Matrix extends DoubleGrid {
     public static Matrix of(@Nonnull double[][] values) {
         final int rows = values.length;
         final int columns = rows > 0 ? values[0].length : 0;
-        final Matrix grid = new Matrix(rows, columns);
+        final Matrix matrix = new Matrix(rows, columns);
 
         for (int r = 0; r < rows; r++) {
-            System.arraycopy(values[r], 0, grid.values[r], 0, columns);
+            System.arraycopy(values[r], 0, matrix.values[r], 0, columns);
         }
 
-        return grid;
+        return matrix;
     }
+
+    //
+    // Identity
+    //
+
+    /**
+     * Returns a new {@code n*n} identity matrix.
+     * @param n The number of dimensions to create the identity matrix of
+     * @return A new {@code n*n} identity matrix
+     */
+    @Nonnull
+    public static Matrix newIdentity(int n) {
+        return switch (n) {
+            case 2 -> of(IDENTITY_2x2);
+            case 3 -> of(IDENTITY_3x3);
+            case 4 -> of(IDENTITY_4x4);
+            default -> {
+                final Matrix matrix = new Matrix(n, n);
+
+                for (int r = 0; r < n; r++) {
+                    for (int c = 0; c < n; c++) {
+                        if (r != c) continue;
+                        matrix.values[r][c] = 1;
+                    }
+                }
+
+                yield matrix;
+            }
+        };
+    }
+
+    /**
+     * The values of a 2x2 identity matrix.
+     */
+    private static final double[][] IDENTITY_2x2 = {{1, 0}, {0, 1}};
+
+    /**
+     * The values of a 3x3 identity matrix.
+     */
+    private static final double[][] IDENTITY_3x3 = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+
+    /**
+     * The values of a 4x4 identity matrix.
+     */
+    private static final double[][] IDENTITY_4x4 = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
     //
     // Constructors

@@ -1,17 +1,17 @@
 package civitas.celestis;
 
 
+import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.util.grid.DynamicGrid;
 import civitas.celestis.util.grid.HashGrid;
 
 public class Test {
     public static void main(String[] args) {
-        final DynamicGrid<String> grid = new HashGrid<>(10, 10);
-        grid.fill("Hello World");
+        final Matrix m = Matrix.newIdentity(3);
+        final Vector3 v = new Vector3(23, -33, 10);
+        final Vector3 p = m.multiply(v);
 
-        System.out.println(grid);
-
-        grid.clear();
-        System.out.println(grid);
+        System.out.println(p);
     }
 }
