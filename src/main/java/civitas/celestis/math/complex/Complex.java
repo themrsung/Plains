@@ -1,6 +1,5 @@
 package civitas.celestis.math.complex;
 
-import civitas.celestis.math.vector.Vector;
 import civitas.celestis.math.vector.Vector2;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -85,21 +84,6 @@ public class Complex extends Number implements Comparable<Number> {
     }
 
     /**
-     * Creates a new complex number. The X component is mapped to the real part,
-     * and the Y component is mapped to the imaginary part.
-     *
-     * @param v A two-dimensional vector representing the components of this number
-     * @throws IllegalArgumentException When the vector is not a two-dimensional vector
-     */
-    public Complex(@Nonnull Vector<?> v) {
-        if (v.dimensions() != 2) {
-            throw new IllegalArgumentException("The provided vector is not two-dimensional.");
-        }
-        this.r = v.get(0);
-        this.i = v.get(1);
-    }
-
-    /**
      * Creates a new complex number. The required format is "{@code x + yi}"
      *
      * @param notation The notation of which to parse
@@ -135,7 +119,7 @@ public class Complex extends Number implements Comparable<Number> {
      * Reads a complex string in the format of "{@code x + yi}" into a primitive array of {@code double}s.
      *
      * @param complexString The complex number string to parse
-     * @return The parse components in real-imaginary order
+     * @return The parsed components in real-imaginary order
      */
     protected static double[] parseComplexNotation(@Nonnull String complexString) {
         // Remove any spaces

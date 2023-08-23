@@ -237,7 +237,6 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     // Accessors
     //
 
-
     /**
      * Returns the {@code i}th element of this array.
      *

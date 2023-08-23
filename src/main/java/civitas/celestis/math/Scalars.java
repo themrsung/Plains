@@ -419,4 +419,56 @@ public final class Scalars {
             121645100408832000L,
             2432902008176640000L
     };
+
+    //
+    //
+    //
+    // Fractional Math
+    //
+    //
+    //
+
+    /**
+     * Returns the greatest common denominator of the two values.
+     *
+     * @param v1 The first value
+     * @param v2 The second value
+     * @return The greatest common denominator of the two values
+     */
+    public static double gcd(double v1, double v2) {
+        return v2 == 0 ? v1 : gcd(v2, v1 % v2);
+    }
+
+    /**
+     * Returns the least common multiple of the two values.
+     *
+     * @param v1 The first value
+     * @param v2 The second value
+     * @return The least common multiple of the two values
+     */
+    public static double lcm(double v1, double v2) {
+        return (v1 * v2) / gcd(v1, v2);
+    }
+
+    /**
+     * Returns the greatest common denominator of the two values.
+     *
+     * @param v1 The first value
+     * @param v2 The second value
+     * @return The greatest common denominator of the two values
+     */
+    public static long gcd(long v1, long v2) {
+        return v2 == 0 ? v1 : gcd(v2, v1 % v2);
+    }
+
+    /**
+     * Returns the least common multiple of the two values.
+     *
+     * @param v1 The first value
+     * @param v2 The second value
+     * @return The least common multiple of the two values
+     */
+    public static long lcm(long v1, long v2) {
+        return (v1 * v2) / gcd(v1, v2);
+    }
 }
