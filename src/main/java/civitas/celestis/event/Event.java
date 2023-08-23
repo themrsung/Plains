@@ -112,7 +112,7 @@ public class Event implements Handleable {
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "uniqueId=" + uniqueId + ", " +
-                "cause=" + cause +
+                "cause=" + (cause != null ? cause.getUniqueId() : "null") +
                 "}";
     }
 }

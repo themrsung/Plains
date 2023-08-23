@@ -93,7 +93,7 @@ public class NotificationEvent extends Event {
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "uniqueId=" + uniqueId + ", " +
-                "cause=" + cause + ", " +
+                "cause=" + (cause != null ? cause.getUniqueId() : "null") + ", " +
                 "message='" + message + "'" +
                 "}";
     }
