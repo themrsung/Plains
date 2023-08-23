@@ -209,9 +209,14 @@ public class AtomicVector<V extends Vector<V>> extends AtomicReference<V> {
      * @return The resulting value the reference is pointing to after the operation
      * @throws NullPointerException When this reference is pointing to {@code null}
      */
-    @SuppressWarnings("ConstantConditions")
     public V normalizeOrNull() {
-        return updateAndGet(old -> old.normalizeOrDefault(null));
+        return updateAndGet(old -> {
+            try {
+                return old.normalize();
+            } catch (final ArithmeticException e) {
+                return null;
+            }
+        });
     }
 
     //
