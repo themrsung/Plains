@@ -8,7 +8,10 @@ import java.lang.reflect.Method;
 
 /**
  * A reference to an event handler. Contains contextual information required
- * to invoke the handler method, and retrieve its properties.
+ * to invoke the handler method, and retrieve its properties. While this is a
+ * transient reference object, its methods consist of core operations which alter
+ * the behavior of all event manager implementations. Exercise caution when
+ * modifying a member of this class.
  *
  * @param listener The event listener instance
  * @param method   The event handler method
