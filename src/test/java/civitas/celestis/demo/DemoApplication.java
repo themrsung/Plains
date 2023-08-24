@@ -39,6 +39,7 @@ public class DemoApplication extends Application {
 
     /**
      * Returns the application instance.
+     *
      * @return The application instance
      */
     @Nonnull
@@ -64,8 +65,9 @@ public class DemoApplication extends Application {
 
     /**
      * Called by the system. This delegates to {@link #start()}.
+     *
      * @param ignored The array of arguments provided by the system
-     *             (ignored for this application)
+     *                (ignored for this application)
      */
     @ApplicationCritical
     public static void main(@Nonnull String[] ignored) {

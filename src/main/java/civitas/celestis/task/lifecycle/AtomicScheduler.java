@@ -102,8 +102,7 @@ public class AtomicScheduler implements Scheduler {
      */
     @Override
     public synchronized void registerSync(@Nonnull Iterable<? extends Task> tasks) {
-        final SchedulerThread next = nextThread();
-        next.registerSync(tasks);
+        nextThread().registerSync(tasks);
     }
 
     /**

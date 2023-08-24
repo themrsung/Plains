@@ -34,11 +34,16 @@ import java.util.UUID;
  * </code>
  * </p>
  * <p>
+ * For {@code boolean}s, the getter convention is {@code "is"} followed by the field's
+ * name with its first letter capitalized. (e.g. {@code cancelled} will be {@code isCancelled()})
+ * </p>
+ * <p>
  * As long as these standards are met, the serializer will automatically serialize
  * the event, eliminating the need to implement {@link #toString()} for every event.
  * </p>
  *
  * @see Handleable
+ * @see CancellableEvent
  * @see Listener
  * @see EventHandler
  */

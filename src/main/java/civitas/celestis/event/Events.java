@@ -50,9 +50,18 @@ public final class Events {
             try {
                 result.append(field.get(event));
             } catch (final IllegalAccessException ignored) {
-                final String getterName = "get" +
-                        Character.toUpperCase(name.charAt(0)) +
-                        name.substring(1);
+                final String getterName;
+
+                // Contextual getter search for booleans
+                if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+                    getterName = "is" +
+                            Character.toUpperCase(name.charAt(0)) +
+                            name.substring(1);
+                } else {
+                    getterName = "get" +
+                            Character.toUpperCase(name.charAt(0)) +
+                            name.substring(1);
+                }
 
                 final Method getter;
 
