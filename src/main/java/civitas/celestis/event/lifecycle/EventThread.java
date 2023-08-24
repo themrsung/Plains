@@ -168,6 +168,9 @@ public class EventThread extends Thread implements EventManager {
     public void register(@Nonnull Listener listener) {
         Objects.requireNonNull(listener);
         handlers.addAll(listener.getHandlerReferences());
+
+        // Preemptively sort the references by execution priority
+        handlers.sort(Comparator.comparing(HandlerReference::priority));
     }
 
     /**
