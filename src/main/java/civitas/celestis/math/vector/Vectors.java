@@ -270,7 +270,7 @@ public final class Vectors {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector1 val, @Nonnull Vector1 min, @Nonnull Vector1 max) {
-        return Scalars.isInRange(val.x(), min.x(), max.x());
+        return Scalars.isInRange(val.x, min.x, max.x);
     }
 
     /**
@@ -282,7 +282,7 @@ public final class Vectors {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector2 val, @Nonnull Vector2 min, @Nonnull Vector2 max) {
-        return Scalars.isInRange(val.x(), min.x(), max.x()) && Scalars.isInRange(val.y(), min.y(), max.y());
+        return Scalars.isInRange(val.x, min.x, max.x) && Scalars.isInRange(val.y, min.y, max.y);
     }
 
     /**
@@ -294,9 +294,9 @@ public final class Vectors {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector3 val, @Nonnull Vector3 min, @Nonnull Vector3 max) {
-        return Scalars.isInRange(val.x(), min.x(), max.x()) &&
-                Scalars.isInRange(val.y(), min.y(), max.y()) &&
-                Scalars.isInRange(val.z(), min.z(), max.z());
+        return Scalars.isInRange(val.x, min.x, max.x) &&
+                Scalars.isInRange(val.y, min.y, max.y) &&
+                Scalars.isInRange(val.z, min.z, max.z);
     }
 
     /**
@@ -308,10 +308,10 @@ public final class Vectors {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(@Nonnull Vector4 val, @Nonnull Vector4 min, @Nonnull Vector4 max) {
-        return Scalars.isInRange(val.w(), min.w(), max.w()) &&
-                Scalars.isInRange(val.x(), min.x(), max.x()) &&
-                Scalars.isInRange(val.y(), min.y(), max.y()) &&
-                Scalars.isInRange(val.z(), min.z(), max.z());
+        return Scalars.isInRange(val.w, min.w, max.w) &&
+                Scalars.isInRange(val.x, min.x, max.x) &&
+                Scalars.isInRange(val.y, min.y, max.y) &&
+                Scalars.isInRange(val.z, min.z, max.z);
     }
 
     //
