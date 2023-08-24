@@ -228,4 +228,19 @@ public class Application {
     public Scheduler getScheduler() {
         return scheduler;
     }
+
+    //
+    // Serialization
+    //
+
+    /**
+     * Serializes this application into a string for debugging purposes.
+     *
+     * @return The string representation of this application
+     */
+    @Nonnull
+    @Override
+    public String toString() {
+        return name + " v" + version;
+    }
 }
