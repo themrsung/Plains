@@ -1,6 +1,7 @@
 package civitas.celestis.math.complex;
 
 import civitas.celestis.math.vector.Vector2;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -344,12 +345,12 @@ public class Complex extends Number implements Comparable<Number> {
      * @return A tuple containing the two square roots of this complex number
      */
     @Nonnull
-    public double[] sqrt() {
+    public Tuple<Double> sqrt() {
         final double magnitude = Math.sqrt(r * r + i * i);
-        return new double[]{
+        return Tuple.ofDouble(
                 Math.sqrt((magnitude + r) / 2),
                 Math.sqrt((magnitude - r) / 2) * Math.signum(i)
-        };
+        );
     }
 
     //
