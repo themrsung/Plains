@@ -6,6 +6,24 @@ import jakarta.annotation.Nonnull;
 
 /**
  * A scheduler. Handles the registration and execution of tasks.
+ * Scheduler can execute tasks on a regular basis. Scheduler are categorized
+ * by two criteria: whether it is synchronous, and whether it is strict.
+ * <p>
+ * Synchronous schedulers only have one thread, (usually the scheduler itself)
+ * and thus can only execute tasks sequentially. On the other hand, asynchronous
+ * schedulers are capable of multithreaded operation.
+ * </p>
+ * <p>
+ * Strict schedulers have no delay between each iteration, adhering to the
+ * interval of the tasks in a strict manner. Non-strict or lazy schedulers sleep
+ * after each iteration, which can help to avoid unnecessary iterations of
+ * looping through the list of tasks pointlessly. (since a task will only be
+ * executed after the interval of the task has passed)
+ * </p>
+ * <p>
+ * Which implementation is used should vary between applications, selecting
+ * the appropriate implementation depending on the application's nature.
+ * </p>
  *
  * @see Task
  * @see SyncScheduler
