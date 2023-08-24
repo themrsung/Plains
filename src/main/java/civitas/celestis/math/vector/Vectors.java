@@ -1,6 +1,5 @@
 package civitas.celestis.math.vector;
 
-import civitas.celestis.annotation.Suboptimal;
 import civitas.celestis.math.Scalars;
 import civitas.celestis.math.complex.Quaternion;
 import jakarta.annotation.Nonnull;
@@ -252,7 +251,6 @@ public final class Vectors {
      * @param <V> The type of vector to use for this operation
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> boolean isInRange(@Nonnull V val, @Nonnull V min, @Nonnull V max) {
         if (val.dimensions() != min.dimensions() || min.dimensions() != max.dimensions()) return false;
 
@@ -348,7 +346,6 @@ public final class Vectors {
      */
     @Nonnull
     @SafeVarargs
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> Vector<?> sum(@Nonnull V... values) {
         if (values.length == 0) {
             return Vector.of();
@@ -509,7 +506,6 @@ public final class Vectors {
      */
     @Nonnull
     @SafeVarargs
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> Vector<?> avg(@Nonnull V... values) {
         return sum(values).divide(values.length);
     }
@@ -634,7 +630,6 @@ public final class Vectors {
      *                                  dimension count (arithmetic is impossible)
      */
     @Nonnull
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> V lerp(@Nonnull V s, @Nonnull V e, double t) {
         return s.add(s.subtract(e).multiply(t));
     }
@@ -817,7 +812,6 @@ public final class Vectors {
      */
     @Nonnull
     @SafeVarargs
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> Vector<?> min(@Nonnull V... values) {
         if (values.length == 0) {
             return Vector.of();
@@ -921,7 +915,6 @@ public final class Vectors {
      */
     @Nonnull
     @SafeVarargs
-    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public static <V extends Vector<V>> Vector<?> max(@Nonnull V... values) {
         if (values.length == 0) {
             return Vector.of();
