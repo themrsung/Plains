@@ -1,5 +1,6 @@
 package civitas.celestis.math.matrix;
 
+import civitas.celestis.annotation.Suboptimal;
 import civitas.celestis.math.vector.*;
 import civitas.celestis.util.grid.DoubleGrid;
 import civitas.celestis.util.grid.Grid;
@@ -214,6 +215,7 @@ public class Matrix extends DoubleGrid {
      * @throws ArithmeticException When the number of columns is not equal to the vector's component count
      */
     @Nonnull
+    @Suboptimal(reason = "Concrete type vector operations are more efficient.")
     public <V extends Vector<V>> V multiply(@Nonnull V v) throws ArithmeticException {
         if (columns != v.dimensions()) {
             throw new ArithmeticException("The number of columns must match the vector's dimension count for multiplication.");
