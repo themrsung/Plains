@@ -239,7 +239,7 @@ public class LinearColor extends Color {
      * @see SafeArray
      */
     @Nonnull
-    public SafeArray<Integer> array() {
+    public SafeArray<Integer> safeArray() {
         return SafeArray.of(getRed(), getGreen(), getBlue(), getAlpha());
     }
 
@@ -250,7 +250,7 @@ public class LinearColor extends Color {
      * @return The array representation of this color
      */
     @Nonnull
-    public int[] rawArray() {
+    public int[] array() {
         final int argb32 = argb32();
         final int[] components = new int[4];
 
