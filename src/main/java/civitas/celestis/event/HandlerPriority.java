@@ -1,5 +1,7 @@
 package civitas.celestis.event;
 
+import civitas.celestis.annotation.application.ApplicationCritical;
+
 /**
  * The execution priority of an event handler. Lower enum ordinals are
  * guaranteed to be executed earlier than higher enum ordinals.
@@ -17,6 +19,7 @@ public enum HandlerPriority {
      * control flow of the main thread.
      * </p>
      */
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     INITIALIZATION,
 
     /**
@@ -53,5 +56,6 @@ public enum HandlerPriority {
      * control flow of the main thread.
      * </p>
      */
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     TERMINAL
 }

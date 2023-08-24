@@ -1,5 +1,6 @@
 package civitas.celestis;
 
+import civitas.celestis.annotation.application.ApplicationCritical;
 import civitas.celestis.event.Event;
 import civitas.celestis.event.application.ApplicationStartedEvent;
 import civitas.celestis.event.application.ApplicationStoppingEvent;
@@ -32,18 +33,21 @@ public class Application {
 
     /**
      * The exit code for normal graceful termination of the application.
+     * @since 0.4
      */
     public static final int EXIT_CODE_NORMAL = 0;
 
     /**
      * The exit code for forceful termination of the application by means of
      * directly calling {@link #terminate(int)}. (without proper exit procedure)
+     * @since 0.4
      */
     public static final int EXIT_CODE_TERMINATED = -1;
 
     /**
      * The exit core for forceful termination of the application caused
      * by a fatal error, which makes the application no longer operable.
+     * @since 0.4
      */
     public static final int EXIT_CODE_FATAL_ERROR = 66;
 
@@ -54,6 +58,7 @@ public class Application {
     /**
      * Initiates this application, initializing all modules and starting the program.
      */
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     public void start() {
         // Initialize modules
         eventManager.initialize();
@@ -80,6 +85,7 @@ public class Application {
      * Gracefully stops the application, giving modules time to finalize their operations.
      * @see ApplicationStoppingListener
      */
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     public void stop() {
 
         /*
@@ -97,7 +103,9 @@ public class Application {
      * @param exitCode The exit code to send to {@link System#exit(int)}
      * @see #EXIT_CODE_NORMAL
      * @see #EXIT_CODE_TERMINATED
+     * @see #EXIT_CODE_FATAL_ERROR
      */
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     public void terminate(int exitCode) {
         // Terminate modules
         eventManager.terminate();
@@ -130,8 +138,8 @@ public class Application {
     protected Application(
             @Nonnull String name,
             @Nonnull String version,
-            @Nonnull EventManager eventManager,
-            @Nonnull Scheduler scheduler
+            @Nonnull @ApplicationCritical EventManager eventManager,
+            @Nonnull @ApplicationCritical Scheduler scheduler
     ) {
         this.name = name;
         this.version = version;

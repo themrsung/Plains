@@ -1,6 +1,7 @@
 package civitas.celestis.listener.application;
 
 import civitas.celestis.Application;
+import civitas.celestis.annotation.application.ApplicationCritical;
 import civitas.celestis.event.EventHandler;
 import civitas.celestis.event.HandlerPriority;
 import civitas.celestis.event.application.ApplicationStartedEvent;
@@ -17,6 +18,7 @@ public class ApplicationStartedListener extends EventListener<ApplicationStarted
      * @param event The event which was called
      */
     @Override
+    @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
     @EventHandler(priority = HandlerPriority.INITIALIZATION)
     public void handle(@Nonnull ApplicationStartedEvent event) {
         final Application application = event.getApplication();
