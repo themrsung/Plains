@@ -229,7 +229,7 @@ public class LinearColor extends Color {
      */
     @Nonnull
     public Tuple<Integer> tuple() {
-        return Tuple.of(getRed(), getGreen(), getBlue(), getAlpha());
+        return Tuple.ofInt(getRed(), getGreen(), getBlue(), getAlpha());
     }
 
     /**
@@ -240,7 +240,7 @@ public class LinearColor extends Color {
      */
     @Nonnull
     public SafeArray<Integer> safeArray() {
-        return SafeArray.of(getRed(), getGreen(), getBlue(), getAlpha());
+        return SafeArray.ofInt(getRed(), getGreen(), getBlue(), getAlpha());
     }
 
     /**
