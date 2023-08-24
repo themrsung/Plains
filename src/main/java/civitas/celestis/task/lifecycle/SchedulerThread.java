@@ -146,6 +146,8 @@ public class SchedulerThread extends Thread implements Scheduler {
 
         tasks.add(task);
         executionTimes.put(task, System.currentTimeMillis());
+
+        task.onRegistered(this);
     }
 
     /**
@@ -179,6 +181,8 @@ public class SchedulerThread extends Thread implements Scheduler {
 
         tasks.remove(task);
         executionTimes.remove(task);
+
+        task.onUnregistered(this);
     }
 
     /**
