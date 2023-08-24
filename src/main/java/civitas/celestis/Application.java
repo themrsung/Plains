@@ -1,7 +1,6 @@
 package civitas.celestis;
 
 import civitas.celestis.annotation.application.ApplicationCritical;
-import civitas.celestis.event.Event;
 import civitas.celestis.event.application.ApplicationStartedEvent;
 import civitas.celestis.event.application.ApplicationStoppingEvent;
 import civitas.celestis.event.lifecycle.EventManager;
@@ -33,6 +32,7 @@ public class Application {
 
     /**
      * The exit code for normal graceful termination of the application.
+     *
      * @since 0.4
      */
     public static final int EXIT_CODE_NORMAL = 0;
@@ -40,6 +40,7 @@ public class Application {
     /**
      * The exit code for forceful termination of the application by means of
      * directly calling {@link #terminate(int)}. (without proper exit procedure)
+     *
      * @since 0.4
      */
     public static final int EXIT_CODE_TERMINATED = -1;
@@ -47,6 +48,7 @@ public class Application {
     /**
      * The exit core for forceful termination of the application caused
      * by a fatal error, which makes the application no longer operable.
+     *
      * @since 0.4
      */
     public static final int EXIT_CODE_FATAL_ERROR = 66;
@@ -83,6 +85,7 @@ public class Application {
 
     /**
      * Gracefully stops the application, giving modules time to finalize their operations.
+     *
      * @see ApplicationStoppingListener
      */
     @ApplicationCritical(created = "0.4", lastUpdated = "0.4")
@@ -100,6 +103,7 @@ public class Application {
     /**
      * Forcefully terminates the application, regardless of its current state.
      * This is a destructive action, and only should be called when a fatal error occurs.
+     *
      * @param exitCode The exit code to send to {@link System#exit(int)}
      * @see #EXIT_CODE_NORMAL
      * @see #EXIT_CODE_TERMINATED
@@ -121,7 +125,8 @@ public class Application {
 
     /**
      * Creates a new application with the default module configuration.
-     * @param name The name of this application
+     *
+     * @param name    The name of this application
      * @param version The version of this application
      */
     public Application(@Nonnull String name, @Nonnull String version) {
@@ -130,10 +135,11 @@ public class Application {
 
     /**
      * Creates a new application.
-     * @param name The name of this application
-     * @param version The version of this application
+     *
+     * @param name         The name of this application
+     * @param version      The version of this application
      * @param eventManager The event manager instance of this application
-     * @param scheduler The scheduler instance of this application
+     * @param scheduler    The scheduler instance of this application
      */
     protected Application(
             @Nonnull String name,
@@ -155,13 +161,13 @@ public class Application {
      * The name of this application.
      */
     @Nonnull
-    private final String name;
+    protected final String name;
 
     /**
      * The version of this application.
      */
     @Nonnull
-    private final String version;
+    protected final String version;
 
     //
     // Modules
@@ -171,13 +177,13 @@ public class Application {
      * The event manager instance.
      */
     @Nonnull
-    private final EventManager eventManager;
+    protected final EventManager eventManager;
 
     /**
      * The scheduler instance.
      */
     @Nonnull
-    private final Scheduler scheduler;
+    protected final Scheduler scheduler;
 
     //
     // Getters
@@ -185,6 +191,7 @@ public class Application {
 
     /**
      * Returns the name of this application.
+     *
      * @return The name of this application
      */
     @Nonnull
@@ -194,6 +201,7 @@ public class Application {
 
     /**
      * Returns the version of this application.
+     *
      * @return The version of this application
      */
     @Nonnull
@@ -203,6 +211,7 @@ public class Application {
 
     /**
      * Returns the event manager of this application.
+     *
      * @return The event manager of this application
      */
     @Nonnull
@@ -212,6 +221,7 @@ public class Application {
 
     /**
      * Returns the scheduler of this application.
+     *
      * @return The scheduler of this application
      */
     @Nonnull

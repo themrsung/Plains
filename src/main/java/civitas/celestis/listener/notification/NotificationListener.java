@@ -2,8 +2,8 @@ package civitas.celestis.listener.notification;
 
 import civitas.celestis.event.EventHandler;
 import civitas.celestis.event.HandlerPriority;
+import civitas.celestis.event.Listener;
 import civitas.celestis.event.notification.NotificationEvent;
-import civitas.celestis.listener.EventListener;
 import jakarta.annotation.Nonnull;
 
 import java.io.PrintStream;
@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * A listener which exclusively listens to {@link NotificationEvent}s,
  * and prints them to the specified print stream.
  */
-public class NotificationListener extends EventListener<NotificationEvent> {
+public class NotificationListener implements Listener {
     //
     // Constructors
     //
@@ -53,9 +53,8 @@ public class NotificationListener extends EventListener<NotificationEvent> {
      *
      * @param event The event which was called
      */
-    @Override
     @EventHandler(priority = HandlerPriority.PERMISSIVE)
-    public void handle(@Nonnull NotificationEvent event) {
+    public void onNotification(@Nonnull NotificationEvent event) {
         printStream.println(event.getMessage());
     }
 }

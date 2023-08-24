@@ -50,6 +50,7 @@ public @interface ApplicationCritical {
 
     /**
      * Returns the version of which this component was last updated in.
+     *
      * @return The version this component was last updated in
      */
     @Nonnull

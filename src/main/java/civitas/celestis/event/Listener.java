@@ -31,7 +31,7 @@ public interface Listener {
         for (final Method method : getClass().getDeclaredMethods()) {
             if (!method.isAnnotationPresent(EventHandler.class)) continue;
             if (method.getParameterCount() != 1) continue;
-            if (!method.getParameterTypes()[0].isAssignableFrom(Handleable.class)) continue;
+            if (!Handleable.class.isAssignableFrom(method.getParameterTypes()[0])) continue;
 
             handlers.add(new HandlerReference(this, method));
         }

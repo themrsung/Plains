@@ -25,6 +25,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * Creates a new scheduler thread.
+     *
      * @param name The name of this thread
      */
     public SchedulerThread(@Nonnull String name) {
@@ -33,7 +34,8 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * Creates a new scheduler thread.
-     * @param name The name of this thread
+     *
+     * @param name        The name of this thread
      * @param printStream The print stream to print error messages to
      */
     public SchedulerThread(@Nonnull String name, @Nonnull PrintStream printStream) {
@@ -52,10 +54,10 @@ public class SchedulerThread extends Thread implements Scheduler {
      * of tasks and/or the map of execution times with another thread, the
      * list and map instances must be thread-safe. They must also be mutable.
      *
-     * @param name The name of this thread
-     * @param tasks The list of tasks allocated to this thread
+     * @param name           The name of this thread
+     * @param tasks          The list of tasks allocated to this thread
      * @param executionTimes The map of recent execution times
-     * @param printStream The print stream to print error messages to
+     * @param printStream    The print stream to print error messages to
      */
     protected SchedulerThread(
             @Nonnull String name,
@@ -135,6 +137,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param task The task to register to this scheduler
      */
     @Override
@@ -147,6 +150,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     @Override
@@ -156,6 +160,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     @Override
@@ -165,6 +170,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param task The task to unregister from this scheduler
      */
     @Override
@@ -177,6 +183,7 @@ public class SchedulerThread extends Thread implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to unregister
      */
     @Override

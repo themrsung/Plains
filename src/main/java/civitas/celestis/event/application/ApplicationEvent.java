@@ -9,6 +9,7 @@ import jakarta.annotation.Nullable;
 /**
  * An event called by the application to notify classes that there was a
  * significant change in the application's state.
+ *
  * @see ApplicationStartedEvent
  * @see ApplicationStoppingEvent
  */
@@ -19,6 +20,7 @@ public abstract class ApplicationEvent extends Event {
 
     /**
      * Creates a new application event.
+     *
      * @param application The application which invoked this event
      */
     public ApplicationEvent(@Nonnull Application application) {
@@ -27,8 +29,9 @@ public abstract class ApplicationEvent extends Event {
 
     /**
      * Creates a new application event.
+     *
      * @param application The application which invoked this event
-     * @param cause The cause of this event's invocation
+     * @param cause       The cause of this event's invocation
      */
     public ApplicationEvent(@Nonnull Application application, @Nullable Handleable cause) {
         super(cause);
@@ -51,6 +54,7 @@ public abstract class ApplicationEvent extends Event {
 
     /**
      * Returns the application which triggered this event.
+     *
      * @return The application which triggered this event
      */
     @Nonnull

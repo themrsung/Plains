@@ -8,6 +8,7 @@ import java.io.PrintStream;
  * A synchronous scheduler with one processing thread, (the scheduler itself)
  * one list of tasks, and one map of execution times. All core logic is inherited
  * from {@link SchedulerThread}.
+ *
  * @see Scheduler
  * @see SchedulerThread
  */
@@ -25,6 +26,7 @@ public class SyncScheduler extends SchedulerThread {
 
     /**
      * Creates a new synchronous scheduler.
+     *
      * @param printStream The print stream to print error messages to
      */
     public SyncScheduler(@Nonnull PrintStream printStream) {

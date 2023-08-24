@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * the added overhead of managing a queue of scheduler threads can make it slower than
  * other asynchronous implementations, especially if tasks are registered frequently.
  * </p>
+ *
  * @see Scheduler
  */
 public class AtomicScheduler implements Scheduler {
@@ -31,6 +32,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * Creates a new atomic scheduler with {@code n} threads.
+     *
      * @param n The number of threads to initialize
      */
     public AtomicScheduler(int n) {
@@ -48,6 +50,7 @@ public class AtomicScheduler implements Scheduler {
     /**
      * Creates a new atomic scheduler by directly assigning the queue of threads.
      * This is a dangerous constructor, and only should ever be used by subclasses of this class.
+     *
      * @param threads The queue of threads to directly assign
      */
     protected AtomicScheduler(@Nonnull Deque<SchedulerThread> threads) {
@@ -73,6 +76,7 @@ public class AtomicScheduler implements Scheduler {
      * Polls a thread from the queue, stores a reference to it temporarily,
      * adds it back to the end of the queue, then returns the stored reference.
      * This is the equivalent of a {@code ++} operator on a circular queue.
+     *
      * @return The next thread in the queue
      */
     protected synchronized SchedulerThread nextThread() {
@@ -83,6 +87,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param task The task to register to this scheduler
      */
     @Override
@@ -92,6 +97,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     @Override
@@ -102,6 +108,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     @Override
@@ -111,6 +118,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param task The task to unregister from this scheduler
      */
     @Override
@@ -120,6 +128,7 @@ public class AtomicScheduler implements Scheduler {
 
     /**
      * {@inheritDoc}
+     *
      * @param tasks The iterable object containing the tasks to unregister
      */
     @Override

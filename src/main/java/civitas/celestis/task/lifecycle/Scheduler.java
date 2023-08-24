@@ -23,6 +23,7 @@ public interface Scheduler extends Module {
     /**
      * Registers multiple tasks synchronously to this scheduler, instructing it to
      * put every provided task into a single thread to ensure sequential execution.
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     void registerSync(@Nonnull Iterable<? extends Task> tasks);
@@ -32,12 +33,14 @@ public interface Scheduler extends Module {
      * distribute the tasks across multiple threads however it sees fit.
      * Sequential execution is not guaranteed, and this is equivalent to iteratively
      * calling {@link #register(Task)} for each task.
+     *
      * @param tasks The iterable object containing the tasks to register
      */
     void registerAsync(@Nonnull Iterable<? extends Task> tasks);
 
     /**
      * Unregisters a task from this scheduler, instructing it to stop executing it.
+     *
      * @param task The task to unregister from this scheduler
      */
     void unregister(@Nonnull Task task);
@@ -45,6 +48,7 @@ public interface Scheduler extends Module {
     /**
      * Unregisters multiple tasks from this scheduler, instructing it to stop executing
      * every task within the provided iterable object of tasks.
+     *
      * @param tasks The iterable object containing the tasks to unregister
      */
     void unregister(@Nonnull Iterable<? extends Task> tasks);
