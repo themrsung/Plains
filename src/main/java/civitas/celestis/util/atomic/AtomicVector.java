@@ -118,7 +118,7 @@ public class AtomicVector<V extends Vector<V>> extends AtomicReference<V> {
      * @return The resulting value the reference is pointing to after the operation
      * @throws NullPointerException When either this reference is pointing to {@code null},
      *                              of the provided vector {@code v} is {@code null}
-     * @see Vector#min(Vector)
+     * @see V#min(Vector)
      */
     public V min(V v) {
         return updateAndGet(old -> old.min(v));
@@ -132,7 +132,7 @@ public class AtomicVector<V extends Vector<V>> extends AtomicReference<V> {
      * @return The resulting value the reference is pointing to after the operation
      * @throws NullPointerException When either this reference is pointing to {@code null},
      *                              of the provided vector {@code v} is {@code null}
-     * @see Vector#max(Vector)
+     * @see V#max(Vector)
      */
     public V max(V v) {
         return updateAndGet(old -> old.max(v));
@@ -146,7 +146,7 @@ public class AtomicVector<V extends Vector<V>> extends AtomicReference<V> {
      * @return The resulting value the reference is pointing to after the operation
      * @throws NullPointerException When either this reference is pointing to {@code null},
      *                              of the provided vector {@code v} is {@code null}
-     * @see Vector#clamp(Vector, Vector)
+     * @see V#clamp(Vector, Vector)
      */
     public V clamp(V min, V max) {
         return updateAndGet(old -> old.clamp(min, max));
