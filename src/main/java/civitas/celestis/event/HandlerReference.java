@@ -60,6 +60,10 @@ public record HandlerReference(@Nonnull Listener listener, @Nonnull Method metho
             throw new HandlerException("This handler is not accessible from the event processing thread.", e);
         } catch (final InvocationTargetException e) {
             throw new HandlerException("The handler method threw an exception during the processing of the event.", e);
+        } catch (final ClassCastException e) {
+            throw new HandlerException("The event could not be cast to the parameter type of the handler method.", e);
+        } catch (final Throwable e) {
+            throw new HandlerException("An unknown error occurred. View the stack trace for more information.", e);
         }
     }
 }
