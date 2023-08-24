@@ -5,7 +5,7 @@ package civitas.celestis.event;
  * the event as cancelled, notifying higher priority listeners that this event
  * should be ignored as if it had not happened in the first place.
  * <p>
- * An {@link CancellableEvent abstract class} is provided for easier implementation.
+ * A {@link CancellableEvent default implementation} is provided for easier usage.
  * </p>
  *
  * @see Handleable
