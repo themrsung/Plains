@@ -648,6 +648,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * finalizes the current composition and order of this array into an immutable dataset.
      *
      * @return The tuple representation of this array
+     * @see Tuple
      */
     @Nonnull
     Tuple<E> tuple();
