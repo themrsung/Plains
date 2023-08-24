@@ -46,7 +46,7 @@ public class Application {
     public static final int EXIT_CODE_TERMINATED = -1;
 
     /**
-     * The exit core for forceful termination of the application caused
+     * The exit code for forceful termination of the application caused
      * by a fatal error, which makes the application no longer operable.
      *
      * @since 0.4
