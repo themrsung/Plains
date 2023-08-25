@@ -218,6 +218,8 @@ public final class GPU {
      * @param k The kernel of which to release
      */
     static void releaseKernelResources(@Nonnull cl_program p, @Nonnull cl_kernel k) {
+        requireInitialized();
+
         // Release resources
         CL.clReleaseKernel(k);
         CL.clReleaseProgram(p);
