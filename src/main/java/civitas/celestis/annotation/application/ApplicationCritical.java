@@ -5,7 +5,7 @@ import jakarta.annotation.Nonnull;
 import java.lang.annotation.*;
 
 /**
- * A marker interface used to mark certain parts of the code which is considered
+ * A marker interface used to mark certain parts of the code which are considered
  * application critical. A code is application critical when it can influence the
  * behavior of the main thread of the application in a destructive manner.
  * <p>
