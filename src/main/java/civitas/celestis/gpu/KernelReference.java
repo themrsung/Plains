@@ -79,6 +79,7 @@ public final class KernelReference {
      *
      * @param i   The index of the argument to read
      * @param out The output array
+     * @return A reference to itself ({@code this})
      */
     @Nonnull
     public KernelReference readOutput(int i, @Nonnull double[] out) {
