@@ -97,7 +97,7 @@ public class DelayedTask implements Task {
         }
 
         // Unregisters itself from all registered schedulers
-        for (final Scheduler scheduler : schedulers) {
+        for (final Scheduler scheduler : Set.copyOf(schedulers)) {
             scheduler.unregister(this);
         }
 
