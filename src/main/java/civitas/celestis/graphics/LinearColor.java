@@ -181,6 +181,21 @@ public class LinearColor implements Color {
     }
 
     //
+    // Inversion
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Color inverse() {
+        return new LinearColor(255 - red, 255 - green, 255 - blue, 255 - alpha);
+    }
+
+
+    //
     // Equality
     //
 

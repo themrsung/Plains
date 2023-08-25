@@ -156,6 +156,21 @@ public class PackedColor implements Color {
     }
 
     //
+    // Inversion
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Color inverse() {
+        return new PackedColor(255 - red(), 255 - green(), 255 - blue(), 255 - alpha());
+    }
+
+
+    //
     // Equality
     //
 

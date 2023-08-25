@@ -21,6 +21,35 @@ import java.io.Serializable;
  */
 public interface Color extends Serializable {
     //
+    // Factory
+    //
+
+    /**
+     * Creates a new color from a 64-bit RGBA representation.
+     * @param rgba64 The 64-bit RGBA representation of the color
+     * @return The constructed color instance
+     */
+    @Nonnull
+    static Color of(long rgba64) {
+        return new PackedColor(rgba64);
+    }
+
+    /**
+     * Creates a new color from individual RGBA components. All components must be
+     * within the range of {@code [0, 255]}.
+     *
+     * @param r The red component of the color
+     * @param g The green component of the color
+     * @param b The blue component of the color
+     * @param a The alpha component of the color
+     * @return The constructed color instance
+     */
+    @Nonnull
+    static Color of(float r, float g, float b, float a) {
+        return new LinearColor(r, g, b, a);
+    }
+
+    //
     // Constants
     //
 
@@ -307,6 +336,17 @@ public interface Color extends Serializable {
      * @see Colors#pack64(float, float, float, float)
      */
     long rgba64();
+
+    //
+    // Inversion
+    //
+
+    /**
+     * Returns the inverse of this color. The RGB components will be inverted.
+     * @return The inverse of this color
+     */
+    @Nonnull
+    Color inverse();
 
     //
     // Equality

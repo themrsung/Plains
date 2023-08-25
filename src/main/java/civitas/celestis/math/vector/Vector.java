@@ -545,8 +545,8 @@ public interface Vector<V extends Vector<V>> extends Serializable {
      *
      * @return The string representation of this vector
      */
-    @Override
     @Nonnull
+    @Override
     String toString();
 
     //

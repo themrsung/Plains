@@ -193,6 +193,20 @@ public class RichColor implements Color {
     }
 
     //
+    // Inversion
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Color inverse() {
+        return new RichColor(255 - red, 255 - green, 255 - blue, 255 - alpha);
+    }
+
+    //
     // Equality
     //
 
