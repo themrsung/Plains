@@ -85,6 +85,7 @@ public final class Threads {
 
             action.accept(System.currentTimeMillis());
         });
+
         thread.start();
         return thread;
     }
