@@ -132,7 +132,7 @@ public final class KernelReference {
     cl_program program;
 
     /**
-     * The list of memory buffers.
+     * The array of memory buffers.
      */
     final cl_mem[] memoryBuffers;
 }
