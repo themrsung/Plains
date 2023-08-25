@@ -24,7 +24,7 @@ public final class GPU {
     public synchronized static void initialize() {
         /*
          * The order of resource acquisition is important, as they must be released
-         * in reverse order in reverse().
+         * in reverse order in release().
          */
 
         // Retrieve platform ID
