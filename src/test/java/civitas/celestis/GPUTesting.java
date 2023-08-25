@@ -1,34 +1,43 @@
 package civitas.celestis;
 
 import civitas.celestis.gpu.GPU;
-import civitas.celestis.gpu.KernelReference;
-import civitas.celestis.gpu.Kernels;
-import org.jocl.cl_mem;
+import civitas.celestis.gpu.GPUMath;
+import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.util.concurrent.Threads;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class GPUTesting {
     public static void main(String[] args) {
+
+        final Vector3 v = new Vector3(1390, 2320, 232);
+
+        final int n = 100;
+
+
+        long t1, t2;
+
+        t1 = System.currentTimeMillis();
+
+        for (int i = 0; i < n; i++) {
+            double value = 1 + 2;
+        }
+
+        t2 = System.currentTimeMillis();
+        System.out.println(t2 - t1);
+
         GPU.initialize();
+        final GPUMath math = new GPUMath();
 
-        final double[] result = new double[1];
+        t1 = System.currentTimeMillis();
 
-        GPU.createKernel(Kernels.DIVIDE_DOUBLES)
-                .setInput(0, 21)
-                .setInput(1, 23)
-                .setOutput(2, new double[1])
-                .execute(1)
-                .readOutput(2, result)
-                .dispose();
+        for (int i = 0; i < n; i++) {
+            math.add(1, 2);
+        }
 
-        System.out.println(result[0]);
-
-        GPU.createKernel(Kernels.SQRT_DOUBLE)
-                        .setInput(0, 10)
-                        .setOutput(1, new double[1])
-                        .execute(1)
-                        .readOutput(1, result)
-                        .dispose();
-
-        System.out.println(result[0]);
+        t2 = System.currentTimeMillis();
+        System.out.println(t2 - t1);
 
         GPU.dispose();
     }
