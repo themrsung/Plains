@@ -111,6 +111,7 @@ public final class Colors {
 
     /**
      * Returns a new random opaque color.
+     *
      * @return A new random opaque color
      */
     @Nonnull
@@ -133,6 +134,7 @@ public final class Colors {
     /**
      * Performs linear interpolation (LERP) between the starting color {@code s}
      * and the ending color {@code e}, using the interpolation parameter {@code t}.
+     *
      * @param s The starting color of which to start the interpolation at
      * @param e The ending color of which to end the interpolation at
      * @param t The interpolation parameter ({@code [0, 1]})
@@ -158,6 +160,41 @@ public final class Colors {
         );
     }
 
+    /**
+     * Performs Bezier interpolation between the starting color {@code s}
+     * and the ending color {@code e}, using the interpolation parameter {@code t}.
+     *
+     * @param s The starting color of which to start the interpolation at
+     * @param e The ending color of which to end the interpolation at
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated color
+     */
+    @Nonnull
+    public static Color bezier(@Nonnull Color s, @Nonnull Color e, double t) {
+        final double r1 = s.getRed();
+        final double g1 = s.getGreen();
+        final double b1 = s.getBlue();
+        final double a1 = s.getAlpha();
+
+        final double r2 = e.getRed();
+        final double g2 = e.getGreen();
+        final double b2 = e.getBlue();
+        final double a2 = e.getAlpha();
+
+        // Bezier control points
+        final double cpR = 0.5; // Red control point
+        final double cpG = 0.2; // Green control point
+        final double cpB = 0.8; // Blue control point
+        final double cpA = 0.7; // Alpha control point
+
+        // Bezier formula for each color component
+        final double r = Scalars.bezier(r1, cpR, cpR, r2, t);
+        final double g = Scalars.bezier(g1, cpG, cpG, g2, t);
+        final double b = Scalars.bezier(b1, cpB, cpB, b2, t);
+        final double a = Scalars.bezier(a1, cpA, cpA, a2, t);
+
+        return new Color((int) r, (int) g, (int) b, (int) a);
+    }
 
     //
     //

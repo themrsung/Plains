@@ -322,6 +322,32 @@ public final class Scalars {
         return s + (e - s) * t;
     }
 
+    /**
+     * Performs cubic Bezier interpolation between four scalar values,
+     * using the interpolation parameter {@code t}.
+     *
+     * @param p0 The starting scalar value
+     * @param p1 The first control point scalar value
+     * @param p2 The second control point scalar value
+     * @param p3 The ending scalar value
+     * @param t  The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated scalar value
+     */
+    public static double bezier(double p0, double p1, double p2, double p3, double t) {
+        final double u = 1.0 - t;
+        final double tt = t * t;
+        final double uu = u * u;
+        final double uuu = uu * u;
+        final double ttt = tt * t;
+
+        double result = uuu * p0;
+        result += 3 * uu * t * p1;
+        result += 3 * u * tt * p2;
+        result += ttt * p3;
+
+        return result;
+    }
+
     //
     //
     //
