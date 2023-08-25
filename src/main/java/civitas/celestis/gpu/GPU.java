@@ -65,8 +65,11 @@ public final class GPU {
     /**
      * Releases all resources this interface is holding. This disposes every object reference,
      * resetting the state of this interface. Re-initialization is required in order to use the interface again.
+     *
+     * @throws GraphicsException When the {@link GPU} interface has not been initialized
      */
     public synchronized static void dispose() {
+        requireInitialized();
 
         /*
          * Resources must be released in the reverse order of acquisition.
@@ -125,6 +128,7 @@ public final class GPU {
      *
      * @param source The source of the kernel
      * @return A reference object to the created kernel
+     * @throws GraphicsException When the {@link GPU} interface has not been initialized
      * @see KernelReference
      * @see KernelSource
      * @see Kernels#ADD_DOUBLES
@@ -152,6 +156,7 @@ public final class GPU {
      *
      * @param array The array to reference
      * @return The created buffer object
+     * @throws GraphicsException When the {@link GPU} interface has not been initialized
      */
     @Nonnull
     static cl_mem createReadOnlyBuffer(@Nonnull double[] array) {
@@ -165,6 +170,7 @@ public final class GPU {
      *
      * @param array The array to reference
      * @return The created buffer object
+     * @throws GraphicsException When the {@link GPU} interface has not been initialized
      */
     @Nonnull
     static cl_mem createWriteOnlyBuffer(@Nonnull double[] array) {
