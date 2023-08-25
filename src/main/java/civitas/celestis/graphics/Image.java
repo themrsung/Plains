@@ -2,14 +2,12 @@ package civitas.celestis.graphics;
 
 import jakarta.annotation.Nonnull;
 
-import java.io.Serializable;
-
 /**
  * A two-dimensional image. Images are used to store rendered information within
  * the Plains graphics API.
  * @see PackedImage
  */
-public interface Image extends Serializable {
+public interface Image {
     //
     // Properties
     //
@@ -112,4 +110,16 @@ public interface Image extends Serializable {
      * @throws IndexOutOfBoundsException When the point is out of bounds
      */
     void setColor(@Nonnull Point p, @Nonnull Color c) throws IndexOutOfBoundsException;
+
+    //
+    // Manipulation
+    //
+
+    /**
+     * Creates a new {@link Renderer renderer}, then returns the newly created instance.
+     * @return A {@link Renderer} object which can be used to manipulate the image
+     */
+    @Nonnull
+    Renderer createRenderer();
+
 }

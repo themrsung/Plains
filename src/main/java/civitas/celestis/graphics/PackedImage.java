@@ -12,16 +12,6 @@ import java.io.Serial;
  */
 public class PackedImage implements Image {
     //
-    // Constants
-    //
-
-    /**
-     * The serial version UID of this class.
-     */
-    @Serial
-    private static final long serialVersionUID = 0L;
-
-    //
     // Constructors
     //
 
@@ -188,5 +178,19 @@ public class PackedImage implements Image {
     @Override
     public void setColor(@Nonnull Point p, @Nonnull Color c) throws IndexOutOfBoundsException {
         values[p.y][p.x] = c.rgba64();
+    }
+
+    //
+    // Manipulation
+    //
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Renderer createRenderer() {
+        return new Renderer(values, width, height);
     }
 }
