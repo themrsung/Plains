@@ -105,11 +105,6 @@ public final class GPU {
      * @return A reference object to the created kernel
      * @throws GraphicsException When the {@link GPU} interface has not been initialized
      * @see KernelReference
-     * @see Kernels#ADD_DOUBLES
-     * @see Kernels#SUBTRACT_DOUBLES
-     * @see Kernels#MULTIPLY_DOUBLES
-     * @see Kernels#DIVIDE_DOUBLES
-     * @see Kernels#SQRT_DOUBLE
      */
     @Nonnull
     public static KernelReference createKernel(@Nonnull String source, @Nonnull String name, int paramCount) {
@@ -130,7 +125,13 @@ public final class GPU {
      *
      * @param source The source of the kernel
      * @return A reference object to the created kernel
+     * @see KernelReference
      * @see KernelSource
+     * @see Kernels#ADD_DOUBLES
+     * @see Kernels#SUBTRACT_DOUBLES
+     * @see Kernels#MULTIPLY_DOUBLES
+     * @see Kernels#DIVIDE_DOUBLES
+     * @see Kernels#SQRT_DOUBLE
      */
     @Nonnull
     public static KernelReference createKernel(@Nonnull KernelSource source) {
