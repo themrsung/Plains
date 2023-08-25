@@ -82,7 +82,7 @@ public final class KernelReference {
      */
     @Nonnull
     public KernelReference readOutput(int i, @Nonnull double[] out) {
-        GPU.readBuffer(memoryBuffers[i], Sizeof.cl_mem, Pointer.to(out));
+        GPU.readBuffer(memoryBuffers[i], Sizeof.cl_double * (long) out.length, Pointer.to(out));
         return this;
     }
 
