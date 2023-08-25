@@ -6,6 +6,7 @@ civitas.celestis.event.lifecycle
 civitas.celestis.event.notification
 civitas.celestis.exception
 civitas.celestis.exception.event
+civitas.celestis.graphics
 civitas.celestis.listener.application
 civitas.celestis.listener.notification
 civitas.celestis.math
