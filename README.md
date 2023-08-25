@@ -16,5 +16,7 @@ If you really like the current state of this library, clone it and keep a person
 
 ### [DOCUMENTATION](https://themrsung.github.io/Plains/)
 
+### [DEMOS](src%2Ftest%2Fjava%2Fcivitas%2Fcelestis%2Fdemo)
+
 Yes, the whole naming scheme is from Stargate.
 Send me a discord to `themrsung` if you want to chat.
