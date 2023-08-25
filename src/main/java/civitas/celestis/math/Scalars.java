@@ -91,6 +91,44 @@ public final class Scalars {
     //
 
     /**
+     * Explicitly denotes that a field requires a value to be within the range of {@code [min, max]}.
+     * If the condition is met, this will simply return the value it was provided. Otherwise, it will
+     * throw an {@link IllegalArgumentException} with the appropriate message.
+     *
+     * @param val The value to validate
+     * @param min The minimum allowed value
+     * @param max The maximum allowed value
+     * @return The value given as the parameter ({@code val})
+     * @throws IllegalArgumentException When the value is out of range
+     */
+    public static double requireRange(double val, double min, double max) {
+        if (!isInRange(val, min, max)) {
+            throw new IllegalArgumentException("This field requires a range of [" + min + ", " + max + "]. The provided value was " + val + ".");
+        }
+
+        return val;
+    }
+
+    /**
+     * Explicitly denotes that a field requires a value to be within the range of {@code [min, max]}.
+     * If the condition is met, this will simply return the value it was provided. Otherwise, it will
+     * throw an {@link IllegalArgumentException} with the appropriate message.
+     *
+     * @param val The value to validate
+     * @param min The minimum allowed value
+     * @param max The maximum allowed value
+     * @return The value given as the parameter ({@code val})
+     * @throws IllegalArgumentException When the value is out of range
+     */
+    public static float requireRange(float val, float min, float max) {
+        if (!isInRange(val, min, max)) {
+            throw new IllegalArgumentException("This field requires a range of [" + min + ", " + max + "]. The provided value was " + val + ".");
+        }
+
+        return val;
+    }
+
+    /**
      * Checks if the provided value {@code val} is within the range of {@code [min, max]}.
      *
      * @param val The value to compare
@@ -99,6 +137,18 @@ public final class Scalars {
      * @return {@code true} if the value is within the range of {@code [min, max]}
      */
     public static boolean isInRange(double val, double min, double max) {
+        return val >= min && val <= max;
+    }
+
+    /**
+     * Checks if the provided value {@code val} is within the range of {@code [min, max]}.
+     *
+     * @param val The value to compare
+     * @param min The minimum allowed value
+     * @param max The maximum allowed value
+     * @return {@code true} if the value is within the range of {@code [min, max]}
+     */
+    public static boolean isInRange(float val, float min, float max) {
         return val >= min && val <= max;
     }
 

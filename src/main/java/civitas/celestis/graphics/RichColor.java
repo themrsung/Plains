@@ -7,16 +7,16 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 
 /**
- * A 16-bit color with 32 bits of precision. Colors are stored by their individual
- * component values in the format of {@code float}. Linear colors are less efficient
- * compared to packed color variants, but offer incredibly smooth linear transition
- * capabilities, which may be more important than conserving memory in some instances.
+ * A 16-bit color with 64 bits of precision. Colors are stored by their individual
+ * component values in the format of {@code double}. Rich colors are less efficient
+ * compared to other color variants, but offer substantially smooth linear transition
+ * capabilities, even compared to the 32-bit {@link LinearColor}.
  *
  * @see Color
  * @see PackedColor
- * @see RichColor
+ * @see LinearColor
  */
-public class LinearColor implements Color {
+public class RichColor implements Color {
     //
     // Constants
     //
@@ -36,7 +36,7 @@ public class LinearColor implements Color {
      *
      * @param rgba64 The 64-bit RGBA representation of this color
      */
-    public LinearColor(long rgba64) {
+    public RichColor(long rgba64) {
 
         /*
          * Range validation not required here.
@@ -57,7 +57,7 @@ public class LinearColor implements Color {
      * @param g The green component of this color
      * @param b The blue component of this color
      */
-    public LinearColor(float r, float g, float b) {
+    public RichColor(double r, double g, double b) {
         this(r, g, b, 255);
     }
 
@@ -69,7 +69,7 @@ public class LinearColor implements Color {
      * @param b The blue component of this color
      * @param a The alpha component of this color
      */
-    public LinearColor(float r, float g, float b, float a) {
+    public RichColor(double r, double g, double b, double a) {
         this.red = Scalars.requireRange(r, 0, 255);
         this.green = Scalars.requireRange(g, 0, 255);
         this.blue = Scalars.requireRange(b, 0, 255);
@@ -81,11 +81,23 @@ public class LinearColor implements Color {
      *
      * @param c The color of which to copy component values from
      */
-    public LinearColor(@Nonnull Color c) {
+    public RichColor(@Nonnull Color c) {
         this.red = c.red();
         this.green = c.green();
         this.blue = c.blue();
         this.alpha = c.alpha();
+    }
+
+    /**
+     * Creates a new color.
+     *
+     * @param c The color of which to copy component values from
+     */
+    public RichColor(@Nonnull RichColor c) {
+        this.red = c.red;
+        this.green = c.green;
+        this.blue = c.blue;
+        this.alpha = c.alpha;
     }
 
     //
@@ -95,22 +107,22 @@ public class LinearColor implements Color {
     /**
      * The red component of this color.
      */
-    protected final float red;
+    protected final double red;
 
     /**
      * The green component of this color.
      */
-    protected final float green;
+    protected final double green;
 
     /**
      * The blue component of this color.
      */
-    protected final float blue;
+    protected final double blue;
 
     /**
      * The alpha component of this color.
      */
-    protected final float alpha;
+    protected final double alpha;
 
     //
     // RGBA
@@ -123,7 +135,7 @@ public class LinearColor implements Color {
      */
     @Override
     public float red() {
-        return red;
+        return (float) red;
     }
 
     /**
@@ -133,7 +145,7 @@ public class LinearColor implements Color {
      */
     @Override
     public float green() {
-        return green;
+        return (float) green;
     }
 
     /**
@@ -143,7 +155,7 @@ public class LinearColor implements Color {
      */
     @Override
     public float blue() {
-        return blue;
+        return (float) blue;
     }
 
     /**
@@ -153,7 +165,7 @@ public class LinearColor implements Color {
      */
     @Override
     public float alpha() {
-        return alpha;
+        return (float) alpha;
     }
 
     //
@@ -177,7 +189,7 @@ public class LinearColor implements Color {
      */
     @Override
     public long rgba64() {
-        return Colors.pack64(red, green, blue, alpha);
+        return Colors.pack64((float) red, (float) green, (float) blue, (float) alpha);
     }
 
     //
