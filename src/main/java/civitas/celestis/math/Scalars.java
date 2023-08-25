@@ -26,6 +26,21 @@ public final class Scalars {
     public static final double INV_SQRT_2 = 1 / Math.sqrt(2);
 
     /**
+     * The radian equivalent of 90 degrees.
+     */
+    public static final double QUARTER_TURN = 0.5 * Math.PI;
+
+    /**
+     * The mathematical constant PI. This is the radian equivalent of a half turn.
+     */
+    public static final double PI = Math.PI;
+
+    /**
+     * The radian equivalent of 270 degrees.
+     */
+    public static final double THREE_QUARTERS_TURN = 1.5 * Math.PI;
+
+    /**
      * The mathematical constant TAU. (2 * pi)
      */
     public static final double TAU = 2 * Math.PI;
