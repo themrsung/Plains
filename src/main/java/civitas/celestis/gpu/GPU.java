@@ -67,10 +67,10 @@ public final class GPU {
      * resetting the state of this interface. Re-initialization is required in order to use the interface again.
      */
     public synchronized static void dispose() {
+
         /*
          * Resources must be released in the reverse order of acquisition.
          */
-
 
         // Release kernels and programs
         kernels.forEach(CL::clReleaseKernel);
