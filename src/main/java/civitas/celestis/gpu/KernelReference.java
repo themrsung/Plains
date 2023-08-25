@@ -107,7 +107,7 @@ public final class KernelReference {
     /**
      * Creates a new reference to a kernel.
      *
-     * @param program The program of which to reference
+     * @param program  The program of which to reference
      * @param kernel   The kernel of which to reference
      * @param argCount The number of arguments this kernel takes
      */

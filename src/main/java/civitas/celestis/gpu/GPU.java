@@ -204,6 +204,7 @@ public final class GPU {
 
     /**
      * Releases the resources of a kernel.
+     *
      * @param p The program of which to release
      * @param k The kernel of which to release
      */
