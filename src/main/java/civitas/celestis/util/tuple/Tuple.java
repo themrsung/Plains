@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * @see Triple
  * @see Quad
  * @see ArrayTuple
- * @see IntTuple
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
     //
@@ -107,9 +106,6 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
         return switch (elements.length) {
             case 0 -> new Empty<>();
             case 1 -> new Single<>(elements[0]);
-            case 2 -> new Int2(elements);
-            case 3 -> new Int3(elements);
-            case 4 -> new Int4(elements);
             default -> of(Arrays.stream(elements).boxed().toArray(Integer[]::new));
         };
     }
