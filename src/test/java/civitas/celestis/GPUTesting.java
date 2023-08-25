@@ -16,11 +16,11 @@ public class GPUTesting {
         final double[] result = new double[3];
 
         GPU.createKernel(Kernels.NORMALIZE_VECTOR_3)
-                        .setInput(0, v.array())
-                        .setOutput(1, new double[3])
-                        .execute(3)
-                        .readOutput(1, result)
-                        .dispose();
+                .setInput(0, v.array())
+                .setOutput(1, new double[3])
+                .execute(3)
+                .readOutput(1, result)
+                .dispose();
 
         q = new Vector3(result);
 

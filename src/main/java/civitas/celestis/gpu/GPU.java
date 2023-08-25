@@ -18,6 +18,14 @@ public final class GPU {
     // Initialization
     //
 
+    /*
+     * As is clearly visible in this APIs source code, sending data to the GPU and
+     * retrieving the calculated results has significant overhead, and it may not be worth
+     * the effort for simple operations. Users must be aware of the overhead involved
+     * in managing GPU resources and transferring data before delegating work to the GPU.
+     * To put it simply, trivial tasks are better suited for CPUs.
+     */
+
     /**
      * Initializes this interface. This must be called before any other method.
      */

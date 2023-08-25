@@ -4,6 +4,9 @@ import org.jocl.*;
 
 public class GPUSample {
 
+    /*
+     * Credits: ChatGPT
+     */
 
     public static void main(String[] args) {
         // Input data
