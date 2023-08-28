@@ -4,6 +4,9 @@ import civitas.celestis.util.tuple.DoubleTuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.util.function.BinaryOperator;
+import java.util.function.DoubleUnaryOperator;
+
 /**
  * A mathematical vector.
  *
@@ -212,6 +215,31 @@ public interface Vector<V extends Vector<V>> extends DoubleTuple {
      * @return The Manhattan distance between the two vectors
      */
     double distanceManhattan(@Nonnull V v);
+
+    //
+    // Transformation
+    //
+
+    /**
+     * Applies the provided mapper function {@code f} to each component of this vector,
+     * then returns a new vector containing the return values of the function f.
+     * @param f The function of which to apply to each component of this vector
+     * @return The resulting vector
+     */
+    @Nonnull
+    @Override
+    V map(@Nonnull DoubleUnaryOperator f);
+
+    /**
+     * Between this vector and the provided vector {@code v}, this applies the merger function
+     * {@code f} to each corresponding pair of components, then returns a new vector whose components
+     * are populated from the return values of the function {@code f}.
+     * @param v The vector of which to merge this vector with
+     * @param f The merger function to handle the merging of the two vectors
+     * @return The resulting vector
+     */
+    @Nonnull
+    V merge(@Nonnull V v, @Nonnull BinaryOperator<Double> f);
 
     //
     // Equality
