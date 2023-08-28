@@ -241,48 +241,40 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * Adds a vector to this quaternion. The vector is treated as if it were a quaternion.
+     * Adds another quaternion to this quaternion.
      *
-     * @param v The vector of which to add to this quaternion
+     * @param q The quaternion of which to add to this quaternion
      * @return The resulting quaternion
      */
     @Nonnull
-    @Override
-    public Quaternion add(@Nonnull Vector4 v) {
-        return new Quaternion(w + v.w(), x + v.x(), y + v.y(), z + v.z());
+    public Quaternion add(@Nonnull Quaternion q) {
+        return new Quaternion(w + q.w(), x + q.x(), y + q.y(), z + q.z());
     }
 
     /**
-     * Subtracts this quaternion by a vector. The vector is treated as if it were a quaternion.
+     * Subtracts this quaternion by another quaternion.
      *
-     * @param v The vector of which to subtract from this quaternion
+     * @param q The quaternion of which to subtract from this quaternion
      * @return The resulting quaternion
      */
     @Nonnull
-    @Override
-    public Quaternion subtract(@Nonnull Vector4 v) {
-        return new Quaternion(w - v.w(), x - v.x(), y - v.y(), z - v.z());
+    public Quaternion subtract(@Nonnull Quaternion q) {
+        return new Quaternion(w - q.w(), x - q.x(), y - q.y(), z - q.z());
     }
 
     /**
-     * Multiplies this quaternion by another vector. Quaternion multiplication is used.
+     * Multiplies this quaternion by another quaternion.
      *
-     * @param v The vector of which to multiply this quaternion by
-     * @return The quaternion left-product between this quaternion and the provided vector {@code v}
+     * @param q The vector of which to multiply this quaternion by
+     * @return The quaternion left-product between the two quaternions
      */
     @Nonnull
-    @Override
-    public Quaternion multiply(@Nonnull Vector4 v) {
-        final double vw = v.w();
-        final double vx = v.x();
-        final double vy = v.y();
-        final double vz = v.z();
-
+    public Quaternion multiply(@Nonnull Quaternion q) {
         return new Quaternion(
-                w * vw - x * vx - y * vy - z * vz,
-                w * vx + x * vw + y * vz - z * vy,
-                w * vy - x * vz + y * vw + z * vx,
-                w * vz + x * vy - y * vx + z * vw
+                w * q.w - x * q.x - y * q.y - z * q.z,
+                w * q.x + x * q.w + y * q.z - z * q.y,
+                w * q.y - x * q.z + y * q.w + z * q.x,
+                w * q.z + x * q.y - y * q.x + z * q.w
         );
     }
 
@@ -333,16 +325,17 @@ public class Quaternion extends Vector4 {
     }
 
     /**
-     * {@inheritDoc}
+     * Normalizes this quaternion to have a Euclidean norm (magnitude) of {@code 1}. If this quaternion
+     * has no direction (the Euclidean norm is zero), this will return the provided fallback value
+     * {@code q} instead of throwing an exception.
      *
-     * @param v The fallback value to default to when normalization is impossible
-     * @return {@inheritDoc}
+     * @param q The fallback value to default to when normalization is impossible
+     * @return The normalized quaternion of this quaternion is successful, the fallback value otherwise
      */
     @Nonnull
-    @Override
-    public Quaternion normalizeOrDefault(@Nonnull Vector4 v) {
+    public Quaternion normalizeOrDefault(@Nonnull Quaternion q) {
         final double s = Math.sqrt(w * w + x * x + y * y + z * z);
-        if (s == 0) return new Quaternion(v);
+        if (s == 0) return q;
         return new Quaternion(w / s, x / s, y / s, z / s);
     }
 }

@@ -112,6 +112,7 @@ public final class Colors {
 
     /**
      * Serializes a color into a string.
+     *
      * @param c The color of which to serialize
      * @return The string representation of the provided color {@code c}
      */
@@ -159,6 +160,7 @@ public final class Colors {
 
     /**
      * Returns the inverse of the provided color {@code c}.
+     *
      * @param c The color of which to get the inverse of
      * @return The inverse of the provided color {@code c}
      */

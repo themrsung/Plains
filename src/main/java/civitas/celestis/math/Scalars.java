@@ -562,4 +562,21 @@ public final class Scalars {
     public static long lcm(long v1, long v2) {
         return (v1 * v2) / gcd(v1, v2);
     }
+
+    //
+    //
+    //
+    // Miscellaneous
+    //
+    //
+    //
+
+    /**
+     * Private constructor to ensure proper usage of {@code private static} fields.
+     *
+     * @throws Exception Always throws an exception
+     */
+    private Scalars() throws Exception {
+        throw new Exception("This is a static utility class, and thus cannot be instantiated.");
+    }
 }
