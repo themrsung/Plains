@@ -48,6 +48,7 @@ public interface Tuple<E> extends Iterable<E>, BaseTuple<E> {
     @SafeVarargs
     static <E> Tuple<E> of(E... elements) {
         return switch (elements.length) {
+            case 1 -> new Object1<>(elements);
             case 2 -> new Object2<>(elements);
             case 3 -> new Object3<>(elements);
             case 4 -> new Object4<>(elements);

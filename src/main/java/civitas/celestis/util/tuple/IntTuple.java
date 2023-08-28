@@ -1,11 +1,9 @@
 package civitas.celestis.util.tuple;
 
-import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import civitas.celestis.util.array.IntArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
@@ -35,7 +33,7 @@ public interface IntTuple extends BaseTuple<Integer> {
     @Nonnull
     static IntTuple of(@Nonnull int... components) {
         return switch (components.length) {
-            case 0 -> EmptyIntTuple.getInstance();
+            case 0 -> Int0.getInstance();
             case 2 -> new Int2(components);
             case 3 -> new Int3(components);
             case 4 -> new Int4(components);
@@ -50,7 +48,7 @@ public interface IntTuple extends BaseTuple<Integer> {
      */
     @Nonnull
     static IntTuple empty() {
-        return EmptyIntTuple.getInstance();
+        return Int0.getInstance();
     }
 
     //
@@ -210,96 +208,3 @@ public interface IntTuple extends BaseTuple<Integer> {
 }
 
 
-/**
- * A tuple with zero elements.
- */
-final class EmptyIntTuple implements IntTuple {
-    /**
-     * Returns the instance of this tuple.
-     *
-     * @return The empty tuple instance
-     */
-    @Nonnull
-    public static EmptyIntTuple getInstance() {
-        return instance;
-    }
-
-    @Serial
-    private static final long serialVersionUID = 0L;
-    private static final EmptyIntTuple instance = new EmptyIntTuple();
-
-    private EmptyIntTuple() {}
-
-    @Override
-    public int size() {
-        return 0;
-    }
-
-    @Override
-    public boolean isZero() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(int v) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(@Nonnull Iterable<Integer> i) {
-        return false;
-    }
-
-    @Override
-    public int get(int i) throws IndexOutOfBoundsException {
-        throw new TupleIndexOutOfBoundsException(i);
-    }
-
-    @Nonnull
-    @Override
-    public IntTuple map(@Nonnull IntUnaryOperator f) {
-        return this;
-    }
-
-    @Nonnull
-    @Override
-    public <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
-        return Tuple.of();
-    }
-
-    @Nonnull
-    @Override
-    public int[] array() {
-        return new int[0];
-    }
-
-    @Nonnull
-    @Override
-    public IntStream stream() {
-        return IntStream.empty();
-    }
-
-    @Nonnull
-    @Override
-    public List<Integer> list() {
-        return List.of();
-    }
-
-    @Nonnull
-    @Override
-    public Tuple<Integer> boxed() {
-        return Tuple.of();
-    }
-
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof IntTuple t)) return false;
-        return t.size() == 0;
-    }
-
-    @Nonnull
-    @Override
-    public String toString() {
-        return "[]";
-    }
-}

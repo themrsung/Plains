@@ -65,7 +65,7 @@ public class Matrix extends DoubleArrayGrid {
      * @return A new {@code n*n} identity matrix
      */
     @Nonnull
-    public static Matrix newIdentity(int n) {
+    public static Matrix identity(int n) {
         return switch (n) {
             case 2 -> of(IDENTITY_2x2);
             case 3 -> of(IDENTITY_3x3);

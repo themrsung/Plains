@@ -13,6 +13,24 @@ import jakarta.annotation.Nonnull;
  */
 public final class Quaternions {
     //
+    // Randomization
+    //
+
+    /**
+     * Returns a random rotation quaternion.
+     * @return A random rotation quaternion
+     */
+    @Nonnull
+    public static Quaternion random() {
+        return new Quaternion(
+                Scalars.random(-1, 1),
+                Scalars.random(-1, 1),
+                Scalars.random(-1, 1),
+                Scalars.random(-1, 1)
+        ).normalizeOrIdentity();
+    }
+
+    //
     // Euler Angles
     //
 
