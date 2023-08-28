@@ -2,11 +2,14 @@ package civitas.celestis.util.grid;
 
 import civitas.celestis.util.function.TriConsumer;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -14,8 +17,45 @@ import java.util.function.Consumer;
  *
  * @param <E> The type of element this grid should hold
  * @see Grid
+ * @see DoubleGrid
+ * @see FloatGrid
+ * @see LongGrid
+ * @see IntGrid
  */
 public interface BaseGrid<E> extends Iterable<E>, Serializable {
+    //
+    // Static Methods
+    //
+
+    /**
+     * Checks for equality between two instances of {@link BaseGrid grids}. This will return
+     * {@code true} if the dimensions, order of elements, and the element's values are all equal.
+     * In other words, this returns {@code true} if all corresponding element pairs are equal.
+     *
+     * @param g1 The first grid to compare
+     * @param g2 The second grid to compare
+     * @return {@code true} if the grids are considered equal according to the criteria mentioned above
+     * @param <T> The element of the first grid (used for copying the grid)
+     */
+    static <T> boolean equals(@Nullable BaseGrid<T> g1, @Nullable BaseGrid<?> g2) {
+        if (g1 == null) return g2 == null;
+        if (g2 == null) return false;
+
+        if (g1.rows() != g2.rows() || g1.columns() != g2.columns()) return false;
+
+        final ArrayGrid<T> ag1 = new ArrayGrid<>(g1.rows(), g1.columns());
+        g1.forEach(ag1::set);
+
+        final AtomicBoolean notEquals = new AtomicBoolean(false);
+
+        g2.forEach((r, c, v) -> {
+            if (notEquals.get()) return;
+            if (!Objects.equals(ag1.get(r, c), v)) notEquals.set(true);
+        });
+
+        return !notEquals.get();
+    }
+
     //
     // Properties
     //

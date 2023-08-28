@@ -6,14 +6,11 @@ import civitas.celestis.util.grid.Grid;
 
 public class Testing {
     public static void main(String[] args) {
-        final Grid<String> g1 = new ArrayGrid<>(10, 10);
-        g1.fill("Hello world");
-
-        System.out.println(g1);
+        final Grid<Double> doubleGrid = new ArrayGrid<>(10, 10);
+        doubleGrid.fill(10d);
 
         final Matrix m = new Matrix(10, 10);
-        m.fill(Math.PI);
-        System.out.println(m);
+        m.fill(10);
 
 
     }
