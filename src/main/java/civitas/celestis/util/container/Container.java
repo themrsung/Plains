@@ -16,6 +16,33 @@ import java.util.function.UnaryOperator;
  */
 public interface Container<E> extends Serializable {
     //
+    // Factory
+    //
+
+    /**
+     * Creates a new container with the provided value {@code v}.
+     *
+     * @param v   The value of which to initialize the container with
+     * @param <E> The type of element to contain
+     * @return A new container initialized from the provided value {@code v}
+     */
+    @Nonnull
+    static <E> Container<E> of(@Nullable E v) {
+        return new ObjectContainer<>(v);
+    }
+
+    /**
+     * Creates a new container with an initial value of {@code null}.
+     *
+     * @param <E> The type of element to contain
+     * @return A new container initialized with the value {@code null}
+     */
+    @Nonnull
+    static <E> Container<E> of() {
+        return new ObjectContainer<>(null);
+    }
+
+    //
     // Value
     //
 

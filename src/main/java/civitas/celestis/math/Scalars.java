@@ -1,5 +1,11 @@
 package civitas.celestis.math;
 
+import civitas.celestis.exception.IllegalInstanceException;
+
+/**
+ * A static utility class containing various constants and methods related
+ * to mathematical scalars, primarily of the type {@code double}.
+ */
 public final class Scalars {
     //
     // Constants
@@ -25,5 +31,17 @@ public final class Scalars {
     public static double clamp(double val, double min, double max) {
         if (val > max) return max;
         return Math.max(val, min);
+    }
+    //
+    // Miscellaneous
+    //
+
+    /**
+     * Private constructor to prevent instantiation.
+     *
+     * @throws IllegalInstanceException Always
+     */
+    private Scalars() throws IllegalInstanceException {
+        throw new IllegalInstanceException(this);
     }
 }
