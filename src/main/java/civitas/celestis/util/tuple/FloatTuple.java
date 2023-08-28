@@ -1,14 +1,26 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+/**
+ * A specialized tuple which holds the primitive type {@code float}. Float tuples
+ * * can be converted to their boxed form by calling {@link #boxed()}.
+ *
+ * @see Tuple
+ * @see Float2
+ * @see Float3
+ * @see Float4
+ * @see FloatArrayTuple
+ */
 public interface FloatTuple extends Serializable {
     //
     // Factory
@@ -21,13 +33,45 @@ public interface FloatTuple extends Serializable {
      * @return A tuple constructed from the provided components
      */
     @Nonnull
-    static FloatTuple of(float... components) {
+    static FloatTuple of(@Nonnull float... components) {
         return switch (components.length) {
+            case 0 -> EmptyFloatTuple.getInstance();
             case 2 -> new Float2(components);
             case 3 -> new Float3(components);
             case 4 -> new Float4(components);
             default -> new FloatArrayTuple(components);
         };
+    }
+
+    /**
+     * Creates a new float tuple from the provided array of components.
+     *
+     * @param components The components of which to construct the tuple from
+     * @return A tuple constructed from the provided components
+     */
+    @Nonnull
+    static FloatTuple of(@Nonnull Float[] components) {
+        return switch (components.length) {
+            case 0 -> EmptyFloatTuple.getInstance();
+            case 2 -> new Float2(components[0], components[1]);
+            case 3 -> new Float3(components[0], components[1], components[2]);
+            case 4 -> new Float4(components[0], components[1], components[2], components[3]);
+            default -> {
+                final float[] unboxed = new float[components.length];
+                for (int i = 0; i < components.length; i++) unboxed[i] = components[i];
+                yield new FloatArrayTuple(unboxed);
+            }
+        };
+    }
+
+    /**
+     * Returns an empty float tuple.
+     *
+     * @return An empty float tuple
+     */
+    @Nonnull
+    static FloatTuple empty() {
+        return EmptyFloatTuple.getInstance();
     }
 
     //
@@ -193,4 +237,113 @@ public interface FloatTuple extends Serializable {
     @Nonnull
     @Override
     String toString();
+}
+
+/**
+ * A tuple with zero elements.
+ */
+final class EmptyFloatTuple implements FloatTuple {
+    /**
+     * Returns the instance of this tuple.
+     *
+     * @return The empty tuple instance
+     */
+    @Nonnull
+    public static EmptyFloatTuple getInstance() {
+        return instance;
+    }
+
+    @Serial
+    private static final long serialVersionUID = 0L;
+    private static final EmptyFloatTuple instance = new EmptyFloatTuple();
+
+    private EmptyFloatTuple() {}
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isZero() {
+        return false;
+    }
+
+    @Override
+    public boolean isNaN() {
+        return false;
+    }
+
+    @Override
+    public boolean isFinite() {
+        return false;
+    }
+
+    @Override
+    public boolean isInfinite() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(float v) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(@Nonnull Iterable<Float> i) {
+        return false;
+    }
+
+    @Override
+    public float get(int i) throws IndexOutOfBoundsException {
+        throw new TupleIndexOutOfBoundsException(i);
+    }
+
+    @Nonnull
+    @Override
+    public FloatTuple map(@Nonnull UnaryOperator<Float> f) {
+        return this;
+    }
+
+    @Nonnull
+    @Override
+    public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
+        return Tuple.of();
+    }
+
+    @Nonnull
+    @Override
+    public float[] array() {
+        return new float[0];
+    }
+
+    @Nonnull
+    @Override
+    public Stream<Float> stream() {
+        return Stream.empty();
+    }
+
+    @Nonnull
+    @Override
+    public List<Float> list() {
+        return List.of();
+    }
+
+    @Nonnull
+    @Override
+    public Tuple<Float> boxed() {
+        return Tuple.of();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof FloatTuple t)) return false;
+        return t.size() == 0;
+    }
+
+    @Nonnull
+    @Override
+    public String toString() {
+        return "[]";
+    }
 }

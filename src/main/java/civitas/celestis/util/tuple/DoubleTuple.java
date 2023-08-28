@@ -1,14 +1,26 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
 
+/**
+ * A specialized tuple which holds the primitive type {@code double}. Double tuples
+ * can be converted to their boxed form by calling {@link #boxed()}.
+ *
+ * @see Tuple
+ * @see Double2
+ * @see Double3
+ * @see Double4
+ * @see DoubleArrayTuple
+ */
 public interface DoubleTuple extends Serializable {
     //
     // Factory
@@ -21,13 +33,24 @@ public interface DoubleTuple extends Serializable {
      * @return A tuple constructed from the provided components
      */
     @Nonnull
-    static DoubleTuple of(double... components) {
+    static DoubleTuple of(@Nonnull double... components) {
         return switch (components.length) {
+            case 0 -> EmptyDoubleTuple.getInstance();
             case 2 -> new Double2(components);
             case 3 -> new Double3(components);
             case 4 -> new Double4(components);
             default -> new DoubleArrayTuple(components);
         };
+    }
+
+    /**
+     * Returns an empty double tuple.
+     *
+     * @return An empty double tuple
+     */
+    @Nonnull
+    static DoubleTuple empty() {
+        return EmptyDoubleTuple.getInstance();
     }
 
     //
@@ -193,4 +216,113 @@ public interface DoubleTuple extends Serializable {
     @Nonnull
     @Override
     String toString();
+}
+
+/**
+ * A tuple with zero elements.
+ */
+final class EmptyDoubleTuple implements DoubleTuple {
+    /**
+     * Returns the instance of this tuple.
+     *
+     * @return The empty tuple instance
+     */
+    @Nonnull
+    public static EmptyDoubleTuple getInstance() {
+        return instance;
+    }
+
+    @Serial
+    private static final long serialVersionUID = 0L;
+    private static final EmptyDoubleTuple instance = new EmptyDoubleTuple();
+
+    private EmptyDoubleTuple() {}
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isZero() {
+        return false;
+    }
+
+    @Override
+    public boolean isNaN() {
+        return false;
+    }
+
+    @Override
+    public boolean isFinite() {
+        return false;
+    }
+
+    @Override
+    public boolean isInfinite() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(double v) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(@Nonnull Iterable<Double> i) {
+        return false;
+    }
+
+    @Override
+    public double get(int i) throws IndexOutOfBoundsException {
+        throw new TupleIndexOutOfBoundsException(i);
+    }
+
+    @Nonnull
+    @Override
+    public DoubleTuple map(@Nonnull DoubleUnaryOperator f) {
+        return this;
+    }
+
+    @Nonnull
+    @Override
+    public <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
+        return Tuple.of();
+    }
+
+    @Nonnull
+    @Override
+    public double[] array() {
+        return new double[0];
+    }
+
+    @Nonnull
+    @Override
+    public DoubleStream stream() {
+        return DoubleStream.empty();
+    }
+
+    @Nonnull
+    @Override
+    public List<Double> list() {
+        return List.of();
+    }
+
+    @Nonnull
+    @Override
+    public Tuple<Double> boxed() {
+        return Tuple.of();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof DoubleTuple t)) return false;
+        return t.size() == 0;
+    }
+
+    @Nonnull
+    @Override
+    public String toString() {
+        return "[]";
+    }
 }

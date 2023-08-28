@@ -16,10 +16,13 @@ import java.util.stream.Stream;
  * them fundamentally thread-safe, as long as the underlying elements are thread-safe.
  * <p>
  * Primitive types are supported by specialized tuple instances such as {@link DoubleTuple}
- * or {@link FloatTuple}.
+ * or {@link FloatTuple}. Primitive tuple instances can be contained either though factory
+ * methods such as {@link DoubleTuple#of(double...)} or primitive mapper methods such as
+ * {@link #mapToDouble(ToDoubleFunction)} or {@link #mapToFloat(Function)}.
  * </p>
  *
  * @param <E> The type of element this tuple should hold
+ * @see ArrayTuple
  * @see DoubleTuple
  * @see FloatTuple
  * @see LongTuple
@@ -124,6 +127,16 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      */
     @Nonnull
     DoubleTuple mapToDouble(@Nonnull ToDoubleFunction<? super E> f);
+
+    /**
+     * Applies the provided mapper function {@code f} to each element of this tuple,
+     * then returns a new tuple containing the return values of the function {@code f}.
+     *
+     * @param f The function of which to apply to each element of this tuple
+     * @return The resulting {@code double} tuple
+     */
+    @Nonnull
+    FloatTuple mapToFloat(@Nonnull Function<? super E, ? extends Float> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this tuple,

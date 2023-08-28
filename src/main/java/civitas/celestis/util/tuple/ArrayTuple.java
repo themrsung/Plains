@@ -169,6 +169,18 @@ public class ArrayTuple<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
+    public FloatTuple mapToFloat(@Nonnull Function<? super E, ? extends Float> f) {
+        return FloatTuple.of(stream().map(f).toArray(Float[]::new));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
     public LongTuple mapToLong(@Nonnull ToLongFunction<? super E> f) {
         return LongTuple.of(stream().mapToLong(f).toArray());
     }

@@ -1,14 +1,26 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.LongStream;
 
+/**
+ * A specialized tuple which holds the primitive type {@code long}. Long tuples
+ * can be converted to their boxed form by calling {@link #boxed()}.
+ *
+ * @see Tuple
+ * @see Long2
+ * @see Long3
+ * @see Long4
+ * @see LongArrayTuple
+ */
 public interface LongTuple extends Serializable {
     //
     // Factory
@@ -21,7 +33,7 @@ public interface LongTuple extends Serializable {
      * @return A tuple constructed from the provided components
      */
     @Nonnull
-    static LongTuple of(long... components) {
+    static LongTuple of(@Nonnull long... components) {
         return switch (components.length) {
             case 2 -> new Long2(components);
             case 3 -> new Long3(components);
@@ -168,4 +180,98 @@ public interface LongTuple extends Serializable {
     @Nonnull
     @Override
     String toString();
+}
+
+/**
+ * A tuple with zero elements.
+ */
+final class EmptyLongTuple implements LongTuple {
+    /**
+     * Returns the instance of this tuple.
+     *
+     * @return The empty tuple instance
+     */
+    @Nonnull
+    public static EmptyLongTuple getInstance() {
+        return instance;
+    }
+
+    @Serial
+    private static final long serialVersionUID = 0L;
+    private static final EmptyLongTuple instance = new EmptyLongTuple();
+
+    private EmptyLongTuple() {}
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isZero() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(long v) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(@Nonnull Iterable<Long> i) {
+        return false;
+    }
+
+    @Override
+    public long get(int i) throws IndexOutOfBoundsException {
+        throw new TupleIndexOutOfBoundsException(i);
+    }
+
+    @Nonnull
+    @Override
+    public LongTuple map(@Nonnull LongUnaryOperator f) {
+        return this;
+    }
+
+    @Nonnull
+    @Override
+    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
+        return Tuple.of();
+    }
+
+    @Nonnull
+    @Override
+    public long[] array() {
+        return new long[0];
+    }
+
+    @Nonnull
+    @Override
+    public LongStream stream() {
+        return LongStream.empty();
+    }
+
+    @Nonnull
+    @Override
+    public List<Long> list() {
+        return List.of();
+    }
+
+    @Nonnull
+    @Override
+    public Tuple<Long> boxed() {
+        return Tuple.of();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof LongTuple t)) return false;
+        return t.size() == 0;
+    }
+
+    @Nonnull
+    @Override
+    public String toString() {
+        return "[]";
+    }
 }
