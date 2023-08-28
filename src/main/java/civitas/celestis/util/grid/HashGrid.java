@@ -630,6 +630,11 @@ public class HashGrid<E> implements DynamicGrid<E> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
     @Nonnull
     @Override
     public FloatGrid mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
