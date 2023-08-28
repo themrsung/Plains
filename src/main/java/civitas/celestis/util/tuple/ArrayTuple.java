@@ -1,6 +1,6 @@
 package civitas.celestis.util.tuple;
 
-import civitas.celestis.util.array.SafeArray;
+import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -13,10 +13,9 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * An array-based implementation of a tuple.
+ * An array-based tuple which holds an arbitrary element of type {@code E}.
  *
  * @param <E> The type of element this tuple should hold
- * @see Tuple
  */
 public class ArrayTuple<E> implements Tuple<E> {
     //
@@ -36,7 +35,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     /**
      * Creates a new array tuple.
      *
-     * @param elements The elements this tuple should hold
+     * @param elements The elements this tuple should contain
      */
     @SafeVarargs
     @SuppressWarnings("unchecked")
@@ -49,9 +48,8 @@ public class ArrayTuple<E> implements Tuple<E> {
      *
      * @param t The tuple of which to copy elements from
      */
-    @SuppressWarnings("unchecked")
-    protected ArrayTuple(@Nonnull ArrayTuple<? extends E> t) {
-        this.elements = (E[]) Arrays.stream(t.elements).toArray();
+    public ArrayTuple(@Nonnull Tuple<? extends E> t) {
+        this.elements = t.array();
     }
 
     //
@@ -59,10 +57,10 @@ public class ArrayTuple<E> implements Tuple<E> {
     //
 
     /**
-     * The array of elements this tuple is holding.
-     * It is important that this array stays private in order to ensure that
-     * this class is immutable.
+     * The internal array of elements. It is important that this array stays
+     * private in order to ensure the immutability of this tuple.
      */
+    @Nonnull
     private final E[] elements;
 
     //
@@ -77,22 +75,6 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     public int size() {
         return elements.length;
-    }
-
-    //
-    // Retrieval
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param i The index of the element to retrieve
-     * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
-     */
-    @Override
-    public E get(int i) throws IndexOutOfBoundsException {
-        return elements[i];
     }
 
     //
@@ -130,22 +112,24 @@ public class ArrayTuple<E> implements Tuple<E> {
     }
 
     //
-    // Filtration
+    // Getters
     //
 
     /**
      * {@inheritDoc}
      *
-     * @param f The filter function to handle the filtration of this tuple
+     * @param i The index of the element to get
      * @return {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
-    @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public Tuple<E> filter(@Nonnull Predicate<? super E> f) {
-        return new ArrayTuple<>((E[]) Arrays.stream(elements).filter(f).toArray());
+    public E get(int i) throws IndexOutOfBoundsException {
+        try {
+            return elements[i];
+        } catch (final IndexOutOfBoundsException e) {
+            throw new TupleIndexOutOfBoundsException(i);
+        }
     }
-
 
     //
     // Transformation
@@ -162,7 +146,43 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     @SuppressWarnings("unchecked")
     public <F> Tuple<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new ArrayTuple<>((F[]) Arrays.stream(elements).map(f).toArray());
+        return Tuple.of((F[]) stream().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleTuple mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
+        return DoubleTuple.of(stream().mapToDouble(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongTuple mapToLong(@Nonnull ToLongFunction<? super E> f) {
+        return LongTuple.of(stream().mapToLong(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public IntTuple mapToInt(@Nonnull ToIntFunction<? super E> f) {
+        return IntTuple.of(stream().mapToInt(f).toArray());
     }
 
     /**
@@ -178,19 +198,19 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, G> f)
+    public <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
             throws IllegalArgumentException {
         if (elements.length != t.size()) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
 
-        final G[] result = (G[]) new Object[elements.length];
+        final G[] results = (G[]) new Object[elements.length];
 
         for (int i = 0; i < elements.length; i++) {
-            result[i] = f.apply(elements[i], t.get(i));
+            results[i] = f.apply(elements[i], t.get(i));
         }
 
-        return new ArrayTuple<>(result);
+        return Tuple.of(results);
     }
 
     //
@@ -202,32 +222,33 @@ public class ArrayTuple<E> implements Tuple<E> {
      *
      * @return {@inheritDoc}
      */
+    @Nonnull
     @Override
     public Iterator<E> iterator() {
-        return Arrays.stream(elements).iterator();
+        return stream().iterator();
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this tuple
+     * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
+    public void forEach(@Nonnull Consumer<? super E> a) {
         for (final E element : elements) {
-            action.accept(element);
+            a.accept(element);
         }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this tuple
+     * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull BiConsumer<Integer, ? super E> action) {
+    public void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a) {
         for (int i = 0; i < elements.length; i++) {
-            action.accept(i, elements[i]);
+            a.accept(i, elements[i]);
         }
     }
 
@@ -244,18 +265,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) Arrays.stream(elements).toArray();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public SafeArray<E> safeArray() {
-        return SafeArray.of(elements);
+        return (E[]) stream().toArray();
     }
 
     /**
@@ -277,7 +287,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public List<E> list() {
-        return List.copyOf(Arrays.asList(elements));
+        return List.of(elements);
     }
 
     //
@@ -293,13 +303,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof Tuple<?> t)) return false;
-        if (elements.length != t.size()) return false;
-
-        for (int i = 0; i < elements.length; i++) {
-            if (!Objects.equals(elements[i], t.get(i))) return false;
-        }
-
-        return true;
+        return Arrays.equals(elements, t.array());
     }
 
     //
@@ -311,8 +315,8 @@ public class ArrayTuple<E> implements Tuple<E> {
      *
      * @return {@inheritDoc}
      */
-    @Override
     @Nonnull
+    @Override
     public String toString() {
         return Arrays.toString(elements);
     }
