@@ -44,6 +44,17 @@ public interface IntArray extends BaseArray<Integer> {
         return IntFastArray.referenceOf(values);
     }
 
+    /**
+     * Creates a new type-safe array from the provided stream of values.
+     *
+     * @param s The stream of which to use as the source of the array
+     * @return A new type-safe array containing the provided stream's values
+     */
+    @Nonnull
+    static IntArray from(@Nonnull IntStream s) {
+        return IntFastArray.referenceOf(s.toArray());
+    }
+
     //
     // Properties
     //

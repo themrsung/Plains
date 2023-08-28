@@ -2,7 +2,6 @@ package civitas.celestis.util.grid;
 
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
-import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -11,6 +10,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 /**
@@ -621,6 +621,20 @@ public class HashGrid<E> implements DynamicGrid<E> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
+        final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
+        forEach((r, c, v) -> result.values[r][c] = f.applyAsDouble(v));
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param g   The grid of which to merge this grid with
      * @param f   The merger function to handle the merging of the two grids
      * @param <F> {@inheritDoc}
@@ -691,16 +705,6 @@ public class HashGrid<E> implements DynamicGrid<E> {
     @Override
     public Set<E> set() {
         return Set.copyOf(values.values());
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Tuple<E> tuple() {
-        return Tuple.copyOf(values.values());
     }
 
     //

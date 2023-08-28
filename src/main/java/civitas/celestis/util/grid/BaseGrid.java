@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 /**
  * The base class for all grids, including primitive specialized grids.
+ *
  * @param <E> The type of element this grid should hold
  * @see Grid
  */

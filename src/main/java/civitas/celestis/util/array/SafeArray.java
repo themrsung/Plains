@@ -142,6 +142,19 @@ public interface SafeArray<E> extends BaseArray<E> {
         return a.subArray(0, a.length());
     }
 
+    /**
+     * Creates a new type-safe array from a stream of values.
+     *
+     * @param s   The stream of which to use as the source of the array
+     * @param <E> The type of element to contain
+     * @return A new type-safe array containing the stream's values
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> SafeArray<E> from(@Nonnull Stream<E> s) {
+        return new FastArray<>((E[]) s.toArray());
+    }
+
     //
     // Properties
     //

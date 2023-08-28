@@ -49,6 +49,17 @@ public interface FloatArray extends BaseArray<Float> {
         return FloatFastArray.referenceOf(values);
     }
 
+    /**
+     * Creates a new type-safe array from the provided stream of values.
+     *
+     * @param s The stream of which to use as the source of the array
+     * @return A new type-safe array containing the provided stream's values
+     */
+    @Nonnull
+    static FloatArray from(@Nonnull Stream<Float> s) {
+        return new FloatFastArray(s.toArray(Float[]::new));
+    }
+
     //
     // Properties
     //

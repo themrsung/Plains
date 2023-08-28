@@ -14,14 +14,25 @@ import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
 
+/**
+ * A specialized grid which uses the primitive type {@code double}.
+ *
+ * @see Grid
+ */
 public interface DoubleGrid extends BaseGrid<Double> {
     //
     // Factory
     //
 
+    /**
+     * Creates a new double grid from the provided two-dimensional array of values.
+     *
+     * @param values The values of which to contain in the grid
+     * @return A new grid containing the provided values
+     */
     @Nonnull
     static DoubleGrid of(@Nonnull double[][] values) {
-        return null;
+        return DoubleArrayGrid.of(values);
     }
 
     //
@@ -59,6 +70,7 @@ public interface DoubleGrid extends BaseGrid<Double> {
 
     /**
      * Checks if this grid contains the provided value {@code v}.
+     *
      * @param v The value of which to check for containment
      * @return {@code true} if there is at least one element within this grid which is
      * equal to that of the provided value {@code v}
@@ -67,6 +79,7 @@ public interface DoubleGrid extends BaseGrid<Double> {
 
     /**
      * Checks if this grid contains multiple values.
+     *
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this grid contains every value of the iterable object
      */
@@ -217,7 +230,7 @@ public interface DoubleGrid extends BaseGrid<Double> {
      * Applies the provided mapper function {@code f} to every element of this grid, then returns
      * a new grid whose values are populated from that of the provided function's return values.
      *
-     * @param f   The function of which to apply to each element of this grid
+     * @param f The function of which to apply to each element of this grid
      * @return The resulting grid
      */
     @Nonnull
@@ -239,14 +252,47 @@ public interface DoubleGrid extends BaseGrid<Double> {
      * for each corresponding pair of elements, then returns a new grid whose elements are populated
      * from that of the return values of the merger function {@code f}.
      *
-     * @param g   The grid of which to merge this grid with
-     * @param f   The merger function to handle the merging of the two grids
+     * @param g The grid of which to merge this grid with
+     * @param f The merger function to handle the merging of the two grids
      * @return The resulting grid
      * @throws IllegalArgumentException When the provided grid {@code g}'s dimensions are different
      *                                  from that of this grid's dimensions
      */
     @Nonnull
     DoubleGrid merge(@Nonnull DoubleGrid g, @Nonnull DoubleBinaryOperator f) throws IllegalArgumentException;
+
+    //
+    // Iteration
+    //
+
+    /**
+     * Returns an iterator of every element of this grid.
+     *
+     * @return An iterator of every element of this grid
+     */
+    @Nonnull
+    @Override
+    Iterator<Double> iterator();
+
+    /**
+     * Executes the provided action for each element of this grid. The order of execution is not
+     * guaranteed to be consistent.
+     *
+     * @param a The action to be performed for each element
+     */
+    @Override
+    void forEach(@Nonnull Consumer<? super Double> a);
+
+    /**
+     * Executes the provided action for each element of this grid. The row and column indices are
+     * provided as the first and second parameter of the function respectively, and the current
+     * element is provided as the third parameter of the function. The order of execution is not
+     * guaranteed to be consistent.
+     *
+     * @param a The action to be performed for each element
+     */
+    @Override
+    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Double> a);
 
     //
     // Conversion
@@ -296,43 +342,12 @@ public interface DoubleGrid extends BaseGrid<Double> {
     /**
      * Returns a new grid whose values are populated from that of this grid's values, encapsulated
      * inside a {@link Double} object.
+     *
      * @return The boxed grid representation of this grid
+     * @see Grid
      */
     @Nonnull
     Grid<Double> boxed();
-
-    //
-    // Iteration
-    //
-
-    /**
-     * Returns an iterator of every element of this grid.
-     *
-     * @return An iterator of every element of this grid
-     */
-    @Nonnull
-    @Override
-    Iterator<Double> iterator();
-
-    /**
-     * Executes the provided action for each element of this grid. The order of execution is not
-     * guaranteed to be consistent.
-     *
-     * @param a The action to be performed for each element
-     */
-    @Override
-    void forEach(@Nonnull Consumer<? super Double> a);
-
-    /**
-     * Executes the provided action for each element of this grid. The row and column indices are
-     * provided as the first and second parameter of the function respectively, and the current
-     * element is provided as the third parameter of the function. The order of execution is not
-     * guaranteed to be consistent.
-     *
-     * @param a The action to be performed for each element
-     */
-    @Override
-    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Double> a);
 
     //
     // Equality
@@ -340,6 +355,7 @@ public interface DoubleGrid extends BaseGrid<Double> {
 
     /**
      * Checks for equality between this grid and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the object is also a double grid, and the dimensions, order of elements,
      * and the elements' values are all equal
@@ -353,6 +369,7 @@ public interface DoubleGrid extends BaseGrid<Double> {
 
     /**
      * Serializes this grid into a string.
+     *
      * @return The string representation of this grid
      */
     @Nonnull

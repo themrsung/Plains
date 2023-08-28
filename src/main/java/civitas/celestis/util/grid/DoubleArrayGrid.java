@@ -6,25 +6,26 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.stream.Stream;
+import java.util.function.DoubleBinaryOperator;
+import java.util.function.DoubleFunction;
+import java.util.function.DoubleUnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 /**
- * A grid which stores atomic references to objects instead of the
- * objects themselves. Atomic grids can be considered thread-safe as
- * long as the underlying elements do not have thread-unsafe properties,
- * such as being modifiable concurrently by non-synchronized code.
+ * A static grid implemented using primitive arrays. An array grid's size
+ * cannot be changed after instantiation. Since the underlying data structure
+ * is a fixed-size array, array grids are memory-efficient and random access
+ * operations tend to be faster than other grid implementations.
  *
- * @param <E> The type of element this grid should hold
- * @see Grid
+ * @see DoubleGrid
  */
-public class AtomicGrid<E> implements Grid<E> {
+public class DoubleArrayGrid implements DoubleGrid {
     //
     // Constants
     //
@@ -40,22 +41,19 @@ public class AtomicGrid<E> implements Grid<E> {
     //
 
     /**
-     * Creates a new atomic grid from a 2D array of values.
+     * Creates a new array grid from a 2D array of values.
      *
      * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
      * @return The constructed grid
      */
     @Nonnull
-    public static <E> AtomicGrid<E> of(@Nonnull E[][] values) {
+    public static DoubleArrayGrid of(@Nonnull double[][] values) {
         final int rows = values.length;
         final int columns = rows > 0 ? values[0].length : 0;
-        final AtomicGrid<E> grid = new AtomicGrid<>(rows, columns);
+        final DoubleArrayGrid grid = new DoubleArrayGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                grid.references[r][c].set(values[r][c]);
-            }
+            System.arraycopy(values[r], 0, grid.values[r], 0, columns);
         }
 
         return grid;
@@ -66,30 +64,23 @@ public class AtomicGrid<E> implements Grid<E> {
     //
 
     /**
-     * Creates a new atomic grid.
+     * Creates a new array grid.
      *
      * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
      */
-    @SuppressWarnings("unchecked")
-    public AtomicGrid(int rows, int columns) {
+    public DoubleArrayGrid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.references = (AtomicReference<E>[][]) Array.newInstance(AtomicReference.class, rows, columns);
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                references[r][c] = new AtomicReference<>();
-            }
-        }
+        this.values = new double[rows][columns];
     }
 
     /**
-     * Creates a new atomic grid.
+     * Creates a new array grid.
      *
      * @param g The grid of which to copy component values from
      */
-    public AtomicGrid(@Nonnull Grid<? extends E> g) {
+    public DoubleArrayGrid(@Nonnull DoubleGrid g) {
         this(g.rows(), g.columns());
         setRange(0, 0, rows, columns, g);
     }
@@ -99,18 +90,17 @@ public class AtomicGrid<E> implements Grid<E> {
     //
 
     /**
-     * The internal two-dimensional array of references.
+     * The internal 2D array of values.
      */
-    @Nonnull
-    protected final AtomicReference<E>[][] references;
+    protected final double[][] values;
 
     /**
-     * The number of rows.
+     * The number of rows this grid has.
      */
     protected final int rows;
 
     /**
-     * The number of columns.
+     * The number of columns this grid has.
      */
     protected final int columns;
 
@@ -155,14 +145,14 @@ public class AtomicGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param obj The object of which to check for containment
+     * @param v The value of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(@Nullable Object obj) {
+    public boolean contains(double v) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                if (Objects.equals(references[r][c].get(), obj)) return true;
+                if (values[r][c] == v) return true;
             }
         }
 
@@ -176,8 +166,9 @@ public class AtomicGrid<E> implements Grid<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<?> i) {
-        for (final Object o : i) {
+    public boolean containsAll(@Nonnull Iterable<Double> i) {
+        for (final Double o : i) {
+            if (o == null) return false;
             if (!contains(o)) return false;
         }
 
@@ -197,23 +188,8 @@ public class AtomicGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int r, int c) throws IndexOutOfBoundsException {
-        return references[r][c].get();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param r        The index of the row to get
-     * @param c        The index of the column to get
-     * @param fallback The fallback value of which to return if the element is {@code null}
-     * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
-     */
-    @Override
-    public E getOrDefault(int r, int c, E fallback) throws IndexOutOfBoundsException {
-        final E value = references[r][c].get();
-        return value != null ? value : fallback;
+    public double get(int r, int c) throws IndexOutOfBoundsException {
+        return values[r][c];
     }
 
     /**
@@ -225,8 +201,8 @@ public class AtomicGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void set(int r, int c, E v) throws IndexOutOfBoundsException {
-        references[r][c].set(v);
+    public void set(int r, int c, double v) throws IndexOutOfBoundsException {
+        values[r][c] = v;
     }
 
     //
@@ -239,24 +215,9 @@ public class AtomicGrid<E> implements Grid<E> {
      * @param v The value of which to fill this grid with
      */
     @Override
-    public synchronized void fill(E v) {
-        for (final AtomicReference<E>[] row : references) {
-            Arrays.stream(row).forEach(r -> r.set(v));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param v The values of which to selectively fill this grid with
-     */
-    @Override
-    public synchronized void fillEmpty(E v) {
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                if (references[r][c].get() != null) continue;
-                references[r][c].set(v);
-            }
+    public void fill(double v) {
+        for (final double[] row : values) {
+            Arrays.fill(row, v);
         }
     }
 
@@ -271,10 +232,10 @@ public class AtomicGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void fillRange(int r1, int c1, int r2, int c2, E v) throws IndexOutOfBoundsException {
+    public void fillRange(int r1, int c1, int r2, int c2, double v) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
-                references[r][c].set(v);
+                values[r][c] = v;
             }
         }
     }
@@ -285,10 +246,10 @@ public class AtomicGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public synchronized void update(@Nonnull Function<? super E, E> f) {
+    public void update(@Nonnull DoubleUnaryOperator f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                references[r][c].getAndUpdate(f::apply);
+                values[r][c] = f.applyAsDouble(values[r][c]);
             }
         }
     }
@@ -299,13 +260,10 @@ public class AtomicGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public synchronized void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super E, E> f) {
+    public void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super Double, Double> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                final int row = r;
-                final int column = c;
-
-                references[r][c].getAndUpdate(v -> f.apply(row, column, v));
+                values[r][c] = f.apply(r, c, values[r][c]);
             }
         }
     }
@@ -317,11 +275,11 @@ public class AtomicGrid<E> implements Grid<E> {
      * @param newValue The new value of which to replace to
      */
     @Override
-    public synchronized void replaceAll(E oldValue, E newValue) {
+    public void replaceAll(double oldValue, double newValue) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                if (!Objects.equals(references[r][c].get(), oldValue)) continue;
-                references[r][c].set(newValue);
+                if (values[r][c] != oldValue) continue;
+                values[r][c] = newValue;
             }
         }
     }
@@ -342,13 +300,11 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
-        final SyncGrid<E> result = new SyncGrid<>(r2 - r1, c2 - c1);
+    public DoubleGrid subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
+        final DoubleArrayGrid result = new DoubleArrayGrid(r2 - r1, c2 - c1);
 
         for (int r = r1; r < r2; r++) {
-            for (int c = c1; c < c2; c++) {
-                result.values[r][c] = references[r][c].get();
-            }
+            System.arraycopy(values[r], c1, result.values[r - r1], 0, c2 - c1);
         }
 
         return result;
@@ -365,11 +321,10 @@ public class AtomicGrid<E> implements Grid<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public synchronized void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g)
-            throws IndexOutOfBoundsException {
+    public void setRange(int r1, int c1, int r2, int c2, @Nonnull DoubleGrid g) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
-                references[r][c].set(g.get(r - r1, c - c1));
+                values[r][c] = g.get(r - r1, c - c1);
             }
         }
     }
@@ -387,16 +342,14 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> resize(int rows, int columns) {
-        final SyncGrid<E> result = new SyncGrid<>(rows, columns);
+    public DoubleGrid resize(int rows, int columns) {
+        final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
 
         final int minRows = Math.min(this.rows, rows);
         final int minCols = Math.min(this.columns, columns);
 
         for (int r = 0; r < minRows; r++) {
-            for (int c = 0; c < minCols; c++) {
-                result.values[r][c] = references[r][c].get();
-            }
+            System.arraycopy(values[r], 0, result.values[r], 0, minCols);
         }
 
         return result;
@@ -413,12 +366,12 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Grid<E> transpose() {
-        final SyncGrid<E> result = new SyncGrid<>(columns, rows);
+    public DoubleGrid transpose() {
+        final DoubleArrayGrid result = new DoubleArrayGrid(columns, rows);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[c][r] = references[r][c].get();
+                result.values[c][r] = values[r][c];
             }
         }
 
@@ -432,18 +385,38 @@ public class AtomicGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleGrid map(@Nonnull DoubleUnaryOperator f) {
+        final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = f.applyAsDouble(values[r][c]);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this grid
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        final SyncGrid<F> result = new SyncGrid<>(rows, columns);
+    public <F> Grid<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
+        final ArrayGrid<F> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.apply(references[r][c].get());
+                result.values[r][c] = f.apply(values[r][c]);
             }
         }
 
@@ -453,108 +426,27 @@ public class AtomicGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each element of this grid
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
-        final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.applyAsDouble(references[r][c].get());
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param g   The grid of which to merge this grid with
-     * @param f   The merger function to handle the merging of the two grids
-     * @param <F> {@inheritDoc}
-     * @param <G> {@inheritDoc}
+     * @param g The grid of which to merge this grid with
+     * @param f The merger function to handle the merging of the two grids
      * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f)
-            throws IllegalArgumentException {
+    public DoubleGrid merge(@Nonnull DoubleGrid g, @Nonnull DoubleBinaryOperator f) throws IllegalArgumentException {
         if (rows != g.rows() || columns != g.columns()) {
             throw new IllegalArgumentException("Grid sizes must match for this operation.");
         }
 
-        final SyncGrid<G> result = new SyncGrid<>(rows, columns);
+        final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.apply(references[r][c].get(), g.get(r, c));
+                result.values[r][c] = f.applyAsDouble(values[r][c], g.get(r, c));
             }
         }
 
         return result;
-    }
-
-    //
-    // Conversion
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    @SuppressWarnings("unchecked")
-    public E[] array() {
-        final E[] result = (E[]) new Object[rows * columns];
-
-        int i = 0;
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                result[i++] = references[r][c].get();
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Stream<E> stream() {
-        return Arrays.stream(array());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Collection<E> collect() {
-        return List.of(array());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Set<E> set() {
-        return Set.of(array());
     }
 
     //
@@ -568,20 +460,20 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Double> iterator() {
         return stream().iterator();
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param a The action to be performed for each element
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> a) {
+    public void forEach(@Nonnull Consumer<? super Double> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                a.accept(references[r][c].get());
+                a.accept(values[r][c]);
             }
         }
     }
@@ -592,12 +484,89 @@ public class AtomicGrid<E> implements Grid<E> {
      * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a) {
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Double> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                a.accept(r, c, references[r][c].get());
+                a.accept(r, c, values[r][c]);
             }
         }
+    }
+
+    //
+    // Conversion
+    //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public double[] array() {
+        final double[] result = new double[rows * columns];
+
+        /*
+         * This is faster than calculating r * columns * c each iteration
+         */
+        int i = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result[i++] = values[r][c];
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleStream stream() {
+        return Arrays.stream(array());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Collection<Double> collect() {
+        return stream().boxed().toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Set<Double> set() {
+        return stream().boxed().collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Grid<Double> boxed() {
+        final ArrayGrid<Double> result = new ArrayGrid<>(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            result.values[r] = Arrays.stream(values[r]).boxed().toArray(Double[]::new);
+        }
+
+        return result;
     }
 
     //
@@ -612,12 +581,12 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof Grid<?> g)) return false;
+        if (!(obj instanceof DoubleGrid g)) return false;
         if (rows != g.rows() || columns != g.columns()) return false;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                if (!Objects.equals(references[r][c].get(), g.get(r, c))) return false;
+                if (values[r][c] != g.get(r, c)) return false;
             }
         }
 
@@ -638,10 +607,8 @@ public class AtomicGrid<E> implements Grid<E> {
     public String toString() {
         final StringBuilder out = new StringBuilder("{");
 
-        for (final AtomicReference<E>[] row : references) {
-            out.append("\n").append("  ")
-                    .append(Arrays.toString(Arrays.stream(row).map(AtomicReference::get).toArray()))
-                    .append(",");
+        for (final double[] row : values) {
+            out.append("\n").append("  ").append(Arrays.toString(row)).append(",");
         }
 
         out.replace(out.length() - 1, out.length(), "").append("\n");

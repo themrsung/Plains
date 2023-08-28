@@ -2,7 +2,6 @@ package civitas.celestis.util.grid;
 
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
-import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -13,6 +12,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 /**
@@ -308,6 +308,18 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
+        return super.mapToDouble(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param g   The grid of which to merge this grid with
      * @param f   The merger function to handle the merging of the two grids
      * @param <F> {@inheritDoc}
@@ -368,16 +380,6 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     @Override
     public synchronized Set<E> set() {
         return super.set();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public synchronized Tuple<E> tuple() {
-        return super.tuple();
     }
 
     //
