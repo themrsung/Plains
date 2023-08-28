@@ -5,7 +5,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
@@ -94,7 +94,7 @@ public interface IntTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f);
+    <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,

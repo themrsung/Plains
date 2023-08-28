@@ -7,7 +7,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.LongStream;
 
@@ -155,7 +155,7 @@ public class LongArrayTuple implements LongTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> map(@Nonnull Function<? super Long, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f) {
         return Tuple.of((F[]) stream().boxed().map(f).toArray());
     }
 

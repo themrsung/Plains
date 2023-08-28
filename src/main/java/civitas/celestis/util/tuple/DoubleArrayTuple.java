@@ -7,8 +7,8 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
 import java.util.stream.DoubleStream;
 
 /**
@@ -197,7 +197,7 @@ public class DoubleArrayTuple implements DoubleTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> map(@Nonnull Function<? super Double, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f) {
         return Tuple.of((F[]) stream().boxed().map(f).toArray());
     }
 

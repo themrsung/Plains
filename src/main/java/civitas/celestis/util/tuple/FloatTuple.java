@@ -5,29 +5,24 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.DoubleFunction;
-import java.util.function.DoubleUnaryOperator;
-import java.util.stream.DoubleStream;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
-public interface DoubleTuple extends Serializable {
+public interface FloatTuple extends Serializable {
     //
     // Factory
     //
 
     /**
-     * Creates a new double tuple from the provided array of components.
+     * Creates a new float tuple from the provided array of components.
      *
      * @param components The components of which to construct the tuple from
      * @return A tuple constructed from the provided components
      */
     @Nonnull
-    static DoubleTuple of(double... components) {
-        return switch (components.length) {
-            case 2 -> new Double2(components);
-            case 3 -> new Double3(components);
-            case 4 -> new Double4(components);
-            default -> new DoubleArrayTuple(components);
-        };
+    static FloatTuple of(float... components) {
+        return null;
     }
 
     //
@@ -49,10 +44,10 @@ public interface DoubleTuple extends Serializable {
     boolean isZero();
 
     /**
-     * Returns whether this tuple contains {@link Double#NaN}.
+     * Returns whether this tuple contains {@link Float#NaN}.
      *
      * @return {@code true} if at least one component of this tuple is not a number
-     * @see Double#isNaN(double)
+     * @see Float#isNaN(float)
      */
     boolean isNaN();
 
@@ -60,7 +55,7 @@ public interface DoubleTuple extends Serializable {
      * Returns whether this tuple is finite.
      *
      * @return {@code true} if every component of this tuple is finite
-     * @see Double#isFinite(double)
+     * @see Float#isFinite(float)
      */
     boolean isFinite();
 
@@ -68,7 +63,7 @@ public interface DoubleTuple extends Serializable {
      * Returns whether this tuple is infinite.
      *
      * @return {@code true} if at least one component of this tuple is infinite
-     * @see Double#isInfinite(double)
+     * @see Float#isInfinite(float)
      */
     boolean isInfinite();
 
@@ -83,7 +78,7 @@ public interface DoubleTuple extends Serializable {
      * @return {@code true} if at least one component of this tuple is equal
      * to the provided value {@code v}
      */
-    boolean contains(double v);
+    boolean contains(float v);
 
     /**
      * Checks if this tuple contains multiple values.
@@ -91,7 +86,7 @@ public interface DoubleTuple extends Serializable {
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this tuple contains every component of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<Double> i);
+    boolean containsAll(@Nonnull Iterable<Float> i);
 
     //
     // Getters
@@ -104,7 +99,7 @@ public interface DoubleTuple extends Serializable {
      * @return The {@code i}th component of this tuple
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    double get(int i) throws IndexOutOfBoundsException;
+    float get(int i) throws IndexOutOfBoundsException;
 
     //
     // Transformation
@@ -119,7 +114,7 @@ public interface DoubleTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f);
+    <F> Tuple<F> map(@Nonnull Function<? super Float, ? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
@@ -129,7 +124,7 @@ public interface DoubleTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    DoubleTuple mapToDouble(@Nonnull DoubleUnaryOperator f);
+    FloatTuple mapToFloat(@Nonnull UnaryOperator<Float> f);
 
     //
     // Conversion
@@ -141,7 +136,7 @@ public interface DoubleTuple extends Serializable {
      * @return The array representation of this tuple
      */
     @Nonnull
-    double[] array();
+    float[] array();
 
     /**
      * Returns a stream whose source is the elements of this tuple.
@@ -149,7 +144,7 @@ public interface DoubleTuple extends Serializable {
      * @return A stream whose source is the elements of this tuple
      */
     @Nonnull
-    DoubleStream stream();
+    Stream<Float> stream();
 
     /**
      * Returns an unmodifiable list containing the components of this tuple in their proper order.
@@ -157,7 +152,7 @@ public interface DoubleTuple extends Serializable {
      * @return The list representation of this tuple
      */
     @Nonnull
-    List<Double> list();
+    List<Float> list();
 
     /**
      * Returns a tuple containing the components of this tuple in their boxed form.
@@ -165,7 +160,7 @@ public interface DoubleTuple extends Serializable {
      * @return The boxed object representation of this tuple
      */
     @Nonnull
-    Tuple<Double> boxed();
+    Tuple<Float> boxed();
 
     //
     // Equality
@@ -175,7 +170,7 @@ public interface DoubleTuple extends Serializable {
      * Checks for equality between this tuple and the provided object {@code obj}.
      *
      * @param obj The object to compare to
-     * @return {@code true} if the other object is also a double tuple, and the number of components,
+     * @return {@code true} if the other object is also a float tuple, and the number of components,
      * the order of the components, and the components' values are all equal
      */
     @Override

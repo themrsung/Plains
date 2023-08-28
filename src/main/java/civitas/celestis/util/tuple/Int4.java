@@ -7,7 +7,7 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
@@ -226,7 +226,7 @@ public class Int4 implements IntTuple {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull Function<? super Integer, ? extends F> f) {
+    public <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f) {
         return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
     }
 

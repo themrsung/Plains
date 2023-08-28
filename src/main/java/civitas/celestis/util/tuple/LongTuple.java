@@ -5,7 +5,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.LongStream;
 
@@ -94,7 +94,7 @@ public interface LongTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull Function<? super Long, ? extends F> f);
+    <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
