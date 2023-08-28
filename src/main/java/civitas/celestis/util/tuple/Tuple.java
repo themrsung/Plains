@@ -4,6 +4,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -40,6 +41,19 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @SafeVarargs
     static <E> Tuple<E> of(E... elements) {
         return new ArrayTuple<>(elements);
+    }
+
+    /**
+     * Creates a new tuple from an existing {@link Collection collection}.
+     *
+     * @param c   The collection of which to copy elements from
+     * @param <E> The type of element to copy
+     * @return A tuple constructed from the provided collection
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    static <E> Tuple<E> copyOf(@Nonnull Collection<E> c) {
+        return new ArrayTuple<>((E[]) c.toArray());
     }
 
     //
