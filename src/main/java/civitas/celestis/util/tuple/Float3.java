@@ -5,16 +5,15 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
- * An immutable type containing two primitive {@code float}s.
+ * An immutable type containing three primitive {@code float}s.
  */
-public class Float2 implements FloatTuple {
+public class Float3 implements FloatTuple {
     //
     // Constants
     //
@@ -30,44 +29,48 @@ public class Float2 implements FloatTuple {
     //
 
     /**
-     * Creates a new {@link Float2}.
+     * Creates a new {@link Float3}.
      *
      * @param x The X component of this tuple
      * @param y The Y component of this tuple
+     * @param z The Z component of this tuple
      */
-    public Float2(float x, float y) {
+    public Float3(float x, float y, float z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     /**
-     * Creates a new {@link Float2}.
+     * Creates a new {@link Float3}.
      *
-     * @param components An array containing the components of this tuple in XY order
-     * @throws IllegalArgumentException When the provided array's length is not {@code 2}
+     * @param components An array containing the components of this tuple in XYZ order
+     * @throws IllegalArgumentException When the provided array's length is not {@code 3}
      */
-    public Float2(@Nonnull float[] components) {
-        if (components.length != 2) {
-            throw new IllegalArgumentException("The provided array's length is not 2.");
+    public Float3(@Nonnull float[] components) {
+        if (components.length != 3) {
+            throw new IllegalArgumentException("The provided array's length is not 3.");
         }
 
         this.x = components[0];
         this.y = components[1];
+        this.z = components[2];
     }
 
     /**
-     * Creates a new {@link Float2}.
+     * Creates a new {@link Float3}.
      *
      * @param t The tuple of which to copy component values from
-     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 2}
+     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 3}
      */
-    public Float2(@Nonnull FloatTuple t) {
-        if (t.size() != 2) {
-            throw new IllegalArgumentException("The provided tuple's size is not 2.");
+    public Float3(@Nonnull FloatTuple t) {
+        if (t.size() != 3) {
+            throw new IllegalArgumentException("The provided tuple's size is not 3.");
         }
 
         this.x = t.get(0);
         this.y = t.get(1);
+        this.z = t.get(2);
     }
 
     //
@@ -84,6 +87,11 @@ public class Float2 implements FloatTuple {
      */
     protected final float y;
 
+    /**
+     * The Z component of this tuple.
+     */
+    protected final float z;
+
     //
     // Properties
     //
@@ -95,7 +103,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public int size() {
-        return 2;
+        return 3;
     }
 
     /**
@@ -105,7 +113,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public boolean isZero() {
-        return x == 0 && y == 0;
+        return x == 0 && y == 0 && z == 0;
     }
 
     /**
@@ -115,7 +123,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public boolean isNaN() {
-        return Float.isNaN(x + y);
+        return Float.isNaN(x + y + z);
     }
 
     /**
@@ -125,7 +133,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public boolean isFinite() {
-        return Float.isFinite(x + y);
+        return Float.isFinite(x + y + z);
     }
 
     /**
@@ -135,7 +143,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public boolean isInfinite() {
-        return Float.isInfinite(x + y);
+        return Float.isInfinite(x + y + z);
     }
 
     //
@@ -150,7 +158,7 @@ public class Float2 implements FloatTuple {
      */
     @Override
     public boolean contains(float v) {
-        return x == v || y == v;
+        return x == v || y == v || z == v;
     }
 
     /**
@@ -185,6 +193,7 @@ public class Float2 implements FloatTuple {
         return switch (i) {
             case 0 -> x;
             case 1 -> y;
+            case 2 -> z;
             default -> throw new TupleIndexOutOfBoundsException(i);
         };
     }
@@ -207,6 +216,15 @@ public class Float2 implements FloatTuple {
         return y;
     }
 
+    /**
+     * Returns the Z component of this tuple.
+     *
+     * @return The Z component of this tuple
+     */
+    public float z() {
+        return z;
+    }
+
     //
     // Transformation
     //
@@ -219,8 +237,8 @@ public class Float2 implements FloatTuple {
      */
     @Nonnull
     @Override
-    public Float2 map(@Nonnull UnaryOperator<Float> f) {
-        return new Float2(f.apply(x), f.apply(y));
+    public Float3 map(@Nonnull UnaryOperator<Float> f) {
+        return new Float3(f.apply(x), f.apply(y), f.apply(z));
     }
 
     /**
@@ -233,7 +251,7 @@ public class Float2 implements FloatTuple {
     @Nonnull
     @Override
     public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
-        return Tuple.of(f.apply(x), f.apply(y));
+        return Tuple.of(f.apply(x), f.apply(y), f.apply(z));
     }
 
     //
@@ -248,7 +266,7 @@ public class Float2 implements FloatTuple {
     @Nonnull
     @Override
     public float[] array() {
-        return new float[]{x, y};
+        return new float[]{x, y, z};
     }
 
     /**
@@ -259,7 +277,7 @@ public class Float2 implements FloatTuple {
     @Nonnull
     @Override
     public Stream<Float> stream() {
-        return Stream.of(x, y);
+        return Stream.of(x, y, z);
     }
 
     /**
@@ -297,8 +315,8 @@ public class Float2 implements FloatTuple {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof FloatTuple t)) return false;
-        if (t.size() != 2) return false;
-        return x == t.get(0) && y == t.get(1);
+        if (t.size() != 3) return false;
+        return x == t.get(0) && y == t.get(1) && z == t.get(2);
     }
 
     //
@@ -313,6 +331,6 @@ public class Float2 implements FloatTuple {
     @Nonnull
     @Override
     public String toString() {
-        return "[" + x + ", " + y + "]";
+        return "[" + x + ", " + y + ", " + z + "]";
     }
 }

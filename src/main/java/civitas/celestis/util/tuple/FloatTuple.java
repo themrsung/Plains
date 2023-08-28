@@ -22,7 +22,12 @@ public interface FloatTuple extends Serializable {
      */
     @Nonnull
     static FloatTuple of(float... components) {
-        return null;
+        return switch (components.length) {
+            case 2 -> new Float2(components);
+            case 3 -> new Float3(components);
+            case 4 -> new Float4(components);
+            default -> new FloatArrayTuple(components);
+        };
     }
 
     //
