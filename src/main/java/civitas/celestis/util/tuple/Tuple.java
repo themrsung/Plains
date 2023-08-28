@@ -10,10 +10,19 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * A shallowly immutable set of elements. Tuples cannot be resized after
- * instantiation, and support the usage of {@code null} values.
+ * A shallowly immutable set of objects. Tuples cannot be resized after instantiation,
+ * and support the usage of {@code null} values. The shallow immutability of tuples makes
+ * them fundamentally thread-safe, as long as the underlying elements are thread-safe.
+ * <p>
+ * Primitive types are supported by specialized tuple instances such as {@link DoubleTuple}
+ * or {@link FloatTuple}.
+ * </p>
  *
  * @param <E> The type of element this tuple should hold
+ * @see DoubleTuple
+ * @see FloatTuple
+ * @see LongTuple
+ * @see IntTuple
  */
 public interface Tuple<E> extends Iterable<E>, Serializable {
     //
