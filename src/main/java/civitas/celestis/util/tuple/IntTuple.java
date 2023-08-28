@@ -1,6 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.array.IntArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -142,9 +143,21 @@ public interface IntTuple extends BaseTuple<Integer> {
     int[] array();
 
     /**
+     * Returns an integer array containing the components of this tuple in their proper order.
+     *
+     * @return The array representation of this tuple
+     * @see IntArray
+     */
+    @Nonnull
+    default IntArray intArray() {
+        return IntArray.from(stream());
+    }
+
+    /**
      * Returns a stream whose source is the elements of this tuple.
      *
      * @return A stream whose source is the elements of this tuple
+     * @see IntStream
      */
     @Nonnull
     IntStream stream();
@@ -153,6 +166,7 @@ public interface IntTuple extends BaseTuple<Integer> {
      * Returns an unmodifiable list containing the components of this tuple in their proper order.
      *
      * @return The list representation of this tuple
+     * @see List
      */
     @Nonnull
     @Override
@@ -162,6 +176,7 @@ public interface IntTuple extends BaseTuple<Integer> {
      * Returns a tuple containing the components of this tuple in their boxed form.
      *
      * @return The boxed object representation of this tuple
+     * @see Tuple
      */
     @Nonnull
     Tuple<Integer> boxed();

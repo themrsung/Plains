@@ -1,6 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.array.FloatArray;
 import civitas.celestis.util.function.FloatFunction;
 import civitas.celestis.util.function.FloatUnaryOperator;
 import jakarta.annotation.Nonnull;
@@ -188,9 +189,21 @@ public interface FloatTuple extends BaseTuple<Float> {
     float[] array();
 
     /**
+     * Returns a float array containing the components of this tuple in their proper order.
+     *
+     * @return The array representation of this tuple
+     * @see FloatArray
+     */
+    @Nonnull
+    default FloatArray floatArray() {
+        return FloatArray.of(array());
+    }
+
+    /**
      * Returns a stream whose source is the elements of this tuple.
      *
      * @return A stream whose source is the elements of this tuple
+     * @see Stream
      */
     @Nonnull
     Stream<Float> stream();
@@ -199,6 +212,7 @@ public interface FloatTuple extends BaseTuple<Float> {
      * Returns an unmodifiable list containing the components of this tuple in their proper order.
      *
      * @return The list representation of this tuple
+     * @see List
      */
     @Nonnull
     @Override
@@ -208,6 +222,7 @@ public interface FloatTuple extends BaseTuple<Float> {
      * Returns a tuple containing the components of this tuple in their boxed form.
      *
      * @return The boxed object representation of this tuple
+     * @see Tuple
      */
     @Nonnull
     Tuple<Float> boxed();

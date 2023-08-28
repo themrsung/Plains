@@ -11,7 +11,5 @@ public class Testing {
 
         final Matrix m = new Matrix(10, 10);
         m.fill(10);
-
-
     }
 }

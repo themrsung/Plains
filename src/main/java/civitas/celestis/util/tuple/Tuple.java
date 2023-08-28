@@ -1,5 +1,6 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.function.ToFloatFunction;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -185,6 +186,20 @@ public interface Tuple<E> extends Iterable<E>, BaseTuple<E> {
     <F, G> Tuple<G> merge(@Nonnull Tuple<F> t, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
             throws IllegalArgumentException;
 
+    /**
+     * Tests each element of this tuple using the provided predicate {@code f},
+     * collects all elements the predicate returns {@code true} to, then returns a new
+     * tuple containing only the filtered elements.
+     *
+     * @param f The predicate to use to filter this array
+     * @return The filtered array
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default Tuple<E> filter(@Nonnull Predicate<? super E> f) {
+        return of((E[]) stream().filter(f).toArray());
+    }
+
     //
     // Iteration
     //
@@ -227,6 +242,16 @@ public interface Tuple<E> extends Iterable<E>, BaseTuple<E> {
      */
     @Nonnull
     E[] array();
+
+    /**
+     * Returns a type-safe array containing the elements of this tuple in their proper order.
+     *
+     * @return The array representation of this tuple
+     */
+    @Nonnull
+    default SafeArray<E> safeArray() {
+        return SafeArray.from(stream());
+    }
 
     /**
      * Returns a stream whose source is the elements of this tuple.

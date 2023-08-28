@@ -253,6 +253,23 @@ public interface LongArray extends BaseArray<Long> {
     void sort(@Nonnull Comparator<? super Long> c);
 
     //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this array using the provided predicate {@code f},
+     * collects all elements the predicate returns {@code true} to, then returns a new
+     * array containing only the filtered elements.
+     *
+     * @param f The predicate to use to filter this array
+     * @return The filtered array
+     */
+    @Nonnull
+    default LongArray filter(@Nonnull LongPredicate f) {
+        return LongArray.from(stream().filter(f));
+    }
+
+    //
     // Transformation
     //
 

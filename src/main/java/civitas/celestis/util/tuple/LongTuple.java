@@ -1,6 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.array.LongArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -131,9 +132,21 @@ public interface LongTuple extends BaseTuple<Long> {
     long[] array();
 
     /**
+     * Returns a long array containing the components of this tuple in their proper order.
+     *
+     * @return The array representation of this tuple
+     * @see LongArray
+     */
+    @Nonnull
+    default LongArray longArray() {
+        return LongArray.from(stream());
+    }
+
+    /**
      * Returns a stream whose source is the elements of this tuple.
      *
      * @return A stream whose source is the elements of this tuple
+     * @see LongStream
      */
     @Nonnull
     LongStream stream();
@@ -142,6 +155,7 @@ public interface LongTuple extends BaseTuple<Long> {
      * Returns an unmodifiable list containing the components of this tuple in their proper order.
      *
      * @return The list representation of this tuple
+     * @see List
      */
     @Nonnull
     @Override
@@ -151,6 +165,7 @@ public interface LongTuple extends BaseTuple<Long> {
      * Returns a tuple containing the components of this tuple in their boxed form.
      *
      * @return The boxed object representation of this tuple
+     * @see Tuple
      */
     @Nonnull
     Tuple<Long> boxed();

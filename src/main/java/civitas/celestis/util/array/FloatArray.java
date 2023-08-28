@@ -2,6 +2,7 @@ package civitas.celestis.util.array;
 
 import civitas.celestis.util.function.FloatBinaryOperator;
 import civitas.celestis.util.function.FloatFunction;
+import civitas.celestis.util.function.FloatPredicate;
 import civitas.celestis.util.function.FloatUnaryOperator;
 import civitas.celestis.util.tuple.FloatTuple;
 import jakarta.annotation.Nonnull;
@@ -255,6 +256,23 @@ public interface FloatArray extends BaseArray<Float> {
      */
     @Override
     void sort(@Nonnull Comparator<? super Float> c);
+
+    //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this array using the provided predicate {@code f},
+     * collects all elements the predicate returns {@code true} to, then returns a new
+     * array containing only the filtered elements.
+     *
+     * @param f The predicate to use to filter this array
+     * @return The filtered array
+     */
+    @Nonnull
+    default FloatArray filter(@Nonnull FloatPredicate f) {
+        return FloatArray.from(stream().filter(f::test));
+    }
 
     //
     // Transformation

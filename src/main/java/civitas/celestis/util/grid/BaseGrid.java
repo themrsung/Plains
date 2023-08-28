@@ -32,10 +32,10 @@ public interface BaseGrid<E> extends Iterable<E>, Serializable {
      * {@code true} if the dimensions, order of elements, and the element's values are all equal.
      * In other words, this returns {@code true} if all corresponding element pairs are equal.
      *
-     * @param g1 The first grid to compare
-     * @param g2 The second grid to compare
-     * @return {@code true} if the grids are considered equal according to the criteria mentioned above
+     * @param g1  The first grid to compare
+     * @param g2  The second grid to compare
      * @param <T> The element of the first grid (used for copying the grid)
+     * @return {@code true} if the grids are considered equal according to the criteria mentioned above
      */
     static <T> boolean equals(@Nullable BaseGrid<T> g1, @Nullable BaseGrid<?> g2) {
         if (g1 == null) return g2 == null;

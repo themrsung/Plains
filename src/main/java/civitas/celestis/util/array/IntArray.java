@@ -252,6 +252,23 @@ public interface IntArray extends BaseArray<Integer> {
     void sort(@Nonnull Comparator<? super Integer> c);
 
     //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this array using the provided predicate {@code f},
+     * collects all elements the predicate returns {@code true} to, then returns a new
+     * array containing only the filtered elements.
+     *
+     * @param f The predicate to use to filter this array
+     * @return The filtered array
+     */
+    @Nonnull
+    default IntArray filter(@Nonnull IntPredicate f) {
+        return IntArray.from(stream().filter(f));
+    }
+
+    //
     // Transformation
     //
 

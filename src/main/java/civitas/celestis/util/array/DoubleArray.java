@@ -252,6 +252,23 @@ public interface DoubleArray extends BaseArray<Double> {
     void sort(@Nonnull Comparator<? super Double> c);
 
     //
+    // Filtration
+    //
+
+    /**
+     * Tests each element of this array using the provided predicate {@code f},
+     * collects all elements the predicate returns {@code true} to, then returns a new
+     * array containing only the filtered elements.
+     *
+     * @param f The predicate to use to filter this array
+     * @return The filtered array
+     */
+    @Nonnull
+    default DoubleArray filter(@Nonnull DoublePredicate f) {
+        return DoubleArray.from(stream().filter(f));
+    }
+
+    //
     // Transformation
     //
 
