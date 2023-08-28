@@ -43,7 +43,12 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Nonnull
     @SafeVarargs
     static <E> Tuple<E> of(E... elements) {
-        return new ArrayTuple<>(elements);
+        return switch (elements.length) {
+            case 2 -> new Object2<>(elements);
+            case 3 -> new Object3<>(elements);
+            case 4 -> new Object4<>(elements);
+            default -> new ArrayTuple<>(elements);
+        };
     }
 
     /**
@@ -56,7 +61,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
     @Nonnull
     @SuppressWarnings("unchecked")
     static <E> Tuple<E> copyOf(@Nonnull Collection<E> c) {
-        return new ArrayTuple<>((E[]) c.toArray());
+        return of((E[]) c.toArray());
     }
 
     //
