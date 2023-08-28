@@ -190,6 +190,18 @@ public class DoubleArrayTuple implements DoubleTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleTuple map(@Nonnull DoubleUnaryOperator f) {
+        return DoubleTuple.of(stream().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
@@ -197,20 +209,8 @@ public class DoubleArrayTuple implements DoubleTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f) {
-        return Tuple.of((F[]) stream().boxed().map(f).toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public DoubleTuple mapToDouble(@Nonnull DoubleUnaryOperator f) {
-        return DoubleTuple.of(stream().map(f).toArray());
+    public <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
+        return Tuple.of((F[]) stream().mapToObj(f).toArray());
     }
 
     //

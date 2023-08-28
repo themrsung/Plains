@@ -184,26 +184,26 @@ public class Int2 implements IntTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int2 map(@Nonnull IntUnaryOperator f) {
+        return new Int2(f.applyAsInt(x), f.applyAsInt(y));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Int2 mapToInt(@Nonnull IntUnaryOperator f) {
-        return new Int2(f.applyAsInt(x), f.applyAsInt(y));
     }
 
     //

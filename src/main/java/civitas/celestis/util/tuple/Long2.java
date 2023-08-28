@@ -184,27 +184,28 @@ public class Long2 implements LongTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Long2 map(@Nonnull LongUnaryOperator f) {
+        return new Long2(f.applyAsLong(x), f.applyAsLong(y));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Long2 mapToLong(@Nonnull LongUnaryOperator f) {
-        return new Long2(f.applyAsLong(x), f.applyAsLong(y));
-    }
 
     //
     // Conversion

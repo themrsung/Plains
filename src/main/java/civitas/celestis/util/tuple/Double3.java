@@ -219,6 +219,7 @@ public class Double3 implements DoubleTuple {
 
     /**
      * Returns the Z component of this tuple.
+     *
      * @return The Z component of this tuple
      */
     public double z() {
@@ -232,26 +233,26 @@ public class Double3 implements DoubleTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Double3 map(@Nonnull DoubleUnaryOperator f) {
+        return new Double3(f.applyAsDouble(x), f.applyAsDouble(y), f.applyAsDouble(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Double3 mapToDouble(@Nonnull DoubleUnaryOperator f) {
-        return new Double3(f.applyAsDouble(x), f.applyAsDouble(y), f.applyAsDouble(z));
     }
 
     //

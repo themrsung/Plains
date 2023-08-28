@@ -148,6 +148,18 @@ public class LongArrayTuple implements LongTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongTuple map(@Nonnull LongUnaryOperator f) {
+        return LongTuple.of(stream().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
@@ -155,20 +167,8 @@ public class LongArrayTuple implements LongTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f) {
-        return Tuple.of((F[]) stream().boxed().map(f).toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public LongTuple mapToLong(@Nonnull LongUnaryOperator f) {
-        return LongTuple.of(stream().map(f).toArray());
+    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
+        return Tuple.of((F[]) stream().mapToObj(f).toArray());
     }
 
     //

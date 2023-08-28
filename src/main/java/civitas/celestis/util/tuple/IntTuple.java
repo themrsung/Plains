@@ -94,7 +94,7 @@ public interface IntTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f);
+    <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
@@ -104,7 +104,7 @@ public interface IntTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    IntTuple mapToInt(@Nonnull IntUnaryOperator f);
+    IntTuple map(@Nonnull IntUnaryOperator f);
 
     //
     // Conversion

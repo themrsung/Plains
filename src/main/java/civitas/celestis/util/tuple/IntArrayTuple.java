@@ -148,6 +148,18 @@ public class IntArrayTuple implements IntTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public IntTuple map(@Nonnull IntUnaryOperator f) {
+        return IntTuple.of(stream().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
@@ -155,20 +167,8 @@ public class IntArrayTuple implements IntTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f) {
-        return Tuple.of((F[]) stream().boxed().map(f).toArray());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public IntTuple mapToInt(@Nonnull IntUnaryOperator f) {
-        return IntTuple.of(stream().map(f).toArray());
+    public <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
+        return Tuple.of((F[]) stream().mapToObj(f).toArray());
     }
 
     //

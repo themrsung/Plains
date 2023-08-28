@@ -181,6 +181,7 @@ public class Long4 implements LongTuple {
 
     /**
      * Returns the W component of this tuple.
+     *
      * @return The W component of this tuple
      */
     public long w() {
@@ -207,6 +208,7 @@ public class Long4 implements LongTuple {
 
     /**
      * Returns the Z component of this tuple.
+     *
      * @return The Z component of this tuple
      */
     public long z() {
@@ -220,26 +222,26 @@ public class Long4 implements LongTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Long4 map(@Nonnull LongUnaryOperator f) {
+        return new Long4(f.applyAsLong(w), f.applyAsLong(x), f.applyAsLong(y), f.applyAsLong(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
         return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Long4 mapToLong(@Nonnull LongUnaryOperator f) {
-        return new Long4(f.applyAsLong(w), f.applyAsLong(x), f.applyAsLong(y), f.applyAsLong(z));
     }
 
     //

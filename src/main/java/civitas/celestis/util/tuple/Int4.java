@@ -181,6 +181,7 @@ public class Int4 implements IntTuple {
 
     /**
      * Returns the W component of this tuple.
+     *
      * @return The W component of this tuple
      */
     public int w() {
@@ -207,6 +208,7 @@ public class Int4 implements IntTuple {
 
     /**
      * Returns the Z component of this tuple.
+     *
      * @return The Z component of this tuple
      */
     public int z() {
@@ -220,26 +222,26 @@ public class Int4 implements IntTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int4 map(@Nonnull IntUnaryOperator f) {
+        return new Int4(f.applyAsInt(w), f.applyAsInt(x), f.applyAsInt(y), f.applyAsInt(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
         return Tuple.of(f.apply(w), f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Int4 mapToInt(@Nonnull IntUnaryOperator f) {
-        return new Int4(f.applyAsInt(w), f.applyAsInt(x), f.applyAsInt(y), f.applyAsInt(z));
     }
 
     //

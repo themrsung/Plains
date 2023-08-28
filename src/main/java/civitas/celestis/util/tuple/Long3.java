@@ -189,6 +189,7 @@ public class Long3 implements LongTuple {
 
     /**
      * Returns the Z component of this tuple.
+     *
      * @return The Z component of this tuple
      */
     public long z() {
@@ -202,26 +203,26 @@ public class Long3 implements LongTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Long3 map(@Nonnull LongUnaryOperator f) {
+        return new Long3(f.applyAsLong(x), f.applyAsLong(y), f.applyAsLong(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull LongFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Long3 mapToLong(@Nonnull LongUnaryOperator f) {
-        return new Long3(f.applyAsLong(x), f.applyAsLong(y), f.applyAsLong(z));
     }
 
     //

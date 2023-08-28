@@ -214,26 +214,26 @@ public class Double2 implements DoubleTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Double2 map(@Nonnull DoubleUnaryOperator f) {
+        return new Double2(f.applyAsDouble(x), f.applyAsDouble(y));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Double2 mapToDouble(@Nonnull DoubleUnaryOperator f) {
-        return new Double2(f.applyAsDouble(x), f.applyAsDouble(y));
     }
 
     //

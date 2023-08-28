@@ -189,6 +189,7 @@ public class Int3 implements IntTuple {
 
     /**
      * Returns the Z component of this tuple.
+     *
      * @return The Z component of this tuple
      */
     public int z() {
@@ -202,26 +203,26 @@ public class Int3 implements IntTuple {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each component of this tuple
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Int3 map(@Nonnull IntUnaryOperator f) {
+        return new Int3(f.applyAsInt(x), f.applyAsInt(y), f.applyAsInt(z));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each component of this tuple
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> map(@Nonnull IntFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y), f.apply(z));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each component of this tuple
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Int3 mapToInt(@Nonnull IntUnaryOperator f) {
-        return new Int3(f.applyAsInt(x), f.applyAsInt(y), f.applyAsInt(z));
     }
 
     //

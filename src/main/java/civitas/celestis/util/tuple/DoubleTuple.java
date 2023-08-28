@@ -114,22 +114,22 @@ public interface DoubleTuple extends Serializable {
      * Applies the provided mapper function {@code f} to each component of this tuple,
      * then returns a new tuple containing the return values of the function {@code f}.
      *
-     * @param f   The function of which to apply to each component of this tuple
-     * @param <F> The type of component to map this tuple to
+     * @param f The function of which to apply to each component of this tuple
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull DoubleFunction<? extends F> f);
+    DoubleTuple map(@Nonnull DoubleUnaryOperator f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
      * then returns a new tuple containing the return values of the function {@code f}.
      *
-     * @param f The function of which to apply to each component of this tuple
+     * @param f   The function of which to apply to each component of this tuple
+     * @param <F> The type of component to map this tuple to
      * @return The resulting tuple
      */
     @Nonnull
-    DoubleTuple mapToDouble(@Nonnull DoubleUnaryOperator f);
+    <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f);
 
     //
     // Conversion
