@@ -10,6 +10,7 @@ package civitas.celestis.util.function;
  * @param <W> The fourth input parameter
  * @param <R> The return value of this function
  */
+@FunctionalInterface
 public interface QuadFunction<T, U, V, W, R> {
     /**
      * Applies this function to the provided parameters.

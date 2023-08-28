@@ -8,6 +8,7 @@ package civitas.celestis.util.function;
  * @param <V> The third input parameter
  * @param <W> The fourth input parameter
  */
+@FunctionalInterface
 public interface QuadConsumer<T, U, V, W> {
     /**
      * Accepts this function, executing its contents.

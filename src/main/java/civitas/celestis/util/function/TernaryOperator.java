@@ -5,6 +5,7 @@ package civitas.celestis.util.function;
  *
  * @param <T> The type parameter of this function
  */
+@FunctionalInterface
 public interface TernaryOperator<T> {
     /**
      * Applies this function, then returns the result of the operation.

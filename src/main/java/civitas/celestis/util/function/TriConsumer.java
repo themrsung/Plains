@@ -7,6 +7,7 @@ package civitas.celestis.util.function;
  * @param <U> The second input parameter
  * @param <V> The third input parameter
  */
+@FunctionalInterface
 public interface TriConsumer<T, U, V> {
     /**
      * Accepts this function, executing its contents.

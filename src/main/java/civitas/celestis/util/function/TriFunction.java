@@ -9,6 +9,7 @@ package civitas.celestis.util.function;
  * @param <V> The third input parameter
  * @param <R> The return value of this function
  */
+@FunctionalInterface
 public interface TriFunction<T, U, V, R> {
     /**
      * Applies this function to the provided parameters.
