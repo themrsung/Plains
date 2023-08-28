@@ -4,7 +4,6 @@ import civitas.celestis.util.function.ToFloatFunction;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.stream.Stream;
  * @see LongTuple
  * @see IntTuple
  */
-public interface Tuple<E> extends Iterable<E>, Serializable {
+public interface Tuple<E> extends Iterable<E>, BaseTuple<E> {
     //
     // Factory
     //
@@ -77,6 +76,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      *
      * @return The number of components this tuple has
      */
+    @Override
     int size();
 
     //
@@ -243,6 +243,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @throws NullPointerException When this tuple contains at least one instance of {@code null}
      */
     @Nonnull
+    @Override
     List<E> list();
 
     //

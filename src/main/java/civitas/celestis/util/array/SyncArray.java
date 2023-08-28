@@ -37,16 +37,17 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * Creates a new synchronized array containing the provided values.
+     *
      * @param values The value of which to contain in the synchronized array
+     * @param <E>    The type of element to contain
      * @return The constructed synchronized array
-     * @param <E> The type of element to contain
      */
     @Nonnull
     @SafeVarargs
     public static <E> SyncArray<E> of(@Nonnull E... values) {
         return new SyncArray<>(Arrays.copyOf(values, values.length));
     }
-    
+
     /*
      * Referencing is not supported for synchronized arrays.
      */
@@ -57,6 +58,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * Creates a new synchronized array.
+     *
      * @param length The length of this array
      */
     public SyncArray(int length) {
@@ -65,6 +67,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * Creates a new synchronized array.
+     *
      * @param a The array of which to copy values from
      */
     public SyncArray(@Nonnull SafeArray<? extends E> a) {
@@ -74,19 +77,21 @@ public class SyncArray<E> extends FastArray<E> {
     /**
      * Creates a new synchronized array. This is a direct assignment constructor,
      * and thus is hidden as private to ensure proper usage.
+     *
      * @param array The array of which to directly assign to this instance
      */
     private SyncArray(@Nonnull E[] array) {
         super(array);
     }
-    
+
     //
     // Containment
     //
 
     /**
      * {@inheritDoc}
-     * @param obj The object of which to check for containment 
+     *
+     * @param obj The object of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
@@ -96,7 +101,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param i The iterable object of which to check for containment 
+     *
+     * @param i The iterable object of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
@@ -110,7 +116,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param i The index of the element to get 
+     *
+     * @param i The index of the element to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
@@ -121,7 +128,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param i The index of the element to get 
+     *
+     * @param i The index of the element to get
      * @param e The fallback value to default to when the value is {@code null}
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -133,7 +141,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param i The index of the element to set 
+     *
+     * @param i The index of the element to set
      * @param e The element of which to set to
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
@@ -144,7 +153,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param i The index of the element to update 
+     *
+     * @param i The index of the element to update
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
@@ -159,7 +169,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param v The value to fill this array with 
+     *
+     * @param v The value to fill this array with
      */
     @Override
     public synchronized void fill(E v) {
@@ -168,7 +179,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param v The value to fill empty slots of this array with 
+     *
+     * @param v The value to fill empty slots of this array with
      */
     @Override
     public synchronized void fillEmpty(E v) {
@@ -177,7 +189,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param s The starting index at which to start assigning values from 
+     *
+     * @param s The starting index at which to start assigning values from
      * @param e The ending index at which to stop assigning values at
      * @param v The value of which to assign to every slot within the specified range
      */
@@ -188,7 +201,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      */
     @Override
     public synchronized void update(@Nonnull UnaryOperator<E> f) {
@@ -197,7 +211,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      */
     @Override
     public synchronized void update(@Nonnull BiFunction<? super Integer, ? super E, E> f) {
@@ -206,7 +221,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param oldValue The old value to replace 
+     *
+     * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
     @Override
@@ -216,7 +232,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param oldValue The old value to replace 
+     *
+     * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
     @Override
@@ -226,7 +243,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param oldValue The old value to replace 
+     *
+     * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
     @Override
@@ -244,7 +262,8 @@ public class SyncArray<E> extends FastArray<E> {
      * Note that usage of sub-arrays with synchronized arrays can be potentially dangerous
      * if concurrently used across multiples threads. Use at your own risk.
      * </p>
-     * @param s The starting index at which to start creating the sub-array (inclusive) 
+     *
+     * @param s The starting index at which to start creating the sub-array (inclusive)
      * @param e The ending index at which to stop creating the sub-array (exclusive)
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -257,7 +276,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param s The starting index at which to start copying values from (inclusive) 
+     *
+     * @param s The starting index at which to start copying values from (inclusive)
      * @param e The ending index at which to stop copying values from (exclusive)
      * @param a The sub-array containing the values to assign to this array
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -273,7 +293,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param size The size to resize this array to 
+     *
+     * @param size The size to resize this array to
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -296,6 +317,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @throws UnsupportedOperationException {@inheritDoc}
      */
     @Override
@@ -305,7 +327,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param c The comparator function of which to sort this array with 
+     *
+     * @param c The comparator function of which to sort this array with
      */
     @Override
     public synchronized void sort(@Nonnull Comparator<? super E> c) {
@@ -318,7 +341,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f   The function of which to apply to each element of this array 
+     *
+     * @param f   The function of which to apply to each element of this array
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
@@ -330,7 +354,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -341,7 +366,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -352,7 +378,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -363,7 +390,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param f The function of which to apply to each element of this array 
+     *
+     * @param f The function of which to apply to each element of this array
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -374,7 +402,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param a   The array of which to merge this array with 
+     *
+     * @param a   The array of which to merge this array with
      * @param f   The merger function to handle the merging of the two arrays
      * @param <F> {@inheritDoc}
      * @param <G> {@inheritDoc}
@@ -393,6 +422,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -403,7 +433,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param a The action to be performed for each element 
+     *
+     * @param a The action to be performed for each element
      */
     @Override
     public synchronized void forEach(@Nonnull Consumer<? super E> a) {
@@ -412,7 +443,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param a The action to be performed for each element 
+     *
+     * @param a The action to be performed for each element
      */
     @Override
     public synchronized void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a) {
@@ -425,6 +457,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -435,6 +468,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -445,6 +479,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -455,6 +490,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -469,7 +505,8 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
-     * @param obj The object to compare to 
+     *
+     * @param obj The object to compare to
      * @return {@inheritDoc}
      */
     @Override
@@ -483,6 +520,7 @@ public class SyncArray<E> extends FastArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

@@ -5,7 +5,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
@@ -21,7 +20,7 @@ import java.util.stream.LongStream;
  * @see Long4
  * @see LongArrayTuple
  */
-public interface LongTuple extends Serializable {
+public interface LongTuple extends BaseTuple<Long> {
     //
     // Factory
     //
@@ -51,6 +50,7 @@ public interface LongTuple extends Serializable {
      *
      * @return The number of components this tuple has
      */
+    @Override
     int size();
 
     /**
@@ -144,6 +144,7 @@ public interface LongTuple extends Serializable {
      * @return The list representation of this tuple
      */
     @Nonnull
+    @Override
     List<Long> list();
 
     /**

@@ -7,7 +7,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,7 +20,7 @@ import java.util.stream.Stream;
  * @see Float4
  * @see FloatArrayTuple
  */
-public interface FloatTuple extends Serializable {
+public interface FloatTuple extends BaseTuple<Float> {
     //
     // Factory
     //
@@ -83,6 +82,7 @@ public interface FloatTuple extends Serializable {
      *
      * @return The number of components this tuple has
      */
+    @Override
     int size();
 
     /**
@@ -201,6 +201,7 @@ public interface FloatTuple extends Serializable {
      * @return The list representation of this tuple
      */
     @Nonnull
+    @Override
     List<Float> list();
 
     /**

@@ -37,9 +37,10 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * Creates a new atomic array from the provided array of values.
+     *
      * @param values The values of which to reference
+     * @param <E>    The type of element to reference
      * @return A new atomic array referencing the provided values
-     * @param <E> The type of element to reference
      */
     @Nonnull
     @SafeVarargs
@@ -58,6 +59,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * Creates a new atomic array.
+     *
      * @param length The length of which to initialize this array to
      */
     @SuppressWarnings("unchecked")
@@ -72,6 +74,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * Creates a new atomic array.
+     *
      * @param a The array of which to copy values from
      */
     public AtomicArray(@Nonnull SafeArray<? extends E> a) {
@@ -105,6 +108,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -118,6 +122,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -132,6 +137,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The iterable object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -150,6 +156,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -161,6 +168,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to get
      * @param e The fallback value to default to when the value is {@code null}
      * @return {@inheritDoc}
@@ -174,6 +182,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to set
      * @param e The element of which to set to
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -185,6 +194,7 @@ public class AtomicArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to update
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException {@inheritDoc}

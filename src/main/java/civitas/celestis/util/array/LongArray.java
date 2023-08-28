@@ -4,7 +4,6 @@ import civitas.celestis.util.tuple.LongTuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.stream.LongStream;
  *
  * @see SafeArray
  */
-public interface LongArray extends Iterable<Long>, Serializable {
+public interface LongArray extends BaseArray<Long> {
     //
     // Factory
     //
@@ -55,6 +54,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      *
      * @return The number of elements this array contains
      */
+    @Override
     int length();
 
     //
@@ -224,11 +224,13 @@ public interface LongArray extends Iterable<Long>, Serializable {
     /**
      * Shuffles this array, randomizing its elements' order.
      */
+    @Override
     void shuffle();
 
     /**
      * Sorts this array by its natural ascending order.
      */
+    @Override
     void sort();
 
     /**
@@ -236,6 +238,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      *
      * @param c The comparator function of which to sort this array with
      */
+    @Override
     void sort(@Nonnull Comparator<? super Long> c);
 
     //
@@ -280,6 +283,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
 
     /**
      * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     *
      * @param a The array of which to append to the end of this array
      * @return The appended array
      */
@@ -295,6 +299,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
 
     /**
      * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     *
      * @param a The array of which to prepend to the front of this array
      * @return The prepended array
      */
@@ -332,6 +337,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      *
      * @param a The action to be performed for each element
      */
+    @Override
     void forEach(@Nonnull BiConsumer<? super Integer, ? super Long> a);
 
     //
@@ -361,6 +367,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      * @throws NullPointerException When this array contains at least one instance of {@code null}
      */
     @Nonnull
+    @Override
     List<Long> list();
 
     /**

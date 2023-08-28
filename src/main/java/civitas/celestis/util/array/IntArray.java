@@ -4,7 +4,6 @@ import civitas.celestis.util.tuple.IntTuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.stream.IntStream;
  *
  * @see SafeArray
  */
-public interface IntArray extends Iterable<Integer>, Serializable {
+public interface IntArray extends BaseArray<Integer> {
     //
     // Factory
     //
@@ -54,6 +53,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      *
      * @return The number of elements this array contains
      */
+    @Override
     int length();
 
     //
@@ -223,11 +223,13 @@ public interface IntArray extends Iterable<Integer>, Serializable {
     /**
      * Shuffles this array, randomizing its elements' order.
      */
+    @Override
     void shuffle();
 
     /**
      * Sorts this array by its natural ascending order.
      */
+    @Override
     void sort();
 
     /**
@@ -235,6 +237,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      *
      * @param c The comparator function of which to sort this array with
      */
+    @Override
     void sort(@Nonnull Comparator<? super Integer> c);
 
     //
@@ -279,6 +282,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
 
     /**
      * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     *
      * @param a The array of which to append to the end of this array
      * @return The appended array
      */
@@ -294,6 +298,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
 
     /**
      * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     *
      * @param a The array of which to prepend to the front of this array
      * @return The prepended array
      */
@@ -331,6 +336,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      *
      * @param a The action to be performed for each element
      */
+    @Override
     void forEach(@Nonnull BiConsumer<? super Integer, ? super Integer> a);
 
     //
@@ -360,6 +366,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @throws NullPointerException When this array contains at least one instance of {@code null}
      */
     @Nonnull
+    @Override
     List<Integer> list();
 
     /**

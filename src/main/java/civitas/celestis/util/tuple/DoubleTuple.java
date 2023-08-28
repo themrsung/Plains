@@ -5,7 +5,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
@@ -21,7 +20,7 @@ import java.util.stream.DoubleStream;
  * @see Double4
  * @see DoubleArrayTuple
  */
-public interface DoubleTuple extends Serializable {
+public interface DoubleTuple extends BaseTuple<Double> {
     //
     // Factory
     //
@@ -62,6 +61,7 @@ public interface DoubleTuple extends Serializable {
      *
      * @return The number of components this tuple has
      */
+    @Override
     int size();
 
     /**
@@ -180,6 +180,7 @@ public interface DoubleTuple extends Serializable {
      * @return The list representation of this tuple
      */
     @Nonnull
+    @Override
     List<Double> list();
 
     /**

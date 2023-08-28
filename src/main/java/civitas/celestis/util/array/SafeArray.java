@@ -5,7 +5,6 @@ import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +34,7 @@ import java.util.stream.Stream;
  * @see LongArray
  * @see IntArray
  */
-public interface SafeArray<E> extends Iterable<E>, Serializable {
+public interface SafeArray<E> extends BaseArray<E> {
     //
     // Factory
     //
@@ -55,9 +54,10 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Creates a new synchronized array from the provided array of elements.
+     *
      * @param elements The elements to contain in the array
+     * @param <E>      The type of element to contain in the array
      * @return A new thread-safe array containing the provided elements
-     * @param <E> The type of element to contain in the array
      */
     @Nonnull
     @SafeVarargs
@@ -67,9 +67,10 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Creates a new atomic array from the provided array of elements.
+     *
      * @param elements The elements to contain in the array
+     * @param <E>      The type of element to contain in the array
      * @return A new thread-safe array containing the provided elements
-     * @param <E> The type of element to contain in the array
      */
     @Nonnull
     @SafeVarargs
@@ -92,6 +93,55 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
         return FastArray.referenceOf(elements);
     }
 
+    /**
+     * Creates a new thread-unsafe copy of the provided array {@code a}.
+     *
+     * @param a   The array of which to copy value from
+     * @param <E> The type of element to copy
+     * @return A new thread-unsafe copy of the provided array {@code a}
+     */
+    @Nonnull
+    static <E> SafeArray<E> copyOf(@Nonnull SafeArray<? extends E> a) {
+        return new FastArray<>(a);
+    }
+
+    /**
+     * Creates a new thread-safe copy of the provided array {@code a}.
+     *
+     * @param a   The array of which to copy value from
+     * @param <E> The type of element to copy
+     * @return A new thread-safe copy of the provided array {@code a}
+     */
+    @Nonnull
+    static <E> SafeArray<E> syncCopyOf(@Nonnull SafeArray<? extends E> a) {
+        return new SyncArray<>(a);
+    }
+
+    /**
+     * Creates a new atomic copy of the provided array {@code a}.
+     *
+     * @param a   The array of which to copy value from
+     * @param <E> The type of element to copy
+     * @return A new atomic copy of the provided array {@code a}
+     */
+    @Nonnull
+    static <E> AtomicArray<E> atomicCopyOf(@Nonnull SafeArray<? extends E> a) {
+        return new AtomicArray<>(a);
+    }
+
+    /**
+     * Creates a new reference to the provided array {@code a}. Changes will be reflected
+     * between the two arrays.
+     *
+     * @param a   The array of which to reference values from
+     * @param <E> The type of element to reference
+     * @return A new type-safe reference array referencing the provided array {@code a}
+     */
+    @Nonnull
+    static <E> SafeArray<E> referenceOf(@Nonnull SafeArray<E> a) {
+        return a.subArray(0, a.length());
+    }
+
     //
     // Properties
     //
@@ -101,6 +151,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @return The number of elements this array contains
      */
+    @Override
     int length();
 
     //
@@ -287,6 +338,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     /**
      * Shuffles this array, randomizing its elements' order.
      */
+    @Override
     void shuffle();
 
     /**
@@ -295,6 +347,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @throws UnsupportedOperationException When at least one element cannot be cast to {@link Comparable}
      */
+    @Override
     void sort() throws UnsupportedOperationException;
 
     /**
@@ -302,6 +355,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @param c The comparator function of which to sort this array with
      */
+    @Override
     void sort(@Nonnull Comparator<? super E> c);
 
     //
@@ -379,6 +433,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     *
      * @param a The array of which to append to the end of this array
      * @return The appended array
      */
@@ -394,6 +449,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     *
      * @param a The array of which to prepend to the front of this array
      * @return The prepended array
      */
@@ -431,6 +487,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @param a The action to be performed for each element
      */
+    @Override
     void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a);
 
     //
@@ -460,6 +517,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @throws NullPointerException When this array contains at least one instance of {@code null}
      */
     @Nonnull
+    @Override
     List<E> list();
 
     /**

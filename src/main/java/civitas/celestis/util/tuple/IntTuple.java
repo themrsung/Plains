@@ -5,7 +5,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
@@ -21,7 +20,7 @@ import java.util.stream.IntStream;
  * @see Int4
  * @see IntArrayTuple
  */
-public interface IntTuple extends Serializable {
+public interface IntTuple extends BaseTuple<Integer> {
     //
     // Factory
     //
@@ -62,6 +61,7 @@ public interface IntTuple extends Serializable {
      *
      * @return The number of components this tuple has
      */
+    @Override
     int size();
 
     /**
@@ -155,6 +155,7 @@ public interface IntTuple extends Serializable {
      * @return The list representation of this tuple
      */
     @Nonnull
+    @Override
     List<Integer> list();
 
     /**

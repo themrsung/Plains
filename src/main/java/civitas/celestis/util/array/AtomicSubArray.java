@@ -38,7 +38,7 @@ class AtomicSubArray<E> implements SafeArray<E> {
     /**
      * Creates a new sub-array.
      *
-     * @param references      The original internal array to reference
+     * @param references    The original internal array to reference
      * @param startingIndex The index at which to start the reference at (inclusive)
      * @param endingIndex   The index at which to stop the reference at (exclusive)
      */
