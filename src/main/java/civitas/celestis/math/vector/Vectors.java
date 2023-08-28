@@ -20,6 +20,7 @@ public final class Vectors {
 
     /**
      * Returns a random unit vector. (a vector with a Euclidean norm of {@code 1})
+     *
      * @return A random unit vector
      */
     @Nonnull
@@ -29,6 +30,7 @@ public final class Vectors {
 
     /**
      * Returns a random unit vector. (a vector with a Euclidean norm of {@code 1})
+     *
      * @return A random unit vector
      */
     @Nonnull
@@ -39,6 +41,7 @@ public final class Vectors {
 
     /**
      * Returns a random unit vector. (a vector with a Euclidean norm of {@code 1})
+     *
      * @return A random unit vector
      */
     @Nonnull

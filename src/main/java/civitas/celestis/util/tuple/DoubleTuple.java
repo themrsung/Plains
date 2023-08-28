@@ -34,6 +34,7 @@ public interface DoubleTuple extends BaseTuple<Double> {
     static DoubleTuple of(@Nonnull double... components) {
         return switch (components.length) {
             case 0 -> Double0.getInstance();
+            case 1 -> new Double1(components);
             case 2 -> new Double2(components);
             case 3 -> new Double3(components);
             case 4 -> new Double4(components);

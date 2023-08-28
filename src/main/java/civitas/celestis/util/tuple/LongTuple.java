@@ -1,11 +1,9 @@
 package civitas.celestis.util.tuple;
 
-import civitas.celestis.exception.TupleIndexOutOfBoundsException;
 import civitas.celestis.util.array.LongArray;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
@@ -35,6 +33,7 @@ public interface LongTuple extends BaseTuple<Long> {
     @Nonnull
     static LongTuple of(@Nonnull long... components) {
         return switch (components.length) {
+            case 1 -> new Long1(components);
             case 2 -> new Long2(components);
             case 3 -> new Long3(components);
             case 4 -> new Long4(components);

@@ -23,6 +23,7 @@ final class Double0 implements DoubleTuple {
     public static Double0 getInstance() {
         return instance;
     }
+
     @Serial
     private static final long serialVersionUID = 0L;
     private static final Double0 instance = new Double0();

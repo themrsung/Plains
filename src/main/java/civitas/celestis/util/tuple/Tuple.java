@@ -23,6 +23,7 @@ import java.util.stream.Stream;
  * </p>
  *
  * @param <E> The type of element this tuple should hold
+ * @see Object1
  * @see Object2
  * @see Object3
  * @see Object4

@@ -18,6 +18,7 @@ public final class Quaternions {
 
     /**
      * Returns a random rotation quaternion.
+     *
      * @return A random rotation quaternion
      */
     @Nonnull

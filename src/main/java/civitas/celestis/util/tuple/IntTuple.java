@@ -34,6 +34,7 @@ public interface IntTuple extends BaseTuple<Integer> {
     static IntTuple of(@Nonnull int... components) {
         return switch (components.length) {
             case 0 -> Int0.getInstance();
+            case 1 -> new Int1(components);
             case 2 -> new Int2(components);
             case 3 -> new Int3(components);
             case 4 -> new Int4(components);

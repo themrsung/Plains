@@ -34,6 +34,7 @@ public interface FloatTuple extends BaseTuple<Float> {
     static FloatTuple of(@Nonnull float... components) {
         return switch (components.length) {
             case 0 -> Float0.getInstance();
+            case 1 -> new Float1(components);
             case 2 -> new Float2(components);
             case 3 -> new Float3(components);
             case 4 -> new Float4(components);
@@ -51,6 +52,7 @@ public interface FloatTuple extends BaseTuple<Float> {
     static FloatTuple of(@Nonnull Float[] components) {
         return switch (components.length) {
             case 0 -> Float0.getInstance();
+            case 1 -> new Float1(components[0]);
             case 2 -> new Float2(components[0], components[1]);
             case 3 -> new Float3(components[0], components[1], components[2]);
             case 4 -> new Float4(components[0], components[1], components[2], components[3]);
