@@ -632,6 +632,7 @@ public class HashGrid<E> implements DynamicGrid<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this grid
      * @return {@inheritDoc}
      */
