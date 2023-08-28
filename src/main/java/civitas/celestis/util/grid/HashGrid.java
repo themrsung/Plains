@@ -1,5 +1,6 @@
 package civitas.celestis.util.grid;
 
+import civitas.celestis.util.function.ToFloatFunction;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
 import jakarta.annotation.Nonnull;
@@ -7,10 +8,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -629,6 +627,42 @@ public class HashGrid<E> implements DynamicGrid<E> {
     public DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
         final DoubleArrayGrid result = new DoubleArrayGrid(rows, columns);
         forEach((r, c, v) -> result.values[r][c] = f.applyAsDouble(v));
+        return result;
+    }
+
+    @Nonnull
+    @Override
+    public FloatGrid mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
+        final FloatArrayGrid result = new FloatArrayGrid(rows, columns);
+        forEach((r, c, v) -> result.values[r][c] = f.applyAsFloat(v));
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongGrid mapToLong(@Nonnull ToLongFunction<? super E> f) {
+        final LongArrayGrid result = new LongArrayGrid(rows, columns);
+        forEach((r, c, v) -> result.values[r][c] = f.applyAsLong(v));
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public IntGrid mapToInt(@Nonnull ToIntFunction<? super E> f) {
+        final IntArrayGrid result = new IntArrayGrid(rows, columns);
+        forEach((r, c, v) -> result.values[r][c] = f.applyAsInt(v));
         return result;
     }
 

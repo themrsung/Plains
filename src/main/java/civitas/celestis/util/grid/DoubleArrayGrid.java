@@ -563,7 +563,9 @@ public class DoubleArrayGrid implements DoubleGrid {
         final ArrayGrid<Double> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
-            result.values[r] = Arrays.stream(values[r]).boxed().toArray(Double[]::new);
+            for (int c = 0; c < columns; c++) {
+                result.set(r, c, values[r][c]);
+            }
         }
 
         return result;

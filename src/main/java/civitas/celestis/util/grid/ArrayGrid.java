@@ -1,5 +1,6 @@
 package civitas.celestis.util.grid;
 
+import civitas.celestis.util.function.ToFloatFunction;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
 import jakarta.annotation.Nonnull;
@@ -7,10 +8,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -445,6 +443,66 @@ public class ArrayGrid<E> implements Grid<E> {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 result.values[r][c] = f.applyAsDouble(values[r][c]);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public FloatGrid mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
+        final FloatArrayGrid result = new FloatArrayGrid(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = f.applyAsFloat(values[r][c]);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongGrid mapToLong(@Nonnull ToLongFunction<? super E> f) {
+        final LongArrayGrid result = new LongArrayGrid(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = f.applyAsLong(values[r][c]);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public IntGrid mapToInt(@Nonnull ToIntFunction<? super E> f) {
+        final IntArrayGrid result = new IntArrayGrid(rows, columns);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                result.values[r][c] = f.applyAsInt(values[r][c]);
             }
         }
 

@@ -1,5 +1,6 @@
 package civitas.celestis.util.grid;
 
+import civitas.celestis.util.function.ToFloatFunction;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
 import jakarta.annotation.Nonnull;
@@ -9,10 +10,7 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
@@ -315,6 +313,42 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     @Override
     public synchronized DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
         return super.mapToDouble(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized FloatGrid mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
+        return super.mapToFloat(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized LongGrid mapToLong(@Nonnull ToLongFunction<? super E> f) {
+        return super.mapToLong(f);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized IntGrid mapToInt(@Nonnull ToIntFunction<? super E> f) {
+        return super.mapToInt(f);
     }
 
     /**

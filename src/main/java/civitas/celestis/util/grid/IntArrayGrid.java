@@ -11,11 +11,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.LongBinaryOperator;
-import java.util.function.LongFunction;
-import java.util.function.LongUnaryOperator;
+import java.util.function.IntBinaryOperator;
+import java.util.function.IntFunction;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
+import java.util.stream.IntStream;
 
 /**
  * A static grid implemented using primitive arrays. An array grid's size
@@ -23,9 +23,9 @@ import java.util.stream.LongStream;
  * is a fixed-size array, array grids are memory-efficient and random access
  * operations tend to be faster than other grid implementations.
  *
- * @see LongGrid
+ * @see IntGrid
  */
-public class LongArrayGrid implements LongGrid {
+public class IntArrayGrid implements IntGrid {
     //
     // Constants
     //
@@ -47,10 +47,10 @@ public class LongArrayGrid implements LongGrid {
      * @return The constructed grid
      */
     @Nonnull
-    public static LongArrayGrid of(@Nonnull long[][] values) {
+    public static IntArrayGrid of(@Nonnull int[][] values) {
         final int rows = values.length;
         final int columns = rows > 0 ? values[0].length : 0;
-        final LongArrayGrid grid = new LongArrayGrid(rows, columns);
+        final IntArrayGrid grid = new IntArrayGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             System.arraycopy(values[r], 0, grid.values[r], 0, columns);
@@ -69,10 +69,10 @@ public class LongArrayGrid implements LongGrid {
      * @param rows    The number of rows to initialize
      * @param columns The number of columns to initialize
      */
-    public LongArrayGrid(int rows, int columns) {
+    public IntArrayGrid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.values = new long[rows][columns];
+        this.values = new int[rows][columns];
     }
 
     /**
@@ -80,7 +80,7 @@ public class LongArrayGrid implements LongGrid {
      *
      * @param g The grid of which to copy component values from
      */
-    public LongArrayGrid(@Nonnull LongGrid g) {
+    public IntArrayGrid(@Nonnull IntGrid g) {
         this(g.rows(), g.columns());
         setRange(0, 0, rows, columns, g);
     }
@@ -92,7 +92,7 @@ public class LongArrayGrid implements LongGrid {
     /**
      * The internal 2D array of values.
      */
-    protected final long[][] values;
+    protected final int[][] values;
 
     /**
      * The number of rows this grid has.
@@ -149,7 +149,7 @@ public class LongArrayGrid implements LongGrid {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(long v) {
+    public boolean contains(int v) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 if (values[r][c] == v) return true;
@@ -166,8 +166,8 @@ public class LongArrayGrid implements LongGrid {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<Long> i) {
-        for (final Long o : i) {
+    public boolean containsAll(@Nonnull Iterable<Integer> i) {
+        for (final Integer o : i) {
             if (o == null) return false;
             if (!contains(o)) return false;
         }
@@ -188,7 +188,7 @@ public class LongArrayGrid implements LongGrid {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public long get(int r, int c) throws IndexOutOfBoundsException {
+    public int get(int r, int c) throws IndexOutOfBoundsException {
         return values[r][c];
     }
 
@@ -201,7 +201,7 @@ public class LongArrayGrid implements LongGrid {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int r, int c, long v) throws IndexOutOfBoundsException {
+    public void set(int r, int c, int v) throws IndexOutOfBoundsException {
         values[r][c] = v;
     }
 
@@ -215,8 +215,8 @@ public class LongArrayGrid implements LongGrid {
      * @param v The value of which to fill this grid with
      */
     @Override
-    public void fill(long v) {
-        for (final long[] row : values) {
+    public void fill(int v) {
+        for (final int[] row : values) {
             Arrays.fill(row, v);
         }
     }
@@ -232,7 +232,7 @@ public class LongArrayGrid implements LongGrid {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void fillRange(int r1, int c1, int r2, int c2, long v) throws IndexOutOfBoundsException {
+    public void fillRange(int r1, int c1, int r2, int c2, int v) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
                 values[r][c] = v;
@@ -246,10 +246,10 @@ public class LongArrayGrid implements LongGrid {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void update(@Nonnull LongUnaryOperator f) {
+    public void update(@Nonnull IntUnaryOperator f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                values[r][c] = f.applyAsLong(values[r][c]);
+                values[r][c] = f.applyAsInt(values[r][c]);
             }
         }
     }
@@ -260,7 +260,7 @@ public class LongArrayGrid implements LongGrid {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super Long, Long> f) {
+    public void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super Integer, Integer> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(r, c, values[r][c]);
@@ -275,7 +275,7 @@ public class LongArrayGrid implements LongGrid {
      * @param newValue The new value of which to replace to
      */
     @Override
-    public void replaceAll(long oldValue, long newValue) {
+    public void replaceAll(int oldValue, int newValue) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 if (values[r][c] != oldValue) continue;
@@ -300,8 +300,8 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongGrid subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
-        final LongArrayGrid result = new LongArrayGrid(r2 - r1, c2 - c1);
+    public IntGrid subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException {
+        final IntArrayGrid result = new IntArrayGrid(r2 - r1, c2 - c1);
 
         for (int r = r1; r < r2; r++) {
             System.arraycopy(values[r], c1, result.values[r - r1], 0, c2 - c1);
@@ -321,7 +321,7 @@ public class LongArrayGrid implements LongGrid {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int r1, int c1, int r2, int c2, @Nonnull LongGrid g) throws IndexOutOfBoundsException {
+    public void setRange(int r1, int c1, int r2, int c2, @Nonnull IntGrid g) throws IndexOutOfBoundsException {
         for (int r = r1; r < r2; r++) {
             for (int c = c1; c < c2; c++) {
                 values[r][c] = g.get(r - r1, c - c1);
@@ -342,8 +342,8 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongGrid resize(int rows, int columns) {
-        final LongArrayGrid result = new LongArrayGrid(rows, columns);
+    public IntGrid resize(int rows, int columns) {
+        final IntArrayGrid result = new IntArrayGrid(rows, columns);
 
         final int minRows = Math.min(this.rows, rows);
         final int minCols = Math.min(this.columns, columns);
@@ -366,8 +366,8 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongGrid transpose() {
-        final LongArrayGrid result = new LongArrayGrid(columns, rows);
+    public IntGrid transpose() {
+        final IntArrayGrid result = new IntArrayGrid(columns, rows);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
@@ -390,12 +390,12 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongGrid map(@Nonnull LongUnaryOperator f) {
-        final LongArrayGrid result = new LongArrayGrid(rows, columns);
+    public IntGrid map(@Nonnull IntUnaryOperator f) {
+        final IntArrayGrid result = new IntArrayGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.applyAsLong(values[r][c]);
+                result.values[r][c] = f.applyAsInt(values[r][c]);
             }
         }
 
@@ -411,7 +411,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public <F> Grid<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
+    public <F> Grid<F> mapToObj(@Nonnull IntFunction<? extends F> f) {
         final ArrayGrid<F> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
@@ -433,16 +433,16 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongGrid merge(@Nonnull LongGrid g, @Nonnull LongBinaryOperator f) throws IllegalArgumentException {
+    public IntGrid merge(@Nonnull IntGrid g, @Nonnull IntBinaryOperator f) throws IllegalArgumentException {
         if (rows != g.rows() || columns != g.columns()) {
             throw new IllegalArgumentException("Grid sizes must match for this operation.");
         }
 
-        final LongArrayGrid result = new LongArrayGrid(rows, columns);
+        final IntArrayGrid result = new IntArrayGrid(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                result.values[r][c] = f.applyAsLong(values[r][c], g.get(r, c));
+                result.values[r][c] = f.applyAsInt(values[r][c], g.get(r, c));
             }
         }
 
@@ -460,7 +460,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public Iterator<Long> iterator() {
+    public Iterator<Integer> iterator() {
         return stream().iterator();
     }
 
@@ -470,7 +470,7 @@ public class LongArrayGrid implements LongGrid {
      * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super Long> a) {
+    public void forEach(@Nonnull Consumer<? super Integer> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 a.accept(values[r][c]);
@@ -484,7 +484,7 @@ public class LongArrayGrid implements LongGrid {
      * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Long> a) {
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Integer> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 a.accept(r, c, values[r][c]);
@@ -503,8 +503,8 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public long[] array() {
-        final long[] result = new long[rows * columns];
+    public int[] array() {
+        final int[] result = new int[rows * columns];
 
         /*
          * This is faster than calculating r * columns * c each iteration
@@ -526,7 +526,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public LongStream stream() {
+    public IntStream stream() {
         return Arrays.stream(array());
     }
 
@@ -537,7 +537,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public Collection<Long> collect() {
+    public Collection<Integer> collect() {
         return stream().boxed().toList();
     }
 
@@ -548,7 +548,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public Set<Long> set() {
+    public Set<Integer> set() {
         return stream().boxed().collect(Collectors.toUnmodifiableSet());
     }
 
@@ -559,8 +559,8 @@ public class LongArrayGrid implements LongGrid {
      */
     @Nonnull
     @Override
-    public Grid<Long> boxed() {
-        final ArrayGrid<Long> result = new ArrayGrid<>(rows, columns);
+    public Grid<Integer> boxed() {
+        final ArrayGrid<Integer> result = new ArrayGrid<>(rows, columns);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
@@ -583,7 +583,7 @@ public class LongArrayGrid implements LongGrid {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof LongGrid g)) return false;
+        if (!(obj instanceof IntGrid g)) return false;
         if (rows != g.rows() || columns != g.columns()) return false;
 
         for (int r = 0; r < rows; r++) {
@@ -609,7 +609,7 @@ public class LongArrayGrid implements LongGrid {
     public String toString() {
         final StringBuilder out = new StringBuilder("{");
 
-        for (final long[] row : values) {
+        for (final int[] row : values) {
             out.append("\n").append("  ").append(Arrays.toString(row)).append(",");
         }
 

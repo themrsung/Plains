@@ -1,143 +1,34 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.function.ToFloatFunction;
-import civitas.celestis.util.function.TriConsumer;
-import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.function.*;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.*;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
- * A two-dimensional structure of elements. Grids can be traversed by providing
- * two indices: one for the row, and one for the column.
- * <p>
- * Static grids which use two-dimensional arrays as their underlying data structure
- * are fixed-size, meaning the dimensions cannot be changed without re-instantiation.
- * </p>
- * <p>
- * On the other hand, {@link DynamicGrid dynamic grids} use a more flexible underlying
- * data structure, allowing the resizing of the grid without re-instantiation. Note
- * that dynamic grids have more overhead in terms of memory consumption, and primitive
- * types are not supported. (the boxed object types such as {@link Double}s are used)
- * </p>
+ * A specialized grid which uses the primitive type {@code float}.
  *
- * @param <E> The type of element this grid should hold
- * @see ArrayGrid
- * @see DynamicGrid
- * @see HashGrid
- * @see SyncGrid
- * @see AtomicGrid
+ * @see Grid
  */
-public interface Grid<E> extends BaseGrid<E> {
+public interface FloatGrid extends BaseGrid<Float> {
     //
     // Factory
     //
 
     /**
-     * Creates a new grid from a two-dimensional array of values.
+     * Creates a new float grid from the provided two-dimensional array of values.
      *
      * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
-     * @return The constructed grid instance
+     * @return A new grid containing the provided values
      */
     @Nonnull
-    static <E> Grid<E> of(@Nonnull E[][] values) {
-        return ArrayGrid.of(values);
-    }
-
-    /**
-     * Creates a new dynamic grid from a two-dimensional array of values.
-     *
-     * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
-     * @return The constructed dynamic grid instance
-     * @see DynamicGrid
-     */
-    @Nonnull
-    static <E> Grid<E> dynamicOf(@Nonnull E[][] values) {
-        return HashGrid.of(values);
-    }
-
-    /**
-     * Creates a new thread-safe grid from a two-dimensional array of values.
-     *
-     * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
-     * @return The constructed thread-safe grid instance
-     * @see SyncGrid
-     */
-    @Nonnull
-    static <E> Grid<E> syncOf(@Nonnull E[][] values) {
-        return SyncGrid.of(values);
-    }
-
-    /**
-     * Creates a new atomic grid form a two-dimensional array of values.
-     *
-     * @param values The values of which to contain in the grid
-     * @param <E>    The type of element to contain
-     * @return The constructed atomic grid instance
-     * @see AtomicGrid
-     */
-    @Nonnull
-    static <E> Grid<E> atomicOf(@Nonnull E[][] values) {
-        return AtomicGrid.of(values);
-    }
-
-    /**
-     * Creates a copy of an existing grid.
-     *
-     * @param g   The grid of which to copy elements from
-     * @param <E> The type of element to contain
-     * @return A shallow copy of the provided grid {@code g}
-     */
-    @Nonnull
-    static <E> Grid<E> copyOf(@Nonnull Grid<? extends E> g) {
-        return new ArrayGrid<>(g);
-    }
-
-    /**
-     * Creates a dynamic copy of an existing grid.
-     *
-     * @param g   The grid of which to copy elements from
-     * @param <E> The type of element to contain
-     * @return A dynamic shallow copy of the provided grid {@code g}
-     * @see DynamicGrid
-     */
-    @Nonnull
-    static <E> Grid<E> dynamicCopyOf(@Nonnull Grid<? extends E> g) {
-        return new HashGrid<>(g);
-    }
-
-    /**
-     * Creates a thread-safe copy of an existing grid.
-     *
-     * @param g   The grid of which to copy elements from
-     * @param <E> The type of element to contain
-     * @return A thread-safe shallow copy of the provided grid {@code g}
-     * @see SyncGrid
-     */
-    @Nonnull
-    static <E> Grid<E> syncCopyOf(@Nonnull Grid<? extends E> g) {
-        return new SyncGrid<>(g);
-    }
-
-    /**
-     * Creates an atomic copy of an existing grid.
-     *
-     * @param g   The grid of which to copy elements from
-     * @param <E> The type of element to contain
-     * @return An atomic shallow copy of the provided grid {@code g}
-     * @see AtomicGrid
-     */
-    @Nonnull
-    static <E> Grid<E> atomicCopyOf(@Nonnull Grid<? extends E> g) {
-        return new AtomicGrid<>(g);
+    static FloatGrid of(@Nonnull float[][] values) {
+        return FloatArrayGrid.of(values);
     }
 
     //
@@ -174,21 +65,21 @@ public interface Grid<E> extends BaseGrid<E> {
     //
 
     /**
-     * Checks if this grid contains the provided object {@code obj}.
+     * Checks if this grid contains the provided value {@code v}.
      *
-     * @param obj The object of which to check for containment
+     * @param v The value of which to check for containment
      * @return {@code true} if there is at least one element within this grid which is
-     * equal to that of the provided object {@code obj}
+     * equal to that of the provided value {@code v}
      */
-    boolean contains(@Nullable Object obj);
+    boolean contains(float v);
 
     /**
-     * Checks if this grid contains multiple objects.
+     * Checks if this grid contains multiple values.
      *
      * @param i The iterable object of which to check for containment
-     * @return {@code true} if this grid contains every element of the iterable object
+     * @return {@code true} if this grid contains every value of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<?> i);
+    boolean containsAll(@Nonnull Iterable<Float> i);
 
     //
     // Accessors
@@ -202,20 +93,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @return The element at the specified index
      * @throws IndexOutOfBoundsException When the indices are out of bounds
      */
-    E get(int r, int c) throws IndexOutOfBoundsException;
-
-    /**
-     * Returns the element at the specified index, but returns the fallback value
-     * if the existing element is {@code null}.
-     *
-     * @param r        The index of the row to get
-     * @param c        The index of the column to get
-     * @param fallback The fallback value of which to return if the element is {@code null}
-     * @return The element at the specified index, or the fallback value if the existing
-     * element is equal to {@code null}
-     * @throws IndexOutOfBoundsException When the indices are out of bounds
-     */
-    E getOrDefault(int r, int c, E fallback) throws IndexOutOfBoundsException;
+    float get(int r, int c) throws IndexOutOfBoundsException;
 
     /**
      * Sets the value of the specified index.
@@ -225,7 +103,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @param v The value of which to assign to the specified index
      * @throws IndexOutOfBoundsException When the indices are out of bounds
      */
-    void set(int r, int c, E v) throws IndexOutOfBoundsException;
+    void set(int r, int c, float v) throws IndexOutOfBoundsException;
 
     //
     // Bulk Operation
@@ -236,15 +114,7 @@ public interface Grid<E> extends BaseGrid<E> {
      *
      * @param v The value of which to fill this grid with
      */
-    void fill(E v);
-
-    /**
-     * Fills this grid, but only does so if the original element currently occupying the
-     * corresponding slot is {@code null}.
-     *
-     * @param v The values of which to selectively fill this grid with
-     */
-    void fillEmpty(E v);
+    void fill(float v);
 
     /**
      * Fills this grid, but only does so within the specified range.
@@ -256,7 +126,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @param v  The value of which to fill the specified range with
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
-    void fillRange(int r1, int c1, int r2, int c2, E v) throws IndexOutOfBoundsException;
+    void fillRange(int r1, int c1, int r2, int c2, float v) throws IndexOutOfBoundsException;
 
     /**
      * Applies the provided update function {@code f} to every element of this grid, assigning
@@ -264,7 +134,7 @@ public interface Grid<E> extends BaseGrid<E> {
      *
      * @param f The function of which to apply to each element of this grid
      */
-    void update(@Nonnull Function<? super E, E> f);
+    void update(@Nonnull FloatUnaryOperator f);
 
     /**
      * Applies the provided update function {@code f} to every element of this grid, assigning
@@ -274,7 +144,7 @@ public interface Grid<E> extends BaseGrid<E> {
      *
      * @param f The function of which to apply to each element of this grid
      */
-    void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super E, E> f);
+    void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super Float, Float> f);
 
     /**
      * Replaces all instances of the old value with the new value within this grid.
@@ -282,7 +152,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @param oldValue The old value of which to replace
      * @param newValue The new value of which to replace to
      */
-    void replaceAll(E oldValue, E newValue);
+    void replaceAll(float oldValue, float newValue);
 
     //
     // Sub Operation
@@ -301,7 +171,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
     @Nonnull
-    Grid<E> subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException;
+    FloatGrid subGrid(int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException;
 
     /**
      * Sets a sub-grid of this grid, copying values from the provided sub-grid {@code g}.
@@ -315,7 +185,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @param g  The sub-grid of this grid containing the values to assign
      * @throws IndexOutOfBoundsException When the range is out of bounds
      */
-    void setRange(int r1, int c1, int r2, int c2, @Nonnull Grid<? extends E> g) throws IndexOutOfBoundsException;
+    void setRange(int r1, int c1, int r2, int c2, @Nonnull FloatGrid g) throws IndexOutOfBoundsException;
 
     //
     // Resizing
@@ -331,7 +201,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @return A new grid with the specified dimensions
      */
     @Nonnull
-    Grid<E> resize(int rows, int columns);
+    FloatGrid resize(int rows, int columns);
 
     //
     // Transposition
@@ -346,11 +216,21 @@ public interface Grid<E> extends BaseGrid<E> {
      * @return The transpose of this grid
      */
     @Nonnull
-    Grid<E> transpose();
+    FloatGrid transpose();
 
     //
     // Transformation
     //
+
+    /**
+     * Applies the provided mapper function {@code f} to every element of this grid, then returns
+     * a new grid whose values are populated from that of the provided function's return values.
+     *
+     * @param f The function of which to apply to each element of this grid
+     * @return The resulting grid
+     */
+    @Nonnull
+    FloatGrid map(@Nonnull FloatUnaryOperator f);
 
     /**
      * Applies the provided mapper function {@code f} to every element of this grid, then returns
@@ -361,64 +241,21 @@ public interface Grid<E> extends BaseGrid<E> {
      * @return The resulting grid
      */
     @Nonnull
-    <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f);
-
-    /**
-     * Applies the provided mapper function {@code f} to every element of this grid, then returns
-     * a new double grid whose values are populated from that of the provided function's return values.
-     *
-     * @param f The function of which to apply to each element of this grid
-     * @return The resulting double grid
-     */
-    @Nonnull
-    DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f);
-
-    /**
-     * Applies the provided mapper function {@code f} to every element of this grid, then returns
-     * a new float grid whose values are populated from that of the provided function's return values.
-     *
-     * @param f The function of which to apply to each element of this grid
-     * @return The resulting float grid
-     */
-    @Nonnull
-    FloatGrid mapToFloat(@Nonnull ToFloatFunction<? super E> f);
-
-    /**
-     * Applies the provided mapper function {@code f} to every element of this grid, then returns
-     * a new long grid whose values are populated from that of the provided function's return values.
-     *
-     * @param f The function of which to apply to each element of this grid
-     * @return The resulting long grid
-     */
-    @Nonnull
-    LongGrid mapToLong(@Nonnull ToLongFunction<? super E> f);
-
-    /**
-     * Applies the provided mapper function {@code f} to every element of this grid, then returns
-     * a new integer grid whose values are populated from that of the provided function's return values.
-     *
-     * @param f The function of which to apply to each element of this grid
-     * @return The resulting integer grid
-     */
-    @Nonnull
-    IntGrid mapToInt(@Nonnull ToIntFunction<? super E> f);
+    <F> Grid<F> mapToObj(@Nonnull FloatFunction<? extends F> f);
 
     /**
      * Between this grid and the provided grid {@code g}, this applies the merger function {@code f}
      * for each corresponding pair of elements, then returns a new grid whose elements are populated
      * from that of the return values of the merger function {@code f}.
      *
-     * @param g   The grid of which to merge this grid with
-     * @param f   The merger function to handle the merging of the two grids
-     * @param <F> The type of element to merge this grid with
-     * @param <G> The type of element to merge the two grids to
+     * @param g The grid of which to merge this grid with
+     * @param f The merger function to handle the merging of the two grids
      * @return The resulting grid
      * @throws IllegalArgumentException When the provided grid {@code g}'s dimensions are different
      *                                  from that of this grid's dimensions
      */
     @Nonnull
-    <F, G> Grid<G> merge(@Nonnull Grid<F> g, @Nonnull BiFunction<? super E, ? super F, G> f)
-            throws IllegalArgumentException;
+    FloatGrid merge(@Nonnull FloatGrid g, @Nonnull FloatBinaryOperator f) throws IllegalArgumentException;
 
     //
     // Iteration
@@ -431,16 +268,16 @@ public interface Grid<E> extends BaseGrid<E> {
      */
     @Nonnull
     @Override
-    Iterator<E> iterator();
+    Iterator<Float> iterator();
 
     /**
      * Executes the provided action for each element of this grid. The order of execution is not
      * guaranteed to be consistent.
      *
-     * @param a The action of which to execute for each element of this grid
+     * @param a The action to be performed for each element
      */
     @Override
-    void forEach(@Nonnull Consumer<? super E> a);
+    void forEach(@Nonnull Consumer<? super Float> a);
 
     /**
      * Executes the provided action for each element of this grid. The row and column indices are
@@ -448,10 +285,10 @@ public interface Grid<E> extends BaseGrid<E> {
      * element is provided as the third parameter of the function. The order of execution is not
      * guaranteed to be consistent.
      *
-     * @param a The action of which to execute for each element of this grid
+     * @param a The action to be performed for each element
      */
     @Override
-    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a);
+    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super Float> a);
 
     //
     // Conversion
@@ -464,7 +301,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @return The array representation of this grid
      */
     @Nonnull
-    E[] array();
+    float[] array();
 
     /**
      * Returns a stream whose source is the elements of this grid.
@@ -473,7 +310,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * @see Stream
      */
     @Nonnull
-    Stream<E> stream();
+    Stream<Float> stream();
 
     /**
      * Returns a collection containing every element within this grid. The size of the collection is
@@ -485,7 +322,7 @@ public interface Grid<E> extends BaseGrid<E> {
      */
     @Nonnull
     @Override
-    Collection<E> collect();
+    Collection<Float> collect();
 
     /**
      * Returns a set containing every element of this grid. Due to the nature of sets, every duplicate
@@ -496,7 +333,17 @@ public interface Grid<E> extends BaseGrid<E> {
      */
     @Nonnull
     @Override
-    Set<E> set();
+    Set<Float> set();
+
+    /**
+     * Returns a new grid whose values are populated from that of this grid's values, encapsulated
+     * inside a {@link Float} object.
+     *
+     * @return The boxed grid representation of this grid
+     * @see Grid
+     */
+    @Nonnull
+    Grid<Float> boxed();
 
     //
     // Equality
@@ -506,8 +353,8 @@ public interface Grid<E> extends BaseGrid<E> {
      * Checks for equality between this grid and the provided object {@code obj}.
      *
      * @param obj The object to compare to
-     * @return {@code true} if the other object is also a grid, and the dimensions, order of elements,
-     * and composition are all equal to this grid
+     * @return {@code true} if the object is also a float grid, and the dimensions, order of elements,
+     * and the elements' values are all equal
      */
     @Override
     boolean equals(@Nullable Object obj);

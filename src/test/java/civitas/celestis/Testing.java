@@ -1,19 +1,20 @@
 package civitas.celestis;
 
-import civitas.celestis.math.vector.Vector3;
-import civitas.celestis.util.tuple.BaseTuple;
-import civitas.celestis.util.tuple.DoubleTuple;
-import civitas.celestis.util.tuple.Tuple;
+import civitas.celestis.math.matrix.Matrix;
+import civitas.celestis.util.grid.ArrayGrid;
+import civitas.celestis.util.grid.Grid;
 
 public class Testing {
     public static void main(String[] args) {
-        final Vector3 vector = new Vector3(1, 2, 3);
-        final DoubleTuple tuple = vector;
-        final BaseTuple<Double> base1 = tuple;
+        final Grid<String> g1 = new ArrayGrid<>(10, 10);
+        g1.fill("Hello world");
 
-        final Tuple<Double> boxed = tuple.boxed();
-        final BaseTuple<Double> base2 = boxed;
+        System.out.println(g1);
 
-        System.out.println(BaseTuple.equals(base1, base2));
+        final Matrix m = new Matrix(10, 10);
+        m.fill(Math.PI);
+        System.out.println(m);
+
+
     }
 }
