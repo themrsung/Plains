@@ -5,13 +5,14 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
 import java.util.stream.IntStream;
 
 /**
- * A type-safe array of primitive {@code long}s.
+ * A type-safe array of primitive {@code int}s.
  *
  * @see SafeArray
  */
@@ -28,7 +29,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      */
     @Nonnull
     static IntArray of(@Nonnull int... values) {
-        return null;
+        return IntFastArray.of(values);
     }
 
     /**
@@ -41,7 +42,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      */
     @Nonnull
     static IntArray referenceOf(@Nonnull int... values) {
-        return null;
+        return IntFastArray.referenceOf(values);
     }
 
     //
@@ -65,7 +66,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param v The value to check for containment
      * @return {@code true} if at least one element of this array is equal to the provided value {@code v}
      */
-    boolean contains(long v);
+    boolean contains(int v);
 
     /**
      * Returns whether this array contains multiple objects.
@@ -73,7 +74,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this array contains every element of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<?> i);
+    boolean containsAll(@Nonnull Iterable<Integer> i);
 
     //
     // Accessors
@@ -86,7 +87,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @return The {@code i}th element of this array
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    long get(int i) throws IndexOutOfBoundsException;
+    int get(int i) throws IndexOutOfBoundsException;
 
     /**
      * Sets the {@code i}th element of this array.
@@ -95,7 +96,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param e The element of which to set to
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    void set(int i, long e) throws IndexOutOfBoundsException;
+    void set(int i, int e) throws IndexOutOfBoundsException;
 
     /**
      * Updates the {@code i}th element of this array with the provided update function {@code f}.
@@ -104,7 +105,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    void update(int i, @Nonnull UnaryOperator<Integer> f) throws IndexOutOfBoundsException;
+    void update(int i, @Nonnull IntUnaryOperator f) throws IndexOutOfBoundsException;
 
     //
     // Bulk Operation
@@ -115,7 +116,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      *
      * @param v The value to fill this array with
      */
-    void fill(long v);
+    void fill(int v);
 
     /**
      * Fills every slot of this array between the range of {@code [s, e)} with the provided value {@code v}.
@@ -125,7 +126,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param v The value of which to assign to every slot within the specified range
      * @throws IndexOutOfBoundsException When the indices are out of bounds
      */
-    void fillRange(int s, int e, long v);
+    void fillRange(int s, int e, int v);
 
 
     /**
@@ -134,7 +135,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      *
      * @param f The function of which to apply to each element of this array
      */
-    void update(@Nonnull UnaryOperator<Integer> f);
+    void update(@Nonnull IntUnaryOperator f);
 
 
     /**
@@ -152,7 +153,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    void replaceAll(long oldValue, long newValue);
+    void replaceAll(int oldValue, int newValue);
 
     /**
      * Replaces only the first instance of the old value to the new value.
@@ -161,7 +162,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    void replaceFirst(long oldValue, long newValue);
+    void replaceFirst(int oldValue, int newValue);
 
     /**
      * Replaces only the last instance of the old value to the new value.
@@ -170,7 +171,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @param oldValue The old value to replace
      * @param newValue The new value to replace to
      */
-    void replaceLast(long oldValue, long newValue);
+    void replaceLast(int oldValue, int newValue);
 
     //
     // Sub Operation
@@ -214,6 +215,27 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      */
     @Nonnull
     IntArray resize(int size);
+
+    //
+    // Ordering
+    //
+
+    /**
+     * Shuffles this array, randomizing its elements' order.
+     */
+    void shuffle();
+
+    /**
+     * Sorts this array by its natural ascending order.
+     */
+    void sort();
+
+    /**
+     * Sorts this array using the provided comparator function {@code c}.
+     *
+     * @param c The comparator function of which to sort this array with
+     */
+    void sort(@Nonnull Comparator<? super Integer> c);
 
     //
     // Transformation
@@ -296,7 +318,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * @return The primitive array representation of this array
      */
     @Nonnull
-    long[] array();
+    int[] array();
 
     /**
      * Returns a stream whose source is the elements of this array.
@@ -341,7 +363,7 @@ public interface IntArray extends Iterable<Integer>, Serializable {
      * Checks for equality between this array and the provided object {@code obj}.
      *
      * @param obj The object to compare to
-     * @return {@code true} if the object is also a long array, and the number of elements,
+     * @return {@code true} if the object is also a int array, and the number of elements,
      * the order of the elements, and the elements' values are all equal
      */
     @Override

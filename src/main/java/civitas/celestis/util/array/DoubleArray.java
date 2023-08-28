@@ -5,6 +5,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -28,7 +29,7 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      */
     @Nonnull
     static DoubleArray of(@Nonnull double... values) {
-        return null;
+        return DoubleFastArray.of(values);
     }
 
     /**
@@ -41,7 +42,7 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      */
     @Nonnull
     static DoubleArray referenceOf(@Nonnull double... values) {
-        return null;
+        return DoubleFastArray.referenceOf(values);
     }
 
     //
@@ -73,7 +74,7 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this array contains every element of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<?> i);
+    boolean containsAll(@Nonnull Iterable<Double> i);
 
     //
     // Accessors
@@ -104,7 +105,7 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    void update(int i, @Nonnull UnaryOperator<Double> f) throws IndexOutOfBoundsException;
+    void update(int i, @Nonnull DoubleUnaryOperator f) throws IndexOutOfBoundsException;
 
     //
     // Bulk Operation
@@ -134,7 +135,7 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      *
      * @param f The function of which to apply to each element of this array
      */
-    void update(@Nonnull UnaryOperator<Double> f);
+    void update(@Nonnull DoubleUnaryOperator f);
 
 
     /**
@@ -214,6 +215,27 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
      */
     @Nonnull
     DoubleArray resize(int size);
+
+    //
+    // Ordering
+    //
+
+    /**
+     * Shuffles this array, randomizing its elements' order.
+     */
+    void shuffle();
+
+    /**
+     * Sorts this array by its natural ascending order.
+     */
+    void sort();
+
+    /**
+     * Sorts this array using the provided comparator function {@code c}.
+     *
+     * @param c The comparator function of which to sort this array with
+     */
+    void sort(@Nonnull Comparator<? super Double> c);
 
     //
     // Transformation

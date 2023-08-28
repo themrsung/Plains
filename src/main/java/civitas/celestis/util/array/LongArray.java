@@ -5,6 +5,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -28,7 +29,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      */
     @Nonnull
     static LongArray of(@Nonnull long... values) {
-        return null;
+        return LongFastArray.of(values);
     }
 
     /**
@@ -41,7 +42,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      */
     @Nonnull
     static LongArray referenceOf(@Nonnull long... values) {
-        return null;
+        return LongFastArray.referenceOf(values);
     }
 
 
@@ -74,7 +75,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this array contains every element of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<?> i);
+    boolean containsAll(@Nonnull Iterable<Long> i);
 
     //
     // Accessors
@@ -105,7 +106,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
      */
-    void update(int i, @Nonnull UnaryOperator<Long> f) throws IndexOutOfBoundsException;
+    void update(int i, @Nonnull LongUnaryOperator f) throws IndexOutOfBoundsException;
 
     //
     // Bulk Operation
@@ -135,7 +136,7 @@ public interface LongArray extends Iterable<Long>, Serializable {
      *
      * @param f The function of which to apply to each element of this array
      */
-    void update(@Nonnull UnaryOperator<Long> f);
+    void update(@Nonnull LongUnaryOperator f);
 
 
     /**
@@ -215,6 +216,27 @@ public interface LongArray extends Iterable<Long>, Serializable {
      */
     @Nonnull
     LongArray resize(int size);
+
+    //
+    // Ordering
+    //
+
+    /**
+     * Shuffles this array, randomizing its elements' order.
+     */
+    void shuffle();
+
+    /**
+     * Sorts this array by its natural ascending order.
+     */
+    void sort();
+
+    /**
+     * Sorts this array using the provided comparator function {@code c}.
+     *
+     * @param c The comparator function of which to sort this array with
+     */
+    void sort(@Nonnull Comparator<? super Long> c);
 
     //
     // Transformation

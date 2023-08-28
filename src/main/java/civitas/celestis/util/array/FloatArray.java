@@ -8,6 +8,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -33,7 +34,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      */
     @Nonnull
     static FloatArray of(@Nonnull float... values) {
-        return null;
+        return FloatFastArray.of(values);
     }
 
     /**
@@ -46,7 +47,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      */
     @Nonnull
     static FloatArray referenceOf(@Nonnull float... values) {
-        return null;
+        return FloatFastArray.referenceOf(values);
     }
 
     //
@@ -78,7 +79,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      * @param i The iterable object of which to check for containment
      * @return {@code true} if this array contains every element of the iterable object
      */
-    boolean containsAll(@Nonnull Iterable<?> i);
+    boolean containsAll(@Nonnull Iterable<Float> i);
 
     //
     // Accessors
@@ -219,6 +220,27 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      */
     @Nonnull
     FloatArray resize(int size);
+
+    //
+    // Ordering
+    //
+
+    /**
+     * Shuffles this array, randomizing its elements' order.
+     */
+    void shuffle();
+
+    /**
+     * Sorts this array by its natural ascending order.
+     */
+    void sort();
+
+    /**
+     * Sorts this array using the provided comparator function {@code c}.
+     *
+     * @param c The comparator function of which to sort this array with
+     */
+    void sort(@Nonnull Comparator<? super Float> c);
 
     //
     // Transformation

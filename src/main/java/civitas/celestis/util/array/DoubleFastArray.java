@@ -1,23 +1,20 @@
 package civitas.celestis.util.array;
 
-import civitas.celestis.util.function.ToFloatFunction;
-import civitas.celestis.util.tuple.Tuple;
+import civitas.celestis.util.tuple.DoubleTuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.Stream;
+import java.util.stream.DoubleStream;
 
 /**
- * A basic type-safe array with no built-in synchronization or thread-safety measures.
- * Fast arrays are designed for speed and efficiency.
+ * A basic double array with no built-in synchronization or thread-safety measures.
  *
- * @param <E> The type of element to contain
- * @see SafeArray
+ * @see DoubleArray
  */
-public class FastArray<E> implements SafeArray<E> {
+public class DoubleFastArray implements DoubleArray {
     //
     // Constants
     //
@@ -33,31 +30,27 @@ public class FastArray<E> implements SafeArray<E> {
     //
 
     /**
-     * Creates a new fast array from the provided values.
+     * Creates a new fast double array from the provided values.
      *
      * @param values The values of which to contain in the array
-     * @param <E>    The type of element to contain in the array
      * @return The constructed array
      */
     @Nonnull
-    @SafeVarargs
-    static <E> FastArray<E> of(@Nonnull E... values) {
-        return new FastArray<>(Arrays.copyOf(values, values.length));
+    static DoubleFastArray of(@Nonnull double... values) {
+        return new DoubleFastArray(Arrays.copyOf(values, values.length));
     }
 
     /**
-     * Creates a new fast reference array from the provided array of values.
-     * Changes in the fast reference array will be reflected to the original array, as well
-     * as from the original array to the fast reference array.
+     * Creates a new fast double reference array from the provided array of values.
+     * Changes in the fast double reference array will be reflected to the original array, as well
+     * as from the original array to the fast double reference array.
      *
-     * @param values The values the fast reference array should reference
-     * @param <E>    The type of element to reference
-     * @return A new fast reference array referencing the provided values
+     * @param values The values the fast double reference array should reference
+     * @return A new fast double reference array referencing the provided values
      */
     @Nonnull
-    @SafeVarargs
-    static <E> FastArray<E> referenceOf(@Nonnull E... values) {
-        return new FastArray<>(values);
+    static DoubleFastArray referenceOf(@Nonnull double... values) {
+        return new DoubleFastArray(values);
     }
 
     //
@@ -65,31 +58,30 @@ public class FastArray<E> implements SafeArray<E> {
     //
 
     /**
-     * Creates a new fast array.
+     * Creates a new fast double array.
      *
      * @param length The length to initialize this array to
      */
-    @SuppressWarnings("unchecked")
-    public FastArray(int length) {
-        this.values = (E[]) new Object[length];
+    public DoubleFastArray(int length) {
+        this.values = new double[length];
     }
 
     /**
-     * Creates a new fast array.
+     * Creates a new fast double array.
      *
      * @param a The array of which to copy elements from
      */
-    public FastArray(@Nonnull SafeArray<? extends E> a) {
+    public DoubleFastArray(@Nonnull DoubleArray a) {
         this.values = a.array();
     }
 
     /**
-     * Creates a new fast array. This is a direct assignment constructor, and thus
+     * Creates a new fast double array. This is a direct assignment constructor, and thus
      * is hidden to ensure safe usage.
      *
      * @param array The array of which to directly assign as the internal array
      */
-    protected FastArray(@Nonnull E[] array) {
+    protected DoubleFastArray(@Nonnull double[] array) {
         this.values = array;
     }
 
@@ -101,7 +93,7 @@ public class FastArray<E> implements SafeArray<E> {
      * The internal array of values.
      */
     @Nonnull
-    protected final E[] values;
+    protected final double[] values;
 
     //
     // Properties
@@ -117,20 +109,16 @@ public class FastArray<E> implements SafeArray<E> {
         return values.length;
     }
 
-    //
-    // Containment
-    //
-
     /**
      * {@inheritDoc}
      *
-     * @param obj The object of which to check for containment
+     * @param v The value to check for containment
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(@Nullable Object obj) {
-        for (final E value : values) {
-            if (Objects.equals(value, obj)) return true;
+    public boolean contains(double v) {
+        for (final double value : values) {
+            if (value == v) return true;
         }
 
         return false;
@@ -143,8 +131,9 @@ public class FastArray<E> implements SafeArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<?> i) {
-        for (final Object o : i) {
+    public boolean containsAll(@Nonnull Iterable<Double> i) {
+        for (final Double o : i) {
+            if (o == null) return false;
             if (!contains(o)) return false;
         }
 
@@ -163,22 +152,8 @@ public class FastArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
+    public double get(int i) throws IndexOutOfBoundsException {
         return values[i];
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param i The index of the element to get
-     * @param e The fallback value to default to when the value is {@code null}
-     * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
-     */
-    @Override
-    public E getOrDefault(int i, E e) throws IndexOutOfBoundsException {
-        final E value = values[i];
-        return value != null ? value : e;
     }
 
     /**
@@ -189,7 +164,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int i, E e) throws IndexOutOfBoundsException {
+    public void set(int i, double e) throws IndexOutOfBoundsException {
         values[i] = e;
     }
 
@@ -201,8 +176,8 @@ public class FastArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void update(int i, @Nonnull UnaryOperator<E> f) throws IndexOutOfBoundsException {
-        values[i] = f.apply(values[i]);
+    public void update(int i, @Nonnull DoubleUnaryOperator f) throws IndexOutOfBoundsException {
+        values[i] = f.applyAsDouble(values[i]);
     }
 
     //
@@ -215,18 +190,8 @@ public class FastArray<E> implements SafeArray<E> {
      * @param v The value to fill this array with
      */
     @Override
-    public void fill(E v) {
+    public void fill(double v) {
         Arrays.fill(values, v);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param v The value to fill empty slots of this array with
-     */
-    @Override
-    public void fillEmpty(E v) {
-        replaceAll(null, v);
     }
 
     /**
@@ -237,7 +202,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @param v The value of which to assign to every slot within the specified range
      */
     @Override
-    public void fillRange(int s, int e, E v) {
+    public void fillRange(int s, int e, double v) {
         Arrays.fill(values, s, e, v);
     }
 
@@ -247,9 +212,9 @@ public class FastArray<E> implements SafeArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull UnaryOperator<E> f) {
+    public void update(@Nonnull DoubleUnaryOperator f) {
         for (int i = 0; i < values.length; i++) {
-            values[i] = f.apply(values[i]);
+            values[i] = f.applyAsDouble(values[i]);
         }
     }
 
@@ -259,7 +224,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull BiFunction<? super Integer, ? super E, E> f) {
+    public void update(@Nonnull BiFunction<? super Integer, ? super Double, Double> f) {
         for (int i = 0; i < values.length; i++) {
             values[i] = f.apply(i, values[i]);
         }
@@ -272,9 +237,9 @@ public class FastArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
+    public void replaceAll(double oldValue, double newValue) {
         for (int i = 0; i < values.length; i++) {
-            if (!Objects.equals(values[i], oldValue)) continue;
+            if (values[i] != oldValue) continue;
             values[i] = newValue;
         }
     }
@@ -286,9 +251,9 @@ public class FastArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceFirst(E oldValue, E newValue) {
+    public void replaceFirst(double oldValue, double newValue) {
         for (int i = 0; i < values.length; i++) {
-            if (!Objects.equals(values[i], oldValue)) continue;
+            if (values[i] != oldValue) continue;
             values[i] = newValue;
             return;
         }
@@ -301,9 +266,9 @@ public class FastArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceLast(E oldValue, E newValue) {
+    public void replaceLast(double oldValue, double newValue) {
         for (int i = (values.length - 1); i >= 0; i--) {
-            if (!Objects.equals(values[i], oldValue)) continue;
+            if (values[i] != oldValue) continue;
             values[i] = newValue;
             return;
         }
@@ -323,8 +288,8 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> subArray(int s, int e) throws IndexOutOfBoundsException {
-        return new SubArray<>(values, s, e);
+    public DoubleArray subArray(int s, int e) throws IndexOutOfBoundsException {
+        return new DoubleSubArray(values, s, e);
     }
 
     /**
@@ -336,7 +301,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int s, int e, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
+    public void setRange(int s, int e, @Nonnull DoubleArray a) throws IndexOutOfBoundsException {
         for (int i = s; i < e; i++) {
             values[i] = a.get(i - s);
         }
@@ -354,8 +319,8 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> resize(int size) {
-        return new FastArray<>(Arrays.copyOf(values, size));
+    public DoubleArray resize(int size) {
+        return new DoubleFastArray(Arrays.copyOf(values, size));
     }
 
     //
@@ -374,7 +339,7 @@ public class FastArray<E> implements SafeArray<E> {
             final int j = random.nextInt(i + 1);
 
             // Swap elements at i and j
-            final E temp = values[i];
+            final double temp = values[i];
 
             values[i] = values[j];
             values[j] = temp;
@@ -383,16 +348,10 @@ public class FastArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
-     *
-     * @throws UnsupportedOperationException {@inheritDoc}
      */
     @Override
-    public void sort() throws UnsupportedOperationException {
-        try {
-            Arrays.sort(values);
-        } catch (final ClassCastException e) {
-            throw new UnsupportedOperationException("Non-comparable objects cannot be naturally sorted.", e);
-        }
+    public void sort() {
+        Arrays.sort(values);
     }
 
     /**
@@ -401,13 +360,32 @@ public class FastArray<E> implements SafeArray<E> {
      * @param c The comparator function of which to sort this array with
      */
     @Override
-    public void sort(@Nonnull Comparator<? super E> c) {
-        Arrays.sort(values, c);
+    public void sort(@Nonnull Comparator<? super Double> c) {
+        final double[] sortedArray = Arrays.stream(values)
+                .boxed()
+                .sorted(c)
+                .mapToDouble(Double::doubleValue)
+                .toArray();
+
+        // Update the elements array with the sorted values
+        System.arraycopy(sortedArray, 0, values, 0, sortedArray.length);
     }
 
     //
     // Transformation
     //
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleArray map(@Nonnull DoubleUnaryOperator f) {
+        return new DoubleFastArray(stream().map(f).toArray());
+    }
 
     /**
      * {@inheritDoc}
@@ -419,80 +397,30 @@ public class FastArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
-        return new FastArray<>((F[]) stream().map(f).toArray());
+    public <F> SafeArray<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
+        return new FastArray<>((F[]) stream().mapToObj(f).toArray());
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public LongArray mapToLong(@Nonnull ToLongFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public IntArray mapToInt(@Nonnull ToIntFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param a   The array of which to merge this array with
-     * @param f   The merger function to handle the merging of the two arrays
-     * @param <F> {@inheritDoc}
-     * @param <G> {@inheritDoc}
+     * @param a The array of which to merge this array with
+     * @param f The merger function to handle the merging of the two arrays
      * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
+    public DoubleArray merge(@Nonnull DoubleArray a, @Nonnull DoubleBinaryOperator f)
             throws IllegalArgumentException {
         if (values.length != a.length()) {
             throw new IllegalArgumentException("Array lengths must match for this operation.");
         }
 
-        final FastArray<G> result = new FastArray<>(values.length);
+        final DoubleFastArray result = new DoubleFastArray(values.length);
 
         for (int i = 0; i < values.length; i++) {
-            result.values[i] = f.apply(values[i], a.get(i));
+            result.values[i] = f.applyAsDouble(values[i], a.get(i));
         }
 
         return result;
@@ -509,7 +437,7 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Double> iterator() {
         return stream().iterator();
     }
 
@@ -519,8 +447,8 @@ public class FastArray<E> implements SafeArray<E> {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> a) {
-        for (final E value : values) {
+    public void forEach(@Nonnull Consumer<? super Double> a) {
+        for (final double value : values) {
             a.accept(value);
         }
     }
@@ -531,7 +459,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a) {
+    public void forEach(@Nonnull BiConsumer<? super Integer, ? super Double> a) {
         for (int i = 0; i < values.length; i++) {
             a.accept(i, values[i]);
         }
@@ -548,7 +476,7 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public E[] array() {
+    public double[] array() {
         return Arrays.copyOf(values, values.length);
     }
 
@@ -559,7 +487,7 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Stream<E> stream() {
+    public DoubleStream stream() {
         return Arrays.stream(values);
     }
 
@@ -570,8 +498,8 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public List<E> list() {
-        return stream().toList();
+    public List<Double> list() {
+        return stream().boxed().toList();
     }
 
     /**
@@ -581,8 +509,19 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Tuple<E> tuple() {
-        return Tuple.of(array());
+    public DoubleTuple tuple() {
+        return DoubleTuple.of(values);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<Double> boxed() {
+        return new FastArray<>(stream().boxed().toArray(Double[]::new));
     }
 
     //
@@ -597,13 +536,8 @@ public class FastArray<E> implements SafeArray<E> {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof SafeArray<?> a)) return false;
-        if (values.length != a.length()) return false;
-        for (int i = 0; i < values.length; i++) {
-            if (!Objects.equals(values[i], a.get(i))) return false;
-        }
-
-        return true;
+        if (!(obj instanceof DoubleArray a)) return false;
+        return Arrays.equals(values, a.array());
     }
 
     //

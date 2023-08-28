@@ -1,25 +1,23 @@
 package civitas.celestis.util.array;
 
-import civitas.celestis.util.function.ToFloatFunction;
-import civitas.celestis.util.tuple.Tuple;
+import civitas.celestis.util.tuple.LongTuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.Stream;
+import java.util.stream.LongStream;
 
 /**
- * A generic type-safe array which directly references its parent array's internal array.
+ * A long array which directly references its parent array's internal array.
  * A predefined offset is added to the start of the array, and an arbitrary length is set
  * as the limit of this array. This class is designed to be used internally, and thus is
  * package-private.
  *
- * @param <E> The type of element to contain
- * @see SafeArray
+ * @see LongArray
  */
-class SubArray<E> implements SafeArray<E> {
+class LongSubArray implements LongArray {
     //
     // Constants
     //
@@ -41,7 +39,7 @@ class SubArray<E> implements SafeArray<E> {
      * @param startingIndex The index at which to start the reference at (inclusive)
      * @param endingIndex   The index at which to stop the reference at (exclusive)
      */
-    SubArray(@Nonnull E[] original, int startingIndex, int endingIndex) {
+    LongSubArray(@Nonnull long[] original, int startingIndex, int endingIndex) {
         if (startingIndex >= endingIndex) {
             throw new ArrayIndexOutOfBoundsException("Range [" + startingIndex + ", " + endingIndex + ") is invalid.");
         }
@@ -67,7 +65,7 @@ class SubArray<E> implements SafeArray<E> {
      * The original array to reference/
      */
     @Nonnull
-    private final E[] original;
+    private final long[] original;
 
     /**
      * The starting index of this array.
@@ -78,6 +76,7 @@ class SubArray<E> implements SafeArray<E> {
      * The ending index of this array.
      */
     private final int endingIndex;
+
 
     //
     // Properties
@@ -100,13 +99,13 @@ class SubArray<E> implements SafeArray<E> {
     /**
      * {@inheritDoc}
      *
-     * @param obj The object of which to check for containment
+     * @param v The object of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(@Nullable Object obj) {
+    public boolean contains(long v) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (Objects.equals(original[i], obj)) return true;
+            if (Objects.equals(original[i], v)) return true;
         }
 
         return false;
@@ -119,8 +118,9 @@ class SubArray<E> implements SafeArray<E> {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<?> i) {
-        for (final Object o : i) {
+    public boolean containsAll(@Nonnull Iterable<Long> i) {
+        for (final Long o : i) {
+            if (o == null) return false;
             if (!contains(o)) return false;
         }
 
@@ -139,26 +139,10 @@ class SubArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public E get(int i) throws IndexOutOfBoundsException {
+    public long get(int i) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
         return original[adjusted];
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param i The index of the element to get
-     * @param e The fallback value to default to when the value is {@code null}
-     * @return {@inheritDoc}
-     * @throws IndexOutOfBoundsException {@inheritDoc}
-     */
-    @Override
-    public E getOrDefault(int i, E e) throws IndexOutOfBoundsException {
-        final int adjusted = i + startingIndex;
-        if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
-        final E value = original[adjusted];
-        return value != null ? value : e;
     }
 
     /**
@@ -169,7 +153,7 @@ class SubArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int i, E e) throws IndexOutOfBoundsException {
+    public void set(int i, long e) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
         original[adjusted] = e;
@@ -183,10 +167,10 @@ class SubArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void update(int i, @Nonnull UnaryOperator<E> f) throws IndexOutOfBoundsException {
+    public void update(int i, @Nonnull LongUnaryOperator f) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
-        original[adjusted] = f.apply(original[adjusted]);
+        original[adjusted] = f.applyAsLong(original[adjusted]);
     }
 
     //
@@ -199,20 +183,10 @@ class SubArray<E> implements SafeArray<E> {
      * @param v The value to fill this array with
      */
     @Override
-    public void fill(E v) {
+    public void fill(long v) {
         for (int i = startingIndex; i < endingIndex; i++) {
             original[i] = v;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param v The value to fill empty slots of this array with
-     */
-    @Override
-    public void fillEmpty(E v) {
-        replaceAll(null, v);
     }
 
     /**
@@ -223,7 +197,7 @@ class SubArray<E> implements SafeArray<E> {
      * @param v The value of which to assign to every slot within the specified range
      */
     @Override
-    public void fillRange(int s, int e, E v) {
+    public void fillRange(int s, int e, long v) {
         final int start = s + startingIndex;
         final int end = e + startingIndex;
 
@@ -241,9 +215,9 @@ class SubArray<E> implements SafeArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull UnaryOperator<E> f) {
+    public void update(@Nonnull LongUnaryOperator f) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = f.apply(original[i]);
+            original[i] = f.applyAsLong(original[i]);
         }
     }
 
@@ -253,7 +227,7 @@ class SubArray<E> implements SafeArray<E> {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull BiFunction<? super Integer, ? super E, E> f) {
+    public void update(@Nonnull BiFunction<? super Integer, ? super Long, Long> f) {
         for (int i = startingIndex; i < endingIndex; i++) {
             original[i] = f.apply(i, original[i]);
         }
@@ -266,9 +240,9 @@ class SubArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(E oldValue, E newValue) {
+    public void replaceAll(long oldValue, long newValue) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (!Objects.equals(original[i], oldValue)) continue;
+            if (original[i] != oldValue) continue;
             original[i] = newValue;
         }
     }
@@ -280,9 +254,9 @@ class SubArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceFirst(E oldValue, E newValue) {
+    public void replaceFirst(long oldValue, long newValue) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (!Objects.equals(original[i], oldValue)) continue;
+            if (original[i] != oldValue) continue;
             original[i] = newValue;
             return;
         }
@@ -295,9 +269,9 @@ class SubArray<E> implements SafeArray<E> {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceLast(E oldValue, E newValue) {
+    public void replaceLast(long oldValue, long newValue) {
         for (int i = (endingIndex - 1); i >= startingIndex; i--) {
-            if (!Objects.equals(original[i], oldValue)) continue;
+            if (original[i] != oldValue) continue;
             original[i] = newValue;
             return;
         }
@@ -317,8 +291,8 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> subArray(int s, int e) throws IndexOutOfBoundsException {
-        return new SubArray<>(original, s + startingIndex, e + startingIndex);
+    public LongArray subArray(int s, int e) throws IndexOutOfBoundsException {
+        return new LongSubArray(original, s + startingIndex, e + startingIndex);
     }
 
     /**
@@ -330,7 +304,7 @@ class SubArray<E> implements SafeArray<E> {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int s, int e, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
+    public void setRange(int s, int e, @Nonnull LongArray a) throws IndexOutOfBoundsException {
         for (int i = (s + startingIndex); i < (e + startingIndex); i++) {
             original[i] = a.get(i - (s + startingIndex));
         }
@@ -348,8 +322,8 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> resize(int size) {
-        final FastArray<E> result = new FastArray<>(size);
+    public LongArray resize(int size) {
+        final LongFastArray result = new LongFastArray(size);
         System.arraycopy(original, startingIndex, result.values, 0, endingIndex - startingIndex);
         return result;
     }
@@ -369,7 +343,7 @@ class SubArray<E> implements SafeArray<E> {
             final int j = random.nextInt(i + 1);
 
             // Swap elements at i and j
-            final E temp = original[i];
+            final long temp = original[i];
 
             original[i] = original[j];
             original[j] = temp;
@@ -378,19 +352,10 @@ class SubArray<E> implements SafeArray<E> {
 
     /**
      * {@inheritDoc}
-     *
-     * @throws UnsupportedOperationException {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void sort() throws UnsupportedOperationException {
-        final E[] sorted;
-        try {
-            sorted = (E[]) stream().sorted().toArray();
-        } catch (final ClassCastException e) {
-            throw new UnsupportedOperationException("Non-comparable objects cannot be naturally sorted.", e);
-        }
-
+    public void sort() {
+        final long[] sorted = stream().sorted().toArray();
         System.arraycopy(sorted, 0, original, startingIndex, endingIndex - startingIndex);
     }
 
@@ -400,9 +365,8 @@ class SubArray<E> implements SafeArray<E> {
      * @param c The comparator function of which to sort this array with
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void sort(@Nonnull Comparator<? super E> c) {
-        final E[] sorted = (E[]) stream().sorted(c).toArray();
+    public void sort(@Nonnull Comparator<? super Long> c) {
+        final long[] sorted = stream().boxed().sorted(c).mapToLong(Long::longValue).toArray();
         System.arraycopy(sorted, 0, original, startingIndex, endingIndex - startingIndex);
     }
 
@@ -413,13 +377,25 @@ class SubArray<E> implements SafeArray<E> {
     /**
      * {@inheritDoc}
      *
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongArray map(@Nonnull LongUnaryOperator f) {
+        return new LongFastArray(stream().map(f).toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this array
      * @param <F> {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
+    public <F> SafeArray<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
         final FastArray<F> result = new FastArray<>(length());
         for (int i = startingIndex; i < endingIndex; i++) {
             result.values[i - startingIndex] = f.apply(original[i]);
@@ -430,64 +406,14 @@ class SubArray<E> implements SafeArray<E> {
     /**
      * {@inheritDoc}
      *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public LongArray mapToLong(@Nonnull ToLongFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public IntArray mapToInt(@Nonnull ToIntFunction<? super E> f) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param a   The array of which to merge this array with
-     * @param f   The merger function to handle the merging of the two arrays
-     * @param <F> {@inheritDoc}
-     * @param <G> {@inheritDoc}
+     * @param a The array of which to merge this array with
+     * @param f The merger function to handle the merging of the two arrays
      * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
+    public LongArray merge(@Nonnull LongArray a, @Nonnull LongBinaryOperator f)
             throws IllegalArgumentException {
         final int length = length();
 
@@ -495,9 +421,9 @@ class SubArray<E> implements SafeArray<E> {
             throw new IllegalArgumentException("Array lengths must match for this operation.");
         }
 
-        final FastArray<G> result = new FastArray<>(length);
+        final LongFastArray result = new LongFastArray(length);
         for (int i = startingIndex; i < endingIndex; i++) {
-            result.values[i - startingIndex] = f.apply(original[i], a.get(i - startingIndex));
+            result.values[i - startingIndex] = f.applyAsLong(original[i], a.get(i - startingIndex));
         }
 
         return result;
@@ -514,7 +440,7 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Long> iterator() {
         return stream().iterator();
     }
 
@@ -524,7 +450,7 @@ class SubArray<E> implements SafeArray<E> {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> a) {
+    public void forEach(@Nonnull Consumer<? super Long> a) {
         for (int i = startingIndex; i < endingIndex; i++) {
             a.accept(original[i]);
         }
@@ -536,7 +462,7 @@ class SubArray<E> implements SafeArray<E> {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a) {
+    public void forEach(@Nonnull BiConsumer<? super Integer, ? super Long> a) {
         for (int i = startingIndex; i < endingIndex; i++) {
             a.accept(i - startingIndex, original[i]);
         }
@@ -553,9 +479,8 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public E[] array() {
-        final E[] result = (E[]) new Object[endingIndex - startingIndex];
+    public long[] array() {
+        final long[] result = new long[endingIndex - startingIndex];
         System.arraycopy(original, startingIndex, result, 0, endingIndex - startingIndex);
         return result;
     }
@@ -567,8 +492,8 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Stream<E> stream() {
-        return Stream.of(array());
+    public LongStream stream() {
+        return LongStream.of(array());
     }
 
     /**
@@ -578,8 +503,8 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public List<E> list() {
-        return stream().toList();
+    public List<Long> list() {
+        return stream().boxed().toList();
     }
 
     /**
@@ -589,8 +514,19 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Nonnull
     @Override
-    public Tuple<E> tuple() {
-        return Tuple.of(array());
+    public LongTuple tuple() {
+        return LongTuple.of(array());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public SafeArray<Long> boxed() {
+        return new FastArray<>(stream().boxed().toArray(Long[]::new));
     }
 
     //
@@ -605,11 +541,11 @@ class SubArray<E> implements SafeArray<E> {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof SafeArray<?> a)) return false;
+        if (!(obj instanceof LongArray a)) return false;
         if (length() != a.length()) return false;
 
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (!Objects.equals(original[i], a.get(i - startingIndex))) return false;
+            if (original[i] != a.get(i - startingIndex)) return false;
         }
 
         return true;
