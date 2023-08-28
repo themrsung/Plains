@@ -2,6 +2,7 @@ package civitas.celestis.graphics;
 
 import civitas.celestis.math.Scalars;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import java.awt.*;
 
@@ -104,6 +105,31 @@ public final class Colors {
     //
     //
     //
+    // Serialization
+    //
+    //
+    //
+
+    /**
+     * Serializes a color into a string.
+     * @param c The color of which to serialize
+     * @return The string representation of the provided color {@code c}
+     */
+    @Nonnull
+    public static String toString(@Nullable Color c) {
+        if (c == null) return "null";
+
+        return c.getClass().getSimpleName() + "{" +
+                "r=" + c.getRed() + ", " +
+                "g=" + c.getGreen() + ", " +
+                "b=" + c.getBlue() + ", " +
+                "a=" + c.getAlpha() +
+                "}";
+    }
+
+    //
+    //
+    //
     // Randomization
     //
     //
@@ -120,6 +146,29 @@ public final class Colors {
                 (int) Scalars.random(0, 255),
                 (int) Scalars.random(0, 255),
                 (int) Scalars.random(0, 255)
+        );
+    }
+
+    //
+    //
+    //
+    // Inversion
+    //
+    //
+    //
+
+    /**
+     * Returns the inverse of the provided color {@code c}.
+     * @param c The color of which to get the inverse of
+     * @return The inverse of the provided color {@code c}
+     */
+    @Nonnull
+    public static Color inverse(@Nonnull Color c) {
+        return new Color(
+                255 - c.getRed(),
+                255 - c.getGreen(),
+                255 - c.getBlue(),
+                c.getAlpha()
         );
     }
 
