@@ -267,7 +267,7 @@ public class Int4 implements IntTuple {
     @Nonnull
     @Override
     public IntStream stream() {
-        return Arrays.stream(array());
+        return IntStream.of(w, x, y, z);
     }
 
     /**

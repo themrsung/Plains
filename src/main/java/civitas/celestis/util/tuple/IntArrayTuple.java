@@ -194,7 +194,7 @@ public class IntArrayTuple implements IntTuple {
     @Nonnull
     @Override
     public IntStream stream() {
-        return Arrays.stream(elements);
+        return IntStream.of(elements);
     }
 
     /**

@@ -7,14 +7,14 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.LongFunction;
-import java.util.function.LongUnaryOperator;
-import java.util.stream.LongStream;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 /**
- * An array-based tuple which holds an arbitrary element of type {@code long}.
+ * An array-based tuple which holds an arbitrary element of type {@code float}.
  */
-public class LongArrayTuple implements LongTuple {
+public class FloatArrayTuple implements FloatTuple {
     //
     // Constants
     //
@@ -34,8 +34,8 @@ public class LongArrayTuple implements LongTuple {
      *
      * @param elements The elements this tuple should contain
      */
-    public LongArrayTuple(@Nonnull long... elements) {
-        this.elements = Arrays.stream(elements).toArray();
+    public FloatArrayTuple(@Nonnull float... elements) {
+        this.elements = Arrays.copyOf(elements, elements.length);
     }
 
     /**
@@ -43,7 +43,7 @@ public class LongArrayTuple implements LongTuple {
      *
      * @param t The tuple of which to copy elements from
      */
-    public LongArrayTuple(@Nonnull LongTuple t) {
+    public FloatArrayTuple(@Nonnull FloatTuple t) {
         this.elements = t.array();
     }
 
@@ -56,7 +56,7 @@ public class LongArrayTuple implements LongTuple {
      * private in order to ensure the immutability of this tuple.
      */
     @Nonnull
-    private final long[] elements;
+    private final float[] elements;
 
     //
     // Properties
@@ -79,11 +79,53 @@ public class LongArrayTuple implements LongTuple {
      */
     @Override
     public boolean isZero() {
-        for (final long element : elements) {
+        for (final float element : elements) {
             if (element != 0) return false;
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean isNaN() {
+        for (final float element : elements) {
+            if (Float.isNaN(element)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean isFinite() {
+        for (final float element : elements) {
+            if (!Float.isFinite(element)) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean isInfinite() {
+        for (final float element : elements) {
+            if (Float.isInfinite(element)) return true;
+        }
+
+        return false;
     }
 
     //
@@ -97,8 +139,8 @@ public class LongArrayTuple implements LongTuple {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(long v) {
-        for (final long element : elements) {
+    public boolean contains(float v) {
+        for (final float element : elements) {
             if (element == v) return true;
         }
 
@@ -112,8 +154,8 @@ public class LongArrayTuple implements LongTuple {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<Long> i) {
-        for (final Long v : i) {
+    public boolean containsAll(@Nonnull Iterable<Float> i) {
+        for (final Float v : i) {
             if (v == null) return false;
             if (!contains(v)) return false;
         }
@@ -133,7 +175,7 @@ public class LongArrayTuple implements LongTuple {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public long get(int i) throws IndexOutOfBoundsException {
+    public float get(int i) throws IndexOutOfBoundsException {
         try {
             return elements[i];
         } catch (final IndexOutOfBoundsException e) {
@@ -153,8 +195,15 @@ public class LongArrayTuple implements LongTuple {
      */
     @Nonnull
     @Override
-    public LongTuple map(@Nonnull LongUnaryOperator f) {
-        return LongTuple.of(stream().map(f).toArray());
+    public FloatTuple map(@Nonnull UnaryOperator<Float> f) {
+        final Float[] mapped = (Float[]) stream().map(f).toArray();
+        final float[] unboxed = new float[mapped.length];
+
+        for (int i = 0; i < mapped.length; i++) {
+            unboxed[i] = mapped[i];
+        }
+
+        return FloatTuple.of(unboxed);
     }
 
     /**
@@ -167,8 +216,8 @@ public class LongArrayTuple implements LongTuple {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public <F> Tuple<F> mapToObj(@Nonnull LongFunction<? extends F> f) {
-        return Tuple.of((F[]) stream().mapToObj(f).toArray());
+    public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
+        return Tuple.of((F[]) stream().map(f).toArray());
     }
 
     //
@@ -182,8 +231,8 @@ public class LongArrayTuple implements LongTuple {
      */
     @Nonnull
     @Override
-    public long[] array() {
-        return stream().toArray();
+    public float[] array() {
+        return Arrays.copyOf(elements, elements.length);
     }
 
     /**
@@ -193,8 +242,10 @@ public class LongArrayTuple implements LongTuple {
      */
     @Nonnull
     @Override
-    public LongStream stream() {
-        return LongStream.of(elements);
+    public Stream<Float> stream() {
+        final Float[] boxed = new Float[elements.length];
+        for (int i = 0; i < elements.length; i++) boxed[i] = elements[i];
+        return Arrays.stream(boxed);
     }
 
     /**
@@ -204,8 +255,8 @@ public class LongArrayTuple implements LongTuple {
      */
     @Nonnull
     @Override
-    public List<Long> list() {
-        return List.of(stream().boxed().toArray(Long[]::new));
+    public List<Float> list() {
+        return List.of(stream().toArray(Float[]::new));
     }
 
     /**
@@ -215,8 +266,8 @@ public class LongArrayTuple implements LongTuple {
      */
     @Nonnull
     @Override
-    public Tuple<Long> boxed() {
-        return Tuple.of(stream().boxed().toArray(Long[]::new));
+    public Tuple<Float> boxed() {
+        return Tuple.of(stream().toArray(Float[]::new));
     }
 
     //
@@ -231,7 +282,7 @@ public class LongArrayTuple implements LongTuple {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof LongTuple t)) return false;
+        if (!(obj instanceof FloatTuple t)) return false;
         return Arrays.equals(elements, t.array());
     }
 

@@ -109,22 +109,22 @@ public interface FloatTuple extends Serializable {
      * Applies the provided mapper function {@code f} to each component of this tuple,
      * then returns a new tuple containing the return values of the function {@code f}.
      *
-     * @param f   The function of which to apply to each component of this tuple
-     * @param <F> The type of component to map this tuple to
+     * @param f The function of which to apply to each component of this tuple
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> map(@Nonnull Function<? super Float, ? extends F> f);
+    FloatTuple map(@Nonnull UnaryOperator<Float> f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
      * then returns a new tuple containing the return values of the function {@code f}.
      *
-     * @param f The function of which to apply to each component of this tuple
+     * @param f   The function of which to apply to each component of this tuple
+     * @param <F> The type of component to map this tuple to
      * @return The resulting tuple
      */
     @Nonnull
-    FloatTuple mapToFloat(@Nonnull UnaryOperator<Float> f);
+    <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f);
 
     //
     // Conversion

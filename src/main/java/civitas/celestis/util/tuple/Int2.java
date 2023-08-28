@@ -229,7 +229,7 @@ public class Int2 implements IntTuple {
     @Nonnull
     @Override
     public IntStream stream() {
-        return Arrays.stream(array());
+        return IntStream.of(x, y);
     }
 
     /**

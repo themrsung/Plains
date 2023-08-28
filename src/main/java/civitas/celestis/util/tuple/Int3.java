@@ -248,7 +248,7 @@ public class Int3 implements IntTuple {
     @Nonnull
     @Override
     public IntStream stream() {
-        return Arrays.stream(array());
+        return IntStream.of(x, y, z);
     }
 
     /**

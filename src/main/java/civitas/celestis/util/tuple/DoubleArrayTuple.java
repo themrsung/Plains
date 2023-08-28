@@ -236,7 +236,7 @@ public class DoubleArrayTuple implements DoubleTuple {
     @Nonnull
     @Override
     public DoubleStream stream() {
-        return Arrays.stream(elements);
+        return DoubleStream.of(elements);
     }
 
     /**

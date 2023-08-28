@@ -278,7 +278,7 @@ public class Double3 implements DoubleTuple {
     @Nonnull
     @Override
     public DoubleStream stream() {
-        return Arrays.stream(array());
+        return DoubleStream.of(x, y, z);
     }
 
     /**

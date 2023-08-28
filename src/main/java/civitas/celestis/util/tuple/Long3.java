@@ -248,7 +248,7 @@ public class Long3 implements LongTuple {
     @Nonnull
     @Override
     public LongStream stream() {
-        return Arrays.stream(array());
+        return LongStream.of(x, y, z);
     }
 
     /**

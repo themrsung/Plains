@@ -7,15 +7,14 @@ import jakarta.annotation.Nullable;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.DoubleFunction;
-import java.util.function.DoubleUnaryOperator;
-import java.util.stream.DoubleStream;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
- * An immutable type containing two primitive {@code double}s.
+ * An immutable type containing two primitive {@code float}s.
  */
-public class Double2 implements DoubleTuple {
+public class Float2 implements FloatTuple {
     //
     // Constants
     //
@@ -31,23 +30,23 @@ public class Double2 implements DoubleTuple {
     //
 
     /**
-     * Creates a new {@link Double2}.
+     * Creates a new {@link Float2}.
      *
      * @param x The X component of this tuple
      * @param y The Y component of this tuple
      */
-    public Double2(double x, double y) {
+    public Float2(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Creates a new {@link Double2}.
+     * Creates a new {@link Float2}.
      *
      * @param components An array containing the components of this tuple in XY order
      * @throws IllegalArgumentException When the provided array's length is not {@code 2}
      */
-    public Double2(@Nonnull double[] components) {
+    public Float2(@Nonnull float[] components) {
         if (components.length != 2) {
             throw new IllegalArgumentException("The provided array's length is not 2.");
         }
@@ -57,12 +56,12 @@ public class Double2 implements DoubleTuple {
     }
 
     /**
-     * Creates a new {@link Double2}.
+     * Creates a new {@link Float2}.
      *
      * @param t The tuple of which to copy component values from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 2}
      */
-    public Double2(@Nonnull DoubleTuple t) {
+    public Float2(@Nonnull FloatTuple t) {
         if (t.size() != 2) {
             throw new IllegalArgumentException("The provided tuple's size is not 2.");
         }
@@ -78,12 +77,12 @@ public class Double2 implements DoubleTuple {
     /**
      * The X component of this tuple.
      */
-    protected final double x;
+    protected final float x;
 
     /**
      * The Y component of this tuple.
      */
-    protected final double y;
+    protected final float y;
 
     //
     // Properties
@@ -116,7 +115,7 @@ public class Double2 implements DoubleTuple {
      */
     @Override
     public boolean isNaN() {
-        return Double.isNaN(x + y);
+        return Float.isNaN(x + y);
     }
 
     /**
@@ -126,7 +125,7 @@ public class Double2 implements DoubleTuple {
      */
     @Override
     public boolean isFinite() {
-        return Double.isFinite(x + y);
+        return Float.isFinite(x + y);
     }
 
     /**
@@ -136,7 +135,7 @@ public class Double2 implements DoubleTuple {
      */
     @Override
     public boolean isInfinite() {
-        return Double.isInfinite(x + y);
+        return Float.isInfinite(x + y);
     }
 
     //
@@ -150,7 +149,7 @@ public class Double2 implements DoubleTuple {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(double v) {
+    public boolean contains(float v) {
         return x == v || y == v;
     }
 
@@ -161,8 +160,8 @@ public class Double2 implements DoubleTuple {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<Double> i) {
-        for (final Double v : i) {
+    public boolean containsAll(@Nonnull Iterable<Float> i) {
+        for (final Float v : i) {
             if (v == null) return false;
             if (!contains(v)) return false;
         }
@@ -182,7 +181,7 @@ public class Double2 implements DoubleTuple {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public double get(int i) throws IndexOutOfBoundsException {
+    public float get(int i) throws IndexOutOfBoundsException {
         return switch (i) {
             case 0 -> x;
             case 1 -> y;
@@ -195,7 +194,7 @@ public class Double2 implements DoubleTuple {
      *
      * @return The X component of this tuple
      */
-    public double x() {
+    public float x() {
         return x;
     }
 
@@ -204,7 +203,7 @@ public class Double2 implements DoubleTuple {
      *
      * @return The Y component of this tuple
      */
-    public double y() {
+    public float y() {
         return y;
     }
 
@@ -220,8 +219,8 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public Double2 map(@Nonnull DoubleUnaryOperator f) {
-        return new Double2(f.applyAsDouble(x), f.applyAsDouble(y));
+    public Float2 map(@Nonnull UnaryOperator<Float> f) {
+        return new Float2(f.apply(x), f.apply(y));
     }
 
     /**
@@ -233,7 +232,7 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> mapToObj(@Nonnull DoubleFunction<? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y));
     }
 
@@ -248,8 +247,8 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public double[] array() {
-        return new double[]{x, y};
+    public float[] array() {
+        return new float[]{x, y};
     }
 
     /**
@@ -259,8 +258,8 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public DoubleStream stream() {
-        return DoubleStream.of(x, y);
+    public Stream<Float> stream() {
+        return Stream.of(x, y);
     }
 
     /**
@@ -270,7 +269,7 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public List<Double> list() {
+    public List<Float> list() {
         return stream().boxed().toList();
     }
 
@@ -281,8 +280,8 @@ public class Double2 implements DoubleTuple {
      */
     @Nonnull
     @Override
-    public Tuple<Double> boxed() {
-        return Tuple.of(stream().boxed().toArray(Double[]::new));
+    public Tuple<Float> boxed() {
+        return Tuple.of(stream().boxed().toArray(Float[]::new));
     }
 
     //
@@ -297,7 +296,7 @@ public class Double2 implements DoubleTuple {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof DoubleTuple t)) return false;
+        if (!(obj instanceof FloatTuple t)) return false;
         if (t.size() != 2) return false;
         return x == t.get(0) && y == t.get(1);
     }
