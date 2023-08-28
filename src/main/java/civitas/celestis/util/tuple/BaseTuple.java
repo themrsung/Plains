@@ -11,6 +11,11 @@ import java.util.List;
  * The base class for all tuples, including primitive specialized tuples.
  *
  * @param <E> The type of element this tuple should hold
+ * @see Tuple
+ * @see DoubleTuple
+ * @see FloatTuple
+ * @see LongTuple
+ * @see IntTuple
  */
 public interface BaseTuple<E> extends Serializable {
     //

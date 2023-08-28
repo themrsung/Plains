@@ -1,8 +1,8 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * @see SyncGrid
  * @see AtomicGrid
  */
-public interface Grid<E> extends Iterable<E>, Serializable {
+public interface Grid<E> extends BaseGrid<E> {
     //
     // Factory
     //
@@ -152,6 +152,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      *
      * @return The number of rows this grid has
      */
+    @Override
     int rows();
 
     /**
@@ -159,6 +160,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      *
      * @return The number of columns this grid has
      */
+    @Override
     int columns();
 
     /**
@@ -167,6 +169,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      *
      * @return The number of element this gird can potentially hold
      */
+    @Override
     int size();
 
     //
@@ -385,23 +388,13 @@ public interface Grid<E> extends Iterable<E>, Serializable {
     //
 
     /**
-     * Returns an array containing every element within this grid. The length of this array is not
+     * Returns an array containing every element within this grid. The length of the array is not
      * guaranteed to be equal to the size of this grid, and the order is not guaranteed to be consistent.
      *
      * @return The array representation of this grid
      */
     @Nonnull
     E[] array();
-
-    /**
-     * Returns a type-safe array containing every element within this grid. The length of this array is not
-     * guaranteed to be equal to the size of this grid, and the order is not guaranteed to be consistent.
-     *
-     * @return The type-safe array representation of this grid
-     * @see SafeArray
-     */
-    @Nonnull
-    SafeArray<E> safeArray();
 
     /**
      * Returns a stream whose source is the elements of this grid.
@@ -421,6 +414,7 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * @see Collection
      */
     @Nonnull
+    @Override
     Collection<E> collect();
 
     /**
@@ -431,7 +425,16 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * @see Set
      */
     @Nonnull
+    @Override
     Set<E> set();
+
+    /**
+     * Returns a tuple containing every element within this grid. The length of the tuple is not
+     * guaranteed to be equal to the size of this grid, and the order is not guaranteed to be consistent.
+     * @return The tuple representation of this grid
+     */
+    @Nonnull
+    Tuple<E> tuple();
 
     //
     // Iteration
@@ -450,10 +453,10 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * Executes the provided action for each element of this grid. The order of execution is not
      * guaranteed to be consistent.
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    void forEach(@Nonnull Consumer<? super E> action);
+    void forEach(@Nonnull Consumer<? super E> a);
 
     /**
      * Executes the provided action for each element of this grid. The row and column indices are
@@ -461,9 +464,10 @@ public interface Grid<E> extends Iterable<E>, Serializable {
      * element is provided as the third parameter of the function. The order of execution is not
      * guaranteed to be consistent.
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
-    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action);
+    @Override
+    void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a);
 
     //
     // Equality

@@ -14,6 +14,11 @@ import java.util.function.Consumer;
  * The base class for all type-safe arrays, including primitive specialized arrays.
  *
  * @param <E> The type of element this array should hold
+ * @see SafeArray
+ * @see DoubleArray
+ * @see FloatArray
+ * @see LongArray
+ * @see IntArray
  */
 public interface BaseArray<E> extends Iterable<E>, Serializable {
     //

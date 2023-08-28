@@ -1,8 +1,8 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -667,17 +667,6 @@ public class HashGrid<E> implements DynamicGrid<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> safeArray() {
-        return SafeArray.copyOf(values.values());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
     public Stream<E> stream() {
         return values.values().stream();
     }
@@ -704,6 +693,16 @@ public class HashGrid<E> implements DynamicGrid<E> {
         return Set.copyOf(values.values());
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<E> tuple() {
+        return Tuple.copyOf(values.values());
+    }
+
     //
     // Iteration
     //
@@ -722,42 +721,25 @@ public class HashGrid<E> implements DynamicGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
-        values.values().forEach(action);
+    public void forEach(@Nonnull Consumer<? super E> a) {
+        values.values().forEach(a);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public synchronized void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+    public synchronized void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(r, c, values.get(r * columns + c));
+                a.accept(r, c, values.get(r * columns + c));
             }
         }
-    }
-
-    //
-    // Copying
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Grid<E> copy() {
-        final HashGrid<E> result = new HashGrid<>(rows, columns);
-        result.values.putAll(values);
-        return result;
     }
 
     //

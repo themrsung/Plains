@@ -1,8 +1,8 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -495,21 +495,6 @@ public class ArrayGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> safeArray() {
-        /*
-         * Since type-safe arrays perform a shallow copy using streams upon instantiation,
-         * this should be faster than manually copying over values using SafeArray#set(int).
-         */
-        return SafeArray.of(array());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
     public Stream<E> stream() {
         return Arrays.stream(array());
     }
@@ -536,6 +521,16 @@ public class ArrayGrid<E> implements Grid<E> {
         return Set.of(array());
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<E> tuple() {
+        return Tuple.of(array());
+    }
+
     //
     // Iteration
     //
@@ -554,13 +549,13 @@ public class ArrayGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
+    public void forEach(@Nonnull Consumer<? super E> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(values[r][c]);
+                a.accept(values[r][c]);
             }
         }
     }
@@ -568,36 +563,15 @@ public class ArrayGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(r, c, values[r][c]);
+                a.accept(r, c, values[r][c]);
             }
         }
-    }
-
-    //
-    // Copying
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Grid<E> copy() {
-        final ArrayGrid<E> result = new ArrayGrid<>(rows, columns);
-
-        for (int r = 0; r < rows; r++) {
-            System.arraycopy(values[r], 0, result.values[r], 0, columns);
-        }
-
-        return result;
     }
 
     //

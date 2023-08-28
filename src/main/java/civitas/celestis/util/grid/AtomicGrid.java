@@ -1,9 +1,8 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.array.SafeArray;
-import civitas.celestis.util.array.SyncArray;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -512,17 +511,6 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Nonnull
     @Override
-    public SafeArray<E> safeArray() {
-        return SyncArray.of(array());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
     public Stream<E> stream() {
         return Arrays.stream(array());
     }
@@ -549,6 +537,16 @@ public class AtomicGrid<E> implements Grid<E> {
         return Set.of(array());
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Tuple<E> tuple() {
+        return Tuple.of(array());
+    }
+
     //
     // Iteration
     //
@@ -567,13 +565,13 @@ public class AtomicGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action to be performed for each element
+     * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super E> action) {
+    public void forEach(@Nonnull Consumer<? super E> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(references[r][c].get());
+                a.accept(references[r][c].get());
             }
         }
     }
@@ -581,38 +579,15 @@ public class AtomicGrid<E> implements Grid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
+    public void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
-                action.accept(r, c, references[r][c].get());
+                a.accept(r, c, references[r][c].get());
             }
         }
-    }
-
-    //
-    // Copying
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public Grid<E> copy() {
-        final SyncGrid<E> result = new SyncGrid<>(rows, columns);
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                result.values[r][c] = references[r][c].get();
-            }
-        }
-
-        return result;
     }
 
     //

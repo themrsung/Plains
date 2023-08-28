@@ -1,8 +1,8 @@
 package civitas.celestis.util.grid;
 
-import civitas.celestis.util.array.SafeArray;
 import civitas.celestis.util.function.TriConsumer;
 import civitas.celestis.util.function.TriFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -344,17 +344,6 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      */
     @Nonnull
     @Override
-    public synchronized SafeArray<E> safeArray() {
-        return super.safeArray();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
     public synchronized Stream<E> stream() {
         return super.stream();
     }
@@ -381,6 +370,16 @@ public class SyncGrid<E> extends ArrayGrid<E> {
         return super.set();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public synchronized Tuple<E> tuple() {
+        return super.tuple();
+    }
+
     //
     // Iteration
     //
@@ -399,36 +398,21 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     /**
      * {@inheritDoc}
      *
-     * @param action The action to be performed for each element
+     * @param a The action to be performed for each element
      */
     @Override
-    public synchronized void forEach(@Nonnull Consumer<? super E> action) {
-        super.forEach(action);
+    public synchronized void forEach(@Nonnull Consumer<? super E> a) {
+        super.forEach(a);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param action The action of which to execute for each element of this grid
+     * @param a The action of which to execute for each element of this grid
      */
     @Override
-    public synchronized void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> action) {
-        super.forEach(action);
-    }
-
-    //
-    // Copying
-    //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public synchronized Grid<E> copy() {
-        return super.copy();
+    public synchronized void forEach(@Nonnull TriConsumer<Integer, Integer, ? super E> a) {
+        super.forEach(a);
     }
 
     //
