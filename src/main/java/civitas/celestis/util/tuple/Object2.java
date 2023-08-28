@@ -207,7 +207,7 @@ public class Object2<E> implements Tuple<E> {
     @Nonnull
     @Override
     public FloatTuple mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
-        return FloatTuple.of(f.apply(a), f.apply(b));
+        return FloatTuple.of(f.applyAsFloat(a), f.applyAsFloat(b));
     }
 
     /**

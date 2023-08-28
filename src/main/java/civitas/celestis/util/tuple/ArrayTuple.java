@@ -171,7 +171,7 @@ public class ArrayTuple<E> implements Tuple<E> {
     @Nonnull
     @Override
     public FloatTuple mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
-        return FloatTuple.of(stream().map(f::apply).toArray(Float[]::new));
+        return FloatTuple.of(stream().map(f::applyAsFloat).toArray(Float[]::new));
     }
 
     /**

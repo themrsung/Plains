@@ -277,6 +277,32 @@ public interface DoubleArray extends Iterable<Double>, Serializable {
     @Nonnull
     DoubleArray merge(@Nonnull DoubleArray a, @Nonnull DoubleBinaryOperator f) throws IllegalArgumentException;
 
+
+    /**
+     * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     * @param a The array of which to append to the end of this array
+     * @return The appended array
+     */
+    @Nonnull
+    default DoubleArray append(@Nonnull DoubleArray a) {
+        final int l1 = length();
+        final int l2 = a.length();
+
+        final DoubleArray result = resize(l1 + l2);
+        result.setRange(l1, l1 + l2, a);
+        return result;
+    }
+
+    /**
+     * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     * @param a The array of which to prepend to the front of this array
+     * @return The prepended array
+     */
+    @Nonnull
+    default DoubleArray prepend(@Nonnull DoubleArray a) {
+        return a.append(this);
+    }
+
     //
     // Iteration
     //

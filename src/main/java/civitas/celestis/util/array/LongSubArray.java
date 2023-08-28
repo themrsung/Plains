@@ -62,7 +62,7 @@ class LongSubArray implements LongArray {
     //
 
     /**
-     * The original array to reference/
+     * The original array to reference.
      */
     @Nonnull
     private final long[] original;

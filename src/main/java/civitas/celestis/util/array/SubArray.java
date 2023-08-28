@@ -64,7 +64,7 @@ class SubArray<E> implements SafeArray<E> {
     //
 
     /**
-     * The original array to reference/
+     * The original array to reference.
      */
     @Nonnull
     private final E[] original;
@@ -436,7 +436,11 @@ class SubArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     public DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
-        return null;
+        final DoubleFastArray result = new DoubleFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsDouble(original[i]);
+        }
+        return result;
     }
 
     /**
@@ -448,7 +452,11 @@ class SubArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     public FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
-        return null;
+        final FloatFastArray result = new FloatFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsFloat(original[i]);
+        }
+        return result;
     }
 
     /**
@@ -460,7 +468,11 @@ class SubArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     public LongArray mapToLong(@Nonnull ToLongFunction<? super E> f) {
-        return null;
+        final LongFastArray result = new LongFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsLong(original[i]);
+        }
+        return result;
     }
 
     /**
@@ -472,7 +484,11 @@ class SubArray<E> implements SafeArray<E> {
     @Nonnull
     @Override
     public IntArray mapToInt(@Nonnull ToIntFunction<? super E> f) {
-        return null;
+        final IntFastArray result = new IntFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsInt(original[i]);
+        }
+        return result;
     }
 
     /**

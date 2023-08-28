@@ -13,9 +13,23 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * A type-safe array.
+ * A type-safe array. Different implementations of type-safe arrays have different
+ * approaches to thread safety. {@link FastArray Fast arrays} drop all thread-safety
+ * measures in pursuit of the best possible performance, while {@link SyncArray synchronized}
+ * and {@link AtomicArray atomized arrays} provide thread-safety at the cost of reduced
+ * performance. The implementation should be chosen according to the specific needs of
+ * the corresponding application.
+ * <p>
+ * Primitive types are supported by specialized array instances such as {@link DoubleArray}
+ * or {@link FloatArray}. Primitive array instances can be obtained either through factory
+ * methods such as {@link DoubleArray#of(double...)} or primitive mapper methods wuch as
+ * {@link #mapToDouble(ToDoubleFunction)}} or {@link #mapToFloat(ToFloatFunction)}.
+ * </p>
  *
  * @param <E> The type of element this array should hold
+ * @see FastArray
+ * @see SyncArray
+ * @see AtomicArray
  * @see DoubleArray
  * @see FloatArray
  * @see LongArray
@@ -37,6 +51,30 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @SafeVarargs
     static <E> SafeArray<E> of(@Nonnull E... elements) {
         return FastArray.of(elements);
+    }
+
+    /**
+     * Creates a new synchronized array from the provided array of elements.
+     * @param elements The elements to contain in the array
+     * @return A new thread-safe array containing the provided elements
+     * @param <E> The type of element to contain in the array
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> SafeArray<E> syncOf(@Nonnull E... elements) {
+        return SyncArray.of(elements);
+    }
+
+    /**
+     * Creates a new atomic array from the provided array of elements.
+     * @param elements The elements to contain in the array
+     * @return A new thread-safe array containing the provided elements
+     * @param <E> The type of element to contain in the array
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> SafeArray<E> atomicOf(@Nonnull E... elements) {
+        return AtomicArray.of(elements);
     }
 
     /**
@@ -338,6 +376,31 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     @Nonnull
     <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
             throws IllegalArgumentException;
+
+    /**
+     * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     * @param a The array of which to append to the end of this array
+     * @return The appended array
+     */
+    @Nonnull
+    default SafeArray<E> append(@Nonnull SafeArray<? extends E> a) {
+        final int l1 = length();
+        final int l2 = a.length();
+
+        final SafeArray<E> result = resize(l1 + l2);
+        result.setRange(l1, l1 + l2, a);
+        return result;
+    }
+
+    /**
+     * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     * @param a The array of which to prepend to the front of this array
+     * @return The prepended array
+     */
+    @Nonnull
+    default SafeArray<E> prepend(@Nonnull SafeArray<? extends E> a) {
+        return a.map(v -> (E) v).append(this);
+    }
 
     //
     // Iteration

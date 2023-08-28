@@ -1,28 +1,26 @@
 package civitas.celestis.util.array;
 
-import civitas.celestis.util.function.FloatBinaryOperator;
-import civitas.celestis.util.function.FloatFunction;
-import civitas.celestis.util.function.FloatUnaryOperator;
-import civitas.celestis.util.tuple.FloatTuple;
+import civitas.celestis.util.function.ToFloatFunction;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * A float array which directly references its parent array's internal array.
+ * A generic type-safe array which directly references its parent array's internal array.
  * A predefined offset is added to the start of the array, and an arbitrary length is set
  * as the limit of this array. This class is designed to be used internally, and thus is
  * package-private.
  *
- * @see FloatArray
+ * @param <E> The type of element to contain
+ * @see SafeArray
  */
-class FloatSubArray implements FloatArray {
+class AtomicSubArray<E> implements SafeArray<E> {
     //
     // Constants
     //
@@ -40,20 +38,20 @@ class FloatSubArray implements FloatArray {
     /**
      * Creates a new sub-array.
      *
-     * @param original      The original internal array to reference
+     * @param references      The original internal array to reference
      * @param startingIndex The index at which to start the reference at (inclusive)
      * @param endingIndex   The index at which to stop the reference at (exclusive)
      */
-    FloatSubArray(@Nonnull float[] original, int startingIndex, int endingIndex) {
+    AtomicSubArray(@Nonnull AtomicReference<E>[] references, int startingIndex, int endingIndex) {
         if (startingIndex >= endingIndex) {
             throw new ArrayIndexOutOfBoundsException("Range [" + startingIndex + ", " + endingIndex + ") is invalid.");
         }
 
-        if (endingIndex - startingIndex > original.length) {
+        if (endingIndex - startingIndex > references.length) {
             throw new ArrayIndexOutOfBoundsException("Range [" + startingIndex + ", " + endingIndex + ") is out of bounds.");
         }
 
-        this.original = original;
+        this.references = references;
         this.startingIndex = startingIndex;
         this.endingIndex = endingIndex;
     }
@@ -70,7 +68,7 @@ class FloatSubArray implements FloatArray {
      * The original array to reference.
      */
     @Nonnull
-    private final float[] original;
+    private final AtomicReference<E>[] references;
 
     /**
      * The starting index of this array.
@@ -81,7 +79,6 @@ class FloatSubArray implements FloatArray {
      * The ending index of this array.
      */
     private final int endingIndex;
-
 
     //
     // Properties
@@ -104,13 +101,13 @@ class FloatSubArray implements FloatArray {
     /**
      * {@inheritDoc}
      *
-     * @param v The object of which to check for containment
+     * @param obj The object of which to check for containment
      * @return {@inheritDoc}
      */
     @Override
-    public boolean contains(float v) {
+    public boolean contains(@Nullable Object obj) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (Objects.equals(original[i], v)) return true;
+            if (Objects.equals(references[i].get(), obj)) return true;
         }
 
         return false;
@@ -123,9 +120,8 @@ class FloatSubArray implements FloatArray {
      * @return {@inheritDoc}
      */
     @Override
-    public boolean containsAll(@Nonnull Iterable<Float> i) {
-        for (final Float o : i) {
-            if (o == null) return false;
+    public boolean containsAll(@Nonnull Iterable<?> i) {
+        for (final Object o : i) {
             if (!contains(o)) return false;
         }
 
@@ -144,10 +140,26 @@ class FloatSubArray implements FloatArray {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public float get(int i) throws IndexOutOfBoundsException {
+    public E get(int i) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
-        return original[adjusted];
+        return references[adjusted].get();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param i The index of the element to get
+     * @param e The fallback value to default to when the value is {@code null}
+     * @return {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
+     */
+    @Override
+    public E getOrDefault(int i, E e) throws IndexOutOfBoundsException {
+        final int adjusted = i + startingIndex;
+        if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
+        final E value = references[adjusted].get();
+        return value != null ? value : e;
     }
 
     /**
@@ -158,10 +170,10 @@ class FloatSubArray implements FloatArray {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void set(int i, float e) throws IndexOutOfBoundsException {
+    public void set(int i, E e) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
-        original[adjusted] = e;
+        references[adjusted].set(e);
     }
 
     /**
@@ -172,10 +184,10 @@ class FloatSubArray implements FloatArray {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void update(int i, @Nonnull FloatUnaryOperator f) throws IndexOutOfBoundsException {
+    public void update(int i, @Nonnull UnaryOperator<E> f) throws IndexOutOfBoundsException {
         final int adjusted = i + startingIndex;
         if (adjusted >= endingIndex) throw new ArrayIndexOutOfBoundsException(i);
-        original[adjusted] = f.applyAsFloat(original[adjusted]);
+        references[adjusted].getAndUpdate(f);
     }
 
     //
@@ -188,10 +200,20 @@ class FloatSubArray implements FloatArray {
      * @param v The value to fill this array with
      */
     @Override
-    public void fill(float v) {
+    public void fill(E v) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = v;
+            references[i].set(v);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param v The value to fill empty slots of this array with
+     */
+    @Override
+    public void fillEmpty(E v) {
+        replaceAll(null, v);
     }
 
     /**
@@ -202,7 +224,7 @@ class FloatSubArray implements FloatArray {
      * @param v The value of which to assign to every slot within the specified range
      */
     @Override
-    public void fillRange(int s, int e, float v) {
+    public void fillRange(int s, int e, E v) {
         final int start = s + startingIndex;
         final int end = e + startingIndex;
 
@@ -210,7 +232,7 @@ class FloatSubArray implements FloatArray {
         if (end >= endingIndex) throw new ArrayIndexOutOfBoundsException(e);
 
         for (int i = start; i < end; i++) {
-            original[i] = v;
+            references[i].set(v);
         }
     }
 
@@ -220,9 +242,9 @@ class FloatSubArray implements FloatArray {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull FloatUnaryOperator f) {
+    public void update(@Nonnull UnaryOperator<E> f) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = f.applyAsFloat(original[i]);
+            references[i].getAndUpdate(f);
         }
     }
 
@@ -232,9 +254,10 @@ class FloatSubArray implements FloatArray {
      * @param f The function of which to apply to each element of this array
      */
     @Override
-    public void update(@Nonnull BiFunction<? super Integer, ? super Float, Float> f) {
+    public void update(@Nonnull BiFunction<? super Integer, ? super E, E> f) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = f.apply(i, original[i]);
+            final int index = i;
+            references[i].getAndUpdate(v -> f.apply(index, v));
         }
     }
 
@@ -245,10 +268,10 @@ class FloatSubArray implements FloatArray {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceAll(float oldValue, float newValue) {
+    public void replaceAll(E oldValue, E newValue) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (original[i] != oldValue) continue;
-            original[i] = newValue;
+            if (!Objects.equals(references[i].get(), oldValue)) continue;
+            references[i].set(newValue);
         }
     }
 
@@ -259,10 +282,10 @@ class FloatSubArray implements FloatArray {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceFirst(float oldValue, float newValue) {
+    public void replaceFirst(E oldValue, E newValue) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (original[i] != oldValue) continue;
-            original[i] = newValue;
+            if (!Objects.equals(references[i].get(), oldValue)) continue;
+            references[i].set(newValue);
             return;
         }
     }
@@ -274,10 +297,10 @@ class FloatSubArray implements FloatArray {
      * @param newValue The new value to replace to
      */
     @Override
-    public void replaceLast(float oldValue, float newValue) {
+    public void replaceLast(E oldValue, E newValue) {
         for (int i = (endingIndex - 1); i >= startingIndex; i--) {
-            if (original[i] != oldValue) continue;
-            original[i] = newValue;
+            if (!Objects.equals(references[i].get(), oldValue)) continue;
+            references[i].set(newValue);
             return;
         }
     }
@@ -296,8 +319,8 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public FloatArray subArray(int s, int e) throws IndexOutOfBoundsException {
-        return new FloatSubArray(original, s + startingIndex, e + startingIndex);
+    public SafeArray<E> subArray(int s, int e) throws IndexOutOfBoundsException {
+        return new AtomicSubArray<>(references, s + startingIndex, e + startingIndex);
     }
 
     /**
@@ -309,9 +332,9 @@ class FloatSubArray implements FloatArray {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
-    public void setRange(int s, int e, @Nonnull FloatArray a) throws IndexOutOfBoundsException {
+    public void setRange(int s, int e, @Nonnull SafeArray<? extends E> a) throws IndexOutOfBoundsException {
         for (int i = (s + startingIndex); i < (e + startingIndex); i++) {
-            original[i] = a.get(i - (s + startingIndex));
+            references[i].set(a.get(i - (s + startingIndex)));
         }
     }
 
@@ -327,9 +350,13 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public FloatArray resize(int size) {
-        final FloatFastArray result = new FloatFastArray(size);
-        System.arraycopy(original, startingIndex, result.values, 0, endingIndex - startingIndex);
+    public SafeArray<E> resize(int size) {
+        final FastArray<E> result = new FastArray<>(size);
+
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = references[i].get();
+        }
+
         return result;
     }
 
@@ -348,22 +375,30 @@ class FloatSubArray implements FloatArray {
             final int j = random.nextInt(i + 1);
 
             // Swap elements at i and j
-            final float temp = original[i];
+            final E temp = references[i].get();
 
-            original[i] = original[j];
-            original[j] = temp;
+            references[i].set(references[j].get());
+            references[j].set(temp);
         }
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnsupportedOperationException {@inheritDoc}
      */
     @Override
-    public void sort() {
-        final Float[] sorted = stream().sorted().toArray(Float[]::new);
+    @SuppressWarnings("unchecked")
+    public void sort() throws UnsupportedOperationException {
+        try {
+            Arrays.asList(references).subList(startingIndex, endingIndex).sort((r1, r2) -> {
+                final Comparable<E> v1 = (Comparable<E>) r1.get();
+                final E v2 = r2.get();
 
-        for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = sorted[i - startingIndex];
+                return v1.compareTo(v2);
+            });
+        } catch (final ClassCastException e) {
+            throw new UnsupportedOperationException("Non-comparable objects cannot be sorted by natural order.", e);
         }
     }
 
@@ -373,29 +408,13 @@ class FloatSubArray implements FloatArray {
      * @param c The comparator function of which to sort this array with
      */
     @Override
-    public void sort(@Nonnull Comparator<? super Float> c) {
-        final Float[] sorted = stream().sorted(c).toArray(Float[]::new);
-
-        for (int i = startingIndex; i < endingIndex; i++) {
-            original[i] = sorted[i - startingIndex];
-        }
+    public void sort(@Nonnull Comparator<? super E> c) {
+        Arrays.asList(references).subList(startingIndex, endingIndex).sort((r1, r2) -> c.compare(r1.get(), r2.get()));
     }
 
     //
     // Transformation
     //
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param f The function of which to apply to each element of this array
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public FloatArray map(@Nonnull FloatUnaryOperator f) {
-        return new FloatFastArray(stream().map(f::applyAsFloat).toArray(Float[]::new));
-    }
 
     /**
      * {@inheritDoc}
@@ -406,10 +425,10 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public <F> SafeArray<F> mapToObj(@Nonnull FloatFunction<? extends F> f) {
+    public <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f) {
         final FastArray<F> result = new FastArray<>(length());
         for (int i = startingIndex; i < endingIndex; i++) {
-            result.values[i - startingIndex] = f.apply(original[i]);
+            result.values[i - startingIndex] = f.apply(references[i].get());
         }
         return result;
     }
@@ -417,14 +436,80 @@ class FloatSubArray implements FloatArray {
     /**
      * {@inheritDoc}
      *
-     * @param a The array of which to merge this array with
-     * @param f The merger function to handle the merging of the two arrays
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f) {
+        final DoubleFastArray result = new DoubleFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsDouble(references[i].get());
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
+        final FloatFastArray result = new FloatFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsFloat(references[i].get());
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public LongArray mapToLong(@Nonnull ToLongFunction<? super E> f) {
+        final LongFastArray result = new LongFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsLong(references[i].get());
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public IntArray mapToInt(@Nonnull ToIntFunction<? super E> f) {
+        final IntFastArray result = new IntFastArray(length());
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result.values[i - startingIndex] = f.applyAsInt(references[i].get());
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param a   The array of which to merge this array with
+     * @param f   The merger function to handle the merging of the two arrays
+     * @param <F> {@inheritDoc}
+     * @param <G> {@inheritDoc}
      * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
     @Override
-    public FloatArray merge(@Nonnull FloatArray a, @Nonnull FloatBinaryOperator f)
+    public <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
             throws IllegalArgumentException {
         final int length = length();
 
@@ -432,9 +517,9 @@ class FloatSubArray implements FloatArray {
             throw new IllegalArgumentException("Array lengths must match for this operation.");
         }
 
-        final FloatFastArray result = new FloatFastArray(length);
+        final FastArray<G> result = new FastArray<>(length);
         for (int i = startingIndex; i < endingIndex; i++) {
-            result.values[i - startingIndex] = f.applyAsFloat(original[i], a.get(i - startingIndex));
+            result.values[i - startingIndex] = f.apply(references[i].get(), a.get(i - startingIndex));
         }
 
         return result;
@@ -451,7 +536,7 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public Iterator<Float> iterator() {
+    public Iterator<E> iterator() {
         return stream().iterator();
     }
 
@@ -461,9 +546,9 @@ class FloatSubArray implements FloatArray {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull Consumer<? super Float> a) {
+    public void forEach(@Nonnull Consumer<? super E> a) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            a.accept(original[i]);
+            a.accept(references[i].get());
         }
     }
 
@@ -473,9 +558,9 @@ class FloatSubArray implements FloatArray {
      * @param a The action to be performed for each element
      */
     @Override
-    public void forEach(@Nonnull BiConsumer<? super Integer, ? super Float> a) {
+    public void forEach(@Nonnull BiConsumer<? super Integer, ? super E> a) {
         for (int i = startingIndex; i < endingIndex; i++) {
-            a.accept(i - startingIndex, original[i]);
+            a.accept(i - startingIndex, references[i].get());
         }
     }
 
@@ -490,9 +575,12 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public float[] array() {
-        final float[] result = new float[endingIndex - startingIndex];
-        System.arraycopy(original, startingIndex, result, 0, endingIndex - startingIndex);
+    @SuppressWarnings("unchecked")
+    public E[] array() {
+        final E[] result = (E[]) new Object[endingIndex - startingIndex];
+        for (int i = startingIndex; i < endingIndex; i++) {
+            result[i - startingIndex] = references[i].get();
+        }
         return result;
     }
 
@@ -503,14 +591,8 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public Stream<Float> stream() {
-        final Float[] boxed = new Float[endingIndex - startingIndex];
-
-        for (int i = startingIndex; i < endingIndex; i++) {
-            boxed[i - startingIndex] = original[i];
-        }
-
-        return Arrays.stream(boxed);
+    public Stream<E> stream() {
+        return Stream.of(array());
     }
 
     /**
@@ -520,7 +602,7 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public List<Float> list() {
+    public List<E> list() {
         return stream().toList();
     }
 
@@ -531,19 +613,8 @@ class FloatSubArray implements FloatArray {
      */
     @Nonnull
     @Override
-    public FloatTuple tuple() {
-        return FloatTuple.of(array());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Nonnull
-    @Override
-    public SafeArray<Float> boxed() {
-        return new FastArray<>(stream().toArray(Float[]::new));
+    public Tuple<E> tuple() {
+        return Tuple.of(array());
     }
 
     //
@@ -558,11 +629,11 @@ class FloatSubArray implements FloatArray {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof FloatArray a)) return false;
+        if (!(obj instanceof SafeArray<?> a)) return false;
         if (length() != a.length()) return false;
 
         for (int i = startingIndex; i < endingIndex; i++) {
-            if (original[i] != a.get(i - startingIndex)) return false;
+            if (!Objects.equals(references[i].get(), a.get(i - startingIndex))) return false;
         }
 
         return true;

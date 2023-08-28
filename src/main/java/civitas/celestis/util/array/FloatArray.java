@@ -282,6 +282,31 @@ public interface FloatArray extends Iterable<Float>, Serializable {
     @Nonnull
     FloatArray merge(@Nonnull FloatArray a, @Nonnull FloatBinaryOperator f) throws IllegalArgumentException;
 
+    /**
+     * Append the provided array {@code a} to the end of this array, then returns the resulting array.
+     * @param a The array of which to append to the end of this array
+     * @return The appended array
+     */
+    @Nonnull
+    default FloatArray append(@Nonnull FloatArray a) {
+        final int l1 = length();
+        final int l2 = a.length();
+
+        final FloatArray result = resize(l1 + l2);
+        result.setRange(l1, l1 + l2, a);
+        return result;
+    }
+
+    /**
+     * Prepends the provided array {@code a} to the front of this array, then returns the resulting array.
+     * @param a The array of which to prepend to the front of this array
+     * @return The prepended array
+     */
+    @Nonnull
+    default FloatArray prepend(@Nonnull FloatArray a) {
+        return a.append(this);
+    }
+
     //
     // Iteration
     //

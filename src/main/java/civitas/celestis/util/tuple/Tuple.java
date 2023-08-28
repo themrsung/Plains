@@ -17,12 +17,15 @@ import java.util.stream.Stream;
  * them fundamentally thread-safe, as long as the underlying elements are thread-safe.
  * <p>
  * Primitive types are supported by specialized tuple instances such as {@link DoubleTuple}
- * or {@link FloatTuple}. Primitive tuple instances can be contained either though factory
+ * or {@link FloatTuple}. Primitive tuple instances can be obtained either though factory
  * methods such as {@link DoubleTuple#of(double...)} or primitive mapper methods such as
  * {@link #mapToDouble(ToDoubleFunction)} or {@link #mapToFloat(ToFloatFunction)}.
  * </p>
  *
  * @param <E> The type of element this tuple should hold
+ * @see Object2
+ * @see Object3
+ * @see Object4
  * @see ArrayTuple
  * @see DoubleTuple
  * @see FloatTuple

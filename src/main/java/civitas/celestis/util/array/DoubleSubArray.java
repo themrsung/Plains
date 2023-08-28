@@ -62,7 +62,7 @@ class DoubleSubArray implements DoubleArray {
     //
 
     /**
-     * The original array to reference/
+     * The original array to reference.
      */
     @Nonnull
     private final double[] original;

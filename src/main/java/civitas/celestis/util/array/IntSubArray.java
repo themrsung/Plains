@@ -62,7 +62,7 @@ class IntSubArray implements IntArray {
     //
 
     /**
-     * The original array to reference/
+     * The original array to reference.
      */
     @Nonnull
     private final int[] original;
