@@ -355,6 +355,7 @@ public interface IntArray extends BaseArray<Integer> {
      * Returns a stream whose source is the elements of this array.
      *
      * @return A stream whose source is the elements of this array
+     * @see IntStream
      */
     @Nonnull
     IntStream stream();
@@ -364,6 +365,7 @@ public interface IntArray extends BaseArray<Integer> {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     @Override
@@ -375,6 +377,7 @@ public interface IntArray extends BaseArray<Integer> {
      * usage of {@code null} as their values.
      *
      * @return The tuple representation of this array
+     * @see IntTuple
      */
     @Nonnull
     IntTuple tuple();
@@ -383,6 +386,7 @@ public interface IntArray extends BaseArray<Integer> {
      * Returns an array containing the elements of this array in their boxed form.
      *
      * @return The boxed object representation of this array
+     * @see SafeArray
      */
     @Nonnull
     SafeArray<Integer> boxed();

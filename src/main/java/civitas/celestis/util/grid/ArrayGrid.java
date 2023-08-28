@@ -274,7 +274,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void apply(@Nonnull Function<? super E, E> f) {
+    public void update(@Nonnull Function<? super E, E> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(values[r][c]);
@@ -288,7 +288,7 @@ public class ArrayGrid<E> implements Grid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public void apply(@Nonnull TriFunction<Integer, Integer, ? super E, E> f) {
+    public void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super E, E> f) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 values[r][c] = f.apply(r, c, values[r][c]);

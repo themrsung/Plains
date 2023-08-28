@@ -117,6 +117,7 @@ public interface BaseArray<E> extends Iterable<E>, Serializable {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     List<E> list();

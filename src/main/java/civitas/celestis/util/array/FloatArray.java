@@ -360,6 +360,7 @@ public interface FloatArray extends BaseArray<Float> {
      * Returns a stream whose source is the elements of this array.
      *
      * @return A stream whose source is the elements of this array
+     * @see Stream
      */
     @Nonnull
     Stream<Float> stream();
@@ -369,6 +370,7 @@ public interface FloatArray extends BaseArray<Float> {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     @Override
@@ -380,6 +382,7 @@ public interface FloatArray extends BaseArray<Float> {
      * usage of {@code null} as their values.
      *
      * @return The tuple representation of this array
+     * @see FloatTuple
      */
     @Nonnull
     FloatTuple tuple();
@@ -388,6 +391,7 @@ public interface FloatArray extends BaseArray<Float> {
      * Returns an array containing the elements of this array in their boxed form.
      *
      * @return The boxed object representation of this array
+     * @see SafeArray
      */
     @Nonnull
     SafeArray<Float> boxed();

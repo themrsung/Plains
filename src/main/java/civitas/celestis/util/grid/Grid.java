@@ -6,13 +6,13 @@ import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 /**
@@ -180,7 +180,7 @@ public interface Grid<E> extends BaseGrid<E> {
      * Checks if this grid contains the provided object {@code obj}.
      *
      * @param obj The object of which to check for containment
-     * @return {@code true} if there is at least one element within this grid is
+     * @return {@code true} if there is at least one element within this grid which is
      * equal to that of the provided object {@code obj}
      */
     boolean contains(@Nullable Object obj);
@@ -262,22 +262,22 @@ public interface Grid<E> extends BaseGrid<E> {
     void fillRange(int r1, int c1, int r2, int c2, E v) throws IndexOutOfBoundsException;
 
     /**
-     * Applies the provided function {@code f} to every element of this grid, then assigns
+     * Applies the provided update function {@code f} to every element of this grid, assigning
      * the return value of the function to the corresponding index of this grid.
      *
      * @param f The function of which to apply to each element of this grid
      */
-    void apply(@Nonnull Function<? super E, E> f);
+    void update(@Nonnull Function<? super E, E> f);
 
     /**
-     * Applies the provided function {@code f} to every element of this grid, then assigns
+     * Applies the provided update function {@code f} to every element of this grid, assigning
      * the return value of the function to the corresponding index of this grid. The row
      * and column indices are provided as the first and second parameter of the function
      * respectively, and the original element is provided as the third parameter of ths function.
      *
      * @param f The function of which to apply to each element of this grid
      */
-    void apply(@Nonnull TriFunction<Integer, Integer, ? super E, E> f);
+    void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super E, E> f);
 
     /**
      * Replaces all instances of the old value with the new value within this grid.
@@ -357,7 +357,7 @@ public interface Grid<E> extends BaseGrid<E> {
 
     /**
      * Applies the provided mapper function {@code f} to every element of this grid, then returns
-     * a new grid whose values are populated from that of ths function's return values.
+     * a new grid whose values are populated from that of the provided function's return values.
      *
      * @param f   The function of which to apply to each element of this grid
      * @param <F> The type of element to map this grid to
@@ -365,6 +365,15 @@ public interface Grid<E> extends BaseGrid<E> {
      */
     @Nonnull
     <F> Grid<F> map(@Nonnull Function<? super E, ? extends F> f);
+
+    /**
+     * Applies the provided mapper function {@code f} to every element of this grid, then returns
+     * a new double grid whose values are populated from that of the provided function's return values.
+     * @param f The function of which to apply to each element of this grid
+     * @return The resulting double grid
+     */
+    @Nonnull
+    DoubleGrid mapToDouble(@Nonnull ToDoubleFunction<? super E> f);
 
     /**
      * Between this grid and the provided grid {@code g}, this applies the merger function {@code f}

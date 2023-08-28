@@ -356,6 +356,7 @@ public interface DoubleArray extends BaseArray<Double> {
      * Returns a stream whose source is the elements of this array.
      *
      * @return A stream whose source is the elements of this array
+     * @see DoubleStream
      */
     @Nonnull
     DoubleStream stream();
@@ -365,6 +366,7 @@ public interface DoubleArray extends BaseArray<Double> {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     @Override
@@ -376,6 +378,7 @@ public interface DoubleArray extends BaseArray<Double> {
      * usage of {@code null} as their values.
      *
      * @return The tuple representation of this array
+     * @see DoubleTuple
      */
     @Nonnull
     DoubleTuple tuple();
@@ -384,6 +387,7 @@ public interface DoubleArray extends BaseArray<Double> {
      * Returns an array containing the elements of this array in their boxed form.
      *
      * @return The boxed object representation of this array
+     * @see SafeArray
      */
     @Nonnull
     SafeArray<Double> boxed();

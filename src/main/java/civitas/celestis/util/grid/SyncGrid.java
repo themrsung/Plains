@@ -195,8 +195,8 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public synchronized void apply(@Nonnull Function<? super E, E> f) {
-        super.apply(f);
+    public synchronized void update(@Nonnull Function<? super E, E> f) {
+        super.update(f);
     }
 
     /**
@@ -205,8 +205,8 @@ public class SyncGrid<E> extends ArrayGrid<E> {
      * @param f The function of which to apply to each element of this grid
      */
     @Override
-    public synchronized void apply(@Nonnull TriFunction<Integer, Integer, ? super E, E> f) {
-        super.apply(f);
+    public synchronized void update(@Nonnull TriFunction<? super Integer, ? super Integer, ? super E, E> f) {
+        super.update(f);
     }
 
     /**

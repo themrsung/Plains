@@ -356,6 +356,7 @@ public interface LongArray extends BaseArray<Long> {
      * Returns a stream whose source is the elements of this array.
      *
      * @return A stream whose source is the elements of this array
+     * @see LongStream
      */
     @Nonnull
     LongStream stream();
@@ -365,6 +366,7 @@ public interface LongArray extends BaseArray<Long> {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     @Override
@@ -376,6 +378,7 @@ public interface LongArray extends BaseArray<Long> {
      * usage of {@code null} as their values.
      *
      * @return The tuple representation of this array
+     * @see LongTuple
      */
     @Nonnull
     LongTuple tuple();
@@ -384,6 +387,7 @@ public interface LongArray extends BaseArray<Long> {
      * Returns an array containing the elements of this array in their boxed form.
      *
      * @return The boxed object representation of this array
+     * @see SafeArray
      */
     @Nonnull
     SafeArray<Long> boxed();

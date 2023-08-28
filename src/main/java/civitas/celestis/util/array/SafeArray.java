@@ -379,6 +379,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
+     * @see DoubleArray
      */
     @Nonnull
     DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f);
@@ -389,6 +390,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
+     * @see FloatArray
      */
     @Nonnull
     FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f);
@@ -399,6 +401,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
+     * @see LongArray
      */
     @Nonnull
     LongArray mapToLong(@Nonnull ToLongFunction<? super E> f);
@@ -409,6 +412,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
+     * @see IntArray
      */
     @Nonnull
     IntArray mapToInt(@Nonnull ToIntFunction<? super E> f);
@@ -506,6 +510,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      * Returns a stream whose source is the elements of this array.
      *
      * @return A stream whose source is the elements of this array
+     * @see Stream
      */
     @Nonnull
     Stream<E> stream();
@@ -515,6 +520,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
+     * @see List
      */
     @Nonnull
     @Override
@@ -526,6 +532,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      * usage of {@code null} as their values.
      *
      * @return The tuple representation of this array
+     * @see Tuple
      */
     @Nonnull
     Tuple<E> tuple();
