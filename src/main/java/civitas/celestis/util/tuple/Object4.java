@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 /**
  * A shallowly immutable quad of objects.
+ *
  * @param <E> The type of element to contain
  */
 public class Object4<E> implements Tuple<E> {
@@ -26,13 +27,14 @@ public class Object4<E> implements Tuple<E> {
      */
     @Serial
     private static final long serialVersionUID = 0L;
-    
+
     //
     // Constructors
     //
 
     /**
      * Creates a new quad.
+     *
      * @param a The first element of this quad
      * @param b The second element of this quad
      * @param c The third element of this quad
@@ -47,6 +49,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Creates a new quad.
+     *
      * @param elements An array containing the elements of this quad in ABCD order
      * @throws IllegalArgumentException When the provided array's length is not {@code 4}
      */
@@ -54,7 +57,7 @@ public class Object4<E> implements Tuple<E> {
         if (elements.length != 4) {
             throw new IllegalArgumentException("The provided array's length is not 4.");
         }
-        
+
         this.a = elements[0];
         this.b = elements[1];
         this.c = elements[2];
@@ -63,6 +66,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Creates a new quad.
+     *
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 4}
      */
@@ -70,7 +74,7 @@ public class Object4<E> implements Tuple<E> {
         if (t.size() != 4) {
             throw new IllegalArgumentException("The provided tuple's size is not 4.");
         }
-        
+
         this.a = t.get(0);
         this.b = t.get(1);
         this.c = t.get(2);
@@ -100,26 +104,28 @@ public class Object4<E> implements Tuple<E> {
      * The fourth element of this tuple.
      */
     protected final E d;
-    
+
     //
     // Properties
     //
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
     public int size() {
         return 4;
     }
-    
+
     //
     // Containment
     //
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -130,6 +136,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The iterable object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -138,16 +145,17 @@ public class Object4<E> implements Tuple<E> {
         for (final Object o : i) {
             if (!contains(o)) return false;
         }
-        
+
         return true;
     }
-    
+
     //
     // Getters
     //
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -165,6 +173,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Returns the first element of this tuple.
+     *
      * @return The first element of this tuple
      */
     public E getA() {
@@ -173,6 +182,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Returns the second element of this tuple.
+     *
      * @return The second element of this tuple
      */
     public E getB() {
@@ -181,6 +191,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Returns the third element of this tuple.
+     *
      * @return The third element of this tuple
      */
     public E getC() {
@@ -189,6 +200,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * Returns the fourth element of this tuple.
+     *
      * @return The fourth element of this tuple
      */
     public E getD() {
@@ -201,9 +213,10 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this tuple
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Nonnull
     @Override
@@ -213,6 +226,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -224,6 +238,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -235,6 +250,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -246,6 +262,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -257,11 +274,12 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param t   The tuple of which to merge this tuple with
      * @param f   The merger function to handle the merging of the two tuples
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
      * @param <G> {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
@@ -271,16 +289,17 @@ public class Object4<E> implements Tuple<E> {
         if (t.size() != 4) {
             throw new IllegalArgumentException("Tuple sizes must match for this operation.");
         }
-        
+
         return Tuple.of(f.apply(a, t.get(0)), f.apply(b, t.get(1)), f.apply(c, t.get(2)), f.apply(d, t.get(3)));
     }
-    
+
     //
     // Iteration
     //
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -291,6 +310,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The action to be performed for each element
      */
     @Override
@@ -303,6 +323,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The action to be performed for each element
      */
     @Override
@@ -312,24 +333,26 @@ public class Object4<E> implements Tuple<E> {
         a.accept(2, this.c);
         a.accept(3, this.d);
     }
-    
+
     //
     // Conversion
     //
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) new Object[] {a, b, c, d};
+        return (E[]) new Object[]{a, b, c, d};
     }
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -340,6 +363,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -347,13 +371,14 @@ public class Object4<E> implements Tuple<E> {
     public List<E> list() {
         return List.of(a, b, c, d);
     }
-    
+
     //
     // Equality
     //
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to compare to
      * @return {@inheritDoc}
      */
@@ -369,6 +394,7 @@ public class Object4<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

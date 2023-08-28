@@ -21,12 +21,14 @@ public interface Container<E> extends Serializable {
 
     /**
      * Returns the current value this container is holding.
+     *
      * @return The current value of this container
      */
     E get();
 
     /**
      * Sets the value of this container.
+     *
      * @param e The value to assign to this container
      */
     void set(E e);
@@ -34,6 +36,7 @@ public interface Container<E> extends Serializable {
     /**
      * Applies the provided update function {@code f} to this container,
      * assigning the return value of the function as its new value.
+     *
      * @param f The update function to apply to this container
      */
     void update(@Nonnull UnaryOperator<E> f);
@@ -44,6 +47,7 @@ public interface Container<E> extends Serializable {
 
     /**
      * Checks for equality between this container and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the other object is also a container, and the values are equal
      */
@@ -55,6 +59,7 @@ public interface Container<E> extends Serializable {
 
     /**
      * Serializes this container into a string. This delegates to the value's {@link E#toString()}.
+     *
      * @return The string representation of the value of this container
      */
     @Nonnull

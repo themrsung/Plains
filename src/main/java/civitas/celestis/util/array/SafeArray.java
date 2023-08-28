@@ -1,10 +1,12 @@
 package civitas.celestis.util.array;
 
+import civitas.celestis.util.function.ToFloatFunction;
 import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -12,23 +14,57 @@ import java.util.stream.Stream;
 
 /**
  * A type-safe array.
+ *
  * @param <E> The type of element this array should hold
+ * @see DoubleArray
+ * @see FloatArray
+ * @see LongArray
+ * @see IntArray
  */
 public interface SafeArray<E> extends Iterable<E>, Serializable {
     //
     // Factory
     //
-    
+
+    /**
+     * Creates a new type-safe array from the provided array of elements.
+     *
+     * @param elements The elements to contain in the array
+     * @param <E>      The type of element to contain in the array
+     * @return A new type-safe array containing the provided elements
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> SafeArray<E> of(@Nonnull E... elements) {
+        return FastArray.of(elements);
+    }
+
+    /**
+     * Creates a new type-safe reference array from the provided array of elements.
+     * Changes in the type-safe array will be reflected to the original array, as well
+     * as from the original array to the type-safe array.
+     *
+     * @param elements The elements the array should reference
+     * @param <E>      The type of element to reference
+     * @return A new type-safe reference array referencing the provided elements
+     */
+    @Nonnull
+    @SafeVarargs
+    static <E> SafeArray<E> referenceOf(@Nonnull E... elements) {
+        return FastArray.referenceOf(elements);
+    }
+
     //
     // Properties
     //
 
     /**
      * Returns the length of this array.
+     *
      * @return The number of elements this array contains
      */
     int length();
-    
+
     //
     // Containment
     //
@@ -48,13 +84,14 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @return {@code true} if this array contains every element of the iterable object
      */
     boolean containsAll(@Nonnull Iterable<?> i);
-    
+
     //
     // Accessors
     //
 
     /**
      * Returns the {@code i}th element of this array.
+     *
      * @param i The index of the element to get
      * @return The {@code i}th element of this array
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -64,6 +101,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     /**
      * Returns the {@code i}th element of this array, but returns the provided fallback value {@code e}
      * instead of the value at the specified index is {@code null}.
+     *
      * @param i The index of the element to get
      * @param e The fallback value to default to when the value is {@code null}
      * @return The {@code i}th element of this array if present, the fallback value {@code e} otherwise
@@ -73,6 +111,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Sets the {@code i}th element of this array.
+     *
      * @param i The index of the element to set
      * @param e The element of which to set to
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -81,6 +120,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Updates the {@code i}th element of this array with the provided update function {@code f}.
+     *
      * @param i The index of the element to update
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -111,11 +151,10 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      *
      * @param s The starting index at which to start assigning values from
      * @param e The ending index at which to stop assigning values at
-     * @param v  The value of which to assign to every slot within the specified range
+     * @param v The value of which to assign to every slot within the specified range
      * @throws IndexOutOfBoundsException When the indices are out of bounds
      */
     void fillRange(int s, int e, E v);
-
 
     /**
      * Applies the provided update function {@code f} to each element of this array, then assigns
@@ -124,7 +163,6 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * @param f The function of which to apply to each element of this array
      */
     void update(@Nonnull UnaryOperator<E> f);
-
 
     /**
      * Applies the provided update function {@code f} to each element of this array, then assigns
@@ -181,6 +219,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Sets a sub-array of this array to the values of the provided sub-array {@code a}.
+     *
      * @param s The starting index at which to start copying values from (inclusive)
      * @param e The ending index at which to stop copying values from (exclusive)
      * @param a The sub-array containing the values to assign to this array
@@ -204,15 +243,40 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     SafeArray<E> resize(int size);
 
     //
+    // Ordering
+    //
+
+    /**
+     * Shuffles this array, randomizing its elements' order.
+     */
+    void shuffle();
+
+    /**
+     * Sorts this array by its natural ascending order. This operation will only succeed
+     * if the element {@code E} is an instance of {@link Comparable}.
+     *
+     * @throws UnsupportedOperationException When at least one element cannot be cast to {@link Comparable}
+     */
+    void sort() throws UnsupportedOperationException;
+
+    /**
+     * Sorts this array using the provided comparator function {@code c}.
+     *
+     * @param c The comparator function of which to sort this array with
+     */
+    void sort(@Nonnull Comparator<? super E> c);
+
+    //
     // Transformation
     //
 
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
      * then returns a new array containing the return values of the function {@code f}.
-     * @param f The function of which to apply to each element of this array
-     * @return The resulting array
+     *
+     * @param f   The function of which to apply to each element of this array
      * @param <F> The type of element to map this array to
+     * @return The resulting array
      */
     @Nonnull
     <F> SafeArray<F> map(@Nonnull Function<? super E, ? extends F> f);
@@ -220,6 +284,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
      * then returns a new double array containing the return values of the function {@code f}.
+     *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
      */
@@ -227,17 +292,48 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
     DoubleArray mapToDouble(@Nonnull ToDoubleFunction<? super E> f);
 
     /**
+     * Applies the provided mapper function {@code f} to each element of this array,
+     * then returns a new float array containing the return values of the function {@code f}.
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    FloatArray mapToFloat(@Nonnull ToFloatFunction<? super E> f);
+
+    /**
+     * Applies the provided mapper function {@code f} to each element of this array,
+     * then returns a new long array containing the return values of the function {@code f}.
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    LongArray mapToLong(@Nonnull ToLongFunction<? super E> f);
+
+    /**
+     * Applies the provided mapper function {@code f} to each element of this array,
+     * then returns a new integer array containing the return values of the function {@code f}.
+     *
+     * @param f The function of which to apply to each element of this array
+     * @return The resulting array
+     */
+    @Nonnull
+    IntArray mapToInt(@Nonnull ToIntFunction<? super E> f);
+
+    /**
      * Between this array and the provided array {@code a}, this applies the merger function {@code f}
      * to each corresponding pair of elements, then returns a new array containing the return values
      * of the merger function {@code f}. In other words, this merges the two arrays into a new array
      * using the provided merger function {@code f}.
-     * @param a The array of which to merge this array with
-     * @param f The merger function to handle the merging of the two arrays
-     * @return The resulting array
+     *
+     * @param a   The array of which to merge this array with
+     * @param f   The merger function to handle the merging of the two arrays
      * @param <F> The type of element to merge this array with
      * @param <G> The type of element to merge the two arrays to
+     * @return The resulting array
      * @throws IllegalArgumentException When the provided array {@code a}'s length is different from
-     * that of this array's length
+     *                                  that of this array's length
      */
     @Nonnull
     <F, G> SafeArray<G> merge(@Nonnull SafeArray<F> a, @Nonnull BiFunction<? super E, ? super F, ? extends G> f)
@@ -280,6 +376,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Returns a primitive array containing the elements of this array in their proper order.
+     *
      * @return The primitive array representation of this array
      */
     @Nonnull
@@ -287,6 +384,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Returns a stream whose source is the elements of this array.
+     *
      * @return A stream whose source is the elements of this array
      */
     @Nonnull
@@ -294,6 +392,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Returns an unmodifiable list containing the elements of this array in their proper order.
+     *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
      */
@@ -304,6 +403,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
      * Returns a tuple containing the elements of this array in their proper order.
      * Unlike {@link #list()}, this operation cannot fail as tuples inherently support the
      * usage of {@code null} as their values.
+     *
      * @return The tuple representation of this array
      */
     @Nonnull
@@ -315,6 +415,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Checks for equality between this array and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the object is also a type-safe array, and the number of elements,
      * the order of the elements, and the elements' values are all equal
@@ -328,6 +429,7 @@ public interface SafeArray<E> extends Iterable<E>, Serializable {
 
     /**
      * Serializes this array into a string.
+     *
      * @return The string representation of this array
      */
     @Nonnull

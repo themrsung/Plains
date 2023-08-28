@@ -10,11 +10,14 @@ import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
  * A type-safe array of primitive {@code float}s.
+ *
  * @see SafeArray
  */
 public interface FloatArray extends Iterable<Float>, Serializable {
@@ -22,12 +25,37 @@ public interface FloatArray extends Iterable<Float>, Serializable {
     // Factory
     //
 
+    /**
+     * Creates a new type-safe array from the provided array of values.
+     *
+     * @param values The values to contain in the array
+     * @return A new type-safe array containing the provided values
+     */
+    @Nonnull
+    static FloatArray of(@Nonnull float... values) {
+        return null;
+    }
+
+    /**
+     * Creates a new type-safe reference array from the provided array of values.
+     * Changes in the type-safe array will be reflected to the original array, as well
+     * as from the original array to the type-safe array.
+     *
+     * @param values The values the array should reference
+     * @return A new type-safe reference array referencing the provided values
+     */
+    @Nonnull
+    static FloatArray referenceOf(@Nonnull float... values) {
+        return null;
+    }
+
     //
     // Properties
     //
 
     /**
      * Returns the length of this array.
+     *
      * @return The number of elements this array contains
      */
     int length();
@@ -58,6 +86,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Returns the {@code i}th element of this array.
+     *
      * @param i The index of the element to get
      * @return The {@code i}th element of this array
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -66,6 +95,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Sets the {@code i}th element of this array.
+     *
      * @param i The index of the element to set
      * @param e The element of which to set to
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -74,6 +104,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Updates the {@code i}th element of this array with the provided update function {@code f}.
+     *
      * @param i The index of the element to update
      * @param f The update function of which to apply to the element
      * @throws IndexOutOfBoundsException When the index {@code i} is out of bounds
@@ -96,7 +127,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      *
      * @param s The starting index at which to start assigning values from
      * @param e The ending index at which to stop assigning values at
-     * @param v  The value of which to assign to every slot within the specified range
+     * @param v The value of which to assign to every slot within the specified range
      * @throws IndexOutOfBoundsException When the indices are out of bounds
      */
     void fillRange(int s, int e, float v);
@@ -166,6 +197,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Sets a sub-array of this array to the values of the provided sub-array {@code a}.
+     *
      * @param s The starting index at which to start copying values from (inclusive)
      * @param e The ending index at which to stop copying values from (exclusive)
      * @param a The sub-array containing the values to assign to this array
@@ -195,6 +227,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
      * then returns a new array containing the return values of the function {@code f}.
+     *
      * @param f The function of which to apply to each element of this array
      * @return The resulting array
      */
@@ -204,9 +237,10 @@ public interface FloatArray extends Iterable<Float>, Serializable {
     /**
      * Applies the provided mapper function {@code f} to each element of this array,
      * then returns a new array containing the return values of the function {@code f}.
-     * @param f The function of which to apply to each element of this array
-     * @return The resulting array
+     *
+     * @param f   The function of which to apply to each element of this array
      * @param <F> The type of element to map this array to
+     * @return The resulting array
      */
     @Nonnull
     <F> SafeArray<F> mapToObj(@Nonnull FloatFunction<? extends F> f);
@@ -216,11 +250,12 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      * to each corresponding pair of elements, then returns a new array containing the return values
      * of the merger function {@code f}. In other words, this merges the two arrays into a new array
      * using the provided merger function {@code f}.
+     *
      * @param a The array of which to merge this array with
      * @param f The merger function to handle the merging of the two arrays
      * @return The resulting array
      * @throws IllegalArgumentException When the provided array {@code a}'s length is different from
-     * that of this array's length
+     *                                  that of this array's length
      */
     @Nonnull
     FloatArray merge(@Nonnull FloatArray a, @Nonnull FloatBinaryOperator f) throws IllegalArgumentException;
@@ -262,6 +297,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Returns a primitive array containing the elements of this array in their proper order.
+     *
      * @return The primitive array representation of this array
      */
     @Nonnull
@@ -269,6 +305,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Returns a stream whose source is the elements of this array.
+     *
      * @return A stream whose source is the elements of this array
      */
     @Nonnull
@@ -276,6 +313,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Returns an unmodifiable list containing the elements of this array in their proper order.
+     *
      * @return The list representation of this array
      * @throws NullPointerException When this array contains at least one instance of {@code null}
      */
@@ -286,6 +324,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
      * Returns a tuple containing the elements of this array in their proper order.
      * Unlike {@link #list()}, this operation cannot fail as tuples inherently support the
      * usage of {@code null} as their values.
+     *
      * @return The tuple representation of this array
      */
     @Nonnull
@@ -293,6 +332,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Returns an array containing the elements of this array in their boxed form.
+     *
      * @return The boxed object representation of this array
      */
     @Nonnull
@@ -304,6 +344,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Checks for equality between this array and the provided object {@code obj}.
+     *
      * @param obj The object to compare to
      * @return {@code true} if the object is also a float array, and the number of elements,
      * the order of the elements, and the elements' values are all equal
@@ -317,6 +358,7 @@ public interface FloatArray extends Iterable<Float>, Serializable {
 
     /**
      * Serializes this array into a string.
+     *
      * @return The string representation of this array
      */
     @Nonnull

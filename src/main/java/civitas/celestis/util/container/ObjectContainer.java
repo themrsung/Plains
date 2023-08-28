@@ -9,6 +9,7 @@ import java.util.function.UnaryOperator;
 
 /**
  * A container which can hold any type of object.
+ *
  * @param <E> The type of element this container should hold
  * @see Container
  */
@@ -29,6 +30,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * Initializes a new object container with the provided initial value.
+     *
      * @param value The initial value of this container
      */
     public ObjectContainer(@Nullable E value) {
@@ -57,6 +59,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -66,6 +69,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param e The value to assign to this container
      */
     @Override
@@ -75,6 +79,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The update function to apply to this container
      */
     @Override
@@ -88,6 +93,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to compare to
      * @return {@inheritDoc}
      */
@@ -103,6 +109,7 @@ public class ObjectContainer<E> implements Container<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull

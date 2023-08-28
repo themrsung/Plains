@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 /**
  * A shallowly immutable pair of objects.
+ *
  * @param <E> The type of element to contain
  */
 public class Object2<E> implements Tuple<E> {
@@ -33,6 +34,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * Creates a new pair.
+     *
      * @param a The first element of this pair
      * @param b The second element of this pair
      */
@@ -43,6 +45,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * Creates a new pair.
+     *
      * @param elements An array containing the elements of this pair in AB order
      * @throws IllegalArgumentException When the provided array's length is not {@code 2}
      */
@@ -57,6 +60,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * Creates a new pair.
+     *
      * @param t The tuple of which to copy elements from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 2}
      */
@@ -89,6 +93,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -102,6 +107,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -112,6 +118,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The iterable object of which to check for containment
      * @return {@inheritDoc}
      */
@@ -130,6 +137,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param i The index of the element to get
      * @return {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -145,6 +153,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * Returns the first element of this tuple.
+     *
      * @return The first element of this tuple
      */
     public E getA() {
@@ -153,6 +162,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * Returns the second element of this tuple.
+     *
      * @return The second element of this tuple
      */
     public E getB() {
@@ -165,9 +175,10 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f   The function of which to apply to each element of this tuple
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Nonnull
     @Override
@@ -177,6 +188,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -188,6 +200,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -199,6 +212,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -210,6 +224,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each element of this tuple
      * @return {@inheritDoc}
      */
@@ -221,11 +236,12 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param t   The tuple of which to merge this tuple with
      * @param f   The merger function to handle the merging of the two tuples
-     * @return {@inheritDoc}
      * @param <F> {@inheritDoc}
      * @param <G> {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Nonnull
@@ -245,6 +261,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -255,6 +272,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The action to be performed for each element
      */
     @Override
@@ -265,6 +283,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param a The action to be performed for each element
      */
     @Override
@@ -279,17 +298,19 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
     public E[] array() {
-        return (E[]) new Object[] {a, b};
+        return (E[]) new Object[]{a, b};
     }
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -300,6 +321,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -314,6 +336,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @param obj The object to compare to
      * @return {@inheritDoc}
      */
@@ -326,6 +349,7 @@ public class Object2<E> implements Tuple<E> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
