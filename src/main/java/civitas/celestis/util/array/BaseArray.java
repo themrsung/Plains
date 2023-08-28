@@ -37,7 +37,6 @@ public interface BaseArray<E> extends Iterable<E>, Serializable {
         return a1.list().equals(a2.list());
     }
 
-
     //
     // Properties
     //
