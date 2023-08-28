@@ -12,6 +12,10 @@ import java.util.function.DoubleUnaryOperator;
  *
  * @param <V> The vector itself (the parameter and result of various operations)
  * @see DoubleTuple
+ * @see Vector2
+ * @see Vector3
+ * @see Vector4
+ * @see ArrayVector
  */
 public interface Vector<V extends Vector<V>> extends DoubleTuple {
     //

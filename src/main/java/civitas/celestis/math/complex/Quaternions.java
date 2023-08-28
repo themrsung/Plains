@@ -1,5 +1,6 @@
 package civitas.celestis.math.complex;
 
+import civitas.celestis.exception.IllegalInstanceException;
 import civitas.celestis.math.Scalars;
 import civitas.celestis.math.matrix.Matrix;
 import civitas.celestis.math.vector.Vector3;
@@ -271,5 +272,18 @@ public final class Quaternions {
         values[2][2] = 1 - 2 * x * x - 2 * y * y;
 
         return Matrix.of(values);
+    }
+
+    //
+    // Miscellaneous
+    //
+
+    /**
+     * Private constructor to prevent instantiation.
+     *
+     * @throws IllegalInstanceException Always
+     */
+    private Quaternions() throws IllegalInstanceException {
+        throw new IllegalInstanceException(this);
     }
 }

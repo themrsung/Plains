@@ -1,15 +1,10 @@
 package civitas.celestis;
 
-import civitas.celestis.math.matrix.Matrix;
-import civitas.celestis.util.grid.ArrayGrid;
-import civitas.celestis.util.grid.Grid;
+import civitas.celestis.math.vector.Vector3;
 
 public class Testing {
     public static void main(String[] args) {
-        final Grid<Double> doubleGrid = new ArrayGrid<>(10, 10);
-        doubleGrid.fill(10d);
+        final Vector3 v = new Vector3(23, 40, -20);
 
-        final Matrix m = new Matrix(10, 10);
-        m.fill(10);
     }
 }
