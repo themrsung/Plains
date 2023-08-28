@@ -372,4 +372,56 @@ public class Vertex extends Vector3 {
     public Vertex merge(@Nonnull Vertex v, @Nonnull BinaryOperator<Double> f) {
         return new Vertex(f.apply(x, v.x), f.apply(y, v.y), f.apply(z, v.z));
     }
+
+    //
+    // Contextual Transformation
+    //
+
+    /**
+     * Transforms this vertex into a relative coordinate system.
+     *
+     * @param offset   The current offset of this vertex compared to the new point of origin
+     * @param rotation The relative rotation of this vertex compared to the new identity rotation
+     * @return The transformed relative coordinate vertex
+     */
+    @Nonnull
+    public Vector3 relative(@Nonnull Vector3 offset, @Nonnull Quaternion rotation) {
+        return subtract(offset).rotate(rotation);
+    }
+
+    /**
+     * Transforms this vertex into a relative coordinate system.
+     *
+     * @param offset   The current offset of this vertex compared to the new point of origin
+     * @param rotation The relative rotation of this vertex compared to the new identity rotation
+     * @return The transformed relative coordinate vertex
+     */
+    @Nonnull
+    public Vertex relative(@Nonnull Vertex offset, @Nonnull Quaternion rotation) {
+        return subtract(offset).rotate(rotation);
+    }
+
+    /**
+     * Transforms this vertex into an absolute coordinate system.
+     *
+     * @param offset   The current offset of this vertex compared to absolute origin
+     * @param rotation The relative rotation of this vertex compared to absolute identity
+     * @return The transformed absolute coordinate vertex
+     */
+    @Nonnull
+    public Vector3 absolute(@Nonnull Vector3 offset, @Nonnull Quaternion rotation) {
+        return rotate(rotation).add(offset);
+    }
+
+    /**
+     * Transforms this vertex into an absolute coordinate system.
+     *
+     * @param offset   The current offset of this vertex compared to absolute origin
+     * @param rotation The relative rotation of this vertex compared to absolute identity
+     * @return The transformed absolute coordinate vertex
+     */
+    @Nonnull
+    public Vertex absolute(@Nonnull Vertex offset, @Nonnull Quaternion rotation) {
+        return rotate(rotation).add(offset);
+    }
 }
