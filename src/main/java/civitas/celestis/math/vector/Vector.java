@@ -11,6 +11,7 @@ import java.util.function.DoubleUnaryOperator;
  * A mathematical vector.
  *
  * @param <V> The vector itself (the parameter and result of various operations)
+ * @see DoubleTuple
  */
 public interface Vector<V extends Vector<V>> extends DoubleTuple {
     //

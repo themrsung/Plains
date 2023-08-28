@@ -1,14 +1,14 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.function.FloatFunction;
+import civitas.celestis.util.function.FloatUnaryOperator;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
@@ -162,7 +162,7 @@ public interface FloatTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    FloatTuple map(@Nonnull UnaryOperator<Float> f);
+    FloatTuple map(@Nonnull FloatUnaryOperator f);
 
     /**
      * Applies the provided mapper function {@code f} to each component of this tuple,
@@ -173,7 +173,7 @@ public interface FloatTuple extends Serializable {
      * @return The resulting tuple
      */
     @Nonnull
-    <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f);
+    <F> Tuple<F> mapToObj(@Nonnull FloatFunction<? extends F> f);
 
     //
     // Conversion
@@ -301,13 +301,13 @@ final class EmptyFloatTuple implements FloatTuple {
 
     @Nonnull
     @Override
-    public FloatTuple map(@Nonnull UnaryOperator<Float> f) {
+    public FloatTuple map(@Nonnull FloatUnaryOperator f) {
         return this;
     }
 
     @Nonnull
     @Override
-    public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull FloatFunction<? extends F> f) {
         return Tuple.of();
     }
 

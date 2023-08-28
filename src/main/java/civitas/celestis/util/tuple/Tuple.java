@@ -1,5 +1,6 @@
 package civitas.celestis.util.tuple;
 
+import civitas.celestis.util.function.ToFloatFunction;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -18,7 +19,7 @@ import java.util.stream.Stream;
  * Primitive types are supported by specialized tuple instances such as {@link DoubleTuple}
  * or {@link FloatTuple}. Primitive tuple instances can be contained either though factory
  * methods such as {@link DoubleTuple#of(double...)} or primitive mapper methods such as
- * {@link #mapToDouble(ToDoubleFunction)} or {@link #mapToFloat(Function)}.
+ * {@link #mapToDouble(ToDoubleFunction)} or {@link #mapToFloat(ToFloatFunction)}.
  * </p>
  *
  * @param <E> The type of element this tuple should hold
@@ -141,7 +142,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @return The resulting {@code double} tuple
      */
     @Nonnull
-    FloatTuple mapToFloat(@Nonnull Function<? super E, ? extends Float> f);
+    FloatTuple mapToFloat(@Nonnull ToFloatFunction<? super E> f);
 
     /**
      * Applies the provided mapper function {@code f} to each element of this tuple,
@@ -174,7 +175,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * @param <F> The type of element to merge this tuple with
      * @param <G> The type of element to merge the two tuples to
      * @return The resulting tuple
-     * @throws IllegalArgumentException When the provided tuple {@code t}'s size os different from
+     * @throws IllegalArgumentException When the provided tuple {@code t}'s size is different from
      *                                  that of this tuple's size
      */
     @Nonnull
@@ -236,7 +237,7 @@ public interface Tuple<E> extends Iterable<E>, Serializable {
      * Returns an unmodifiable list containing the elements of this tuple in their proper order.
      *
      * @return The list representation of this tuple
-     * @throws IllegalArgumentException When this tuple contains at least one instance of {@code null}
+     * @throws NullPointerException When this tuple contains at least one instance of {@code null}
      */
     @Nonnull
     List<E> list();

@@ -1,13 +1,13 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.function.FloatFunction;
+import civitas.celestis.util.function.FloatUnaryOperator;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
@@ -218,8 +218,8 @@ public class Float2 implements FloatTuple {
      */
     @Nonnull
     @Override
-    public Float2 map(@Nonnull UnaryOperator<Float> f) {
-        return new Float2(f.apply(x), f.apply(y));
+    public Float2 map(@Nonnull FloatUnaryOperator f) {
+        return new Float2(f.applyAsFloat(x), f.applyAsFloat(y));
     }
 
     /**
@@ -231,7 +231,7 @@ public class Float2 implements FloatTuple {
      */
     @Nonnull
     @Override
-    public <F> Tuple<F> mapToObj(@Nonnull Function<? super Float, ? extends F> f) {
+    public <F> Tuple<F> mapToObj(@Nonnull FloatFunction<? extends F> f) {
         return Tuple.of(f.apply(x), f.apply(y));
     }
 

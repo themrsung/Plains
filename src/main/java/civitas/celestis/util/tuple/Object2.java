@@ -1,6 +1,7 @@
 package civitas.celestis.util.tuple;
 
 import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.util.function.ToFloatFunction;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -192,7 +193,7 @@ public class Object2<E> implements Tuple<E> {
      */
     @Nonnull
     @Override
-    public FloatTuple mapToFloat(@Nonnull Function<? super E, ? extends Float> f) {
+    public FloatTuple mapToFloat(@Nonnull ToFloatFunction<? super E> f) {
         return FloatTuple.of(f.apply(a), f.apply(b));
     }
 
