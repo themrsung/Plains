@@ -133,7 +133,7 @@ public interface Vector<V extends Vector<V>> extends DoubleTuple {
      * If this vector's Euclidean norm is zero, this will return the provided fallback value {@code v}.
      *
      * @param v The value of which to return in case of division by zero
-     * @return The normalized vector of this vector is successful, the fallback value {@code v} otherwise
+     * @return The normalized vector of this vector if successful, the fallback value {@code v} otherwise
      */
     @Nonnull
     V normalizeOrDefault(@Nonnull V v);
@@ -223,6 +223,7 @@ public interface Vector<V extends Vector<V>> extends DoubleTuple {
     /**
      * Applies the provided mapper function {@code f} to each component of this vector,
      * then returns a new vector containing the return values of the function f.
+     *
      * @param f The function of which to apply to each component of this vector
      * @return The resulting vector
      */
@@ -234,6 +235,7 @@ public interface Vector<V extends Vector<V>> extends DoubleTuple {
      * Between this vector and the provided vector {@code v}, this applies the merger function
      * {@code f} to each corresponding pair of components, then returns a new vector whose components
      * are populated from the return values of the function {@code f}.
+     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return The resulting vector

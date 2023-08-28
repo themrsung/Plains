@@ -1,7 +1,6 @@
 package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
-import civitas.celestis.util.tuple.Double3;
 import civitas.celestis.util.tuple.Double4;
 import civitas.celestis.util.tuple.DoubleTuple;
 import jakarta.annotation.Nonnull;
@@ -12,8 +11,9 @@ import java.util.function.BinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
 /**
- * An immutable three-dimensional vector which uses the type {@code double}.
- * @see Double3
+ * An immutable four-dimensional vector which uses the type {@code double}.
+ *
+ * @see Double4
  * @see Vector
  */
 public class Vector4 extends Double4 implements Vector<Vector4> {
@@ -78,6 +78,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * Creates a new vector.
+     *
      * @param w The W component of this vector
      * @param x The X component of this vector
      * @param y The Y component of this vector
@@ -89,6 +90,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * Creates a new vector.
+     *
      * @param components An array containing the components of this vector in WXYZ order
      * @throws IllegalArgumentException When the provided array's length is not {@code 4}
      */
@@ -98,6 +100,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * Creates a new vector.
+     *
      * @param t The tuple of which to copy component values from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 4}
      */
@@ -111,6 +114,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -120,6 +124,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -129,6 +134,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -142,6 +148,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to add to each component of this vector
      * @return {@inheritDoc}
      */
@@ -153,6 +160,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to subtract from each component of this vector
      * @return {@inheritDoc}
      */
@@ -164,6 +172,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to multiply each component of this vector by
      * @return {@inheritDoc}
      */
@@ -175,6 +184,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to divide each component of this vector by
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
@@ -188,6 +198,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to add to this vector
      * @return {@inheritDoc}
      */
@@ -199,6 +210,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to subtract from this vector
      * @return {@inheritDoc}
      */
@@ -210,6 +222,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * Returns the quaternion left-product between this vector and the provided vector {@code v}.
+     *
      * @param v The vector of which to get the quaternion left-product between
      * @return The quaternion left-product between the two vectors
      */
@@ -225,6 +238,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the dot product between
      * @return {@inheritDoc}
      */
@@ -239,6 +253,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
      */
@@ -252,6 +267,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -264,6 +280,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The value of which to return in case of division by zero
      * @return {@inheritDoc}
      */
@@ -281,6 +298,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -295,6 +313,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector of which to compare to
      * @return {@inheritDoc}
      */
@@ -306,6 +325,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector of which to compare to
      * @return {@inheritDoc}
      */
@@ -317,6 +337,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param min The minimum boundary vector to compare to
      * @param max The maximum boundary vector to compare to
      * @return {@inheritDoc}
@@ -338,6 +359,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which get the Euclidean distance between
      * @return {@inheritDoc}
      */
@@ -353,6 +375,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the squared Euclidean distance between
      * @return {@inheritDoc}
      */
@@ -368,6 +391,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the Manhattan distance between
      * @return {@inheritDoc}
      */
@@ -387,6 +411,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each component of this tuple
      * @return {@inheritDoc}
      */
@@ -398,6 +423,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return {@inheritDoc}
@@ -414,6 +440,7 @@ public class Vector4 extends Double4 implements Vector<Vector4> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector to compare to
      * @return {@inheritDoc}
      */

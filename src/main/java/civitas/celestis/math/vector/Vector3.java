@@ -1,6 +1,7 @@
 package civitas.celestis.math.vector;
 
 import civitas.celestis.math.Scalars;
+import civitas.celestis.math.complex.Quaternion;
 import civitas.celestis.util.tuple.Double3;
 import civitas.celestis.util.tuple.DoubleTuple;
 import jakarta.annotation.Nonnull;
@@ -12,6 +13,7 @@ import java.util.function.DoubleUnaryOperator;
 
 /**
  * An immutable three-dimensional vector which uses the type {@code double}.
+ *
  * @see Double3
  * @see Vector
  */
@@ -67,6 +69,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * Creates a new vector.
+     *
      * @param x The X component of this vector
      * @param y The Y component of this vector
      * @param z The Z component of this vector
@@ -77,6 +80,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * Creates a new vector.
+     *
      * @param components An array containing the components of this vector in XYZ order
      * @throws IllegalArgumentException When the provided array's length is not {@code 3}
      */
@@ -86,6 +90,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * Creates a new vector.
+     *
      * @param t The tuple of which to copy component values from
      * @throws IllegalArgumentException When the provided tuple {@code t}'s size is not {@code 3}
      */
@@ -99,6 +104,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -108,6 +114,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -117,6 +124,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -130,6 +138,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to add to each component of this vector
      * @return {@inheritDoc}
      */
@@ -141,6 +150,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to subtract from each component of this vector
      * @return {@inheritDoc}
      */
@@ -152,6 +162,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to multiply each component of this vector by
      * @return {@inheritDoc}
      */
@@ -163,6 +174,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param s The scalar of which to divide each component of this vector by
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
@@ -176,6 +188,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to add to this vector
      * @return {@inheritDoc}
      */
@@ -187,6 +200,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to subtract from this vector
      * @return {@inheritDoc}
      */
@@ -198,6 +212,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * Returns the cross product between this vector and the provided vector {@code v}.
+     *
      * @param v The vector of which to get the cross product between
      * @return The cross product between the two vectors
      */
@@ -208,6 +223,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the dot product between
      * @return {@inheritDoc}
      */
@@ -222,6 +238,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      * @throws ArithmeticException {@inheritDoc}
      */
@@ -235,6 +252,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -247,6 +265,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The value of which to return in case of division by zero
      * @return {@inheritDoc}
      */
@@ -264,6 +283,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Nonnull
@@ -278,6 +298,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector of which to compare to
      * @return {@inheritDoc}
      */
@@ -289,6 +310,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The boundary vector of which to compare to
      * @return {@inheritDoc}
      */
@@ -300,6 +322,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param min The minimum boundary vector to compare to
      * @param max The maximum boundary vector to compare to
      * @return {@inheritDoc}
@@ -320,6 +343,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which get the Euclidean distance between
      * @return {@inheritDoc}
      */
@@ -334,6 +358,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the squared Euclidean distance between
      * @return {@inheritDoc}
      */
@@ -348,6 +373,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to get the Manhattan distance between
      * @return {@inheritDoc}
      */
@@ -366,6 +392,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param f The function of which to apply to each component of this tuple
      * @return {@inheritDoc}
      */
@@ -377,6 +404,7 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector of which to merge this vector with
      * @param f The merger function to handle the merging of the two vectors
      * @return {@inheritDoc}
@@ -388,11 +416,38 @@ public class Vector3 extends Double3 implements Vector<Vector3> {
     }
 
     //
+    // Rotation
+    //
+
+    /**
+     * Converts this vector into a pure quaternion. (a quaternion whose scalar part is {@code 0},
+     * and the vector part is populated from this vector's components)
+     *
+     * @return A pure quaternion constructed from this vector
+     */
+    @Nonnull
+    public Quaternion quaternion() {
+        return new Quaternion(0, x, y, z);
+    }
+
+    /**
+     * Rotates this vector by the provided rotation quaternion {@code q}.
+     *
+     * @param q The rotation quaternion of which to apply to this vector
+     * @return The rotated vector
+     */
+    @Nonnull
+    public Vector3 rotate(@Nonnull Quaternion q) {
+        return q.multiply(quaternion()).multiply(q.conjugate()).vector();
+    }
+
+    //
     // Equality
     //
 
     /**
      * {@inheritDoc}
+     *
      * @param v The vector to compare to
      * @return {@inheritDoc}
      */
