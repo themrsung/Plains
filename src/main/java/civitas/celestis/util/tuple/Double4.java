@@ -355,7 +355,7 @@ public class Double4 implements DoubleTuple {
     }
 
     /**
-     * Returns a hash code of this instance.
+     * Returns the hash code of this instance.
      *
      * @return The hash code of this instance
      */

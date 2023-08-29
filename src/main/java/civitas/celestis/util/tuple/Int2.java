@@ -287,7 +287,7 @@ public class Int2 implements IntTuple {
     }
 
     /**
-     * Returns a hash code of this instance.
+     * Returns the hash code of this instance.
      *
      * @return The hash code of this instance
      */

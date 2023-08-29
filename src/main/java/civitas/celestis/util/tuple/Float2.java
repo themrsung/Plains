@@ -317,7 +317,7 @@ public class Float2 implements FloatTuple {
     }
 
     /**
-     * Returns a hash code of this instance.
+     * Returns the hash code of this instance.
      *
      * @return The hash code of this instance
      */
