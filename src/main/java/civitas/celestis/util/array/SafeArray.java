@@ -88,8 +88,7 @@ public interface SafeArray<E> extends BaseArray<E> {
      * @return A new type-safe reference array referencing the provided elements
      */
     @Nonnull
-    @SafeVarargs
-    static <E> SafeArray<E> referenceOf(@Nonnull E... elements) {
+    static <E> SafeArray<E> referenceOf(@Nonnull E[] elements) {
         return FastArray.referenceOf(elements);
     }
 
