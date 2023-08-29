@@ -11,11 +11,7 @@ import java.awt.*;
  */
 public final class Colors {
     //
-    //
-    //
     // Constants
-    //
-    //
     //
 
     /*
