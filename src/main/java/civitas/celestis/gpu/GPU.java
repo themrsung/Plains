@@ -1,5 +1,6 @@
 package civitas.celestis.gpu;
 
+import civitas.celestis.exception.IllegalInstanceException;
 import civitas.celestis.exception.gpu.GraphicsException;
 import jakarta.annotation.Nonnull;
 import org.jocl.*;
@@ -280,9 +281,9 @@ public final class GPU {
      * It is important to prevent instantiation of this class to maintain
      * proper usage of its {@code private static} variables.
      *
-     * @throws Exception Always throws an exception
+     * @throws IllegalInstanceException Always throws an exception
      */
-    private GPU() throws Exception {
-        throw new Exception("This is a static interface class, and thus cannot be instantiated.");
+    private GPU() throws IllegalInstanceException {
+        throw new IllegalInstanceException(this);
     }
 }
