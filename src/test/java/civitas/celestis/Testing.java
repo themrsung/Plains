@@ -1,12 +1,11 @@
 package civitas.celestis;
 
-import civitas.celestis.graphics.Colors;
-
-import java.awt.*;
+import civitas.celestis.util.array.SafeArray;
 
 public class Testing {
     public static void main(String[] args) {
-        final Color red = Colors.DARK_RED;
-
+        final String[] primitive = new String[1];
+        SafeArray.referenceOf(primitive).fill("Hello world");
+        System.out.println(primitive[0]);
     }
 }

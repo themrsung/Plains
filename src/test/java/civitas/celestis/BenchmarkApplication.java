@@ -1,13 +1,10 @@
 package civitas.celestis;
 
-import civitas.celestis.graphics.Colors;
 import jakarta.annotation.Nonnull;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Application to test features in a controlled environment.
@@ -78,20 +75,6 @@ public class BenchmarkApplication extends Application {
         //
         // TEST CODE HERE
         //
-
-        final AtomicReference<Color> color = new AtomicReference<>(Colors.GOLDEN_ROD);
-        final JComponent component = (JComponent) frame.add(new JComponent() {
-            @Override
-            public void paint(Graphics g) {
-                g.setColor(color.getAndUpdate(c -> Colors.lerp(c, Colors.random(), 0.05)));
-                g.fillRect(0, 0, getWidth(), getHeight());
-                g.dispose();
-            }
-        });
-
-        component.setSize(frame.getSize());
-
-        scheduler.register(delta -> component.repaint());
 
         frame.setVisible(true);
     }
