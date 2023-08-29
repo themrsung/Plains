@@ -119,11 +119,33 @@ public class Quaternion extends Double4 {
     }
 
     //
-    // Scaling & Multiplication
+    // Arithmetic
     //
 
     /**
-     * Scales the rotation of this quaternion.
+     * Adds a scalar to this quaternion, then returns the resulting quaternion.
+     *
+     * @param s The scalar of which to add to this quaternion
+     * @return The resulting quaternion
+     */
+    @Nonnull
+    public Quaternion add(double s) {
+        return new Quaternion(w + s, x, y, z);
+    }
+
+    /**
+     * Subtracts this quaternion by a scalar, then returns the resulting quaternion.
+     *
+     * @param s The scalar of which to subtract this quaternion by
+     * @return The resulting quaternion
+     */
+    @Nonnull
+    public Quaternion subtract(double s) {
+        return new Quaternion(w - s, x, y, z);
+    }
+
+    /**
+     * Scales the rotation of this quaternion, then returns the resulting quaternion.
      * This will only work properly if this quaternion is a rotation quaternion.
      * (a quaternion with a Euclidean norm of {@code 1})
      *
@@ -153,6 +175,52 @@ public class Quaternion extends Double4 {
     }
 
     /**
+     * Multiplies this quaternion by a scalar, then returns the resulting quaternion.
+     *
+     * @param s The scalar of which to multiply this quaternion by
+     * @return The resulting quaternion
+     */
+    @Nonnull
+    public Quaternion multiply(double s) {
+        return new Quaternion(w * s, x * s, y * s, z * s);
+    }
+
+    /**
+     * Divides this quaternion by a scalar, then returns the resulting quaternion.
+     *
+     * @param s The scalar of which to divide this quaternion by
+     * @return The resulting quaternion
+     * @throws ArithmeticException When the denominator {@code s} is zero
+     */
+    @Nonnull
+    public Quaternion divide(double s) throws ArithmeticException {
+        if (s == 0) throw new ArithmeticException("Cannot divide by zero.");
+        return new Quaternion(w / s, x / s, y / s, z / s);
+    }
+
+    /**
+     * Adds another quaternion to this quaternion, then returns the resulting quaternion.
+     *
+     * @param q The quaternion of which to add to this quaternion
+     * @return The resulting quaternion
+     */
+    @Nonnull
+    public Quaternion add(@Nonnull Quaternion q) {
+        return new Quaternion(w + q.w, x + q.x, y + q.y, z + q.z);
+    }
+
+    /**
+     * Subtracts this quaternion by another quaternion, then returns the resulting quaternion.
+     *
+     * @param q The quaternion of which to subtract from this quaternion
+     * @return The resulting quaternion
+     */
+    @Nonnull
+    public Quaternion subtract(@Nonnull Quaternion q) {
+        return new Quaternion(w - q.w, x - q.x, y - q.y, z - q.z);
+    }
+
+    /**
      * Multiplies this quaternion by the provided quaternion {@code q}.
      *
      * @param q The quaternion of which to multiply this quaternion by
@@ -166,6 +234,16 @@ public class Quaternion extends Double4 {
                 w * q.y - x * q.z + y * q.w + z * q.x,
                 w * q.z + x * q.y - y * q.x + z * q.w
         );
+    }
+
+    /**
+     * Returns the dot product between this quaternion and the provided quaternion {@code q}.
+     *
+     * @param q The quaternion of which to get the dot product between
+     * @return The dot product of the two quaternions
+     */
+    public double dot(@Nonnull Quaternion q) {
+        return w * q.w + x * q.x + y * q.y + z * q.z;
     }
 
     //
