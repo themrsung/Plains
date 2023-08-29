@@ -1,6 +1,6 @@
 package civitas.celestis.util.tuple;
 
-import civitas.celestis.exception.TupleIndexOutOfBoundsException;
+import civitas.celestis.exception.tuple.TupleIndexOutOfBoundsException;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 

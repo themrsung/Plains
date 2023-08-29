@@ -1,4 +1,4 @@
-package civitas.celestis.exception;
+package civitas.celestis.exception.tuple;
 
 import jakarta.annotation.Nonnull;
 

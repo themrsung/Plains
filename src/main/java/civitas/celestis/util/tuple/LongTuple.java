@@ -33,12 +33,23 @@ public interface LongTuple extends BaseTuple<Long> {
     @Nonnull
     static LongTuple of(@Nonnull long... components) {
         return switch (components.length) {
+            case 0 -> Long0.getInstance();
             case 1 -> new Long1(components);
             case 2 -> new Long2(components);
             case 3 -> new Long3(components);
             case 4 -> new Long4(components);
             default -> new LongArrayTuple(components);
         };
+    }
+
+    /**
+     * Returns an empty tuple.
+     *
+     * @return An empty tuple
+     */
+    @Nonnull
+    static LongTuple empty() {
+        return Long0.getInstance();
     }
 
     //
