@@ -2,11 +2,27 @@ package civitas.celestis.exception;
 
 import jakarta.annotation.Nonnull;
 
+import java.io.Serial;
+
 /**
  * Thrown when an un-instantiable static-reference-only class is
  * attempted to be instantiated.
  */
 public class IllegalInstanceException extends Exception {
+    //
+    // Constants
+    //
+
+    /**
+     * The serial version UID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    //
+    // Constructors
+    //
+
     /**
      * Creates an illegal instance exception with no message.
      */

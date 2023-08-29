@@ -3,11 +3,27 @@ package civitas.celestis.exception.gpu;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
+
 /**
  * A graphics exception is thrown when a GPU accelerated operation
  * was unable to complete successfully.
  */
 public class GraphicsException extends RuntimeException {
+    //
+    // Constants
+    //
+
+    /**
+     * The serial version UID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    //
+    // Constructors
+    //
+
     /**
      * Creates a new graphics exception with no cause and no message.
      */

@@ -3,12 +3,28 @@ package civitas.celestis.exception.event;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.io.Serial;
+
 /**
  * An exception which is thrown when the handling of an event fails,
  * either by the method being inaccessible, or by the handler method itself
  * throwing an exception during the processing of the event.
  */
 public class HandlerException extends Exception {
+    //
+    // Constants
+    //
+
+    /**
+     * The serial version UID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    //
+    // Constructors
+    //
+
     /**
      * Creates a new handler exception with no message and no cause.
      */
