@@ -2,7 +2,6 @@ package civitas.celestis.math.vector;
 
 import civitas.celestis.exception.IllegalInstanceException;
 import civitas.celestis.math.Scalars;
-import civitas.celestis.math.complex.Quaternion;
 import jakarta.annotation.Nonnull;
 
 /**
