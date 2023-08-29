@@ -55,8 +55,7 @@ public class FastArray<E> implements SafeArray<E> {
      * @return A new fast reference array referencing the provided values
      */
     @Nonnull
-    @SafeVarargs
-    static <E> FastArray<E> referenceOf(@Nonnull E... values) {
+    static <E> FastArray<E> referenceOf(@Nonnull E[] values) {
         return new FastArray<>(values);
     }
 
