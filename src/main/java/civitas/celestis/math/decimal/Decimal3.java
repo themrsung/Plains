@@ -1,5 +1,6 @@
 package civitas.celestis.math.decimal;
 
+import civitas.celestis.math.integer.Integer3;
 import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.util.tuple.Object3;
 import civitas.celestis.util.tuple.Tuple;
@@ -27,6 +28,41 @@ public class Decimal3 extends Object3<BigDecimal> implements DecimalVector<Decim
      */
     @Serial
     private static final long serialVersionUID = 0L;
+
+    /**
+     * A vector of no direction or magnitude. Represents origin.
+     */
+    public static final Decimal3 ZERO = new Decimal3(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive A unit vector.
+     */
+    public static final Decimal3 POSITIVE_A = new Decimal3(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive B unit vector.
+     */
+    public static final Decimal3 POSITIVE_B = new Decimal3(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
+
+    /**
+     * The positive C unit vector.
+     */
+    public static final Decimal3 POSITIVE_C = new Decimal3(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+
+    /**
+     * The negative A unit vector.
+     */
+    public static final Decimal3 NEGATIVE_A = new Decimal3(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The negative B unit vector.
+     */
+    public static final Decimal3 NEGATIVE_B = new Decimal3(BigDecimal.ZERO, BigDecimal.ONE.negate(), BigDecimal.ZERO);
+
+    /**
+     * The negative C unit vector.
+     */
+    public static final Decimal3 NEGATIVE_C = new Decimal3(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE.negate());
 
     //
     // Constructors
@@ -201,6 +237,21 @@ public class Decimal3 extends Object3<BigDecimal> implements DecimalVector<Decim
     @Override
     public Decimal3 subtract(@Nonnull Decimal3 v) {
         return new Decimal3(a.subtract(v.a), b.subtract(v.b), c.subtract(v.c));
+    }
+
+    /**
+     * Returns the cross product between this vector and the provided vector {@code v}.
+     *
+     * @param v The vector of which to get the cross product between
+     * @return The cross product between the two vectors
+     */
+    @Nonnull
+    public Decimal3 cross(@Nonnull Decimal3 v) {
+        return new Decimal3(
+                b.multiply(v.c).subtract(c.multiply(v.b)),
+                c.multiply(v.a).subtract(a.subtract(v.c)),
+                a.multiply(v.b).subtract(b.multiply(v.a))
+        );
     }
 
     /**
@@ -419,6 +470,32 @@ public class Decimal3 extends Object3<BigDecimal> implements DecimalVector<Decim
     }
 
     //
+    // Rotation
+    //
+
+    /**
+     * Converts this vector into a pure quaternion. (a quaternion whose scalar part is {@code 0},
+     * and the vector part is populated from this vector's components)
+     *
+     * @return A pure quaternion constructed from this vector
+     */
+    @Nonnull
+    public DecimalQuaternion quaternion() {
+        return new DecimalQuaternion(BigDecimal.ZERO, a, b, c);
+    }
+
+    /**
+     * Rotates this vector by the provided rotation quaternion {@code q}.
+     *
+     * @param q The rotation quaternion of which to apply to this vector
+     * @return The rotated vector
+     */
+    @Nonnull
+    public Decimal3 rotate(@Nonnull DecimalQuaternion q) {
+        return q.multiply(quaternion()).multiply(q.conjugate()).vector();
+    }
+
+    //
     // Conversion
     //
 
@@ -431,6 +508,17 @@ public class Decimal3 extends Object3<BigDecimal> implements DecimalVector<Decim
     @Override
     public Vector3 primValue() {
         return new Vector3(a.doubleValue(), b.doubleValue(), c.doubleValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Integer3 bigIntegerValue() {
+        return new Integer3(a.toBigInteger(), b.toBigInteger(), c.toBigInteger());
     }
 
     //

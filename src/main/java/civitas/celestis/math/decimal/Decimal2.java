@@ -1,5 +1,6 @@
 package civitas.celestis.math.decimal;
 
+import civitas.celestis.math.integer.Integer2;
 import civitas.celestis.math.vector.Vector2;
 import civitas.celestis.util.tuple.Object2;
 import civitas.celestis.util.tuple.Tuple;
@@ -27,6 +28,31 @@ public class Decimal2 extends Object2<BigDecimal> implements DecimalVector<Decim
      */
     @Serial
     private static final long serialVersionUID = 0L;
+
+    /**
+     * A vector of no direction or magnitude. Represents origin.
+     */
+    public static final Decimal2 ZERO = new Decimal2(BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive A unit vector.
+     */
+    public static final Decimal2 POSITIVE_A = new Decimal2(BigDecimal.ONE, BigDecimal.ZERO);
+
+    /**
+     * The positive B unit vector.
+     */
+    public static final Decimal2 POSITIVE_B = new Decimal2(BigDecimal.ZERO, BigDecimal.ONE);
+
+    /**
+     * The negative A unit vector.
+     */
+    public static final Decimal2 NEGATIVE_A = new Decimal2(BigDecimal.ONE.negate(), BigDecimal.ZERO);
+
+    /**
+     * The negative B unit vector.
+     */
+    public static final Decimal2 NEGATIVE_B = new Decimal2(BigDecimal.ZERO, BigDecimal.ONE.negate());
 
     //
     // Constructors
@@ -406,6 +432,26 @@ public class Decimal2 extends Object2<BigDecimal> implements DecimalVector<Decim
     }
 
     //
+    // Rotation
+    //
+
+    /**
+     * Rotates this vector counter-clockwise by the provided angle {@code t}.
+     * Angle is denoted in radians.
+     *
+     * @param t The angle of rotation to apply in radians
+     * @return The rotated vector
+     * @see Math#toRadians(double)
+     */
+    @Nonnull
+    public Decimal2 rotate(@Nonnull BigDecimal t) {
+        final BigDecimal c = BigDecimal.valueOf(Math.cos(t.doubleValue()));
+        final BigDecimal s = BigDecimal.valueOf(Math.sin(t.doubleValue()));
+
+        return new Decimal2(a.multiply(c).subtract(b.multiply(s)), a.multiply(s).add(b.multiply(c)));
+    }
+
+    //
     // Conversion
     //
 
@@ -418,6 +464,17 @@ public class Decimal2 extends Object2<BigDecimal> implements DecimalVector<Decim
     @Override
     public Vector2 primValue() {
         return new Vector2(a.doubleValue(), b.doubleValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Integer2 bigIntegerValue() {
+        return new Integer2(a.toBigInteger(), b.toBigInteger());
     }
 
     //

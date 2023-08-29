@@ -397,6 +397,26 @@ public class Vector2 extends Double2 implements Vector<Vector2> {
     }
 
     //
+    // Rotation
+    //
+
+    /**
+     * Rotates this vector counter-clockwise by the provided angle {@code t}.
+     * Angle is denoted in radians.
+     *
+     * @param t The angle of rotation to apply in radians
+     * @return The rotated vector
+     * @see Math#toRadians(double)
+     */
+    @Nonnull
+    public Vector2 rotate(double t) {
+        final double c = Math.cos(t);
+        final double s = Math.sin(t);
+
+        return new Vector2(x * c - y * s, x * s + y * c);
+    }
+
+    //
     // Equality
     //
 

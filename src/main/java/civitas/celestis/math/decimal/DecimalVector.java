@@ -1,7 +1,9 @@
 package civitas.celestis.math.decimal;
 
+import civitas.celestis.math.integer.IntegerVector;
 import civitas.celestis.math.vector.BigVector;
 import civitas.celestis.math.vector.Vector;
+import jakarta.annotation.Nonnull;
 
 import java.math.BigDecimal;
 
@@ -17,4 +19,15 @@ import java.math.BigDecimal;
  */
 public interface DecimalVector<V extends DecimalVector<V, PV>, PV extends Vector<PV>>
         extends BigVector<BigDecimal, BigDecimal, V, V, PV> {
+    //
+    // Conversion
+    //
+
+    /**
+     * Converts this vector into a big integer vector.
+     *
+     * @return The big integer representation of this vector
+     */
+    @Nonnull
+    IntegerVector<?, V, ?> bigIntegerValue();
 }

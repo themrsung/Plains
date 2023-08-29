@@ -1,5 +1,6 @@
 package civitas.celestis.math.decimal;
 
+import civitas.celestis.math.integer.Integer4;
 import civitas.celestis.math.vector.Vector4;
 import civitas.celestis.util.tuple.Object4;
 import civitas.celestis.util.tuple.Tuple;
@@ -27,6 +28,61 @@ public class Decimal4 extends Object4<BigDecimal> implements DecimalVector<Decim
      */
     @Serial
     private static final long serialVersionUID = 0L;
+
+    /**
+     * A vector of no direction of magnitude. Represents origin.
+     */
+
+    public static final Decimal4 ZERO =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive A unit vector.
+     */
+    public static final Decimal4 POSITIVE_A =
+            new Decimal4(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive B unit vector.
+     */
+    public static final Decimal4 POSITIVE_B =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The positive C unit vector.
+     */
+    public static final Decimal4 POSITIVE_C =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO);
+
+    /**
+     * The positive D unit vector.
+     */
+    public static final Decimal4 POSITIVE_D =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+
+    /**
+     * The negative A unit vector.
+     */
+    public static final Decimal4 NEGATIVE_A =
+            new Decimal4(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The negative B unit vector.
+     */
+    public static final Decimal4 NEGATIVE_B =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ZERO);
+
+    /**
+     * The negative C unit vector.
+     */
+    public static final Decimal4 NEGATIVE_C =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE.negate(), BigDecimal.ZERO);
+
+    /**
+     * The negative D unit vector.
+     */
+    public static final Decimal4 NEGATIVE_D =
+            new Decimal4(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE.negate());
 
     //
     // Constructors
@@ -99,7 +155,8 @@ public class Decimal4 extends Object4<BigDecimal> implements DecimalVector<Decim
     @Nonnull
     @Override
     public BigDecimal norm() {
-        return a.multiply(a).add(b.multiply(b)).add(c.multiply(c)).add(d.multiply(d)).sqrt(Decimals.RUNTIME_CONTEXT);
+        return a.multiply(a).add(b.multiply(b)).add(c.multiply(c)).add(d.multiply(d))
+                .sqrt(Decimals.RUNTIME_CONTEXT);
     }
 
     /**
@@ -448,6 +505,17 @@ public class Decimal4 extends Object4<BigDecimal> implements DecimalVector<Decim
     @Override
     public Vector4 primValue() {
         return new Vector4(a.doubleValue(), b.doubleValue(), c.doubleValue(), d.doubleValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public Integer4 bigIntegerValue() {
+        return new Integer4(a.toBigInteger(), b.toBigInteger(), c.toBigInteger(), d.toBigInteger());
     }
 
     //

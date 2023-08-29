@@ -176,7 +176,7 @@ public class Object4<E> implements Tuple<E> {
      *
      * @return The first element of this tuple
      */
-    public E getA() {
+    public E a() {
         return a;
     }
 
@@ -185,7 +185,7 @@ public class Object4<E> implements Tuple<E> {
      *
      * @return The second element of this tuple
      */
-    public E getB() {
+    public E b() {
         return b;
     }
 
@@ -194,7 +194,7 @@ public class Object4<E> implements Tuple<E> {
      *
      * @return The third element of this tuple
      */
-    public E getC() {
+    public E c() {
         return c;
     }
 
@@ -203,7 +203,7 @@ public class Object4<E> implements Tuple<E> {
      *
      * @return The fourth element of this tuple
      */
-    public E getD() {
+    public E d() {
         return d;
     }
 

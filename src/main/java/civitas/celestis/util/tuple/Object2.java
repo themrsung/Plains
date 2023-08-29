@@ -156,7 +156,7 @@ public class Object2<E> implements Tuple<E> {
      *
      * @return The first element of this tuple
      */
-    public E getA() {
+    public E a() {
         return a;
     }
 
@@ -165,7 +165,7 @@ public class Object2<E> implements Tuple<E> {
      *
      * @return The second element of this tuple
      */
-    public E getB() {
+    public E b() {
         return b;
     }
 

@@ -15,7 +15,7 @@ public final class Decimals {
     // Constants
     //
 
-    public static final int RUNTIME_PRECISION = 150;
+    public static final int RUNTIME_PRECISION = 50;
     public static final RoundingMode RUNTIME_ROUNDING_MODE = RoundingMode.HALF_UP;
     public static final MathContext RUNTIME_CONTEXT = new MathContext(RUNTIME_PRECISION, RUNTIME_ROUNDING_MODE);
 
