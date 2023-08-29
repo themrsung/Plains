@@ -480,4 +480,14 @@ public class SyncGrid<E> extends ArrayGrid<E> {
     public synchronized String toString() {
         return super.toString();
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public synchronized int hashCode() {
+        return super.hashCode();
+    }
 }

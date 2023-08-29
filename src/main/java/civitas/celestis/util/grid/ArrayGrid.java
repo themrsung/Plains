@@ -688,4 +688,14 @@ public class ArrayGrid<E> implements Grid<E> {
 
         return out.append("}").toString();
     }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash((Object[]) array());
+    }
 }
