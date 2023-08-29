@@ -1,12 +1,6 @@
 package civitas.celestis;
 
-import civitas.celestis.math.vector.Vector3;
 import civitas.celestis.util.grid.*;
-import civitas.celestis.util.tuple.ArrayTuple;
-import civitas.celestis.util.tuple.Tuple;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Testing {
     public static void main(String[] args) {
