@@ -368,6 +368,10 @@ public class Object3<E> implements Tuple<E> {
         return Objects.equals(a, t.get(0)) && Objects.equals(b, t.get(1)) && Objects.equals(c, t.get(2));
     }
 
+    //
+    // Serialization
+    //
+
     /**
      * {@inheritDoc}
      *
@@ -377,5 +381,15 @@ public class Object3<E> implements Tuple<E> {
     @Override
     public String toString() {
         return "[" + a + ", " + b + ", " + c + "]";
+    }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(a, b, c);
     }
 }

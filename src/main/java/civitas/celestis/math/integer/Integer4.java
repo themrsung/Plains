@@ -1,7 +1,10 @@
 package civitas.celestis.math.integer;
 
 import civitas.celestis.math.decimal.Decimal4;
-import civitas.celestis.util.tuple.*;
+import civitas.celestis.util.tuple.Int4;
+import civitas.celestis.util.tuple.Long4;
+import civitas.celestis.util.tuple.Object4;
+import civitas.celestis.util.tuple.Tuple;
 import jakarta.annotation.Nonnull;
 
 import java.io.Serial;

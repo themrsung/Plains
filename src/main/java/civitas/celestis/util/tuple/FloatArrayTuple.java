@@ -300,4 +300,14 @@ public class FloatArrayTuple implements FloatTuple {
     public String toString() {
         return Arrays.toString(elements);
     }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(elements);
+    }
 }

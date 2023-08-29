@@ -6,6 +6,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 import java.io.Serial;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -81,7 +82,7 @@ final class Object0<E> implements Tuple<E> {
     @Nonnull
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<E>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return false;
@@ -129,5 +130,14 @@ final class Object0<E> implements Tuple<E> {
     @Override
     public String toString() {
         return "[]";
+    }
+
+    @Override
+    public int hashCode() {
+        /*
+         * This guarantees that an empty ArrayTuple will have the same hash code
+         * as any instance of Object0.
+         */
+        return Arrays.hashCode(array());
     }
 }

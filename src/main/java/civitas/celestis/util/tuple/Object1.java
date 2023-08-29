@@ -338,4 +338,14 @@ public class Object1<E> implements Tuple<E> {
     public String toString() {
         return "[" + element + "]";
     }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(element);
+    }
 }

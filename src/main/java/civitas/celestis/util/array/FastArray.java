@@ -620,4 +620,14 @@ public class FastArray<E> implements SafeArray<E> {
     public String toString() {
         return Arrays.toString(values);
     }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(values);
+    }
 }

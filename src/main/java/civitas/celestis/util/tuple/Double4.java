@@ -6,6 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.DoubleStream;
@@ -351,5 +352,15 @@ public class Double4 implements DoubleTuple {
     @Override
     public String toString() {
         return "[" + w + ", " + x + ", " + y + ", " + z + "]";
+    }
+
+    /**
+     * Returns a hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(w, x, y, z);
     }
 }

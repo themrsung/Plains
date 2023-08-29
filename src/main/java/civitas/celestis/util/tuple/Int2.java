@@ -6,6 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
@@ -283,5 +284,15 @@ public class Int2 implements IntTuple {
     @Override
     public String toString() {
         return "[" + x + ", " + y + "]";
+    }
+
+    /**
+     * Returns a hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

@@ -264,4 +264,14 @@ public class Long1 implements LongTuple {
     public String toString() {
         return "[" + element + "]";
     }
+
+    /**
+     * Returns a hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(element);
+    }
 }

@@ -645,4 +645,14 @@ class SubArray<E> implements SafeArray<E> {
     public String toString() {
         return Arrays.toString(array());
     }
+
+    /**
+     * Returns the hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(array());
+    }
 }

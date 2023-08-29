@@ -6,6 +6,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.LongStream;
@@ -302,5 +303,15 @@ public class Long3 implements LongTuple {
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
+    }
+
+    /**
+     * Returns a hash code of this instance.
+     *
+     * @return The hash code of this instance
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 }
