@@ -625,6 +625,6 @@ public class LongArrayGrid implements LongGrid {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(array());
+        return Grids.hash(this);
     }
 }

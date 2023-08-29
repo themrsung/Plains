@@ -625,6 +625,6 @@ public class IntArrayGrid implements IntGrid {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(array());
+        return Grids.hash(this);
     }
 }

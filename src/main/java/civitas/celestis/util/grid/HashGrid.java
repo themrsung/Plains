@@ -852,6 +852,6 @@ public class HashGrid<E> implements DynamicGrid<E> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash((Object[]) array());
+        return Grids.hash(this);
     }
 }

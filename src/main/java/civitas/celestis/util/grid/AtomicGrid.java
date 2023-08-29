@@ -714,6 +714,6 @@ public class AtomicGrid<E> implements Grid<E> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash((Object[]) array());
+        return Grids.hash(this);
     }
 }

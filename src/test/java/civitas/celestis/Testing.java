@@ -1,16 +1,22 @@
 package civitas.celestis;
 
+import civitas.celestis.math.vector.Vector3;
+import civitas.celestis.util.grid.*;
 import civitas.celestis.util.tuple.ArrayTuple;
 import civitas.celestis.util.tuple.Tuple;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Testing {
     public static void main(String[] args) {
-        final Tuple<String> e1 = Tuple.of();
-        final Tuple<Integer> e2 = Tuple.of();
-        final Tuple<String> e3 = new ArrayTuple<>();
+        final Grid<Double> g1 = new ArrayGrid<>(10, 10);
+        g1.fill(Math.PI);
 
-        System.out.println(e1.hashCode());
-        System.out.println(e2.hashCode());
-        System.out.println(e3.hashCode());
+        final DoubleGrid g2 = new DoubleArrayGrid(10, 10);
+        g2.fill(Math.PI);
+
+        System.out.println(g1.hashCode());
+        System.out.println(g2.hashCode());
     }
 }
