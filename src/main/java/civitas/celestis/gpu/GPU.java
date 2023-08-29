@@ -12,6 +12,8 @@ import java.util.List;
  * This API is dependent on JOCL. Unlike other classes of the Plains API,
  * this class does not statically initialize itself. Thus, {@link #initialize()}
  * must be called before any other method is to be invoked.
+ * @see KernelReference
+ * @see Kernels
  */
 public final class GPU {
     //
