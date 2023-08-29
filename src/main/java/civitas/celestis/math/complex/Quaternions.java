@@ -32,6 +32,78 @@ public final class Quaternions {
     }
 
     //
+    // Linear Interpolation (LERP)
+    //
+
+    /**
+     * Performs linear interpolation (LERP) between the starting value {@code s} and the ending value {@code e}.
+     *
+     * @param s The starting value
+     * @param e The ending value
+     * @param t The interpolation parameter ({@code [0, 1]})
+     * @return The interpolated value between the starting and ending values {@code s} and {@code e}
+     */
+    @Nonnull
+    public static Quaternion lerp(@Nonnull Quaternion s, @Nonnull Quaternion e, double t) {
+        final double s1 = s.w();
+        final double e1 = e.w();
+        final double s2 = s.x();
+        final double e2 = e.x();
+        final double s3 = s.y();
+        final double e3 = e.y();
+        final double s4 = s.z();
+        final double e4 = e.z();
+
+        return new Quaternion(
+                s1 + (e1 - s1) * t,
+                s2 + (e2 - s2) * t,
+                s3 + (e3 - s3) * t,
+                s4 + (e4 - s4) * t
+        );
+    }
+
+    //
+    // Spherical Linear Interpolation (SLERP)
+    //
+
+    /**
+     * Performs spherical linear interpolation (SLERP) between two quaternions.
+     * This assumes that the input quaternions are already normalized.
+     *
+     * @param start The starting quaternion
+     * @param end   The end quaternion
+     * @param t     The interpolation parameter {@code t} ({@code 0-1})
+     * @return The interpolated quaternion
+     */
+    @Nonnull
+    public static Quaternion slerp(@Nonnull Quaternion start, @Nonnull Quaternion end, double t) {
+        // Get the dot product of the two quaternions
+        double dot = start.dot(end);
+
+        // Determine direction and adjust end quaternion if required
+        if (dot < 0) {
+            end = end.negate();
+            dot = -dot;
+        }
+
+        if (1 - dot < Scalars.EPSILON) {
+            // Quaternions are very close, use linear interpolation
+            return lerp(start, end, t);
+        }
+
+        // Calculate the angle between the quaternions
+        final double theta0 = Math.acos(dot);
+        final double theta1 = theta0 * t;
+
+        // Calculate the interpolation coefficients
+        final double s0 = Math.sin((1 - t) * theta0) / Math.sin(theta0);
+        final double s1 = Math.sin(theta1) / Math.sin(theta0);
+
+        // Perform spherical linear interpolation
+        return start.multiply(s0).add(end.multiply(s1));
+    }
+
+    //
     // Euler Angles
     //
 
@@ -43,8 +115,8 @@ public final class Quaternions {
      * @return The constructed quaternion
      */
     @Nonnull
-    public static Quaternion quaternion(@Nonnull Double3 pyr) {
-        return quaternion(pyr.x(), pyr.y(), pyr.z());
+    public static Quaternion from(@Nonnull Double3 pyr) {
+        return from(pyr.x(), pyr.y(), pyr.z());
     }
 
     /**
@@ -57,7 +129,7 @@ public final class Quaternions {
      * @return The constructed quaternion
      */
     @Nonnull
-    public static Quaternion quaternion(double pitch, double yaw, double roll) {
+    public static Quaternion from(double pitch, double yaw, double roll) {
         final double cy = Math.cos(yaw * 0.5);
         final double sy = Math.sin(yaw * 0.5);
         final double cr = Math.cos(roll * 0.5);
@@ -136,8 +208,8 @@ public final class Quaternions {
      * @return The constructed quaternion
      */
     @Nonnull
-    public static Quaternion quaternion(@Nonnull Double4 axisAngle) {
-        return quaternion(new Vector3(axisAngle.x(), axisAngle.y(), axisAngle.z()), axisAngle.w());
+    public static Quaternion from(@Nonnull Double4 axisAngle) {
+        return from(new Vector3(axisAngle.x(), axisAngle.y(), axisAngle.z()), axisAngle.w());
     }
 
     /**
@@ -149,7 +221,7 @@ public final class Quaternions {
      * @return The constructed quaternion
      */
     @Nonnull
-    public static Quaternion quaternion(@Nonnull Vector3 axis, double angle) {
+    public static Quaternion from(@Nonnull Vector3 axis, double angle) {
         final double halfAngle = angle * 0.5;
         final double sinHalfAngle = Math.sin(halfAngle);
 
@@ -226,7 +298,7 @@ public final class Quaternions {
      * @throws IllegalArgumentException When the matrix's dimensions is not 3x3
      */
     @Nonnull
-    public static Quaternion quaternion(@Nonnull Matrix m) throws IllegalArgumentException {
+    public static Quaternion from(@Nonnull Matrix m) throws IllegalArgumentException {
         if (m.rows() != 3 || m.columns() != 3) {
             throw new IllegalArgumentException("Only a 3x3 matrix can be converted into a quaternion.");
         }
